@@ -11,12 +11,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+/* 余白計算を安定させる（重要） */
+*{
+  box-sizing:border-box;
+}
+
 body{
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   background: linear-gradient(135deg, #0a1f33, #0f3d5e, #146c94);
   color:white;
   margin:0;
-  padding:0;   /* ヘッダーを端まで広げる */
+  padding:0;
 }
 
 /* ===== ヘッダー帯（固定） ===== */
@@ -27,7 +32,7 @@ body{
   background:linear-gradient(90deg,#081a2f,#0f3d5e);
   padding:15px 40px;
 
-  position:fixed;   /* 固定 */
+  position:fixed;
   top:0;
   left:0;
   width:100%;
@@ -58,11 +63,12 @@ body{
 .header-admin{
   font-size:13px;
   opacity:0.8;
+  white-space:nowrap; /* 途中改行防止 */
 }
 
 /* ===== コンテンツエリア ===== */
 .content{
-  padding:120px 40px 40px 40px;  /* ヘッダー高さ分余白 */
+  padding:120px 40px 40px 40px;
 }
 
 .card{
