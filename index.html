@@ -19,6 +19,44 @@ body{
   padding:0;
 }
 
+/* ===== ログイン画面 ===== */
+.login-screen{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#0a1f33,#0f3d5e,#146c94);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+}
+
+.login-box{
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(10px);
+  padding:40px;
+  border-radius:15px;
+  text-align:center;
+  width:300px;
+}
+
+.login-box input{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  margin-top:15px;
+}
+
+.login-box button{
+  margin-top:15px;
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  background:#0072ff;
+  color:white;
+  cursor:pointer;
+}
+
 /* ===== ヘッダー ===== */
 .header{
   display:flex;
@@ -59,53 +97,26 @@ body{
   white-space:nowrap;
 }
 
-.logout-btn{
-  margin-left:15px;
-  padding:6px 12px;
-  border:none;
-  border-radius:15px;
-  background:#444;
-  color:white;
-  cursor:pointer;
-  font-size:12px;
-}
-
-/* ===== コンテンツ ===== */
 .content{
   padding:120px 40px 40px 40px;
-}
-
-/* ===== カード ===== */
-.card{
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(12px);
-  padding:25px;
-  margin-bottom:25px;
-  border-radius:18px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.4);
-}
-
-/* ===== 元の青ボタンに戻す ===== */
-.copy-btn{
-  margin-top:15px;
-  background: linear-gradient(45deg, #00c6ff, #0072ff);
-  color:white;
-  border:none;
-  padding:10px 18px;
-  border-radius:25px;
-  cursor:pointer;
-  font-size:14px;
-  font-weight:bold;
-}
-
-.copy-btn:hover{
-  opacity:0.85;
 }
 </style>
 </head>
 
 <body>
 
+<!-- ===== ログイン画面 ===== -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <h2>🔒 社内専用システム</h2>
+    <p>パスワードを入力してください</p>
+    <input type="password" id="passwordInput">
+    <button onclick="checkPassword()">ログイン</button>
+    <p id="errorMsg" style="color:#ff8080;"></p>
+  </div>
+</div>
+
+<!-- ===== ヘッダー ===== -->
 <div class="header">
   <div class="header-left">
     <img src="BlueOceanimage.png" class="header-logo">
@@ -116,40 +127,30 @@ body{
   </div>
   <div class="header-admin">
     Administrator : Kami
-    <button class="logout-btn" onclick="logout()">ログアウト</button>
   </div>
 </div>
 
 <div class="content">
-
-  <!-- 支援経過プロンプト例 -->
-  <div class="card">
-    <h3>支援経過プロンプト</h3>
-    <button class="copy-btn" onclick="copyText('prompt1')">コピーする</button>
-    <textarea id="prompt1" style="display:none;">
-ここに支援経過プロンプト本文を入れる
-    </textarea>
-  </div>
-
+  <!-- ここに機能を追加 -->
 </div>
 
 <script>
-const PASSWORD = "blue2026";
-const LOGOUT_VERSION = "v1";
+const PASSWORD = "Blue2026"; // ←ここで変更可
 
-function logout(){
-  localStorage.removeItem("blueLoggedIn");
-  localStorage.removeItem("logoutVersion");
-  location.reload();
+function checkPassword(){
+  const input = document.getElementById("passwordInput").value;
+  if(input === PASSWORD){
+    localStorage.setItem("blueLoggedIn","true");
+    document.getElementById("loginScreen").style.display="none";
+  } else {
+    document.getElementById("errorMsg").innerText="パスワードが違います";
+  }
 }
 
-function copyText(id){
-  const text = document.getElementById(id);
-  text.style.display = "block";
-  text.select();
-  document.execCommand("copy");
-  text.style.display = "none";
-  alert("コピーしました");
+window.onload = function(){
+  if(localStorage.getItem("blueLoggedIn")==="true"){
+    document.getElementById("loginScreen").style.display="none";
+  }
 }
 </script>
 
