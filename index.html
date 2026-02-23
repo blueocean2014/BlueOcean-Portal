@@ -21,34 +21,7 @@ body{
   padding:0;
 }
 
-/* ===== コピー通知 ===== */
-.toast{
-  position:fixed;
-  top:90px;
-  right:30px;
-  background:linear-gradient(45deg,#00c6ff,#0072ff);
-  color:white;
-  padding:10px 18px;
-  border-radius:25px;
-  font-size:13px;
-  opacity:0;
-  transform:translateY(-10px);
-  transition:0.4s;
-  z-index:3000;
-}
-
-.toast.show{
-  opacity:1;
-  transform:translateY(0);
-}
-
-/* ===== ボタン光る演出 ===== */
-.button-flash{
-  box-shadow:0 0 15px #00c6ff;
-  transform:scale(1.05);
-}
-
-/* ===== ログイン画面 ===== */
+/* ===== ログイン画面（追加・デザイン影響なし） ===== */
 .login-screen{
   position:fixed;
   inset:0;
@@ -86,7 +59,7 @@ body{
   cursor:pointer;
 }
 
-/* ===== ヘッダー帯 ===== */
+/* ===== ヘッダー帯（固定） ===== */
 .header{
   display:flex;
   justify-content:space-between;
@@ -203,22 +176,13 @@ textarea{
 </div>
 
 <div class="content">
-
-  <!-- サンプルカード -->
-  <div class="card">
-    <h3>支援経過プロンプト</h3>
-    <textarea id="prompt1">ここにプロンプト本文</textarea>
-    <button onclick="copyText('prompt1', this)">コピーする</button>
-  </div>
-
+  <!-- ここに今までのカードや機能を入れる -->
 </div>
 
-<!-- 通知 -->
-<div id="toast" class="toast">コピーしました</div>
-
 <script>
+/* ===== 設定 ===== */
 const PASSWORD = "blue2026";
-const LOGOUT_VERSION = "v1";
+const LOGOUT_VERSION = "v1";  // ← 強制ログアウト用（変更すると全員ログアウト）
 
 function checkPassword(){
   const input = document.getElementById("passwordInput").value;
@@ -240,22 +204,6 @@ window.onload = function(){
   } else {
     localStorage.removeItem("blueLoggedIn");
   }
-}
-
-function copyText(id, button){
-  const text = document.getElementById(id);
-  text.select();
-  document.execCommand("copy");
-
-  const toast = document.getElementById("toast");
-  toast.classList.add("show");
-
-  button.classList.add("button-flash");
-
-  setTimeout(()=>{
-    toast.classList.remove("show");
-    button.classList.remove("button-flash");
-  },1000);
 }
 </script>
 
