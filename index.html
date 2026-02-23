@@ -108,8 +108,24 @@ body{
   font-size:12px;
 }
 
+/* ===== コンテンツエリア ===== */
 .content{
   padding:120px 40px 40px 40px;
+}
+
+/* ===== 入力エリア（拡大版） ===== */
+textarea{
+  width:100%;
+  height:320px;            /* ← 大きく */
+  margin-top:20px;
+  border-radius:12px;
+  border:none;
+  padding:20px;
+  font-size:15px;
+  resize:vertical;
+  background:white;
+  color:black;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
 }
 </style>
 </head>
@@ -143,15 +159,16 @@ body{
 </div>
 
 <div class="content">
-  <!-- ここに機能を追加 -->
+
+  <!-- サンプル入力欄 -->
+  <textarea placeholder="ここにプロンプトが表示されます"></textarea>
+
 </div>
 
 <script>
-/* ===== 設定 ===== */
-const PASSWORD = "blue2026";  // ← 現在のパスワード
-const LOGOUT_VERSION = "v1";  // ← 強制ログアウト用バージョン（変更すると全員ログアウト）
+const PASSWORD = "blue2026";
+const LOGOUT_VERSION = "v1";
 
-/* ===== ログイン処理 ===== */
 function checkPassword(){
   const input = document.getElementById("passwordInput").value;
   if(input === PASSWORD){
@@ -163,14 +180,12 @@ function checkPassword(){
   }
 }
 
-/* ===== ログアウト処理 ===== */
 function logout(){
   localStorage.removeItem("blueLoggedIn");
   localStorage.removeItem("logoutVersion");
   location.reload();
 }
 
-/* ===== ページ読み込み時チェック ===== */
 window.onload = function(){
   const savedVersion = localStorage.getItem("logoutVersion");
   const loggedIn = localStorage.getItem("blueLoggedIn");
