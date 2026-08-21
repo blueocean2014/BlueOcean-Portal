@@ -3,22 +3,107 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BlueOcean 音声入力支援経過</title>
+
+<title>BlueOcean 支援経過作成</title>
 
 <style>
 
-body{
-  margin:0;
-  background:#f4f7fb;
-  color:#222;
-  font-family:-apple-system,BlinkMacSystemFont,"Yu Gothic",sans-serif;
+/* =====================================================
+   BlueOcean デザイン
+===================================================== */
+
+:root{
+  --blue-dark:#064b78;
+  --blue:#0879b9;
+  --blue-light:#e8f6ff;
+  --blue-pale:#f3fbff;
+  --ocean:#00a6c7;
+  --green:#159957;
+  --gray:#64748b;
+  --text:#17324d;
+  --border:#c9dce8;
+  --white:#ffffff;
 }
 
-header{
-  background:#0b5cab;
-  color:white;
-  padding:16px;
+*{
+  box-sizing:border-box;
 }
+
+body{
+  margin:0;
+  background:
+    linear-gradient(
+      180deg,
+      #eaf7fc 0%,
+      #f5fbfe 35%,
+      #f4f7fb 100%
+    );
+  color:var(--text);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Yu Gothic",
+    "Hiragino Kaku Gothic ProN",
+    Meiryo,
+    sans-serif;
+}
+
+
+/* =====================================================
+   ヘッダー
+===================================================== */
+
+header{
+  background:
+    linear-gradient(
+      135deg,
+      #064b78 0%,
+      #0879b9 55%,
+      #00a6c7 100%
+    );
+  color:white;
+  padding:20px 16px 18px;
+  box-shadow:0 3px 12px rgba(0,60,100,.20);
+}
+
+.header-inner{
+  max-width:900px;
+  margin:auto;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo-mark{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:rgba(255,255,255,.18);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+}
+
+header h1{
+  font-size:21px;
+  margin:0;
+  font-weight:700;
+}
+
+.header-sub{
+  margin-top:8px;
+  font-size:13px;
+  opacity:.95;
+}
+
+
+/* =====================================================
+   メイン
+===================================================== */
 
 main{
   max-width:900px;
@@ -26,101 +111,262 @@ main{
   padding:12px;
 }
 
-.card{
-  background:white;
-  padding:15px;
-  margin:12px 0;
-  border-radius:14px;
-  box-shadow:0 2px 8px #0001;
-}
 
-h1{
-  font-size:21px;
-  margin:0;
+/* =====================================================
+   カード
+===================================================== */
+
+.card{
+  background:var(--white);
+  padding:17px;
+  margin:14px 0;
+  border-radius:16px;
+  border:1px solid rgba(8,121,185,.10);
+  box-shadow:
+    0 3px 12px rgba(20,80,110,.08);
 }
 
 h2{
   font-size:18px;
-  margin-top:0;
+  margin:0 0 12px;
+  color:var(--blue-dark);
 }
+
+.section-number{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:29px;
+  height:29px;
+  border-radius:50%;
+  background:var(--blue);
+  color:white;
+  font-size:14px;
+  margin-right:7px;
+}
+
+
+/* =====================================================
+   区分
+===================================================== */
 
 .grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:7px;
+  gap:8px;
 }
 
 label{
-  border:1px solid #ccd5df;
-  border-radius:9px;
-  padding:10px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:11px;
   display:flex;
-  gap:8px;
+  gap:9px;
   align-items:center;
   background:white;
   cursor:pointer;
+  transition:.15s;
+  color:#24445c;
+  font-size:14px;
+  min-height:45px;
 }
 
 label:hover{
-  background:#f1f6ff;
+  background:var(--blue-pale);
+  border-color:#83c6e6;
+}
+
+label:has(input:checked){
+  background:#e5f5ff;
+  border-color:var(--blue);
+  color:var(--blue-dark);
+  font-weight:600;
 }
 
 input[type=checkbox]{
-  width:20px;
-  height:20px;
+  width:21px;
+  height:21px;
+  accent-color:var(--blue);
   flex-shrink:0;
 }
 
-textarea{
-  width:100%;
-  box-sizing:border-box;
-  border:1px solid #ccd5df;
-  border-radius:9px;
-  padding:11px;
-  font-size:16px;
-  line-height:1.6;
-  min-height:220px;
-  resize:vertical;
-}
+
+/* =====================================================
+   ボタン
+===================================================== */
 
 button{
   border:0;
-  border-radius:9px;
-  background:#0b5cab;
+  border-radius:10px;
   color:white;
-  padding:12px 15px;
+  padding:12px 16px;
   font-size:15px;
-  margin:4px 2px;
+  font-weight:600;
+  margin:5px 3px;
   cursor:pointer;
+  transition:.15s;
+  box-shadow:0 2px 5px rgba(0,0,0,.10);
 }
 
 button:hover{
-  opacity:0.9;
+  transform:translateY(-1px);
+  box-shadow:0 4px 8px rgba(0,0,0,.14);
+}
+
+button:active{
+  transform:translateY(0);
 }
 
 .gray{
   background:#64748b;
 }
 
-.status{
-  background:#eef4ff;
-  padding:9px;
-  border-radius:8px;
-  font-size:13px;
-  margin-top:7px;
-  white-space:pre-wrap;
+.blue{
+  background:var(--blue);
 }
+
+.copy-button{
+  width:100%;
+  margin:8px 0 4px;
+  padding:15px;
+  font-size:17px;
+  background:
+    linear-gradient(
+      135deg,
+      #0879b9,
+      #00a6c7
+    );
+  box-shadow:
+    0 4px 12px rgba(0,130,180,.25);
+}
+
+.copy-button.success{
+  background:
+    linear-gradient(
+      135deg,
+      #159957,
+      #1fae6a
+    );
+}
+
+
+/* =====================================================
+   テキスト入力
+===================================================== */
+
+textarea{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:12px;
+  font-size:16px;
+  line-height:1.7;
+  min-height:220px;
+  resize:vertical;
+  font-family:inherit;
+  color:#17324d;
+  background:#fbfdff;
+}
+
+textarea:focus{
+  outline:none;
+  border-color:var(--blue);
+  box-shadow:
+    0 0 0 3px rgba(8,121,185,.12);
+}
+
+
+/* =====================================================
+   説明
+===================================================== */
 
 .description{
   font-size:14px;
-  line-height:1.6;
-  color:#444;
+  line-height:1.7;
+  color:#486176;
 }
+
+.description strong{
+  color:var(--blue-dark);
+}
+
+
+/* =====================================================
+   ステータス
+===================================================== */
+
+.status{
+  background:var(--blue-light);
+  color:#24516d;
+  padding:10px 12px;
+  border-radius:9px;
+  font-size:13px;
+  line-height:1.5;
+  margin-top:8px;
+  white-space:pre-wrap;
+}
+
+.status.success-status{
+  background:#e8f8ef;
+  color:#126b3d;
+  border:1px solid #a9dfbf;
+  font-weight:600;
+}
+
+
+/* =====================================================
+   選択区分表示
+===================================================== */
+
+.selected-box{
+  margin-top:10px;
+  background:#f1f9fd;
+  border:1px solid #c7e5f3;
+  padding:10px;
+  border-radius:10px;
+  font-size:13px;
+  line-height:1.6;
+}
+
+
+/* =====================================================
+   注意書き
+===================================================== */
+
+.notice{
+  background:#fff9ed;
+  border:1px solid #f5d69a;
+  padding:10px;
+  border-radius:9px;
+  font-size:13px;
+  line-height:1.6;
+  margin-top:10px;
+}
+
+
+/* =====================================================
+   モバイル
+===================================================== */
 
 @media(max-width:600px){
 
+  main{
+    padding:8px;
+  }
+
+  .card{
+    padding:14px;
+    margin:10px 0;
+    border-radius:14px;
+  }
+
   .grid{
     grid-template-columns:1fr;
+  }
+
+  label{
+    min-height:48px;
+    font-size:14px;
   }
 
   button{
@@ -128,6 +374,39 @@ button:hover{
     margin:4px 0;
   }
 
+  header{
+    padding:17px 13px;
+  }
+
+  header h1{
+    font-size:19px;
+  }
+
+}
+
+
+/* =====================================================
+   コピー成功アニメーション
+===================================================== */
+
+@keyframes copyFlash{
+
+  0%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.02);
+  }
+
+  100%{
+    transform:scale(1);
+  }
+
+}
+
+.copy-flash{
+  animation:copyFlash .35s ease;
 }
 
 </style>
@@ -137,12 +416,28 @@ button:hover{
 <body>
 
 
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
 <header>
 
-<h1>BlueOcean　音声入力支援経過</h1>
+<div class="header-inner">
 
-<div>
+<div class="logo">
+
+<div class="logo-mark">
+🌊
+</div>
+
+<h1>BlueOcean　支援経過作成</h1>
+
+</div>
+
+<div class="header-sub">
 区分を選択 → 音声・手入力 → AI処理用にコピー
+</div>
+
 </div>
 
 </header>
@@ -152,24 +447,45 @@ button:hover{
 
 
 <!-- =====================================================
-     ① 区分を選択
+     ① 区分
 ===================================================== -->
 
 <section class="card">
 
-<h2>① 区分を選択</h2>
+<h2>
+<span class="section-number">1</span>
+区分を選択
+</h2>
 
-<div id="cats" class="grid"></div>
+<div
+id="cats"
+class="grid"
+></div>
 
-<button class="gray" onclick="allOn()">
+
+<div style="margin-top:8px;">
+
+<button
+class="gray"
+onclick="allOn()"
+>
 すべて選択
 </button>
 
-<button class="gray" onclick="allOff()">
+<button
+class="gray"
+onclick="allOff()"
+>
 選択解除
 </button>
 
-<div id="sel" class="status">
+</div>
+
+
+<div
+id="sel"
+class="selected-box"
+>
 未選択
 </div>
 
@@ -182,14 +498,17 @@ button:hover{
 
 <section class="card">
 
-<h2>② 音声・手入力</h2>
+<h2>
+<span class="section-number">2</span>
+音声・手入力
+</h2>
 
 <p class="description">
 
 訪問時の状況、本人・家族の発言、生活状況、
 サービス利用状況、連絡内容などを入力してください。
 
-<br>
+<br><br>
 
 <strong>
 Windowsの場合は「Windowsキー＋H」で音声入力できます。
@@ -197,42 +516,63 @@ Windowsの場合は「Windowsキー＋H」で音声入力できます。
 
 <br>
 
-入力がない場合でも、区分を選択するだけで定型文による支援経過を作成できます。
+iPhone等では端末の音声入力機能を利用できます。
 
 </p>
 
+
 <textarea
 id="memo"
-placeholder="ここに話した内容や支援経過に残したい内容を入力してください。入力しなくても構いません。"
+placeholder="ここに話した内容や支援経過に残したい内容を入力してください。&#10;&#10;※入力しなくても、選択した区分の定型文だけで支援経過を作成できます。"
 ></textarea>
 
 </section>
 
 
 <!-- =====================================================
-     ③ AI処理用にコピー
+     ③ AI処理用コピー
 ===================================================== -->
 
 <section class="card">
 
-<h2>③ AI処理用にコピー</h2>
+<h2>
+<span class="section-number">3</span>
+AI処理用にコピー
+</h2>
 
 <p class="description">
 
-「AI処理用にコピー」を押して、利用するAIへ貼り付けてください。
+選択した区分と入力内容を、利用するAIで支援経過を作成できる形式に変換します。
 
 <br>
 
-音声・手入力がなくても、選択した区分の定型文だけで処理できます。
+ChatGPT、Gemini、Claudeなど、利用するAIに貼り付けてください。
 
 </p>
 
-<button onclick="copyAI()">
-AI処理用にコピー
+
+<button
+id="copyButton"
+class="copy-button"
+onclick="copyAI()"
+>
+📋 AI処理用にコピー
 </button>
 
-<div id="cs" class="status">
-未コピー
+
+<div
+id="cs"
+class="status"
+>
+まだコピーしていません
+</div>
+
+
+<div class="notice">
+
+<strong>ポイント</strong><br>
+音声・手入力がなくても、区分を選択するだけで定型文を含むAI処理用データを作成できます。
+
 </div>
 
 </section>
@@ -260,6 +600,9 @@ document.getElementById("memo");
 const csElement =
 document.getElementById("cs");
 
+const copyButton =
+document.getElementById("copyButton");
+
 
 /* =====================================================
    定型文
@@ -268,7 +611,7 @@ document.getElementById("cs");
 const T = {
 
 "自宅訪問":
-"区分：自宅訪問 本人 家族",
+"【自宅訪問】",
 
 "利用票交付":
 "【利用票交付】\n次月の予定について説明し同意頂き交付",
@@ -289,10 +632,10 @@ const T = {
 "【短期目標更新】\n短期目標更新時期にてプラン継続についてご本人、ご家族、各サービス事業所に確認。状態も安定している為短期目標については長期目標期間内で更新することとする。各サービス事業所に目標の更新について伝達。軽微変更",
 
 "連絡調整":
-"連絡調整：入力内容を簡潔に整理し記載する。",
+"【連絡調整】",
 
 "新規依頼・契約":
-"新規依頼情報提供実施。",
+"【新規依頼・契約】\n新規依頼情報提供実施。",
 
 "初回面談":
 "【初回面談】\nインテーク面接とアセスメントを行い、希望・身体状況・介護力・生活環境を確認。",
@@ -307,16 +650,16 @@ const T = {
 "【入院時情報連携加算（Ⅱ）※電話・ＦＡＸによる情報提供】\n病院地域連携室〇〇氏に電話・ＦＡＸし、入院時情報提供を行う。提供した情報は別紙参照。",
 
 "退院・退所加算（面談・サマリーあり）":
-"〇〇病院の地域連携室・看護師・医師〇〇氏と面談し、退院後の在宅生活に必要な情報提供を受ける。※具体的内容はサマリー・退院・退所情報記録書参照。",
+"【退院・退所加算（面談・サマリーあり）】\n〇〇病院の地域連携室・看護師・医師〇〇氏と面談し、退院後の在宅生活に必要な情報提供を受ける。※具体的内容はサマリー・退院・退所情報記録書参照。",
 
 "退院・退所加算（面談・サマリーなし）":
-"〇〇病院の地域連携室・看護師・医師××氏と面談し、退院後の在宅生活に必要な情報提供を受ける。",
+"【退院・退所加算（面談・サマリーなし）】\n〇〇病院の地域連携室・看護師・医師××氏と面談し、退院後の在宅生活に必要な情報提供を受ける。",
 
 "退院・退所加算（会議開催・カンファなし）":
-"〇〇病院にて退院前会議開催、退院後の在宅生活に必要な情報提供を受ける。※具体的内容は病院からの情報提供書・退所情報記録書・要点参照。",
+"【退院・退所加算（会議開催・カンファなし）】\n〇〇病院にて退院前会議開催、退院後の在宅生活に必要な情報提供を受ける。※具体的内容は病院からの情報提供書・退所情報記録書・要点参照。",
 
 "退院・退所加算（カンファレンス開催）":
-"〇〇病院にて退院前カンファレンス開催、退院後の在宅生活に必要な情報提供を受ける。※具体的内容は病院からの情報提供書・退所情報記録書・要点参照。",
+"【退院・退所加算（カンファレンス開催）】\n〇〇病院にて退院前カンファレンス開催、退院後の在宅生活に必要な情報提供を受ける。※具体的内容は病院からの情報提供書・退所情報記録書・要点参照。",
 
 "カンファレンス":
 "【カンファレンス開催】\n病状・ADL・リハビリ状況・退院後の生活課題等を共有し、在宅生活に向けた支援方針と今後の方向性を確認。",
@@ -331,58 +674,58 @@ const T = {
 
 
 /* =====================================================
-   区分を表示
+   区分表示
 ===================================================== */
 
 Object.keys(T).forEach(function(key){
 
-const label =
-document.createElement("label");
+  const label =
+  document.createElement("label");
 
-const checkbox =
-document.createElement("input");
+  const checkbox =
+  document.createElement("input");
 
-checkbox.type =
-"checkbox";
+  checkbox.type =
+  "checkbox";
 
-checkbox.value =
-key;
+  checkbox.value =
+  key;
 
-checkbox.addEventListener(
-"change",
-update
-);
+  checkbox.addEventListener(
+    "change",
+    update
+  );
 
-label.appendChild(
-checkbox
-);
+  label.appendChild(
+    checkbox
+  );
 
-label.appendChild(
-document.createTextNode(" " + key)
-);
+  label.appendChild(
+    document.createTextNode(key)
+  );
 
-catsElement.appendChild(
-label
-);
+  catsElement.appendChild(
+    label
+  );
 
 });
 
 
 /* =====================================================
-   選択区分取得
+   選択区分
 ===================================================== */
 
 function selected(){
 
-return Array.from(
-catsElement.querySelectorAll(
-'input[type="checkbox"]:checked'
-)
-).map(function(x){
+  return Array.from(
+    catsElement.querySelectorAll(
+      'input[type="checkbox"]:checked'
+    )
+  ).map(function(x){
 
-return x.value;
+    return x.value;
 
-});
+  });
 
 }
 
@@ -393,38 +736,42 @@ return x.value;
 
 function update(){
 
-const a =
-selected();
+  const a =
+  selected();
 
-if(!a.length){
+  if(!a.length){
 
-selElement.textContent =
-"未選択";
+    selElement.textContent =
+    "未選択";
 
-return;
+    return;
 
-}
+  }
 
-let text = "";
 
-a.forEach(function(x){
+  let output =
+  "選択中\n";
 
-if(x === "自宅訪問"){
 
-text +=
-"自宅訪問\n本人\n家族\n";
+  a.forEach(function(x){
 
-}else{
+    if(x === "自宅訪問"){
 
-text +=
-x + "\n";
+      output +=
+      "自宅訪問\n本人\n家族\n";
 
-}
+    }else{
 
-});
+      output +=
+      x + "\n";
 
-selElement.textContent =
-"選択中：\n" + text.trim();
+    }
+
+  });
+
+
+  selElement.textContent =
+  output.trim();
 
 }
 
@@ -435,18 +782,18 @@ selElement.textContent =
 
 function allOn(){
 
-catsElement
-.querySelectorAll(
-'input[type="checkbox"]'
-)
-.forEach(function(x){
+  catsElement
+  .querySelectorAll(
+    'input[type="checkbox"]'
+  )
+  .forEach(function(x){
 
-x.checked =
-true;
+    x.checked =
+    true;
 
-});
+  });
 
-update();
+  update();
 
 }
 
@@ -457,18 +804,18 @@ update();
 
 function allOff(){
 
-catsElement
-.querySelectorAll(
-'input[type="checkbox"]'
-)
-.forEach(function(x){
+  catsElement
+  .querySelectorAll(
+    'input[type="checkbox"]'
+  )
+  .forEach(function(x){
 
-x.checked =
-false;
+    x.checked =
+    false;
 
-});
+  });
 
-update();
+  update();
 
 }
 
@@ -479,93 +826,91 @@ update();
 
 const RULE = `【①区分ルール】
 
-入力語句と同一語句を「区分」に記載する。
+入力語句と同一語句を区分に記載する。
+
+【区分出力指定】
 
 各区分の行頭には「・」を付けない。
 
-自宅訪問を選択した場合は、
+自宅訪問を選択した場合：
 
 自宅訪問
 本人
 家族
 
-の3行で記載する。
+の3行を記載する。
 
-その他の区分は、選択した語句をそのまま1行で記載する。
+その他の区分を選択した場合：
 
-複数選択時は、選択したすべての区分を記載する。
-
-「区分：自宅訪問」のような表記にはしない。
-
+選択した語句をそのまま1行ずつ記載する。
 
 【②内容ルール】
 
-選択された各区分について、対応する定型文を必ず「内容」に記載する。
-
 定型文があるものはそのまま挿入する。
 
-各項目は、
+連絡調整は入力内容をもとに自由記載する。
+
+内容の文章は、介護支援専門員の支援経過記録として自然で読みやすい文章に整える。
+
+報告書のような硬い表現にはしない。
+
+訪問時の状況、会話内容、生活状況、サービス利用状況、連絡内容などを事実ベースで記載する。
+
+入力されていない内容を推測して追加しない。
+
+感情や印象を補足する表現は記載しない。
+
+本人や家族の発言は、入力された内容をもとに自然な話し言葉としてまとめる。
+
+【内容の重要ルール】
+
+「内容」の中には「区分：」という文字を絶対に記載しない。
+
+自宅訪問を選択した場合、「内容」には「自宅訪問」という見出しや項目を記載しない。
+
+自宅訪問について入力された具体的な訪問内容だけを内容として記載する。
+
+各定型文は、
 
 【項目名】
 定型文
 
-の形式で記載する。
+という形式で記載する。
 
-各項目の間に空行を入れず、続けて記載する。
+項目と項目の間には余計な空行を入れず、続けて記載する。
 
-自宅訪問は区分にのみ記載し、内容には記載しない。
+短期目標更新を選択した場合は、必ず「内容」に以下の定型文をそのまま記載する。
 
-本人・家族も区分にのみ記載し、内容には記載しない。
+【短期目標更新】
+短期目標更新時期にてプラン継続についてご本人、ご家族、各サービス事業所に確認。状態も安定している為短期目標については長期目標期間内で更新することとする。各サービス事業所に目標の更新について伝達。軽微変更
 
-連絡調整は入力された内容を簡潔にまとめて記載する。
+【関係機関・介護支援専門員の判断】
 
-入力がない場合でも、選択された区分の定型文を必ず記載する。
+入力された情報をもとに、ケアマネジャーとして行ったこと、判断を記載する。
 
-入力されていない事実を推測して追加しない。
-
-感情や印象を補足する表現は記載しない。
-
-
-【③関係機関・介護支援専門員の判断】
-
-入力された情報をもとに、ケアマネジャーとして行ったこと、判断、今後の対応を記載する。
-
-「〇〇した。〇〇する。」のような簡潔な記載とする。
+「〇〇した。〇〇する。」のような自然な記載とする。
 
 「〇〇を確認した」という表現を多用しない。
 
-内容と重複する事項は判断欄には記載しない。
+内容と重複する場合は、内容に記載した事項を優先し、判断欄には重複して記載しない。
 
-本人・家族からの相談内容や行った事実は内容に記載する。
+短期目標更新については、判断欄にも入力情報をもとに判断内容を記載する。
 
-介護支援専門員やサービス事業所等からの相談、調整、意見、判断は判断欄に記載する。
+ただし、内容に記載した定型文をそのまま繰り返さない。
 
-短期目標更新を選択した場合は、短期目標更新の定型文を必ず内容欄に記載する。
+【利用者・家族の考え方】
 
-そのうえで、入力情報がある場合には、ケアマネジャーとしての判断を判断欄に記載する。
+本人の意見は「本人：」の後に記載する。
 
+家族の意見は「家族：」の後に記載する。
 
-【④利用者・家族の考え方】
-
-本人の意見は、
-
-本人：
-
-の続きに自然な話し言葉で記載する。
-
-家族の意見は、
-
-家族：
-
-の続きに自然な話し言葉で記載する。
+本人・家族の発言は話し言葉として自然に記載する。
 
 「〜と話す」
 「〜とのこと」
 「〜との話あり」
 「〜と言われる」
-「〜との様子」
-
-は禁止する。
+などの報告調・記録調の表現は禁止。
 
 本人：
 〜したい。
@@ -577,105 +922,14 @@ const RULE = `【①区分ルール】
 〜なので心配。
 〜をお願いしたい。
 
-などの自然な話し言葉にする。
+意見がない場合は空欄とする。
 
-意見が入力されていない場合は空欄でよい。
-
-
-【⑤定型文の扱い】
-
-選択された区分の定型文は、一つも省略しない。
-
-特に短期目標更新を選択した場合は、必ず以下を内容にそのまま記載する。
-
-【短期目標更新】
-短期目標更新時期にてプラン継続についてご本人、ご家族、各サービス事業所に確認。状態も安定している為短期目標については長期目標期間内で更新することとする。各サービス事業所に目標の更新について伝達。軽微変更
-
-利用票交付を選択した場合：
-【利用票交付】
-次月の予定について説明し同意頂き交付
-
-モニタリングを選択した場合：
-【モニタリング】
-利用者の状態及びサービスの実施状況について確認しモニタリング実施、
-
-アセスメントを選択した場合：
-【アセスメント実施】
-ケアプラン原案作成のためのアセスメントを実施する。※アセスメントシート参照
-
-サービス担当者会議を選択した場合：
-【サービス担当者会議】更新・区分変更・サービス変更
-サービス担当者会議を実施し、利用者の状況や生活課題等について共有した。ケアプラン原案について各サービス事業所より意見を聴取し調整。利用者・家族へ内容を説明し、同意・署名をいただきケアプランを交付した。
-各サービス事業所にもケアプランを交付し、個別援助計画書の作成・提出を依頼し、了承を得た。
-主治医へもケアプランを送付し医療連携を継続。
-インフォーマルサービスの活用について検討したが、現時点では必要性は低いと判断した。また、福祉用具の必要性についても合わせて情報共有を行い、今後の必要性や導入に向けて検討を継続することとした。
-
-長期目標更新を選択した場合：
-【長期目標更新 】
-ケアプラン長期目標の満了に伴い利用者及び家族、各サービス提供事業所に現在の状況を確認。身体状況や現在の課題等に変更がなく、目標内容も変更の必要性がないため、現状や今後のケア方針を踏まえ、長期目標を延長することが適切であると判断した。
-利用者・家族へ説明し同意署名を頂きケアプラン交付。
-サービス事業所に照会、情報提供（ケアプラン交付）、個別援助計画書の作成・交付依頼。主治医に情報提供（ケアプラン送付）し医療連携を継続。
-
-契約を選択した場合：
-【契約について】
-契約書・重要事項説明書を説明し、同意署名取得後交付。居宅サービス計画作成依頼届に署名を得て、介護保険証を預かった。
-
-初回面談を選択した場合：
-【初回面談】
-インテーク面接とアセスメントを行い、希望・身体状況・介護力・生活環境を確認。
-
-カンファレンスを選択した場合：
-【カンファレンス開催】
-病状・ADL・リハビリ状況・退院後の生活課題等を共有し、在宅生活に向けた支援方針と今後の方向性を確認。
-
-サービス利用割合の説明を選択した場合：
-【サービス利用割合の説明】
-居宅介護支援のサービス利用割合について説明。
-
-入院時情報連携加算（Ⅰ）を選択した場合：
-【入院時情報連携加算（Ⅰ）※電話・ＦＡＸによる情報提供】
-病院地域連携室〇〇氏に電話・ＦＡＸし、入院時情報提供を行う。提供した情報は別紙参照。
-
-時間外入院時情報提供（Ⅰ）を選択した場合：
-【入院時情報連携加算（Ⅰ）※電話・ＦＡＸによる情報提供】
-入院・入院連絡が営業時間外であったため、翌営業日の情報提供。
-病院地域連携室〇〇氏に電話・ＦＡＸし、入院時情報提供を行う。提供した情報は別紙参照。
-
-入院時情報連携加算（Ⅱ）を選択した場合：
-【入院時情報連携加算（Ⅱ）※電話・ＦＡＸによる情報提供】
-病院地域連携室〇〇氏に電話・ＦＡＸし、入院時情報提供を行う。提供した情報は別紙参照。
-
-退院・退所加算（面談・サマリーあり）を選択した場合：
-〇〇病院の地域連携室・看護師・医師〇〇氏と面談し、退院後の在宅生活に必要な情報提供を受ける。※具体的内容はサマリー・退院・退所情報記録書参照。
-
-退院・退所加算（面談・サマリーなし）を選択した場合：
-〇〇病院の地域連携室・看護師・医師××氏と面談し、退院後の在宅生活に必要な情報提供を受ける。
-
-退院・退所加算（会議開催・カンファなし）を選択した場合：
-〇〇病院にて退院前会議開催、退院後の在宅生活に必要な情報提供を受ける。※具体的内容は病院からの情報提供書・退所情報記録書・要点参照。
-
-退院・退所加算（カンファレンス開催）を選択した場合：
-〇〇病院にて退院前カンファレンス開催、退院後の在宅生活に必要な情報提供を受ける。※具体的内容は病院からの情報提供書・退所情報記録書・要点参照。
-
-
-【⑥出力形式】
+【出力項目】
 
 区分
-選択した区分を改行して記載
-
 内容
-選択した区分の定型文をすべて記載
-
 関係機関・介護支援専門員の判断
-入力内容をもとに必要な判断を記載
-
-利用者・家族の考え方
-本人：
-家族：
-
-各区分の前に「・」を付けない。
-
-各内容の間に空行を入れない。`;
+利用者・家族の考え方`;
 
 
 /* =====================================================
@@ -684,148 +938,151 @@ const RULE = `【①区分ルール】
 
 function copyAI(){
 
-const a =
-selected();
+  const a =
+  selected();
 
-const m =
-memoElement.value.trim();
-
-
-/* 区分が何も選択されていない場合 */
-
-if(!a.length){
-
-csElement.textContent =
-"区分を1つ以上選択してください。";
-
-return;
-
-}
+  const m =
+  memoElement.value.trim();
 
 
-/* =====================================================
-   区分を作成
-===================================================== */
+  if(!a.length){
 
-let categoryText = "";
+    csElement.textContent =
+    "まず区分を選択してください。";
 
-a.forEach(function(x){
+    csElement.classList.remove(
+      "success-status"
+    );
 
-if(x === "自宅訪問"){
+    return;
 
-categoryText +=
-"自宅訪問\n本人\n家族\n";
-
-}else{
-
-categoryText +=
-x + "\n";
-
-}
-
-});
+  }
 
 
-/* =====================================================
-   定型文を作成
-   自宅訪問・本人・家族は内容に入れない
-===================================================== */
+  /*
+   * 音声・手入力が空欄でもOK
+   */
 
-let templates = "";
+  const templates =
+  a.map(function(x){
 
-a.forEach(function(x){
+    if(x === "自宅訪問"){
 
-if(x === "自宅訪問"){
+      return "";
 
-return;
+    }
 
-}
+    return T[x];
 
-templates +=
-T[x] + "\n";
+  })
+  .filter(function(x){
 
-});
+    return x !== "";
 
-
-/* =====================================================
-   音声・手入力が空の場合
-===================================================== */
-
-let inputText;
-
-if(m){
-
-inputText = m;
-
-}else{
-
-inputText =
-"音声・手入力なし。選択された区分の定型文のみで支援経過を作成する。";
-
-}
+  })
+  .join("\n");
 
 
-/* =====================================================
-   AIへ渡す最終テキスト
-===================================================== */
+  /*
+   * 区分出力
+   */
 
-const text =
+  let categoryOutput =
+  "";
+
+  a.forEach(function(x){
+
+    if(x === "自宅訪問"){
+
+      categoryOutput +=
+      "自宅訪問\n本人\n家族\n";
+
+    }else{
+
+      categoryOutput +=
+      x + "\n";
+
+    }
+
+  });
+
+
+  /*
+   * AIに渡す文章
+   */
+
+  const text =
 `あなたは経験豊富な介護支援専門員です。
 以下の情報から、介護支援専門員の支援経過記録を作成してください。
 
-【選択された区分】
+【選択区分】
+${categoryOutput.trim()}
 
-${categoryText}
+【定型文】
+${templates || "定型文なし"}
 
-【選択された区分の定型文】
-
-${templates}
-
-【音声・手入力】
-
-${inputText}
+【音声・手入力記録】
+${m || "入力なし。選択された区分の定型文を使用して支援経過を作成してください。"}
 
 ${RULE}
 
+【最重要】
 
-【最重要指示】
+1．選択した区分をすべて反映してください。
 
-選択された区分を一つも省略しないこと。
+2．区分には、選択した語句をそのまま記載してください。
 
-音声・手入力がなくても作成すること。
-
-音声・手入力がない場合は、選択された区分の定型文だけを使用して支援経過を作成すること。
-
-短期目標更新を選択した場合は、必ず内容欄に、
-
-【短期目標更新】
-短期目標更新時期にてプラン継続についてご本人、ご家族、各サービス事業所に確認。状態も安定している為短期目標については長期目標期間内で更新することとする。各サービス事業所に目標の更新について伝達。軽微変更
-
-を記載すること。
-
-定型文を省略、要約、別の文章への置き換えをしないこと。
-
-自宅訪問は「区分」にのみ、
+3．自宅訪問の場合は、
 
 自宅訪問
 本人
 家族
 
-と記載し、「内容」には記載しないこと。
+の3行を記載してください。
 
-最終出力は以下の4項目とする。
+4．その他の区分は、選択された語句をそれぞれ1行ずつ記載してください。
 
-区分
-内容
-関係機関・介護支援専門員の判断
-利用者・家族の考え方`;
+5．区分の行頭には「・」を付けないでください。
+
+6．内容には「区分：」を絶対に入れないでください。
+
+7．自宅訪問は内容の見出しとして記載しないでください。
+
+8．定型文は変更せず、そのまま使用してください。
+
+9．短期目標更新を選択した場合は、必ず内容欄に【短期目標更新】とその定型文を記載してください。
+
+10．各項目の内容は、間に余計な空行を入れず続けて記載してください。
+
+11．入力内容がない場合でも、選択された区分の定型文を使って支援経過を作成してください。
+
+12．入力されていない事実を推測して追加しないでください。
+
+13．本人・家族の意見が入力されていなければ、利用者・家族の考え方は空欄にしてください。
+
+14．完成した支援経過記録として、そのまま記録システムへ貼り付けられる形式にしてください。
+
+【出力形式】
+
+区分：
+${categoryOutput.trim()}
+
+内容：
+ここに定型文と入力内容を整理して記載
+
+関係機関・介護支援専門員の判断：
+ここにケアマネジャーとしての判断・対応を記載
+
+利用者・家族の考え方：
+本人：
+家族：`;
 
 
-copyText(
-text,
-csElement,
-"AI処理用データをコピーしました。利用するAIへ貼り付けてください。"
-);
+  copyText(
+    text,
+    csElement,
+    "✓ AI処理用データをコピーしました！"
+  );
 
 }
 
@@ -835,106 +1092,174 @@ csElement,
 ===================================================== */
 
 function copyText(
-text,
-element,
-successMessage
+  text,
+  element,
+  successMessage
 ){
 
-if(
-navigator.clipboard &&
-window.isSecureContext
-){
+  if(
+    navigator.clipboard &&
+    window.isSecureContext
+  ){
 
-navigator.clipboard.writeText(text)
-.then(function(){
+    navigator.clipboard
+    .writeText(text)
+    .then(function(){
 
-element.textContent =
-successMessage;
+      showCopySuccess(
+        element,
+        successMessage
+      );
 
-})
-.catch(function(){
+    })
+    .catch(function(){
 
-fallbackCopy(
-text,
-element,
-successMessage
-);
+      fallbackCopy(
+        text,
+        element,
+        successMessage
+      );
 
-});
+    });
 
-}else{
+  }else{
 
-fallbackCopy(
-text,
-element,
-successMessage
-);
+    fallbackCopy(
+      text,
+      element,
+      successMessage
+    );
 
-}
+  }
 
 }
 
 
 /* =====================================================
-   古いブラウザ用コピー
+   コピー成功表示
+===================================================== */
+
+function showCopySuccess(
+  element,
+  successMessage
+){
+
+  element.textContent =
+  successMessage;
+
+  element.classList.add(
+    "success-status"
+  );
+
+  copyButton.textContent =
+  "✓ コピーしました！";
+
+  copyButton.classList.add(
+    "success"
+  );
+
+  copyButton.classList.add(
+    "copy-flash"
+  );
+
+
+  setTimeout(function(){
+
+    copyButton.classList.remove(
+      "copy-flash"
+    );
+
+  },400);
+
+
+  setTimeout(function(){
+
+    copyButton.textContent =
+    "📋 AI処理用にコピー";
+
+    copyButton.classList.remove(
+      "success"
+    );
+
+  },2500);
+
+}
+
+
+/* =====================================================
+   古いブラウザ・環境用コピー
 ===================================================== */
 
 function fallbackCopy(
-text,
-element,
-successMessage
+  text,
+  element,
+  successMessage
 ){
 
-const temporary =
-document.createElement("textarea");
+  const temporary =
+  document.createElement(
+    "textarea"
+  );
 
-temporary.value =
-text;
+  temporary.value =
+  text;
 
-temporary.style.position =
-"fixed";
+  temporary.style.position =
+  "fixed";
 
-temporary.style.left =
-"-9999px";
+  temporary.style.left =
+  "-9999px";
 
-temporary.style.top =
-"-9999px";
+  temporary.style.top =
+  "0";
 
-document.body.appendChild(
-temporary
-);
+  document.body.appendChild(
+    temporary
+  );
 
-temporary.focus();
+  temporary.focus();
 
-temporary.select();
+  temporary.select();
 
-try{
+  try{
 
-const success =
-document.execCommand("copy");
+    const success =
+    document.execCommand(
+      "copy"
+    );
 
-if(success){
+    if(success){
 
-element.textContent =
-successMessage;
+      showCopySuccess(
+        element,
+        successMessage
+      );
 
-}else{
+    }else{
 
-element.textContent =
-"コピーできませんでした。手動でコピーしてください。";
+      element.textContent =
+      "コピーできませんでした。手動でコピーしてください。";
 
-}
+      element.classList.remove(
+        "success-status"
+      );
 
-}catch(error){
+    }
 
-element.textContent =
-"コピーできませんでした。手動でコピーしてください。";
+  }catch(error){
 
-}
+    element.textContent =
+    "コピーできませんでした。手動でコピーしてください。";
 
-document.body.removeChild(
-temporary
-);
+    element.classList.remove(
+      "success-status"
+    );
+
+  }
+
+  document.body.removeChild(
+    temporary
+  );
 
 }
 
