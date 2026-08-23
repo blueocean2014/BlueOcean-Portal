@@ -358,6 +358,38 @@ button:hover{
   margin-bottom:5px;
 }
 
+
+.bo-footer-brand{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin:10px auto 26px;
+  padding:16px 0 4px;
+  border-top:1px solid #dcebed;
+  max-width:720px;
+}
+.bo-footer-brand img{
+  width:58px;
+  height:58px;
+  object-fit:contain;
+  flex:none;
+}
+.bo-footer-brand-text{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  text-align:left;
+}
+.bo-footer-brand-title{
+  font-size:17px;
+  font-weight:bold;
+  letter-spacing:.3px;
+}
+.bo-footer-brand-subtitle{
+  font-size:12px;
+}
+
 </style>
 </head>
 
@@ -530,6 +562,27 @@ onclick="goHome()"
 
 
 
+
+
+<div style="text-align:center;margin:28px 0 10px;">
+  <button
+    type="button"
+    class="home-button bo-final-top-button"
+    onclick="scrollToTop()"
+  >トップに戻る</button>
+</div>
+
+
+<div class="bo-footer-brand">
+  <img
+    src="https://blueocean2014.github.io/BlueOcean-Portal/BlueOceanimage.png"
+    alt="BlueOcean ロゴ"
+  >
+  <div class="bo-footer-brand-text">
+    <div class="bo-footer-brand-title">BLUE OCEAN PROMPT SYSTEM</div>
+    <div class="bo-footer-brand-subtitle">Next Stage Care Innovation</div>
+  </div>
+</div>
 
 </main>
 
