@@ -1,10 +1,11 @@
+
 <!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>BlueOcean 音声入力支援経過</title>
+<title>支援経過作成支援アプリ（BlueOcean）</title>
 
 <style>
 
@@ -233,6 +234,122 @@ button:hover{
 
 }
 
+
+/* =====================================================
+   個人用 区分・定型文編集エリア
+===================================================== */
+#editArea{
+  margin-top:80px;
+  border-top:4px solid #dcebed;
+  padding-top:24px;
+}
+.edit-note{
+  font-size:13px;
+  line-height:1.7;
+  color:#52676d;
+  background:#f5fafb;
+  border:1px solid #dcebed;
+  border-radius:10px;
+  padding:11px;
+}
+.edit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.edit-card{border:1px solid #c9dde1;border-radius:10px;padding:12px;background:#fff}
+.edit-title{font-weight:bold;color:#075e6b;margin-bottom:7px}
+.edit-preview{white-space:pre-wrap;font-size:13px;line-height:1.55;background:#f9fcfc;border:1px solid #e3eef0;border-radius:8px;padding:8px;max-height:100px;overflow:auto}
+.edit-textarea{width:100%;min-height:150px;box-sizing:border-box;margin-top:8px}
+.edit-btn{background:#607d83;padding:8px 12px;font-size:13px}
+.edit-save{background:#075e6b}
+.edit-delete{background:#8b4c4c}
+.edit-add{background:#075e6b;width:100%;margin-top:8px}
+.edit-add-area{margin-top:18px;padding-top:16px;border-top:1px solid #dcebed}
+.edit-add-area input,.edit-add-area textarea{margin-top:7px}
+@media(max-width:600px){.edit-grid{grid-template-columns:1fr}}
+
+
+/* ===== BlueOcean 編集エリア ===== */
+#boEditArea{
+  margin-top:80px;
+  padding-top:24px;
+  border-top:3px solid #dcebed;
+}
+.bo-edit-note{
+  font-size:13px;
+  line-height:1.6;
+  color:#52666b;
+  background:#f5fafb;
+  border:1px solid #dcebed;
+  border-radius:10px;
+  padding:10px 12px;
+  margin-bottom:14px;
+}
+.bo-edit-item{
+  border:1px solid #cbdfe3;
+  border-radius:10px;
+  padding:12px;
+  margin:9px 0;
+  background:#fff;
+}
+.bo-edit-row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.bo-edit-name{
+  flex:1 1 230px;
+  min-width:180px;
+  box-sizing:border-box;
+  padding:9px;
+  border:1px solid #cbdfe3;
+  border-radius:8px;
+  font-size:14px;
+}
+.bo-edit-template{
+  width:100%;
+  min-height:110px;
+  box-sizing:border-box;
+  margin-top:8px;
+  padding:9px;
+  border:1px solid #cbdfe3;
+  border-radius:8px;
+  font-size:14px;
+  line-height:1.6;
+  resize:vertical;
+}
+.bo-edit-btn{
+  border:0;
+  border-radius:8px;
+  padding:8px 12px;
+  cursor:pointer;
+  background:#607d83;
+  color:#fff;
+}
+.bo-edit-btn.save{background:#075e6b;}
+.bo-edit-btn.delete{background:#8a5a42;}
+.bo-edit-btn.restore{background:#527b62;}
+.bo-edit-add{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid #dcebed;
+}
+
+
+.edit-label{
+  margin:8px 0 4px;
+  font-size:12px;
+  font-weight:bold;
+  color:#075e6b;
+}
+.edit-name-input{
+  width:100%;
+  box-sizing:border-box;
+  padding:9px;
+  border:1px solid #cbdfe3;
+  border-radius:8px;
+  font-size:14px;
+  margin-bottom:5px;
+}
+
 </style>
 </head>
 
@@ -244,7 +361,7 @@ button:hover{
 
 <header>
 
-<h1>BlueOcean　音声入力支援経過</h1>
+<h1>支援経過作成支援アプリ（BlueOcean）</h1>
 
 <div>
 区分を選択 → 音声・手入力 → AI処理用にコピー
@@ -374,6 +491,31 @@ onclick="goHome()"
 </section>
 
 
+
+<!-- =====================================================
+     個人用 区分・定型文編集エリア
+     ※通常利用画面とは十分な間隔を空けて下部に配置
+===================================================== -->
+<section class="card" id="editArea">
+<h2>⚙ 定型文・区分を自分用に編集</h2>
+<div class="edit-note">
+ここでは、この端末で使用する区分と定型文を自由に編集できます。<br>
+追加・編集・削除した内容は、この端末のブラウザに保存されます。GitHubの元データは変更されません。
+</div>
+
+<div id="editGrid" class="edit-grid"></div>
+
+<div class="edit-add-area">
+<h3 style="margin:0;color:#075e6b;">区分を追加</h3>
+<input id="addCategoryName" type="text" placeholder="区分名（例：退院調整）">
+<textarea id="addCategoryTemplate" placeholder="定型文"></textarea>
+<button type="button" class="edit-add" onclick="addCustomCategory()">＋ 区分と定型文を追加</button>
+</div>
+</section>
+
+
+
+
 </main>
 
 
@@ -477,40 +619,80 @@ const T = {
 /* =====================================================
    区分表示
 ===================================================== */
+function getCustomCategories(){
+  try{return JSON.parse(localStorage.getItem("bo_custom_categories")||"{}")||{};}catch(e){return {};}
+}
+function saveCustomCategories(d){localStorage.setItem("bo_custom_categories",JSON.stringify(d));}
+function getDeletedCategories(){
+  try{return JSON.parse(localStorage.getItem("bo_deleted_categories")||"[]")||[];}catch(e){return [];}
+}
+function saveDeletedCategories(d){localStorage.setItem("bo_deleted_categories",JSON.stringify(d));}
+function getPersonalTemplates(){
+  try{return JSON.parse(localStorage.getItem("bo_personal_templates")||"{}")||{};}catch(e){return {};}
+}
+function savePersonalTemplates(d){localStorage.setItem("bo_personal_templates",JSON.stringify(d));}
+const BO_RENAME_KEY = "bo_category_renames";
 
-Object.keys(T).forEach(function(key){
+function boGetRenames(){
+  try{
+    const d=JSON.parse(localStorage.getItem(BO_RENAME_KEY)||"{}");
+    return d&&typeof d==="object"?d:{};
+  }catch(e){return {};}
+}
+function boSaveRenames(d){
+  localStorage.setItem(BO_RENAME_KEY,JSON.stringify(d));
+}
+function boOriginalKey(displayName){
+  const r=boGetRenames();
+  for(const original of Object.keys(r)){
+    if(r[original]===displayName)return original;
+  }
+  return displayName;
+}
+function boDisplayName(original){
+  const r=boGetRenames();
+  return r[original]||original;
+}
 
-const label =
-document.createElement("label");
+function allCategories(){
+  const custom=getCustomCategories();
+  const deleted=getDeletedCategories();
 
-const checkbox =
-document.createElement("input");
+  const list=Object.keys(T)
+    .filter(k=>!deleted.includes(k))
+    .map(k=>boDisplayName(k));
 
-checkbox.type =
-"checkbox";
+  Object.keys(custom).forEach(k=>{
+    if(!list.includes(k))list.push(k);
+  });
 
-checkbox.value =
-key;
+  return list;
+}
+function templateFor(key){
+  const custom=getCustomCategories();
+  const personal=getPersonalTemplates();
+  const original=boOriginalKey(key);
 
-checkbox.addEventListener(
-"change",
-update
-);
-
-label.appendChild(
-checkbox
-);
-
-label.appendChild(
-document.createTextNode(" " + key)
-);
-
-catsElement.appendChild(
-label
-);
-
-});
-
+  if(Object.prototype.hasOwnProperty.call(custom,key)){
+    return custom[key].template||"";
+  }
+  if(Object.prototype.hasOwnProperty.call(personal,original)){
+    return personal[original];
+  }
+  if(Object.prototype.hasOwnProperty.call(personal,key)){
+    return personal[key];
+  }
+  return T[original]||T[key]||"";
+}
+function renderCategories(){
+  catsElement.innerHTML="";
+  allCategories().forEach(function(key){
+    const label=document.createElement("label");
+    const checkbox=document.createElement("input");
+    checkbox.type="checkbox"; checkbox.value=key; checkbox.addEventListener("change",update);
+    label.appendChild(checkbox); label.appendChild(document.createTextNode(" "+key)); catsElement.appendChild(label);
+  });
+}
 
 /* =====================================================
    選択区分取得
@@ -735,7 +917,7 @@ return x !== "自宅訪問";
 .map(function(x){
 
 let text =
-T[x] || "";
+templateFor(x);
 
 return text;
 
@@ -989,6 +1171,242 @@ temporary
 }
 
 
+
+/* =====================================================
+   個人用 区分・定型文編集
+===================================================== */
+function renderEditArea(){
+  const root=document.getElementById("editGrid");
+  if(!root)return;
+
+  root.innerHTML="";
+
+  const custom=getCustomCategories();
+  const personal=getPersonalTemplates();
+
+  allCategories().forEach(function(displayName){
+
+    const original=boOriginalKey(displayName);
+    const isCustom=Object.prototype.hasOwnProperty.call(custom,displayName);
+
+    const card=document.createElement("div");
+    card.className="edit-card";
+
+    const title=document.createElement("div");
+    title.className="edit-title";
+    title.textContent=displayName;
+
+    const preview=document.createElement("div");
+    preview.className="edit-preview";
+    preview.textContent=templateFor(displayName);
+
+    const edit=document.createElement("button");
+    edit.type="button";
+    edit.className="edit-btn";
+    edit.textContent="編集";
+
+    edit.onclick=function(){
+
+      card.innerHTML="";
+
+      const nameLabel=document.createElement("div");
+      nameLabel.className="edit-label";
+      nameLabel.textContent="区分名";
+
+      const nameInput=document.createElement("input");
+      nameInput.className="edit-name-input";
+      nameInput.value=displayName;
+
+      const templateLabel=document.createElement("div");
+      templateLabel.className="edit-label";
+      templateLabel.textContent="定型文";
+
+      const ta=document.createElement("textarea");
+      ta.className="edit-textarea";
+      ta.value=templateFor(displayName);
+
+      const save=document.createElement("button");
+      save.type="button";
+      save.className="edit-btn edit-save";
+      save.textContent="保存";
+
+      const cancel=document.createElement("button");
+      cancel.type="button";
+      cancel.className="edit-btn";
+      cancel.textContent="キャンセル";
+
+      save.onclick=function(){
+
+        const newName=nameInput.value.trim();
+        const newTemplate=ta.value;
+
+        if(!newName){
+          alert("区分名を入力してください。");
+          return;
+        }
+
+        const names=allCategories();
+        if(newName!==displayName && names.includes(newName)){
+          alert("その区分名はすでに存在します。");
+          return;
+        }
+
+        const c=getCustomCategories();
+        const p=getPersonalTemplates();
+        const r=boGetRenames();
+
+        if(isCustom){
+
+          const data=c[displayName]||{};
+          delete c[displayName];
+          c[newName]={
+            template:newTemplate,
+            createdAt:data.createdAt||new Date().toISOString()
+          };
+          saveCustomCategories(c);
+
+        }else{
+
+          /* 標準区分は元データを変更せず、この端末だけ名前変更 */
+          if(newName!==displayName){
+            r[original]=newName;
+            boSaveRenames(r);
+          }else{
+            delete r[original];
+            boSaveRenames(r);
+          }
+
+          if(newTemplate===(T[original]||"")){
+            delete p[original];
+          }else{
+            p[original]=newTemplate;
+          }
+          savePersonalTemplates(p);
+        }
+
+        renderEditArea();
+        renderCategories();
+        update();
+      };
+
+      cancel.onclick=renderEditArea;
+
+      card.appendChild(nameLabel);
+      card.appendChild(nameInput);
+      card.appendChild(templateLabel);
+      card.appendChild(ta);
+      card.appendChild(save);
+      card.appendChild(cancel);
+    };
+
+    const del=document.createElement("button");
+    del.type="button";
+    del.className="edit-btn edit-delete";
+    del.textContent="この区分を削除";
+    del.onclick=function(){
+
+      if(!confirm("「"+displayName+"」を削除しますか？"))return;
+
+      const c=getCustomCategories();
+      const d=getDeletedCategories();
+      const p=getPersonalTemplates();
+      const r=boGetRenames();
+
+      if(Object.prototype.hasOwnProperty.call(c,displayName)){
+        delete c[displayName];
+        saveCustomCategories(c);
+      }else if(Object.prototype.hasOwnProperty.call(T,original)){
+        if(!d.includes(original))d.push(original);
+        saveDeletedCategories(d);
+        delete p[original];
+        savePersonalTemplates(p);
+        delete r[original];
+        boSaveRenames(r);
+      }
+
+      renderEditArea();
+      renderCategories();
+      update();
+    };
+
+    card.appendChild(title);
+    card.appendChild(preview);
+    card.appendChild(edit);
+    card.appendChild(del);
+
+    root.appendChild(card);
+  });
+
+  /* 削除した標準区分だけ、同じ編集エリア内で復元 */
+  const deleted=getDeletedCategories();
+
+  if(deleted.length){
+    const restoreTitle=document.createElement("h3");
+    restoreTitle.textContent="削除した標準区分";
+    restoreTitle.style.marginTop="18px";
+    root.appendChild(restoreTitle);
+
+    deleted.forEach(function(original){
+      const item=document.createElement("div");
+      item.className="edit-card";
+
+      const name=document.createElement("span");
+      name.className="edit-title";
+      name.textContent=boDisplayName(original);
+
+      const restore=document.createElement("button");
+      restore.type="button";
+      restore.className="edit-btn edit-save";
+      restore.textContent="復元";
+
+      restore.onclick=function(){
+        const d=getDeletedCategories().filter(x=>x!==original);
+        saveDeletedCategories(d);
+        renderEditArea();
+        renderCategories();
+        update();
+      };
+
+      item.appendChild(name);
+      item.appendChild(restore);
+      root.appendChild(item);
+    });
+  }
+}
+
+function addCustomCategory(){
+  const n=document.getElementById("addCategoryName");
+  const t=document.getElementById("addCategoryTemplate");
+  const name=n.value.trim();
+  const text=t.value.trim();
+
+  if(!name){
+    alert("区分名を入力してください。");
+    return;
+  }
+  if(!text){
+    alert("定型文を入力してください。");
+    return;
+  }
+  if(allCategories().includes(name)){
+    alert("同じ区分名がすでにあります。");
+    return;
+  }
+
+  const custom=getCustomCategories();
+  custom[name]={template:text};
+  saveCustomCategories(custom);
+
+  n.value="";
+  t.value="";
+
+  renderEditArea();
+  renderCategories();
+  update();
+
+  alert("「"+name+"」を追加しました。");
+}
+
 /* =====================================================
    BlueOceanトップ画面へ戻る
 ===================================================== */
@@ -1005,7 +1423,11 @@ window.location.href =
    初期表示
 ===================================================== */
 
+renderCategories();
+renderEditArea();
 update();
+
+
 
 </script>
 
