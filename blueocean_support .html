@@ -1,0 +1,1422 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>BlueOcean_支援経過作成支援アプリ</title>
+
+<style>
+
+/* =====================================================
+   全体
+===================================================== */
+
+body{
+  margin:0;
+  background:#eef5f7;
+  color:#203238;
+  font-family:-apple-system,BlinkMacSystemFont,"Yu Gothic","Meiryo",sans-serif;
+}
+
+/* =====================================================
+   ヘッダー
+===================================================== */
+
+header{
+  background:linear-gradient(135deg,#006b7a,#008fa3);
+  color:white;
+  padding:18px 16px;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+header h1{
+  font-size:21px;
+  margin:0 0 6px 0;
+  letter-spacing:.3px;
+}
+
+header div{
+  font-size:13px;
+  opacity:.95;
+}
+
+/* =====================================================
+   メイン
+===================================================== */
+
+main{
+  max-width:900px;
+  margin:auto;
+  padding:12px;
+}
+
+/* =====================================================
+   カード
+===================================================== */
+
+.card{
+  background:white;
+  padding:16px;
+  margin:12px 0;
+  border-radius:15px;
+  box-shadow:0 3px 10px rgba(0,80,100,.10);
+  border:1px solid #dcebed;
+}
+
+h2{
+  font-size:18px;
+  margin:0 0 13px 0;
+  color:#075e6b;
+}
+
+/* =====================================================
+   区分
+===================================================== */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+
+label{
+  border:1px solid #c9dde1;
+  border-radius:10px;
+  padding:11px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  background:#fbfefe;
+  cursor:pointer;
+  transition:.15s;
+}
+
+label:hover{
+  background:#edf9fb;
+  border-color:#70b9c3;
+}
+
+input[type=checkbox]{
+  width:20px;
+  height:20px;
+  accent-color:#008fa3;
+}
+
+/* =====================================================
+   テキストエリア
+===================================================== */
+
+textarea{
+  width:100%;
+  box-sizing:border-box;
+  border:1px solid #c9dde1;
+  border-radius:10px;
+  padding:12px;
+  font-size:16px;
+  line-height:1.7;
+  min-height:220px;
+  resize:vertical;
+  outline:none;
+}
+
+textarea:focus{
+  border-color:#008fa3;
+  box-shadow:0 0 0 2px rgba(0,143,163,.12);
+}
+
+/* =====================================================
+   ボタン
+===================================================== */
+
+button{
+  border:0;
+  border-radius:10px;
+  color:white;
+  padding:12px 16px;
+  font-size:15px;
+  margin:4px 2px;
+  cursor:pointer;
+  transition:.15s;
+}
+
+button:hover{
+  opacity:.9;
+  transform:translateY(-1px);
+}
+
+.gray{
+  background:#607d83;
+}
+
+.copy-button{
+  background:linear-gradient(135deg,#007c8c,#009caf);
+  font-weight:bold;
+  font-size:16px;
+  padding:14px 18px;
+}
+
+.copy-button.copied{
+  background:#16803c;
+}
+
+.home-button{
+  background:#075e6b;
+  font-weight:bold;
+  font-size:16px;
+  width:100%;
+  margin-top:10px;
+  padding:14px;
+}
+
+/* =====================================================
+   状態表示
+===================================================== */
+
+.status{
+  background:#eef8fa;
+  border:1px solid #d4eaed;
+  color:#24545d;
+  padding:10px;
+  border-radius:9px;
+  font-size:13px;
+  margin-top:8px;
+  white-space:pre-wrap;
+}
+
+.status.success{
+  background:#eaf8ef;
+  border-color:#b9dfc5;
+  color:#17652e;
+  font-weight:bold;
+}
+
+/* =====================================================
+   説明文
+===================================================== */
+
+.description{
+  font-size:14px;
+  line-height:1.7;
+  color:#44575c;
+}
+
+/* =====================================================
+   トップ画面へ戻るエリア
+===================================================== */
+
+#homeArea{
+  display:block;
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px solid #dcebed;
+}
+
+/* =====================================================
+   スマートフォン
+===================================================== */
+
+@media(max-width:600px){
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  button{
+    width:100%;
+    margin:4px 0;
+  }
+
+  header h1{
+    font-size:19px;
+  }
+
+}
+
+
+/* =====================================================
+   個人用 区分・定型文編集エリア
+===================================================== */
+#editArea{
+  margin-top:80px;
+  border-top:4px solid #dcebed;
+  padding-top:24px;
+}
+.edit-note{
+  font-size:13px;
+  line-height:1.7;
+  color:#52676d;
+  background:#f5fafb;
+  border:1px solid #dcebed;
+  border-radius:10px;
+  padding:11px;
+}
+.edit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.edit-card{border:1px solid #c9dde1;border-radius:10px;padding:12px;background:#fff}
+.edit-title{font-weight:bold;color:#075e6b;margin-bottom:7px}
+.edit-preview{white-space:pre-wrap;font-size:13px;line-height:1.55;background:#f9fcfc;border:1px solid #e3eef0;border-radius:8px;padding:8px;max-height:100px;overflow:auto}
+.edit-textarea{width:100%;min-height:150px;box-sizing:border-box;margin-top:8px}
+.edit-btn{background:#607d83;padding:8px 12px;font-size:13px}
+.edit-save{background:#075e6b}
+.edit-delete{background:#8b4c4c}
+.edit-add{background:#075e6b;width:100%;margin-top:8px}
+.edit-add-area{margin-top:18px;padding-top:16px;border-top:1px solid #dcebed}
+.edit-add-area input,.edit-add-area textarea{margin-top:7px}
+@media(max-width:600px){.edit-grid{grid-template-columns:1fr}}
+
+
+/* ===== BlueOcean 編集エリア ===== */
+#boEditArea{
+  margin-top:80px;
+  padding-top:24px;
+  border-top:3px solid #dcebed;
+}
+.bo-edit-note{
+  font-size:13px;
+  line-height:1.6;
+  color:#52666b;
+  background:#f5fafb;
+  border:1px solid #dcebed;
+  border-radius:10px;
+  padding:10px 12px;
+  margin-bottom:14px;
+}
+.bo-edit-item{
+  border:1px solid #cbdfe3;
+  border-radius:10px;
+  padding:12px;
+  margin:9px 0;
+  background:#fff;
+}
+.bo-edit-row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.bo-edit-name{
+  flex:1 1 230px;
+  min-width:180px;
+  box-sizing:border-box;
+  padding:9px;
+  border:1px solid #cbdfe3;
+  border-radius:8px;
+  font-size:14px;
+}
+.bo-edit-template{
+  width:100%;
+  min-height:110px;
+  box-sizing:border-box;
+  margin-top:8px;
+  padding:9px;
+  border:1px solid #cbdfe3;
+  border-radius:8px;
+  font-size:14px;
+  line-height:1.6;
+  resize:vertical;
+}
+.bo-edit-btn{
+  border:0;
+  border-radius:8px;
+  padding:8px 12px;
+  cursor:pointer;
+  background:#607d83;
+  color:#fff;
+}
+.bo-edit-btn.save{background:#075e6b;}
+.bo-edit-btn.delete{background:#8a5a42;}
+.bo-edit-btn.restore{background:#527b62;}
+.bo-edit-add{
+  margin-top:18px;
+  padding-top:16px;
+  border-top:1px solid #dcebed;
+}
+
+
+.edit-label{
+  margin:8px 0 4px;
+  font-size:12px;
+  font-weight:bold;
+  color:#075e6b;
+}
+.edit-name-input{
+  width:100%;
+  box-sizing:border-box;
+  padding:9px;
+  border:1px solid #cbdfe3;
+  border-radius:8px;
+  font-size:14px;
+  margin-bottom:5px;
+}
+
+</style>
+
+<script>
+function boGoTop(){
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+</script>
+
+<style>
+.bo-top-button{
+  border:0;
+  border-radius:8px;
+  padding:10px 24px;
+  cursor:pointer;
+  background:#075e6b;
+  color:#fff;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     ヘッダー
+===================================================== -->
+
+<header>
+
+<h1>BlueOcean_支援経過作成支援アプリ</h1>
+
+<div>
+区分を選択 → 音声・手入力 → AI処理用にコピー
+</div>
+
+</header>
+
+
+<main>
+
+
+<!-- =====================================================
+     ① 区分を選択
+===================================================== -->
+
+<section class="card">
+
+<h2>① 区分を選択</h2>
+
+<div id="cats" class="grid"></div>
+
+<button class="gray" onclick="allOff()">
+すべて解除
+</button>
+
+<div id="sel" class="status">
+未選択
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     ② 音声・手入力
+===================================================== -->
+
+<section class="card">
+
+<h2>② 音声・手入力</h2>
+
+<p class="description">
+
+訪問時の状況、本人・家族の発言、生活状況、
+サービス利用状況、連絡内容などを入力してください。
+
+<br>
+
+<strong>
+Windowsの場合は「Windowsキー＋H」で音声入力できます。
+</strong>
+
+</p>
+
+<textarea
+id="memo"
+placeholder="ここに話した内容や支援経過に残したい内容を入力してください。"
+></textarea>
+
+</section>
+
+
+<!-- =====================================================
+     ③ AI処理用にコピー
+===================================================== -->
+
+<section class="card">
+
+<h2>③ AI処理用にコピー</h2>
+
+<p class="description">
+
+「AI処理用にコピー」を押すと、選択した区分・定型文・入力内容・
+支援経過作成ルールをまとめてコピーします。
+
+<br>
+
+コピーした内容を、ChatGPT・Gemini・Claudeなど
+利用するAIへ貼り付けてください。
+
+</p>
+
+<button
+id="copyButton"
+class="copy-button"
+onclick="copyAI()"
+>
+📋 AI処理用にコピー
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     個人用 区分・定型文編集エリア
+     ※通常利用画面とは十分な間隔を空けて下部に配置
+===================================================== -->
+
+<div style="text-align:center;margin:18px 0;">
+  <button type="button" class="bo-top-button" onclick="boGoTop()">トップに戻る</button>
+</div>
+<section class="card" id="editArea">
+<h2>⚙ 定型文・区分を自分用に編集</h2>
+<div class="edit-note">
+ここでは、この端末で使用する区分と定型文を自由に編集できます。<br>
+追加・編集・削除した内容は、この端末のブラウザに保存されます。GitHubの元データは変更されません。
+</div>
+
+<div id="editGrid" class="edit-grid"></div>
+
+<div class="edit-add-area">
+<h3 style="margin:0;color:#075e6b;">区分を追加</h3>
+<input id="addCategoryName" type="text" placeholder="区分名（例：退院調整）">
+<textarea id="addCategoryTemplate" placeholder="定型文"></textarea>
+<button type="button" class="edit-add" onclick="addCustomCategory()">＋ 区分と定型文を追加</button>
+</div>
+</section>
+<div style="text-align:center;margin:18px 0;">
+  <button type="button" class="bo-top-button" onclick="boGoTop()">トップに戻る</button>
+</div>
+
+
+
+
+
+</main>
+
+
+<script>
+
+/* =====================================================
+   HTML要素
+===================================================== */
+
+const catsElement =
+document.getElementById("cats");
+
+const selElement =
+document.getElementById("sel");
+
+const memoElement =
+document.getElementById("memo");
+
+const csElement =
+document.getElementById("cs");
+
+const copyButton =
+document.getElementById("copyButton");
+
+const homeArea =
+document.getElementById("homeArea");
+
+const homeStatus =
+document.getElementById("homeStatus");
+
+
+/* =====================================================
+   定型文
+===================================================== */
+
+const T = {
+
+"自宅訪問":
+"自宅訪問 本人 家族",
+
+"利用票交付":
+"【利用票交付】\n次月の予定について説明し同意頂き交付",
+
+"モニタリング":
+"【モニタリング】\n利用者の状態及びサービスの実施状況について確認しモニタリング実施、",
+
+"アセスメント":
+"【アセスメント実施】\nケアプラン原案作成のためのアセスメントを実施する。※アセスメントシート参照",
+
+"サービス担当者会議":
+"【サービス担当者会議】更新・区分変更・サービス変更\nサービス担当者会議を実施し、利用者の状況や生活課題等について共有した。ケアプラン原案について各サービス事業所より意見を聴取し調整。利用者・家族へ内容を説明し、同意・署名をいただきケアプランを交付した。\n各サービス事業所にもケアプランを交付し、個別援助計画書の作成・提出を依頼し、了承を得た。\n主治医へもケアプランを送付し医療連携を継続。\nインフォーマルサービスの活用について検討したが、現時点では必要性は低いと判断した。また、福祉用具の必要性についても合わせて情報共有を行い、今後の必要性や導入に向けて検討を継続することとした。",
+
+"長期目標更新":
+"【長期目標更新 】\nケアプラン長期目標の満了に伴い利用者及び家族、各サービス提供事業所に現在の状況を確認。身体状況や現在の課題等に変更がなく、目標内容も変更の必要性がないため、現状や今後のケア方針を踏まえ、長期目標を延長することが適切であると判断した。\n利用者・家族へ説明し同意署名を頂きケアプラン交付。\nサービス事業所に照会、情報提供（ケアプラン交付）、個別援助計画書の作成・交付依頼。主治医に情報提供（ケアプラン送付）し医療連携を継続。",
+
+"短期目標更新":
+"【短期目標更新】\n短期目標更新時期にてプラン継続についてご本人、ご家族、各サービス事業所に確認。状態も安定している為短期目標については長期目標期間内で更新することとする。各サービス事業所に目標の更新について伝達。軽微変更",
+
+"連絡調整":
+"連絡調整：入力内容を簡潔に整理する。",
+
+"新規依頼・契約":
+"新規依頼情報提供実施。",
+
+"初回面談":
+"【初回面談】\nインテーク面接とアセスメントを行い、希望・身体状況・介護力・生活環境を確認。",
+
+"入院時情報連携加算（Ⅰ）":
+"【入院時情報連携加算（Ⅰ）※電話・ＦＡＸによる情報提供】\n病院地域連携室〇〇氏に電話・ＦＡＸし、入院時情報提供を行う。提供した情報は別紙参照。",
+
+"時間外入院時情報提供（Ⅰ）":
+"【入院時情報連携加算（Ⅰ）※電話・ＦＡＸによる情報提供】\n入院・入院連絡が営業時間外であったため、翌営業日の情報提供。\n病院地域連携室〇〇氏に電話・ＦＡＸし、入院時情報提供を行う。提供した情報は別紙参照。",
+
+"入院時情報連携加算（Ⅱ）":
+"【入院時情報連携加算（Ⅱ）※電話・ＦＡＸによる情報提供】\n病院地域連携室〇〇氏に電話・ＦＡＸし、入院時情報提供を行う。提供した情報は別紙参照。",
+
+"退院・退所加算（面談・サマリーあり）":
+"退院・退所加算（面談・サマリーあり）\n〇〇病院の地域連携室・看護師・医師〇〇氏と面談し、退院後の在宅生活に必要な情報提供を受ける。※具体的内容はサマリー・退院・退所情報記録書参照。",
+
+"退院・退所加算（面談・サマリーなし）":
+"退院・退所加算（面談・サマリーなし）\n〇〇病院の地域連携室・看護師・医師××氏と面談し、退院後の在宅生活に必要な情報提供を受ける。",
+
+"退院・退所加算（会議開催・カンファなし）":
+"退院・退所加算（会議開催・カンファなし）\n〇〇病院にて退院前会議開催、退院後の在宅生活に必要な情報提供を受ける。※具体的内容は病院からの情報提供書・退所情報記録書・要点参照。",
+
+"退院・退所加算（カンファレンス開催）":
+"退院・退所加算（カンファレンス開催）\n〇〇病院にて退院前カンファレンス開催、退院後の在宅生活に必要な情報提供を受ける。※具体的内容は病院からの情報提供書・退所情報記録書・要点参照。",
+
+"カンファレンス":
+"【カンファレンス開催】\n病状・ADL・リハビリ状況・退院後の生活課題等を共有し、在宅生活に向けた支援方針と今後の方向性を確認。",
+
+"サービス利用割合の説明":
+"【サービス利用割合の説明】\n居宅介護支援のサービス利用割合について説明。",
+
+"契約":
+"【契約について】\n契約書・重要事項説明書を説明し、同意署名取得後交付。居宅サービス計画作成依頼届に署名を得て、介護保険証を預かった。"
+
+};
+
+
+/* =====================================================
+   区分表示
+===================================================== */
+function getCustomCategories(){
+  try{return JSON.parse(localStorage.getItem("bo_custom_categories")||"{}")||{};}catch(e){return {};}
+}
+function saveCustomCategories(d){localStorage.setItem("bo_custom_categories",JSON.stringify(d));}
+function getDeletedCategories(){
+  try{return JSON.parse(localStorage.getItem("bo_deleted_categories")||"[]")||[];}catch(e){return [];}
+}
+function saveDeletedCategories(d){localStorage.setItem("bo_deleted_categories",JSON.stringify(d));}
+function getPersonalTemplates(){
+  try{return JSON.parse(localStorage.getItem("bo_personal_templates")||"{}")||{};}catch(e){return {};}
+}
+function savePersonalTemplates(d){localStorage.setItem("bo_personal_templates",JSON.stringify(d));}
+const BO_RENAME_KEY = "bo_category_renames";
+
+function boGetRenames(){
+  try{
+    const d=JSON.parse(localStorage.getItem(BO_RENAME_KEY)||"{}");
+    return d&&typeof d==="object"?d:{};
+  }catch(e){return {};}
+}
+function boSaveRenames(d){
+  localStorage.setItem(BO_RENAME_KEY,JSON.stringify(d));
+}
+function boOriginalKey(displayName){
+  const r=boGetRenames();
+  for(const original of Object.keys(r)){
+    if(r[original]===displayName)return original;
+  }
+  return displayName;
+}
+function boDisplayName(original){
+  const r=boGetRenames();
+  return r[original]||original;
+}
+
+function allCategories(){
+  const custom=getCustomCategories();
+  const deleted=getDeletedCategories();
+
+  const list=Object.keys(T)
+    .filter(k=>!deleted.includes(k))
+    .map(k=>boDisplayName(k));
+
+  Object.keys(custom).forEach(k=>{
+    if(!list.includes(k))list.push(k);
+  });
+
+  return list;
+}
+function templateFor(key){
+  const custom=getCustomCategories();
+  const personal=getPersonalTemplates();
+  const original=boOriginalKey(key);
+
+  if(Object.prototype.hasOwnProperty.call(custom,key)){
+    return custom[key].template||"";
+  }
+  if(Object.prototype.hasOwnProperty.call(personal,original)){
+    return personal[original];
+  }
+  if(Object.prototype.hasOwnProperty.call(personal,key)){
+    return personal[key];
+  }
+  return T[original]||T[key]||"";
+}
+function renderCategories(){
+  catsElement.innerHTML="";
+  allCategories().forEach(function(key){
+    const label=document.createElement("label");
+    const checkbox=document.createElement("input");
+    checkbox.type="checkbox"; checkbox.value=key; checkbox.addEventListener("change",update);
+    label.appendChild(checkbox); label.appendChild(document.createTextNode(" "+key)); catsElement.appendChild(label);
+  });
+}
+
+/* =====================================================
+   選択区分取得
+===================================================== */
+
+function selected(){
+
+return Array.from(
+catsElement.querySelectorAll(
+'input[type="checkbox"]:checked'
+)
+).map(function(x){
+
+return x.value;
+
+});
+
+}
+
+
+/* =====================================================
+   選択状態表示
+===================================================== */
+
+function update(){
+
+const a =
+selected();
+
+if(a.length){
+
+selElement.textContent =
+"選択中：" + a.join("、");
+
+}else{
+
+selElement.textContent =
+"未選択";
+
+}
+
+}
+
+
+/* =====================================================
+   すべて解除
+===================================================== */
+
+function allOff(){
+
+catsElement
+.querySelectorAll(
+'input[type="checkbox"]'
+)
+.forEach(function(x){
+
+x.checked =
+false;
+
+});
+
+update();
+
+}
+
+
+/* =====================================================
+   AI処理ルール
+===================================================== */
+
+const RULE = `【①区分ルール】
+
+入力語句と同一語句を区分に記載する。
+
+【区分出力指定】
+
+各区分の行頭には「・」を付けない。
+
+自宅訪問を選択した場合：
+自宅訪問
+本人
+家族
+
+その他の区分を選択した場合：
+選択された語句をそのまま記載する。
+
+【②内容ルール】
+
+定型文があるものはそのまま挿入する。
+
+連絡調整は自由記載とする。
+
+内容の文章は、介護支援専門員の支援経過記録として自然で読みやすい文章に整える。
+
+報告書のような硬い表現にはしない。
+
+訪問時の状況、会話内容、生活状況を事実ベースで記載する。
+
+感情や印象を補足する表現は記載しない。
+
+本人や家族の発言は入力された内容をもとに自然にまとめる。
+
+【内容の重要ルール】
+
+内容の中に「区分：」という文字は絶対に入れない。
+
+自宅訪問という文字も内容には記載しない。
+
+各項目を選択した場合は、その項目に対応する定型文を内容へ反映する。
+
+定型文は項目名を【】で囲んで表示し、その下に定型文を記載する。
+
+各項目の間に空行を入れず、続けて記載する。
+
+短期目標更新を選択した場合は、必ず以下を内容に記載する。
+
+【短期目標更新】
+短期目標更新時期にてプラン継続についてご本人、ご家族、各サービス事業所に確認。状態も安定している為短期目標については長期目標期間内で更新することとする。各サービス事業所に目標の更新について伝達。軽微変更
+
+【③関係機関・介護支援専門員の判断】
+
+入力された情報をもとに、ケアマネジャーとして行ったこと・判断を記載する。
+
+「〇〇した。〇〇する。」のような記載にする。
+
+「〇〇を確認した」という表現を多用しない。
+
+内容と重複する事項は記載しない。
+
+短期目標更新については、定型文を内容に記載したうえで、必要に応じてケアマネジャーとしての判断をこの欄にも記載する。
+
+ただし内容と同じ文章をそのまま繰り返さない。
+
+【④利用者・家族の考え方】
+
+利用者の意見は
+本人：
+の続きに記載する。
+
+家族の意見は
+家族：
+の続きに記載する。
+
+「〜と話す」
+「〜とのこと」
+「〜との話あり」
+「〜と言われる」
+「〜との様子」
+などの報告調・記録調の表現は禁止する。
+
+本人・家族がその場で話した自然な言葉として記載する。
+
+意見がない場合は空欄でよい。
+
+本人・家族からの相談内容や行った事実は内容に記載する。
+
+介護支援専門員やサービス事業所等からの相談や判断は「関係機関・介護支援専門員の判断」に記載する。
+
+【出力形式】
+
+区分：
+自宅訪問を選択した場合は以下のように記載する。
+
+自宅訪問
+本人
+家族
+
+その他の区分は選択された語句をそのまま記載する。
+
+内容：
+各選択項目の定型文を順番に記載する。
+項目名は【】で囲む。
+内容の中に「区分：」を入れない。
+自宅訪問は内容に記載しない。
+各項目の間に空行を入れない。
+
+関係機関・介護支援専門員の判断：
+
+利用者・家族の考え方：
+本人：
+家族：`;
+
+
+/* =====================================================
+   AI処理用コピー
+===================================================== */
+
+function copyAI(){
+
+const a =
+selected();
+
+const m =
+memoElement.value.trim();
+
+/*
+   区分だけでも支援経過を作成できるようにする
+*/
+
+if(!a.length){
+
+csElement.textContent =
+"区分を選択してください。";
+
+return;
+
+}
+
+
+/*
+   自宅訪問は内容に入れない
+   その他の定型文を作成
+*/
+
+const templates =
+a
+.filter(function(x){
+
+return x !== "自宅訪問";
+
+})
+.map(function(x){
+
+let text =
+templateFor(x);
+
+return text;
+
+})
+.join("\n");
+
+
+/*
+   入力がなくても空欄としてAIへ渡す
+*/
+
+const inputText =
+m ||
+"（音声・手入力なし。選択した区分と定型文のみで支援経過を作成する。）";
+
+
+/*
+   AIへ渡す全文
+*/
+
+const text =
+`あなたは経験豊富な介護支援専門員です。
+以下の情報から、介護支援専門員の支援経過記録を作成してください。
+
+【選択区分】
+${a.join("、")}
+
+【定型文】
+${templates}
+
+【音声・手入力記録】
+${inputText}
+
+${RULE}
+
+【最重要】
+
+選択されたすべての区分を必ず出力してください。
+
+選択された区分を勝手に削除しないでください。
+
+自宅訪問を選択した場合、区分には
+自宅訪問
+本人
+家族
+をそれぞれ改行して記載してください。
+
+その他の選択区分は、選択された語句をそのまま区分に記載してください。
+
+区分の前には「・」を付けないでください。
+
+内容には「区分：」という文字を絶対に記載しないでください。
+
+自宅訪問は内容には記載しないでください。
+
+選択された定型文は必ず内容に反映してください。
+
+短期目標更新を選択した場合は、必ず
+【短期目標更新】
+から始まる定型文を内容に記載してください。
+
+音声・手入力がない場合でも、選択された区分と定型文だけで支援経過を作成してください。
+
+各定型文の項目と次の項目の間に空行を入れないでください。
+
+入力されていない事実を推測して追加しないでください。
+
+出力は以下の4項目のみとしてください。
+
+区分：
+内容：
+関係機関・介護支援専門員の判断：
+利用者・家族の考え方：`;
+
+
+/*
+   コピー実行
+*/
+
+copyText(
+text,
+csElement,
+"✓ コピーしました。AIへ貼り付けてください。"
+);
+
+}
+
+
+/* =====================================================
+   コピー処理
+===================================================== */
+
+function copyText(
+text,
+element,
+successMessage
+){
+
+if(
+navigator.clipboard &&
+window.isSecureContext
+){
+
+navigator.clipboard.writeText(text)
+.then(function(){
+
+copySuccess(
+element,
+successMessage
+);
+
+})
+.catch(function(){
+
+fallbackCopy(
+text,
+element,
+successMessage
+);
+
+});
+
+}else{
+
+fallbackCopy(
+text,
+element,
+successMessage
+);
+
+}
+
+}
+
+
+/* =====================================================
+   コピー成功表示
+===================================================== */
+
+function copySuccess(
+element,
+successMessage
+){
+
+element.textContent =
+successMessage;
+
+element.classList.add(
+"success"
+);
+
+copyButton.textContent =
+"✓ コピーしました";
+
+copyButton.classList.add(
+"copied"
+);
+
+
+/*
+   コピー完了メッセージを表示
+*/
+
+if(homeStatus){
+
+homeStatus.style.display =
+"block";
+
+}
+
+
+/*
+   コピーした位置まで少しスクロール
+*/
+
+setTimeout(function(){
+
+homeStatus.scrollIntoView({
+behavior:"smooth",
+block:"nearest"
+});
+
+},100);
+
+}
+
+
+/* =====================================================
+   古いブラウザ用コピー
+===================================================== */
+
+function fallbackCopy(
+text,
+element,
+successMessage
+){
+
+const temporary =
+document.createElement("textarea");
+
+temporary.value =
+text;
+
+temporary.style.position =
+"fixed";
+
+temporary.style.left =
+"-9999px";
+
+temporary.style.top =
+"0";
+
+document.body.appendChild(
+temporary
+);
+
+temporary.focus();
+
+temporary.select();
+
+try{
+
+const success =
+document.execCommand("copy");
+
+if(success){
+
+copySuccess(
+element,
+successMessage
+);
+
+}else{
+
+element.textContent =
+"コピーできませんでした。手動でコピーしてください。";
+
+}
+
+}catch(error){
+
+element.textContent =
+"コピーできませんでした。手動でコピーしてください。";
+
+}
+
+document.body.removeChild(
+temporary
+);
+
+}
+
+
+
+/* =====================================================
+   個人用 区分・定型文編集
+===================================================== */
+function renderEditArea(){
+  const root=document.getElementById("editGrid");
+  if(!root)return;
+
+  root.innerHTML="";
+
+  const custom=getCustomCategories();
+  const personal=getPersonalTemplates();
+
+  allCategories().forEach(function(displayName){
+
+    const original=boOriginalKey(displayName);
+    const isCustom=Object.prototype.hasOwnProperty.call(custom,displayName);
+
+    const card=document.createElement("div");
+    card.className="edit-card";
+
+    const title=document.createElement("div");
+    title.className="edit-title";
+    title.textContent=displayName;
+
+    const preview=document.createElement("div");
+    preview.className="edit-preview";
+    preview.textContent=templateFor(displayName);
+
+    const edit=document.createElement("button");
+    edit.type="button";
+    edit.className="edit-btn";
+    edit.textContent="編集";
+
+    edit.onclick=function(){
+
+      card.innerHTML="";
+
+      const nameLabel=document.createElement("div");
+      nameLabel.className="edit-label";
+      nameLabel.textContent="区分名";
+
+      const nameInput=document.createElement("input");
+      nameInput.className="edit-name-input";
+      nameInput.value=displayName;
+
+      const templateLabel=document.createElement("div");
+      templateLabel.className="edit-label";
+      templateLabel.textContent="定型文";
+
+      const ta=document.createElement("textarea");
+      ta.className="edit-textarea";
+      ta.value=templateFor(displayName);
+
+      const save=document.createElement("button");
+      save.type="button";
+      save.className="edit-btn edit-save";
+      save.textContent="保存";
+
+      const cancel=document.createElement("button");
+      cancel.type="button";
+      cancel.className="edit-btn";
+      cancel.textContent="キャンセル";
+
+      save.onclick=function(){
+
+        const newName=nameInput.value.trim();
+        const newTemplate=ta.value;
+
+        if(!newName){
+          alert("区分名を入力してください。");
+          return;
+        }
+
+        const names=allCategories();
+        if(newName!==displayName && names.includes(newName)){
+          alert("その区分名はすでに存在します。");
+          return;
+        }
+
+        const c=getCustomCategories();
+        const p=getPersonalTemplates();
+        const r=boGetRenames();
+
+        if(isCustom){
+
+          const data=c[displayName]||{};
+          delete c[displayName];
+          c[newName]={
+            template:newTemplate,
+            createdAt:data.createdAt||new Date().toISOString()
+          };
+          saveCustomCategories(c);
+
+        }else{
+
+          /* 標準区分は元データを変更せず、この端末だけ名前変更 */
+          if(newName!==displayName){
+            r[original]=newName;
+            boSaveRenames(r);
+          }else{
+            delete r[original];
+            boSaveRenames(r);
+          }
+
+          if(newTemplate===(T[original]||"")){
+            delete p[original];
+          }else{
+            p[original]=newTemplate;
+          }
+          savePersonalTemplates(p);
+        }
+
+        renderEditArea();
+        renderCategories();
+        update();
+      };
+
+      cancel.onclick=renderEditArea;
+
+      card.appendChild(nameLabel);
+      card.appendChild(nameInput);
+      card.appendChild(templateLabel);
+      card.appendChild(ta);
+      card.appendChild(save);
+      card.appendChild(cancel);
+    };
+
+    const del=document.createElement("button");
+    del.type="button";
+    del.className="edit-btn edit-delete";
+    del.textContent="この区分を削除";
+    del.onclick=function(){
+
+      if(!confirm("「"+displayName+"」を削除しますか？"))return;
+
+      const c=getCustomCategories();
+      const d=getDeletedCategories();
+      const p=getPersonalTemplates();
+      const r=boGetRenames();
+
+      if(Object.prototype.hasOwnProperty.call(c,displayName)){
+        delete c[displayName];
+        saveCustomCategories(c);
+      }else if(Object.prototype.hasOwnProperty.call(T,original)){
+        if(!d.includes(original))d.push(original);
+        saveDeletedCategories(d);
+        delete p[original];
+        savePersonalTemplates(p);
+        delete r[original];
+        boSaveRenames(r);
+      }
+
+      renderEditArea();
+      renderCategories();
+      update();
+    };
+
+    card.appendChild(title);
+    card.appendChild(preview);
+    card.appendChild(edit);
+    card.appendChild(del);
+
+    root.appendChild(card);
+  });
+
+  /* 削除した標準区分だけ、同じ編集エリア内で復元 */
+  const deleted=getDeletedCategories();
+
+  if(deleted.length){
+    const restoreTitle=document.createElement("h3");
+    restoreTitle.textContent="削除した標準区分";
+    restoreTitle.style.marginTop="18px";
+    root.appendChild(restoreTitle);
+
+    deleted.forEach(function(original){
+      const item=document.createElement("div");
+      item.className="edit-card";
+
+      const name=document.createElement("span");
+      name.className="edit-title";
+      name.textContent=boDisplayName(original);
+
+      const restore=document.createElement("button");
+      restore.type="button";
+      restore.className="edit-btn edit-save";
+      restore.textContent="復元";
+
+      restore.onclick=function(){
+        const d=getDeletedCategories().filter(x=>x!==original);
+        saveDeletedCategories(d);
+        renderEditArea();
+        renderCategories();
+        update();
+      };
+
+      item.appendChild(name);
+      item.appendChild(restore);
+      root.appendChild(item);
+    });
+  }
+}
+
+function addCustomCategory(){
+  const n=document.getElementById("addCategoryName");
+  const t=document.getElementById("addCategoryTemplate");
+  const name=n.value.trim();
+  const text=t.value.trim();
+
+  if(!name){
+    alert("区分名を入力してください。");
+    return;
+  }
+  if(!text){
+    alert("定型文を入力してください。");
+    return;
+  }
+  if(allCategories().includes(name)){
+    alert("同じ区分名がすでにあります。");
+    return;
+  }
+
+  const custom=getCustomCategories();
+  custom[name]={template:text};
+  saveCustomCategories(custom);
+
+  n.value="";
+  t.value="";
+
+  renderEditArea();
+  renderCategories();
+  update();
+
+  alert("「"+name+"」を追加しました。");
+}
+
+/* =====================================================
+   トップに戻る
+===================================================== */
+
+function goHome(){
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+
+/* =====================================================
+   初期表示
+===================================================== */
+
+renderCategories();
+renderEditArea();
+update();
+
+
+
+</script>
+
+</body>
+</html>
