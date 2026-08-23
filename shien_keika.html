@@ -509,14 +509,6 @@ onclick="goHome()"
 <input id="addCategoryName" type="text" placeholder="区分名（例：退院調整）">
 <textarea id="addCategoryTemplate" placeholder="定型文"></textarea>
 <button type="button" class="edit-add" onclick="addCustomCategory()">＋ 区分と定型文を追加</button>
-
-<!-- 編集エリア最下部のトップ画面へ戻るボタン -->
-<div style="margin-top:16px; padding-top:12px; border-top:1px solid #dcebed;">
-<button class="home-button" onclick="goHome()">
-⌂ トップ画面へ戻る
-</button>
-</div>
-
 </div>
 </section>
 
@@ -1363,7 +1355,7 @@ function renderEditArea(){
 
       const restore=document.createElement("button");
       restore.type="button";
-      restore.className="edit-save";
+      restore.className="edit-btn edit-save";
       restore.textContent="復元";
 
       restore.onclick=function(){
