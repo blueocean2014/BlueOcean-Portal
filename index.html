@@ -42,26 +42,55 @@ body{
 /* ===== コピー通知 ===== */
 .toast{
   position:fixed;
-  top:90px;
-  right:30px;
-  background:linear-gradient(45deg,#00c6ff,#0072ff);
-  color:white;
-  padding:10px 18px;
-  border-radius:25px;
-  font-size:13px;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-42%) scale(.96);
+  background:rgba(0,35,75,.96);
+  color:#fff;
+  padding:14px 28px;
+  border:1px solid rgba(90,210,255,.65);
+  border-radius:14px;
+  font-size:15px;
+  font-weight:700;
+  letter-spacing:.4px;
   opacity:0;
-  transform:translateY(-10px);
-  transition:0.4s;
+  transition:opacity .22s ease, transform .22s ease;
+  box-shadow:0 10px 30px rgba(0,0,0,.32), 0 0 18px rgba(0,170,255,.18);
   z-index:3000;
+  pointer-events:none;
 }
 .toast.show{
   opacity:1;
-  transform:translateY(0);
+  transform:translate(-50%,-50%) scale(1);
 }
 
-/* ===== ボタン光る演出 ===== */
-.button-flash{
-  box-shadow:0 0 15px #00c6ff;
+/* ===== コピー専用ボタン ===== */
+.copy-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-width:116px;
+  background:linear-gradient(135deg,#00bfff,#0077ff);
+  color:#fff;
+  border:1px solid rgba(130,225,255,.85);
+  box-shadow:0 5px 18px rgba(0,120,255,.35);
+  transition:background .18s ease, border-color .18s ease, transform .12s ease, box-shadow .18s ease;
+}
+.copy-button:hover{
+  opacity:1;
+  transform:translateY(-2px);
+  background:linear-gradient(135deg,#18c8ff,#1685ff);
+  border-color:#b7efff;
+  box-shadow:0 8px 24px rgba(0,140,255,.48);
+}
+.copy-button:active{
+  transform:translateY(0);
+}
+.copy-button.copied{
+  background:linear-gradient(135deg,#12cfa0,#079b78);
+  border-color:rgba(150,255,225,.9);
+  box-shadow:0 5px 18px rgba(0,190,140,.35);
 }
 
 /* ===== ログイン画面 ===== */
@@ -215,7 +244,7 @@ textarea{
 
   <div class="card">
     <h2>② 支援経過プロンプト</h2>
-    <button onclick="copyText('prompt2', this)">コピーする</button>
+    <button class="copy-button" onclick="copyText('prompt2', this)">コピーする</button>
     <textarea id="prompt2">
 【①区分ルール】
 入力語句と同一語句を区分に箇条書で記載する。
@@ -314,7 +343,7 @@ textarea{
 
   <div class="card">
     <h2>③ サービス担当者会議プロンプト</h2>
-    <button onclick="copyText('prompt3', this)">コピーする</button>
+    <button class="copy-button" onclick="copyText('prompt3', this)">コピーする</button>
     <textarea id="prompt3">
 情報が入力されていない項目は空欄とする。
 ただし「医師からの意見や医学的所見」の項目のみ、情報がない場合は「なし」と記載する。
@@ -372,7 +401,7 @@ textarea{
 
   <div class="card">
     <h2>④ アセスメントプロンプト</h2>
-    <button onclick="copyText('prompt4', this)">コピーする</button>
+    <button class="copy-button" onclick="copyText('prompt4', this)">コピーする</button>
     <textarea id="prompt4">
 あなたは優秀なケアマネジャーです。 下記の各項目に沿って情報を細かく分析して 作成しコードブロックで出力させてください。
  下記は、アセスメントシートを作成するための条件です 
@@ -414,7 +443,7 @@ textarea{
 
   <div class="card">
     <h2>⑤ 介護予防アセスメントプロンプト</h2>
-    <button onclick="copyText('prompt5', this)">コピーする</button>
+    <button class="copy-button" onclick="copyText('prompt5', this)">コピーする</button>
     <textarea id="prompt5">
 あなたは優秀なケアマネジャーです。 以下の条件を踏まえた介護予防サービス支援計画表を作ります。
 下記は、介護予防サービス支援計画表 を作成するための条件。
@@ -436,7 +465,7 @@ textarea{
 
   <div class="card">
     <h2>⑥ 課題整理総括表（熊本モデル）プロンプト</h2>
-    <button onclick="copyText('prompt6', this)">コピーする</button>
+    <button class="copy-button" onclick="copyText('prompt6', this)">コピーする</button>
     <textarea id="prompt6">
 あなたは優秀なケアマネジャーです。 以下の条件を踏まえたケアプラン作成に必要な課題整理総括表 を作成してください。 
 下記にあるのはケアマネジャーとして課題整理総括表を作成するための条件。
@@ -460,7 +489,7 @@ textarea{
 
   <div class="card">
     <h2>⑦ 主治医への手紙プロンプト</h2>
-    <button onclick="copyText('prompt7', this)">コピーする</button>
+    <button class="copy-button" onclick="copyText('prompt7', this)">コピーする</button>
     <textarea id="prompt7">
 あなたは優秀なケアマネジャーです。 【主治医にケアマネジャーと医師との連絡票】【主治医意見書のための情報提供シート 】 を作成、送付する。
 下記は作成するための条件。 
@@ -478,7 +507,7 @@ textarea{
 
   <div class="card">
     <h2>⑧ ブルーオーシャン退院退所カンファレンス記録プロンプト</h2>
-    <button onclick="copyText('prompt8', this)">コピーする</button>
+    <button class="copy-button" onclick="copyText('prompt8', this)">コピーする</button>
     <textarea id="prompt8">
 あなたは優秀なケアマネジャーです。 以下の条件を踏まえた退院前カンファレンスシートを作成してください。
 ①退院前カンファレンスシート について
@@ -552,7 +581,7 @@ textarea{
 
   <div class="card">
     <h2>⑨ 菊池郡ケアマネ協会退院退所カンファレンス記録プロンプト</h2>
-    <button onclick="copyText('prompt9', this)">コピーする</button>
+    <button class="copy-button" onclick="copyText('prompt9', this)">コピーする</button>
     <textarea id="prompt9">
 あなたは優秀なケアマネジャーです。 以下の条件を踏まえた退院・退所時カンファレンスの記録を作ります。
 下記は、退院退所カンファレンス記録 を作成するための条件。
@@ -584,7 +613,7 @@ textarea{
 
   <div class="card">
     <h2>⑩ 課題整理総括表（標準）プロンプト</h2>
-    <button onclick="copyText('prompt10', this)">コピーする</button>
+    <button class="copy-button" onclick="copyText('prompt10', this)">コピーする</button>
     <textarea id="prompt10">
 下記にあるのはケアマネジャーとして課題整理総括表を作成するための条件です。
 
@@ -606,7 +635,7 @@ textarea{
 
   <div class="card">
     <h2>⑪ ケアプラン作成プロンプト</h2>
-    <button onclick="copyText('prompt11', this)">コピーする</button>
+    <button class="copy-button" onclick="copyText('prompt11', this)">コピーする</button>
     <textarea id="prompt11">
 あなたは経験豊富なケアマネジャーです。
  ①以下の情報の中から、自立した日常生活の阻害要因（心身の状態、環境等）」を分析し、その状況について状態が改善する可能性があれば改善、維持が適当なレベルであれば維持、悪化する可能性があれば悪化とそれぞれに評価。
@@ -732,7 +761,7 @@ textarea{
 
   <div class="card">
     <h2>⑫ アセスメントJSONコード生成プロンプト</h2>
-    <button onclick="copyText('prompt12', this)">コピーする</button>
+    <button class="copy-button" onclick="copyText('prompt12', this)">コピーする</button>
     <textarea id="prompt12">
 あなたはJSON生成AIではない。
 在宅生活を分析する主任ケアマネジャーである。 
@@ -1193,9 +1222,7 @@ JSONキーはすべて出力する
 <div class="card">
 <h2>⑬情報を事前に整理するためのプロンプト</h2>
 
-<button onclick="copyText('prompt13', this)"> 
-コピーする
-</button>
+<button class="copy-button" onclick="copyText('prompt13', this)">コピーする</button>
 
 <textarea id="prompt13">
 あなたは優秀なケアマネジャーです。 以下の条件を踏まえたケアプラン作成に必要なアセスメントをします。アセスメントの前に、情報をまとめますが、下記の各項目に沿って情報を細かく分析して 作成しコードブロックで出力させてください。
@@ -1389,9 +1416,7 @@ JSONキーはすべて出力する
 <div class="card">
 <h2>⑭課題整理総括表（熊本モデル）プロンプト </h2>
 
-<button onclick="copyText('prompt14', this)">
-コピーする
-</button>
+<button class="copy-button" onclick="copyText('prompt14', this)">コピーする</button>
 
 <textarea id="prompt14">
 あなたはJSON生成AIではない。
@@ -1626,9 +1651,7 @@ JSONコードブロックのみ出力すること。
 <div class="card">
 <h2>⑮分割版アセスメントJSONコード生成プロンプト </h2>
 
-<button onclick="copyText('prompt15', this)">
-コピーする
-</button>
+<button class="copy-button" onclick="copyText('prompt15', this)">コピーする</button>
 
 <textarea id="prompt15">
 あなたはJSON生成AIではない。
@@ -2108,9 +2131,7 @@ JSONキーはすべて出力する
 <div class="card">
 <h2>⑯分割したJSONコードを結合するためのプロンプト </h2>
 
-<button onclick="copyText('prompt16', this)">
-コピーする
-</button>
+<button class="copy-button" onclick="copyText('prompt16', this)">コピーする</button>
 
 <textarea id="prompt16">
 以下に、複数のJSON断片を貼ります。
@@ -2162,9 +2183,7 @@ JSONキーはすべて出力する
 <div class="card">
 <h2>⑰ 分割JSONコード作成課題整理総括表（熊本モデル）プロンプト </h2>
 
-<button onclick="copyText('prompt17', this)">
-コピーする
-</button>
+<button class="copy-button" onclick="copyText('prompt17', this)">コピーする</button>
 
 <textarea id="prompt17">
 あなたはJSON生成AIではない。
@@ -2434,20 +2453,59 @@ window.onload = function(){
   }
 }
 
-function copyText(id, btn){
+async function copyText(id, btn){
   const text = document.getElementById(id);
-  text.select();
-  document.execCommand("copy");
+  if(!text) return;
 
-  const toast = document.getElementById("toast");
-  toast.classList.add("show");
+  const value = text.value;
 
-  if(btn){ btn.classList.add("button-flash"); }
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(value);
+    }else{
+      const temp = document.createElement("textarea");
+      temp.value = value;
+      temp.setAttribute("readonly", "");
+      temp.style.position = "fixed";
+      temp.style.left = "-9999px";
+      temp.style.top = "0";
+      temp.style.opacity = "0";
+      document.body.appendChild(temp);
+      temp.focus();
+      temp.select();
+      document.execCommand("copy");
+      temp.remove();
+    }
 
-  setTimeout(()=>{
-    toast.classList.remove("show");
-    if(btn){ btn.classList.remove("button-flash"); }
-  }, 1000);
+    const toast = document.getElementById("toast");
+    toast.textContent = "コピーしました";
+    toast.classList.add("show");
+
+    if(btn){
+      btn.classList.add("copied");
+      const original = btn.textContent;
+      btn.textContent = "✓ コピー完了";
+      clearTimeout(btn._copyTimer);
+      btn._copyTimer = setTimeout(()=>{
+        btn.classList.remove("copied");
+        btn.textContent = original;
+      }, 1200);
+    }
+
+    clearTimeout(window._copyToastTimer);
+    window._copyToastTimer = setTimeout(()=>{
+      toast.classList.remove("show");
+    }, 900);
+
+  }catch(error){
+    const toast = document.getElementById("toast");
+    toast.textContent = "コピーできませんでした";
+    toast.classList.add("show");
+    clearTimeout(window._copyToastTimer);
+    window._copyToastTimer = setTimeout(()=>{
+      toast.classList.remove("show");
+    }, 1600);
+  }
 }
 </script>
 
