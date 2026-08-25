@@ -404,6 +404,20 @@ button:hover{
 }
 
 </style>
+
+<style id="new-case-button-blue">
+#newCaseButton{
+  background:#1976d2 !important;
+  background-image:none !important;
+  color:#fff !important;
+  border:1px solid #1565c0 !important;
+  box-shadow:0 2px 5px rgba(0,0,0,.15) !important;
+}
+#newCaseButton:hover{
+  background:#1565c0 !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -546,7 +560,13 @@ class="status"
      ※コピー前から表示
 ===================================================== -->
 
-<div id="homeArea">
+<div id="homeArea"><div id="newCaseArea" style="display:none;text-align:center;margin:16px 0;">
+<button type="button" id="newCaseButton" class="home-button" onclick="startNewSupportRecord()">
+＋ 新しい支援経過を作成
+</button>
+</div>
+
+
 
 <div
 id="homeStatus"
@@ -1751,6 +1771,14 @@ homeStatus.style.display =
 
 }
 
+/* コピー成功後に「新しい支援経過を作成」を表示 */
+const newCaseArea =
+document.getElementById("newCaseArea");
+
+if(newCaseArea){
+  newCaseArea.style.display = "block";
+}
+
 
 /*
    コピーした位置まで少しスクロール
@@ -1767,6 +1795,44 @@ block:"nearest"
 
 }
 
+
+/* =====================================================
+   新しい支援経過を作成
+   ※今回の入力・選択だけをリセット
+   ※プロンプト・定型文・基本設定は変更しない
+===================================================== */
+function startNewSupportRecord(){
+
+  const ok = window.confirm(
+    "今回の支援経過の入力内容をクリアして、新しい支援経過を作成しますか？"
+  );
+
+  if(!ok) return;
+
+  const memo = document.getElementById("memo");
+  if(memo) memo.value = "";
+
+  if(typeof allOff === "function") allOff();
+  if(typeof clearTemporaryCategories === "function") clearTemporaryCategories();
+  if(typeof renderCategories === "function") renderCategories();
+  if(typeof update === "function") update();
+
+  if(typeof copyButton !== "undefined" && copyButton){
+    copyButton.textContent = "AI処理用にコピー";
+    copyButton.classList.remove("copied","success");
+  }
+
+  const homeStatus = document.getElementById("homeStatus");
+  if(homeStatus) homeStatus.style.display = "none";
+
+  const newCaseArea = document.getElementById("newCaseArea");
+  if(newCaseArea) newCaseArea.style.display = "none";
+
+  if(memo){
+    memo.focus();
+    memo.scrollIntoView({behavior:"smooth",block:"center"});
+  }
+}
 
 /* =====================================================
    古いブラウザ用コピー
