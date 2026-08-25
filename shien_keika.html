@@ -211,7 +211,7 @@ button:hover{
 }
 
 /* =====================================================
-   トップ画面へ戻るエリア
+   トップへ戻るエリア
 ===================================================== */
 
 #homeArea{
@@ -277,6 +277,13 @@ button:hover{
 .edit-add{background:#075e6b;width:100%;margin-top:8px}
 .edit-add-area{margin-top:18px;padding-top:16px;border-top:1px solid #dcebed}
 .edit-add-area input,.edit-add-area textarea{margin-top:7px}
+#addTemporaryCategoryName,
+#addCategoryName{
+  width:45%;
+  max-width:320px;
+  min-height:40px;
+  box-sizing:border-box;
+}
 @media(max-width:600px){.edit-grid{grid-template-columns:1fr}}
 
 
@@ -457,6 +464,15 @@ button:hover{
 未選択
 </div>
 
+<div class="edit-add-area" id="temporaryCategoryArea">
+<h3 style="margin:0;color:#075e6b;">今回だけ使用する区分を追加</h3>
+<input id="addTemporaryCategoryName" type="text" placeholder="区分名（例：退院前カンファレンス）">
+<button type="button" class="edit-add" onclick="addTemporaryCategory()">＋ 今回だけの区分を追加</button>
+<div id="temporaryCategoryStatus" class="edit-note" style="margin-top:8px;">
+ここで追加した区分は今回の入力だけに使用し、定型文は設定しません。画面を閉じると消えます。
+</div>
+</div>
+
 </section>
 
 
@@ -526,7 +542,7 @@ class="status"
 
 
 <!-- =====================================================
-     トップ画面へ戻るエリア
+     トップへ戻るエリア
      ※コピー前から表示
 ===================================================== -->
 
@@ -540,8 +556,7 @@ style="display:none;"
 
 ✓ コピーが完了しました。
 
-AIへ貼り付けた後、下のボタンから
-BlueOceanのトップ画面へ戻れます。
+
 
 </div>
 
@@ -550,13 +565,6 @@ class="scroll-top-button"
 onclick="scrollToTop()"
 >
 ▲ トップに戻る
-</button>
-
-<button
-class="home-button"
-onclick="goHome()"
->
-⌂ トップ画面へ戻る
 </button>
 
 </div>
@@ -669,9 +677,9 @@ const T = {
 "【短期目標更新】\n短期目標更新時期にてプラン継続についてご本人、ご家族、各サービス事業所に確認。状態も安定している為短期目標については長期目標期間内で更新することとする。各サービス事業所に目標の更新について伝達。軽微変更",
 
 "連絡調整":
-"連絡調整：入力内容を簡潔に整理する。",
+"",
 
-"新規依頼・契約":
+"新規依頼":
 "新規依頼情報提供実施。",
 
 "初回面談":
@@ -711,6 +719,20 @@ const T = {
 
 
 /* =====================================================
+   管理者による標準区分の廃止
+   ※標準区分を制度改正等で廃止する場合、管理者が
+     ここに元の区分名を追加してから T から削除する。
+     利用者側の個人設定より優先して非表示にする。
+===================================================== */
+const BO_ADMIN_DISABLED = [
+  // 例："入院時情報連携加算（Ⅰ）"
+];
+
+function isAdminDisabled(original){
+  return BO_ADMIN_DISABLED.includes(original);
+}
+
+/* =====================================================
    区分表示
 ===================================================== */
 function getCustomCategories(){
@@ -725,6 +747,22 @@ function getPersonalTemplates(){
   try{return JSON.parse(localStorage.getItem("bo_personal_templates")||"{}")||{};}catch(e){return {};}
 }
 function savePersonalTemplates(d){localStorage.setItem("bo_personal_templates",JSON.stringify(d));}
+
+/* =====================================================
+   今回だけ使用する区分
+   ※この画面での今回の入力中だけ保持し、保存しない。
+===================================================== */
+let boTemporaryCategories = [];
+function getTemporaryCategories(){
+  return boTemporaryCategories.slice();
+}
+function saveTemporaryCategories(d){
+  boTemporaryCategories = d.slice();
+}
+function clearTemporaryCategories(){
+  boTemporaryCategories = [];
+}
+
 const BO_RENAME_KEY = "bo_category_renames";
 
 function boGetRenames(){
@@ -751,12 +789,18 @@ function boDisplayName(original){
 function allCategories(){
   const custom=getCustomCategories();
   const deleted=getDeletedCategories();
+  const temporary=getTemporaryCategories();
 
   const list=Object.keys(T)
-    .filter(k=>!deleted.includes(k))
+    .filter(k=>!deleted.includes(k) && !isAdminDisabled(k))
     .map(k=>boDisplayName(k));
 
   Object.keys(custom).forEach(k=>{
+    const original=boOriginalKey(k);
+    if(!isAdminDisabled(original) && !list.includes(k))list.push(k);
+  });
+
+  temporary.forEach(k=>{
     if(!list.includes(k))list.push(k);
   });
 
@@ -765,7 +809,12 @@ function allCategories(){
 function templateFor(key){
   const custom=getCustomCategories();
   const personal=getPersonalTemplates();
+  const temporary=getTemporaryCategories();
   const original=boOriginalKey(key);
+
+  /* 今回だけの区分には定型文を設定しない */
+  if(temporary.includes(key)) return "";
+  if(isAdminDisabled(original)) return "";
 
   if(Object.prototype.hasOwnProperty.call(custom,key)){
     return custom[key].template||"";
@@ -806,6 +855,30 @@ return x.value;
 
 }
 
+
+/* =====================================================
+   今回だけの区分を追加
+===================================================== */
+function addTemporaryCategory(){
+  const input=document.getElementById("addTemporaryCategoryName");
+  const name=(input.value||"").trim();
+  if(!name){
+    alert("区分名を入力してください。");
+    return;
+  }
+  if(allCategories().includes(name)){
+    alert("同じ区分名がすでにあります。");
+    return;
+  }
+
+  const temporary=getTemporaryCategories();
+  temporary.push(name);
+  saveTemporaryCategories(temporary);
+  input.value="";
+  renderCategories();
+  update();
+  alert("「"+name+"」を今回だけの区分として追加しました。定型文は設定されません。");
+}
 
 /* =====================================================
    選択状態表示
@@ -1505,9 +1578,15 @@ function copyAI() {
       try {
         if (typeof templateFor === "function") t = templateFor(label) || "";
       } catch(e) {}
-      return t ? label + "\n" + t : label;
+      // 定型文がない区分名を定型文としてAIへ渡さない。
+      // 区分名は「選択された区分」で別途渡すため、ここでは空欄にする。
+      return t ? label + "\n" + t : "";
     }).filter(Boolean).join("\n\n");
   } catch(e) {}
+
+  const temporaryCategories = getTemporaryCategories().filter(function(name){
+    return selected().includes(name);
+  });
 
   // 音声入力・手入力をすべて取得
   const inputParts = Array.from(
@@ -1532,6 +1611,24 @@ ${selectedCategories || "なし"}
 【選択された区分の定型文】
 ${templates || "なし"}
 
+【定型文が登録されていない選択区分の処理】
+定型文の登録・記載がない区分は、区分欄に区分名のみを記載すること。
+定型文の登録・記載がない区分名を内容欄の見出しとして記載しないこと。
+「連絡調整」「医師との面談」など、定型文のない区分名を内容欄に単独で記載したり、「【区分名】」の見出しとして記載したりしないこと。
+定型文のない区分が複数選択されている場合、同じ事実・出来事・連絡・依頼・判断を区分ごとに重複して記載せず、今回の入力内容を一つの自然な文章としてまとめて記載すること。
+区分欄には選択された区分をすべて残し、内容欄では同一内容を一度だけ記載すること。
+
+【今回だけ追加された区分（定型文なし）】
+${temporaryCategories.length ? temporaryCategories.join("\n") : "なし"}
+
+【今回だけ追加された区分の処理方法】
+上記の「今回だけ追加された区分」は定型文を記載しないこと。
+「今回だけ追加された区分」は区分欄に区分名のみを記載し、内容欄には区分名や【区分名】の見出しを記載しないこと。
+【今回の音声入力・手入力による追加情報】の文章から、その区分に該当する事実を判断し、他の入力情報と分けず、既存の支援経過作成ルールに従って内容として自然にまとめて記載すること。
+「その他」などの文字は区分名に付けないこと。
+今回だけ追加された区分に該当しない入力情報も、既存の支援経過作成ルールに従って通常どおり整理すること。
+入力されていない事実は追加しないこと。
+
 【今回の音声入力・手入力による追加情報】
 ${additionalInput || "なし"}
 
@@ -1542,7 +1639,9 @@ ${additionalInput || "なし"}
 本人・家族の言葉が入力されている場合は必ず反映すること。
 入力されていない事実を推測して追加しないこと。
 「区分→定型文→その区分の追加情報」の順番にはしないこと。
-選択された区分の定型文をすべて先に記載し、すべての定型文の記載終了後に追加情報をまとめて記載すること。`;
+選択された区分の定型文をすべて先に記載し、すべての定型文の記載終了後に追加情報をまとめて記載すること。
+定型文の登録・記載がない区分名を内容欄の見出しとして記載しないこと。
+定型文のない複数区分について同じ事実・出来事・連絡・依頼・判断を重複記載せず、内容は一つにまとめること。`;
 
   copyText(finalText.trim(), copyButton, "✓ コピーしました");
 }
@@ -1607,6 +1706,12 @@ function copySuccess(
 element,
 successMessage
 ){
+
+/* AI処理用コピーが成功したら、今回だけの区分を消去する。
+   次の支援経過では新たに入力する。 */
+clearTemporaryCategories();
+renderCategories();
+update();
 
 element.textContent =
 successMessage;
@@ -1729,8 +1834,11 @@ function renderEditArea(){
 
   const custom=getCustomCategories();
   const personal=getPersonalTemplates();
+  const temporary=getTemporaryCategories();
 
-  allCategories().forEach(function(displayName){
+  allCategories().filter(function(displayName){
+    return !temporary.includes(displayName) && !isAdminDisabled(boOriginalKey(displayName));
+  }).forEach(function(displayName){
 
     const original=boOriginalKey(displayName);
     const isCustom=Object.prototype.hasOwnProperty.call(custom,displayName);
@@ -1893,7 +2001,9 @@ updatePatternUI();
     restoreTitle.style.marginTop="18px";
     root.appendChild(restoreTitle);
 
-    deleted.forEach(function(original){
+    deleted.filter(function(original){
+      return !isAdminDisabled(original);
+    }).forEach(function(original){
       const item=document.createElement("div");
       item.className="edit-card";
 
@@ -1964,17 +2074,6 @@ window.scrollTo({
 top: 0,
 behavior: "smooth"
 });
-
-}
-
-/* =====================================================
-   BlueOceanトップ画面へ戻る
-===================================================== */
-
-function goHome(){
-
-window.location.href =
-"https://blueocean2014.github.io/BlueOcean-Portal/";
 
 }
 
