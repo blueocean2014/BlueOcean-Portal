@@ -161,6 +161,14 @@ button:hover{opacity:.9;transform:translateY(-1px)}
 <script>
 (function(){
 
+window.scrollToTop = function(){
+  window.scrollTo({top:0, behavior:"smooth"});
+};
+
+window.goHome = function(){
+  location.href = 'index.html';
+};
+
 window.copyAI = async function(){
   const button = document.getElementById("copyButton");
   const status = document.getElementById("cs");
