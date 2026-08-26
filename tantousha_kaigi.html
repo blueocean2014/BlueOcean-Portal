@@ -17,7 +17,7 @@ textarea{width:100%;box-sizing:border-box;border:1px solid #c9dde1;border-radius
 textarea:focus{border-color:#008fa3;box-shadow:0 0 0 2px rgba(0,143,163,.12)}
 button{border:0;border-radius:10px;color:white;padding:12px 16px;font-size:15px;margin:4px 2px;cursor:pointer;transition:.15s}
 button:hover{opacity:.9;transform:translateY(-1px)}
-.copy-button{background:linear-gradient(135deg,#007c8c,#009caf);font-weight:bold;font-size:16px;padding:14px 18px}
+.copy-button{background:linear-gradient(135deg,#007c8c,#009caf);font-weight:bold;font-size:18px;padding:14px 18px}
 .copy-button.copied{background:#16803c}
 .scroll-top-button{background:#607d83;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
 .home-button{background:#075e6b;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
@@ -51,10 +51,30 @@ button:hover{opacity:.9;transform:translateY(-1px)}
  .edit-actions{display:block}
 }
 .prompt-item{border:1px solid #c9dde1;border-radius:10px;background:#fff;padding:12px;margin-top:8px}.prompt-item.active{border:2px solid #008fa3;background:#eef9fb}.prompt-item-name{font-weight:bold;color:#075e6b;margin-bottom:8px}.prompt-item-actions{display:flex;gap:6px;flex-wrap:wrap}.prompt-item-actions button{border:0;border-radius:8px;padding:8px 12px;cursor:pointer;font-weight:bold}.prompt-select{background:#008fa3;color:#fff}.prompt-edit{background:#e5f0f2;color:#075e6b}.prompt-delete{background:#8a5a42;color:#fff}</style>
+<style id="requested-title-only">
+header .app-title-main,
+header .app-title-sub{
+  display:block;
+}
+header .app-title-main{
+  font-size:27px;
+}
+header .app-title-sub{
+  font-size:24px;
+  margin-top:6px;
+}
+@media(max-width:600px){
+  header .app-title-main{font-size:23px}
+  header .app-title-sub{font-size:20px}
+}
+</style>
 </head>
 <body>
 <header>
-<h1>サービス担当者会議作成支援アプリ（BlueOcean）</h1>
+<h1>
+  <span class="app-title-main">ケアマネが育てるAIアプリ</span>
+  <span class="app-title-sub">サービス担当者会議要点作成支援</span>
+</h1>
 <div>音声・手入力 → AI処理用にコピー</div>
 </header>
 
