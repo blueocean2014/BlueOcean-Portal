@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>支援経過作成支援アプリ（BlueOcean）</title>
+<title>支援経過作成支援アプリ</title>
 
 <style>
 
@@ -26,14 +26,28 @@ body{
 header{
   background:linear-gradient(135deg,#006b7a,#008fa3);
   color:white;
-  padding:18px 16px;
+  padding:24px 16px;
   box-shadow:0 2px 8px rgba(0,0,0,.15);
 }
 
 header h1{
-  font-size:21px;
+  font-size:24px;
   margin:0 0 6px 0;
   letter-spacing:.3px;
+}
+
+header .app-title-main,
+header .app-title-sub{
+  display:block;
+}
+
+header .app-title-sub{
+  font-size:27px;
+  margin-bottom:6px;
+}
+
+header .app-title-main{
+  font-size:24px;
 }
 
 header div{
@@ -243,7 +257,15 @@ button:hover{
   }
 
   header h1{
-    font-size:19px;
+    font-size:21px;
+  }
+
+  header .app-title-sub{
+    font-size:23px;
+  }
+
+  header .app-title-main{
+    font-size:21px;
   }
 
 }
@@ -460,7 +482,10 @@ button:hover{
 
 <header>
 
-<h1>支援経過作成支援アプリ（BlueOcean）</h1>
+<h1>
+  <span class="app-title-sub">ケアマネが育てるAIアプリ</span>
+  <span class="app-title-main">支援経過作成支援</span>
+</h1>
 
 <div>
 区分を選択 → 音声・手入力 → AI処理用にコピー
@@ -468,6 +493,8 @@ button:hover{
 
 </header>
 
+<div style="max-width:900px;margin:0 auto;padding:0 12px;box-sizing:border-box;">
+</div>
 
 <main>
 
