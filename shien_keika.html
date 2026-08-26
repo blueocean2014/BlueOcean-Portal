@@ -1109,7 +1109,11 @@ const RULE = `【①区分ルール】
 
 function copyAI() {
   const checkedPattern = document.querySelector('input[name="supportPattern"]:checked');
-  const pattern = checkedPattern ? checkedPattern.value : "A";
+  const pattern = checkedPattern && ["A","B","C","D"].includes(checkedPattern.value)
+    ? checkedPattern.value
+    : (["A","B","C","D"].includes(supportPattern) ? supportPattern : "A");
+  supportPattern = pattern;
+  localStorage.setItem(SUPPORT_PATTERN_KEY, supportPattern);
 
   const A_PROMPT_EXACT = `支援経過Aパターン
 
@@ -1529,10 +1533,31 @@ function copyAI() {
 意見がない時には記載なしで良い 
 
 【重要】 「区分→定型文→その区分の追加情報」という構成にはしない。 必ず、 ①選択された区分の定型文をすべて記載 ↓ ②すべての定型文の記載終了 ↓ ③追加情報をまとめて記載 という順番にする。 追加情報を各定型文の直後に挿入してはいけない。`;
-  const selectedPrompt =
-    (pattern === "B"
-      ? "【AI処理用プロンプト：支援経過Bパターンのみ使用】\\n\\n" + B_PROMPT_EXACT
-      : "【AI処理用プロンプト：支援経過Aパターンのみ使用】\\n\\n" + A_PROMPT_EXACT);
+  const patternPrompts = {
+    A: {
+      name: "支援経過Aパターン",
+      header: "【AI処理用プロンプト：支援経過Aパターンのみ使用】",
+      prompt: A_PROMPT_EXACT
+    },
+    B: {
+      name: "支援経過Bパターン",
+      header: "【AI処理用プロンプト：支援経過Bパターンのみ使用】",
+      prompt: B_PROMPT_EXACT
+    },
+    C: {
+      name: "支援経過Cパターン",
+      header: "【AI処理用プロンプト：支援経過Cパターンのみ使用】",
+      prompt: RULE_C
+    },
+    D: {
+      name: "支援経過Dパターン",
+      header: "【AI処理用プロンプト：支援経過Dパターンのみ使用】",
+      prompt: RULE_D
+    }
+  };
+
+  const selectedPattern = patternPrompts[pattern] || patternPrompts.A;
+  const selectedPrompt = selectedPattern.header + "\\n\\n" + selectedPattern.prompt;
 
   let selectedCategories = "";
   try {
@@ -1580,7 +1605,7 @@ function copyAI() {
 以下のプロンプトを一字一句変更せず、そのまま最優先の作成ルールとして使用してください。
 
 【選択された支援経過パターン】
-${"支援経過" + pattern + "パターン"}
+${selectedPattern.name}
 
 【選択パターンのプロンプト（原文そのまま）】
 ${selectedPrompt}
