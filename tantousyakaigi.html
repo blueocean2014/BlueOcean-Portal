@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>サービス担当者会議作成支援アプリ（BlueOcean）</title>
+<style>
+body{margin:0;background:#eef5f7;color:#203238;font-family:-apple-system,BlinkMacSystemFont,"Yu Gothic","Meiryo",sans-serif}
+header{background:linear-gradient(135deg,#006b7a,#008fa3);color:white;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+header h1{font-size:21px;margin:0 0 6px 0;letter-spacing:.3px}
+header div{font-size:13px;opacity:.95}
+main{max-width:900px;margin:auto;padding:12px}
+.card{background:white;padding:16px;margin:12px 0;border-radius:15px;box-shadow:0 3px 10px rgba(0,80,100,.10);border:1px solid #dcebed}
+h2{font-size:18px;margin:0 0 13px 0;color:#075e6b}
+.description{font-size:14px;line-height:1.7;color:#44575c}
+textarea{width:100%;box-sizing:border-box;border:1px solid #c9dde1;border-radius:10px;padding:12px;font-size:16px;line-height:1.7;min-height:220px;resize:vertical;outline:none}
+textarea:focus{border-color:#008fa3;box-shadow:0 0 0 2px rgba(0,143,163,.12)}
+button{border:0;border-radius:10px;color:white;padding:12px 16px;font-size:15px;margin:4px 2px;cursor:pointer;transition:.15s}
+button:hover{opacity:.9;transform:translateY(-1px)}
+.copy-button{background:linear-gradient(135deg,#007c8c,#009caf);font-weight:bold;font-size:16px;padding:14px 18px}
+.copy-button.copied{background:#16803c}
+.scroll-top-button{background:#607d83;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
+.home-button{background:#075e6b;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
+.status{background:#eef8fa;border:1px solid #d4eaed;color:#24545d;padding:10px;border-radius:9px;font-size:13px;margin-top:8px;white-space:pre-wrap}
+.status.success{background:#eaf8ef;border-color:#b9dfc5;color:#17652e;font-weight:bold}
+.pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.pattern-option{align-items:flex-start;background:#f8fcfd;border:1px solid #c9dde1;border-radius:10px;padding:11px;display:flex;gap:8px;cursor:pointer}
+.pattern-option input{margin-top:3px;width:20px;height:20px;accent-color:#008fa3}
+.pattern-option:has(input:checked){border-color:#008fa3;background:#eef9fb;box-shadow:0 0 0 2px rgba(0,143,163,.10)}
+.pattern-option small{font-size:12px;color:#53686d;line-height:1.5}
+.setting-box{margin-top:12px;padding:12px;border:1px solid #c9dde1;border-radius:10px;background:#fbfefe}
+.setting-label{font-weight:bold;color:#075e6b;margin-bottom:8px}
+.setting-help{font-size:12px;color:#52676d;line-height:1.6;margin-top:7px}
+.edit-area{margin-top:80px;border-top:3px solid #dcebed;padding-top:24px}
+.edit-note{font-size:13px;line-height:1.7;color:#52676d;background:#f5fafb;border:1px solid #dcebed;border-radius:10px;padding:11px;margin-bottom:12px}
+.prompt-editor{min-height:650px;font-size:14px;line-height:1.7}
+.edit-actions{display:flex;gap:6px;flex-wrap:wrap}
+.save-button{background:#075e6b}
+.restore-button{background:#527b62}
+.clear-button{background:#8a5a42}
+.bo-footer-brand{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px auto 26px;padding:16px 0 4px;border-top:1px solid #dcebed;max-width:720px}
+.bo-footer-brand img{width:58px;height:58px;object-fit:contain;flex:none}
+.bo-footer-brand-text{display:flex;flex-direction:column;gap:3px;text-align:left}
+.bo-footer-brand-title{font-size:17px;font-weight:bold;letter-spacing:.3px}
+.bo-footer-brand-subtitle{font-size:12px}
+#newCaseButton{background:#1976d2!important;background-image:none!important;color:#fff!important;border:1px solid #1565c0!important;box-shadow:0 2px 5px rgba(0,0,0,.15)!important;border-radius:8px;padding:12px 34px;min-width:260px;font-size:15px;cursor:pointer}
+@media(max-width:600px){
+ .pattern-grid{grid-template-columns:1fr}
+ button{width:100%;margin:4px 0}
+ header h1{font-size:19px}
+ .edit-actions{display:block}
+}
+.prompt-item{border:1px solid #c9dde1;border-radius:10px;background:#fff;padding:12px;margin-top:8px}.prompt-item.active{border:2px solid #008fa3;background:#eef9fb}.prompt-item-name{font-weight:bold;color:#075e6b;margin-bottom:8px}.prompt-item-actions{display:flex;gap:6px;flex-wrap:wrap}.prompt-item-actions button{border:0;border-radius:8px;padding:8px 12px;cursor:pointer;font-weight:bold}.prompt-select{background:#008fa3;color:#fff}.prompt-edit{background:#e5f0f2;color:#075e6b}.prompt-delete{background:#8a5a42;color:#fff}</style>
+</head>
+<body>
+<header>
+<h1>サービス担当者会議作成支援アプリ（BlueOcean）</h1>
+<div>会議録作成条件を選択 → 音声・手入力 → AI処理用にコピー</div>
+</header>
+
+<main>
+
+<section class="card" id="settingArea">
+<h2>⚙ 基本設定：サービス担当者会議作成条件</h2>
+<p class="description">サービス担当者会議要点の「検討内容」の文字数条件を選択してください。選択した条件は「AI処理用にコピー」に自動反映されます。</p>
+
+<div class="setting-box">
+<div class="setting-label">検討内容の文字数</div>
+<label class="pattern-option">
+<input type="radio" name="lengthSetting" value="1000" onchange="setLengthSetting('1000')">
+<span><strong>1000文字以内</strong><br><small>「検討内容記載時のルール」に1000文字以内を設定します。</small></span>
+</label>
+<label class="pattern-option" style="margin-top:8px">
+<input type="radio" name="lengthSetting" value="none" onchange="setLengthSetting('none')">
+<span><strong>文字数制限なし</strong><br><small>検討内容全体の文字数制限を設定しません。</small></span>
+</label>
+<div id="lengthStatus" class="status">現在の設定：検討内容1000文字以内</div>
+
+<div class="setting-label" style="margin-top:18px;">結論の文字数</div>
+<label class="pattern-option">
+<input type="radio" name="conclusionLengthSetting" value="1000" onchange="setConclusionLengthSetting('1000')">
+<span><strong>1000文字以内</strong><br><small>「結論」の内容を1000文字以内に設定します。</small></span>
+</label>
+<label class="pattern-option" style="margin-top:8px">
+<input type="radio" name="conclusionLengthSetting" value="none" onchange="setConclusionLengthSetting('none')">
+<span><strong>文字数制限なし</strong><br><small>「結論」に文字数制限を設定しません。</small></span>
+</label>
+<div id="conclusionLengthStatus" class="status">現在の設定：1000文字以内</div>
+</div>
+</section>
+
+<section class="card">
+<h2>① 音声・手入力</h2>
+<p class="description">
+サービス担当者会議で共有・検討した内容、本人・家族の発言、各サービス事業所からの報告・意見、ケアマネジャーの判断、医師からの意見、今後の支援方針などを入力してください。
+<br><br>
+<strong>Windowsの場合は「Windowsキー＋H」で音声入力できます。</strong>
+</p>
+<textarea id="memo" placeholder="ここにサービス担当者会議で話した内容や会議録に残したい内容を入力してください。"></textarea>
+</section>
+
+<section class="card">
+<h2>② AI処理用にコピー</h2>
+<p class="description">
+「AI処理用にコピー」を押すと、選択した文字数条件・サービス担当者会議プロンプト・今回の音声入力・手入力内容をまとめてコピーします。
+<br><br>
+コピーした内容を、ChatGPT・Gemini・Claudeなど利用するAIへ貼り付けてください。
+</p>
+
+<button id="copyButton" class="copy-button" onclick="copyAI()">📋 AI処理用にコピー</button>
+<div id="cs" class="status">まだコピーされていません。</div>
+
+<div id="homeArea">
+<div id="newCaseArea" style="display:none;text-align:center;margin:16px 0;">
+<button type="button" id="newCaseButton" onclick="startNewMeetingRecord()">＋ 新しいサービス担当者会議を作成</button>
+</div>
+
+<div id="homeStatus" class="status success" style="display:none;">✓ コピーが完了しました。</div>
+
+<button class="scroll-top-button" onclick="scrollToTop()">▲ トップに戻る</button>
+<button class="home-button" onclick="goHome()">⌂ トップ画面へ戻る</button>
+</div>
+</section>
+
+<section class="card edit-area" id="promptLibraryArea">
+<h2>⚙ サービス担当者会議プロンプト</h2>
+<div class="edit-note">
+ここでは、AIに使わせる「サービス担当者会議プロンプト」を自分で管理できます。<br>
+まず「今使っているプロンプト」を確認してください。文章を直接編集して保存できます。<br>
+別のプロンプトを追加した場合は、上の選択欄から使いたいものを選べます。
+</div>
+
+<div class="setting-box">
+<div class="setting-label">① 今使っているプロンプト</div>
+<div id="activePromptName" class="status success" style="font-size:16px;font-weight:700;">標準プロンプト</div>
+<div style="margin-top:10px;">
+<label for="promptSelector" style="font-weight:700;display:block;margin-bottom:6px;">使うプロンプトを選択</label>
+<select id="promptSelector" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #c9dde1;border-radius:10px;font-size:15px;background:#fff;"></select>
+</div>
+</div>
+
+<div class="setting-box">
+<div class="setting-label">② 今のプロンプトを確認・編集</div>
+<p class="description" style="margin-bottom:10px;">下の文章が、現在選択しているプロンプトの全文です。必要なところを自由に追加・修正できます。</p>
+<label for="selectedPromptName" style="font-weight:700;display:block;margin-bottom:6px;">プロンプト名</label>
+<input id="selectedPromptName" type="text" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #c9dde1;border-radius:10px;margin-bottom:10px;font-size:14px;">
+<label for="selectedPromptText" style="font-weight:700;display:block;margin-bottom:6px;">プロンプト本文（全文）</label>
+<textarea id="selectedPromptText" class="prompt-editor" style="min-height:520px;"></textarea>
+<div class="edit-actions">
+<button type="button" class="save-button" onclick="saveSelectedMeetingPrompt()">💾 このプロンプトを保存</button>
+<button type="button" class="restore-button" onclick="restoreSelectedMeetingPrompt()">↩ 標準プロンプトに戻す</button>
+<button type="button" class="clear-button" onclick="deleteSelectedMeetingPrompt()">🗑 このプロンプトを削除</button>
+</div>
+<div id="selectedPromptStatus" class="status">現在選択しているプロンプトを表示しています。</div>
+</div>
+
+<div class="setting-box">
+<div class="setting-label">③ 新しいプロンプトを追加</div>
+<p class="description" style="margin-bottom:10px;">今のプロンプトとは別に、新しい作成ルールを登録したい場合はこちらを使います。</p>
+<button type="button" id="showAddPromptButton" class="save-button" onclick="showAddPromptForm()">＋ 新しいプロンプトを作る</button>
+<div id="addPromptForm" style="display:none;margin-top:14px;">
+<label for="newPromptName" style="font-weight:700;display:block;margin-bottom:6px;">新しいプロンプトの名前</label>
+<input id="newPromptName" type="text" placeholder="例：サービス担当者会議・更新時" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #c9dde1;border-radius:10px;margin-bottom:10px;font-size:14px;">
+<label for="newPromptText" style="font-weight:700;display:block;margin-bottom:6px;">新しいプロンプト本文</label>
+<textarea id="newPromptText" class="prompt-editor" style="min-height:420px;" placeholder="ここに新しいプロンプトを全文入力してください。"></textarea>
+<div class="edit-actions">
+<button type="button" class="save-button" onclick="addMeetingPrompt()">＋ この内容を新しいプロンプトとして保存</button>
+<button type="button" class="restore-button" onclick="cancelAddPrompt()">キャンセル</button>
+</div>
+<div id="addPromptStatus" class="status">新しいプロンプトを作成できます。</div>
+</div>
+</div>
+</section>
+
+<div style="text-align:center;margin:28px 0 10px;">
+<button type="button" class="home-button" onclick="scrollToTop()">トップに戻る</button>
+<button type="button" class="home-button" onclick="goHome()">⌂ トップ画面へ戻る</button>
+</div>
+
+<div class="bo-footer-brand">
+<img src="https://blueocean2014.github.io/BlueOcean-Portal/BlueOceanimage.png" alt="BlueOcean ロゴ">
+<div class="bo-footer-brand-text">
+<div class="bo-footer-brand-title">BLUE OCEAN PROMPT SYSTEM</div>
+<div class="bo-footer-brand-subtitle">Next Stage Care Innovation</div>
+</div>
+</div>
+
+</main>
+
+<script>
+(function(){
+const LIBRARY_KEY="bo_service_meeting_prompt_library_v2";
+const ACTIVE_KEY="bo_service_meeting_active_prompt_v2";
+const DEFAULT_PROMPT_TEXT="情報が入力されていない項目は空欄とする。\n\nただし「医師からの意見や医学的所見」の項目のみ、情報がない場合は「なし」と記載する。\n\n総括は情報が存在する項目のみ作成する。 \n\n出力本文には、指示文や設定条件（例：ケアマネ視点、200字以内 等）を一切記載しない。これらは内部処理として遵守する。 \n\nあなたは経験豊富な介護支援専門員です。以下の記録内容を基に、運営指導において指摘を受けない水準のサービス担当者会議要点を作成してください。出力は必ず下記構成で作成すること。\n\n【出力構成】■検討した項目■検討内容■結論■残された課題\n\n【検討した項目】\n\n1.利用者の現状と課題\n\n2.各サービス事業所からの報告・意見\n\n3.ケアプラン原案・今後のサービス方針\n\n【検討内容】\n\n1.利用者の現状と課題（箇条書き禁止。ケアマネ視点、180字以内で総合的に文章でまとめる）\n\n2.ケアマネジャーの所見：（専門職としての評価・課題分析・リスク整理を180字以内で簡潔にまとめる）\n\n3.利用者・家族からの意見・要望：本人：〇〇〇　家族：〇〇〇（話し言葉で記載。発言がない場合は空欄可）\n\n4.各サービス事業所からの報告・意見\n\n各サービス事業所の内容は、単なる発言記録ではなく、「現状の支援状況」「専門職としての評価」「今後の支援に関する提案」の3点を含めて、ケアマネジャーが整理統合して記載すること。\n\n「報告があった」「確認された」「提案があった」「示された」「述べられた」等の会議経過表現は使用しない。\n\n主語は「訪問介護」「通所介護」「訪問看護」「福祉用具専門相談員」等の職種名とし、各専門職の評価・支援状況・今後の対応を記録文体（常体）で簡潔に記載する。\n\n内容は支援場面が具体的にイメージできるよう、観察状況・支援内容・今後の対応を含め、それぞれの意見ごとに記載する。\n\n「利用者の現状と課題」「ケアマネジャーの所見」はケアマネジャーの視点で総括文章として記載する。\n\n「各サービス事業所からの報告・意見」は\n\n各サービス事業所ごとに区切って記載する。\n\nサービスごとの内容は、ケアマネジャーが整理統合した文章としてまとめ、サービス内では箇条書きを使用しない。\n\nサービス区分（例：施設介護職、訪問看護、福祉用具専門相談員等）のみ箇条書きとし、その後に続く内容は文章で記載する。\n\n【検討内容記載時のルール】\n\n①950文字以内で記載すること\n\n\n\n【結論】\n\n1.決定事項・今後の支援方針・サービス調整内容（新規導入・変更・継続）を具体的かつ実務的に記載（単なる羅列ではなく、ケアマネジャーが内容を整理統合した上で、各決定事項ごとに箇条書きで記載する。 ）。その上で必ず「今回のサービス担当者会議で提示したケアプラン原案について、利用者・家族・各サービス事業所と協議した結果、原案通り実施することで合意を得た。」と記載すること。\n\n2.医師からの意見や医学的な所見（ない場合はなしと記載）：\n\n【検討した項目】では1〜3は項目名のみ記載し内容は書かない。4のみ具体的内容を記載する。\n\n3.サービスの利用については、当面の間、様子を観察し、状態に変化があった際に内容を再検討する。\n\n4.上記3は必ず結論の最後に記載すること。\n\n5.　1.決定事項と記載の後に、\n\n各決定事項を\n\n①〇〇\n\n②〇〇のように箇条書で記載すること\n\nその後に2.サービスの利用についてを記載する\n\n【残された課題】\n\n1.継続検討事項や連携が必要な事項を記録する。\n\n2.（現状はしばらく状態観察とし、特に問題が無ければ次回プラン更新時にサービス担当者会議を開催して検討する。ただし、問題が発生した場合にはサービス担当者会議は開催する。問題や要望がなければ短期目標期間まで様子をみることとする。）\n\n3.上記2は必ず結論の最後に記載すること。 \n\n以上の条件を厳守し、介護支援専門員の公式記録として適切な専門的文体で作成すること。";
+let promptLibrary=[];
+let activePromptId="default";
+
+function loadPromptLibrary(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(LIBRARY_KEY)||"null");
+    if(Array.isArray(saved)&&saved.length) promptLibrary=saved;
+  }catch(e){}
+  if(!promptLibrary.length){
+    promptLibrary=[{id:"default",name:"標準プロンプト",text:DEFAULT_PROMPT_TEXT,builtin:true}];
+  }
+  activePromptId=localStorage.getItem(ACTIVE_KEY)||"default";
+  if(!promptLibrary.some(p=>p.id===activePromptId)) activePromptId=promptLibrary[0].id;
+  savePromptLibrary();
+}
+function savePromptLibrary(){
+  localStorage.setItem(LIBRARY_KEY,JSON.stringify(promptLibrary));
+  localStorage.setItem(ACTIVE_KEY,activePromptId);
+}
+
+// 標準プロンプトは今回指定された内容を初期値として使用する。
+// 既に保存済みの自作プロンプトはそのまま保持する。
+(function ensureStandardPrompt(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(LIBRARY_KEY)||"null");
+    if(Array.isArray(saved)&&saved.length){
+      const standard=saved.find(p=>p.id==="default");
+      if(standard){
+        standard.name="標準プロンプト";
+        standard.text=DEFAULT_PROMPT_TEXT;
+        standard.builtin=true;
+        localStorage.setItem(LIBRARY_KEY,JSON.stringify(saved));
+      }
+    }
+  }catch(e){}
+})();
+
+function activePrompt(){return promptLibrary.find(p=>p.id===activePromptId)||promptLibrary[0];}
+
+function renderPromptManager(){
+  const p=activePrompt(); if(!p)return;
+  const name=document.getElementById("activePromptName");
+  const selector=document.getElementById("promptSelector");
+  const editName=document.getElementById("selectedPromptName");
+  const editText=document.getElementById("selectedPromptText");
+  const status=document.getElementById("selectedPromptStatus");
+  if(name) name.textContent="現在使用中：「"+p.name+"」";
+  if(selector){
+    selector.innerHTML="";
+    promptLibrary.forEach(function(item){
+      const o=document.createElement("option");
+      o.value=item.id;
+      o.textContent=item.name+(item.builtin?"（標準）":"（自分で追加）");
+      o.selected=item.id===activePromptId;
+      selector.appendChild(o);
+    });
+  }
+  if(editName) editName.value=p.name;
+  if(editText) editText.value=p.text;
+  if(status) status.textContent="現在選択中：「"+p.name+"」";
+  const del=document.querySelector('#promptLibraryArea button[onclick="deleteSelectedMeetingPrompt()"]');
+  if(del) del.style.display=p.builtin?"none":"inline-block";
+}
+
+window.getActiveMeetingPrompt=function(){return activePrompt().text;};
+window.getActiveMeetingPromptName=function(){return activePrompt().name;};
+
+window.showAddPromptForm=function(){
+  document.getElementById("addPromptForm").style.display="block";
+  document.getElementById("showAddPromptButton").style.display="none";
+  document.getElementById("newPromptName").focus();
+};
+window.cancelAddPrompt=function(){
+  document.getElementById("addPromptForm").style.display="none";
+  document.getElementById("showAddPromptButton").style.display="inline-block";
+  document.getElementById("newPromptName").value="";
+  document.getElementById("newPromptText").value="";
+};
+window.addMeetingPrompt=function(){
+  const name=document.getElementById("newPromptName").value.trim();
+  const body=document.getElementById("newPromptText").value;
+  if(!name){alert("新しいプロンプトの名前を入力してください。");return;}
+  if(!body.trim()){alert("新しいプロンプト本文を入力してください。");return;}
+  if(promptLibrary.some(p=>p.name===name)){alert("同じ名前のプロンプトがあります。別の名前にしてください。");return;}
+  const id="custom_"+Date.now().toString(36);
+  promptLibrary.push({id:id,name:name,text:body,builtin:false});
+  activePromptId=id;
+  savePromptLibrary();
+  cancelAddPrompt();
+  renderPromptManager();
+  document.getElementById("selectedPromptStatus").textContent="✓ 新しいプロンプト「"+name+"」を追加し、現在使用するプロンプトにしました。";
+};
+window.saveSelectedMeetingPrompt=function(){
+  const p=activePrompt();
+  const name=document.getElementById("selectedPromptName").value.trim();
+  const body=document.getElementById("selectedPromptText").value;
+  if(!name){alert("プロンプト名を入力してください。");return;}
+  if(!body.trim()){alert("プロンプト本文を入力してください。");return;}
+  if(promptLibrary.some(x=>x.id!==p.id&&x.name===name)){alert("同じ名前のプロンプトがあります。別の名前にしてください。");return;}
+  p.name=name;p.text=body;savePromptLibrary();renderPromptManager();
+  document.getElementById("selectedPromptStatus").textContent="✓ 「"+name+"」を保存しました。今後はこの内容を使用します。";
+};
+window.restoreSelectedMeetingPrompt=function(){
+  const p=activePrompt();
+  if(!confirm("「"+p.name+"」を標準プロンプトの内容に戻しますか？"))return;
+  p.text=DEFAULT_PROMPT_TEXT;savePromptLibrary();renderPromptManager();
+  document.getElementById("selectedPromptStatus").textContent="✓ 標準プロンプトの内容に戻しました。";
+};
+window.deleteSelectedMeetingPrompt=function(){
+  const p=activePrompt();
+  if(p.builtin){alert("標準プロンプトは削除できません。");return;}
+  if(!confirm("「"+p.name+"」を削除しますか？"))return;
+  promptLibrary=promptLibrary.filter(x=>x.id!==p.id);
+  activePromptId="default";savePromptLibrary();renderPromptManager();
+};
+
+document.addEventListener("DOMContentLoaded",function(){
+  loadPromptLibrary();
+  const selector=document.getElementById("promptSelector");
+  if(selector) selector.addEventListener("change",function(){
+    activePromptId=this.value;savePromptLibrary();renderPromptManager();
+  });
+  renderPromptManager();
+});
+})();
+</script>
+</body>
+</html>
