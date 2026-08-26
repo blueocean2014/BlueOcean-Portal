@@ -242,6 +242,7 @@ ${memo}`;
       status.textContent = "✓ AI処理用の内容をコピーしました。";
     }
   } catch (err) {
+    // HTTPS等でClipboard APIが使えない環境でも動作する代替処理
     const temp = document.createElement("textarea");
     temp.value = text;
     temp.style.position = "fixed";
@@ -271,9 +272,11 @@ ${memo}`;
         status.className = "status success";
         status.textContent = "✓ AI処理用の内容をコピーしました。";
       }
-    } else if (status) {
-      status.className = "status";
-      status.textContent = "コピーできませんでした。ブラウザの権限を確認してください。";
+    } else {
+      if (status) {
+        status.className = "status";
+        status.textContent = "コピーできませんでした。ブラウザの権限を確認してください。";
+      }
     }
   }
 };
@@ -406,6 +409,7 @@ document.addEventListener("DOMContentLoaded",function(){
   });
   renderPromptManager();
 });
+})();
 })();
 </script>
 </body>
