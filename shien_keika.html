@@ -14,8 +14,8 @@
 
 body{
   margin:0;
-  background:#eef5f7;
-  color:#203238;
+  background:#f4fbff;
+  color:#185477;
   font-family:-apple-system,BlinkMacSystemFont,"Yu Gothic","Meiryo",sans-serif;
 }
 
@@ -24,7 +24,7 @@ body{
 ===================================================== */
 
 header{
-  background:linear-gradient(135deg,#006b7a,#008fa3);
+  background:linear-gradient(135deg,#70dcfa 0%,#28bcef 38%,#138ee0 72%,#0875c9 100%);
   color:white;
   padding:24px 16px;
   box-shadow:0 2px 8px rgba(0,0,0,.15);
@@ -99,7 +99,7 @@ main{
 h2{
   font-size:18px;
   margin:0 0 13px 0;
-  color:#075e6b;
+  color:#0872c5;
 }
 
 /* =====================================================
@@ -125,8 +125,8 @@ label{
 }
 
 label:hover{
-  background:#edf9fb;
-  border-color:#70b9c3;
+  background:#eefaff;
+  border-color:#8bd4ee;
 }
 
 input[type=checkbox]{
@@ -153,7 +153,7 @@ textarea{
 }
 
 textarea:focus{
-  border-color:#008fa3;
+  border-color:#0875c9;
   box-shadow:0 0 0 2px rgba(0,143,163,.12);
 }
 
@@ -182,7 +182,7 @@ button:hover{
 }
 
 .copy-button{
-  background:linear-gradient(135deg,#007c8c,#009caf);
+  background:linear-gradient(90deg,#18a98b,#087f68);
   font-weight:bold;
   font-size:16px;
   padding:14px 18px;
@@ -193,7 +193,15 @@ button:hover{
 }
 
 .scroll-top-button{
-  background:#607d83;
+  background:#243b6b;
+  font-weight:bold;
+  font-size:16px;
+  width:100%;
+  margin-top:10px;
+  padding:14px;
+}
+.bo-final-top-button{
+  background:#243b6b;
   font-weight:bold;
   font-size:16px;
   width:100%;
@@ -202,7 +210,7 @@ button:hover{
 }
 
 .home-button{
-  background:#075e6b;
+  background:#243b6b;
   font-weight:bold;
   font-size:16px;
   width:100%;
@@ -262,7 +270,7 @@ button:hover{
    スマートフォン
 ===================================================== */
 
-.pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.pattern-option{align-items:flex-start;background:#f8fcfd;border:1px solid #c9dde1}.pattern-option input{margin-top:3px}.pattern-option small{font-size:12px;color:#53686d;line-height:1.5}.pattern-option:has(input:checked){border-color:#008fa3;background:#eef9fb;box-shadow:0 0 0 2px rgba(0,143,163,.10)}
+.pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.pattern-option{align-items:flex-start;background:#f8fcfd;border:1px solid #c9dde1}.pattern-option input{margin-top:3px}.pattern-option small{font-size:12px;color:#53686d;line-height:1.5}.pattern-option:has(input:checked){border-color:#0875c9;background:#eefaff;box-shadow:0 0 0 2px rgba(0,143,163,.10)}
 
 .usage-card{
   margin-top:12px;
@@ -291,7 +299,7 @@ button:hover{
   padding:10px 8px 10px 12px;
   font-size:14px;
   line-height:1.6;
-  color:#075e6b;
+  color:#0872c5;
   text-align:left;
 }
 
@@ -308,7 +316,7 @@ button:hover{
   margin-top:16px;
   padding-top:14px;
   border-top:1px solid #c9e8f4;
-  color:#075e6b;
+  color:#0872c5;
   font-size:14px;
   line-height:1.7;
 }
@@ -386,20 +394,20 @@ button:hover{
   font-size:13px;
   line-height:1.7;
   color:#52676d;
-  background:#f5fafb;
+  background:#f9fdff;
   border:1px solid #dcebed;
   border-radius:10px;
   padding:11px;
 }
 .edit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
 .edit-card{border:1px solid #c9dde1;border-radius:10px;padding:12px;background:#fff}
-.edit-title{font-weight:bold;color:#075e6b;margin-bottom:7px}
+.edit-title{font-weight:bold;color:#0872c5;margin-bottom:7px}
 .edit-preview{white-space:pre-wrap;font-size:13px;line-height:1.55;background:#f9fcfc;border:1px solid #e3eef0;border-radius:8px;padding:8px;max-height:100px;overflow:auto}
 .edit-textarea{width:100%;min-height:150px;box-sizing:border-box;margin-top:8px}
 .edit-btn{background:#607d83;padding:8px 12px;font-size:13px}
 .edit-save{background:#075e6b}
 .edit-delete{background:#8b4c4c}
-.edit-add{background:#075e6b;width:100%;margin-top:8px}
+.edit-add{background:#0875c9;width:100%;margin-top:8px}
 .edit-add-area{margin-top:18px;padding-top:16px;border-top:1px solid #dcebed}
 .edit-add-area input,.edit-add-area textarea{margin-top:7px}
 #addTemporaryCategoryName,
@@ -422,7 +430,7 @@ button:hover{
   font-size:13px;
   line-height:1.6;
   color:#52666b;
-  background:#f5fafb;
+  background:#f9fdff;
   border:1px solid #dcebed;
   border-radius:10px;
   padding:10px 12px;
@@ -470,7 +478,7 @@ button:hover{
   background:#607d83;
   color:#fff;
 }
-.bo-edit-btn.save{background:#075e6b;}
+.bo-edit-btn.save{background:#0875c9;}
 .bo-edit-btn.delete{background:#8a5a42;}
 .bo-edit-btn.restore{background:#527b62;}
 .bo-edit-add{
@@ -484,7 +492,7 @@ button:hover{
   margin:8px 0 4px;
   font-size:12px;
   font-weight:bold;
-  color:#075e6b;
+  color:#0872c5;
 }
 .edit-name-input{
   width:100%;
@@ -663,7 +671,7 @@ button:hover{
 </div>
 
 <div class="edit-add-area" id="temporaryCategoryArea">
-<h3 style="margin:0;color:#075e6b;">今回だけ使用する区分を追加</h3>
+<h3 style="margin:0;color:#0872c5;">今回だけ使用する区分を追加</h3>
 <input id="addTemporaryCategoryName" type="text" placeholder="区分名（例：退院前カンファレンス）">
 <button type="button" class="edit-add" onclick="addTemporaryCategory()">＋ 今回だけの区分を追加</button>
 <div id="temporaryCategoryStatus" class="edit-note" style="margin-top:8px;">
@@ -798,7 +806,7 @@ onclick="goHome()"
 <div id="editGrid" class="edit-grid"></div>
 
 <div class="edit-add-area">
-<h3 style="margin:0;color:#075e6b;">区分を追加</h3>
+<h3 style="margin:0;color:#0872c5;">区分を追加</h3>
 <input id="addCategoryName" type="text" placeholder="区分名（例：退院調整）">
 <textarea id="addCategoryTemplate" placeholder="定型文"></textarea>
 <button type="button" class="edit-add" onclick="addCustomCategory()">＋ 区分と定型文を追加</button>
@@ -814,7 +822,7 @@ onclick="goHome()"
     type="button"
     class="home-button bo-final-top-button"
     onclick="scrollToTop()"
-  >トップに戻る</button>
+  >▲ トップに戻る</button>
 
 <button
     type="button"
@@ -1914,7 +1922,7 @@ updatePatternUI();
 function goHome(){
 
 window.location.href =
-"https://blueocean2014.github.io/BlueOcean-Portal/";
+"https://blueocean2014.github.io/BlueOcean-Support/";
 
 }
 </script>
