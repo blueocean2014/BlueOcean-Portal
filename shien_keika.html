@@ -30,6 +30,24 @@ header{
   box-shadow:0 2px 8px rgba(0,0,0,.15);
 }
 
+.header-inner{
+  max-width:900px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px;
+}
+
+.header-description{
+  flex:1;
+  max-width:430px;
+  font-size:15px;
+  line-height:1.7;
+  text-align:left;
+  opacity:.98;
+}
+
 header h1{
   font-size:24px;
   margin:0 0 6px 0;
@@ -246,7 +264,87 @@ button:hover{
 
 .pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.pattern-option{align-items:flex-start;background:#f8fcfd;border:1px solid #c9dde1}.pattern-option input{margin-top:3px}.pattern-option small{font-size:12px;color:#53686d;line-height:1.5}.pattern-option:has(input:checked){border-color:#008fa3;background:#eef9fb;box-shadow:0 0 0 2px rgba(0,143,163,.10)}
 
+.usage-card{
+  margin-top:12px;
+  border:2px solid #8bd4ee;
+  border-radius:20px;
+  background:linear-gradient(180deg,#f9fdff 0%,#eefaff 100%);
+  box-shadow:0 6px 18px rgba(30,120,165,.08);
+  padding:20px 24px;
+}
+
+.usage-card h2{
+  font-size:18px;
+  margin:0 0 14px;
+  color:#0875c9;
+  text-align:center;
+}
+
+.usage-flow{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+
+.usage-step{
+  position:relative;
+  padding:10px 8px 10px 12px;
+  font-size:14px;
+  line-height:1.6;
+  color:#075e6b;
+  text-align:left;
+}
+
+.usage-step:not(:last-child){
+  border-bottom:1px dashed #b8dfec;
+}
+
+.usage-step span{
+  color:#0875c9;
+  font-size:13px;
+}
+
+.usage-note{
+  margin-top:16px;
+  padding-top:14px;
+  border-top:1px solid #c9e8f4;
+  color:#075e6b;
+  font-size:14px;
+  line-height:1.7;
+}
+
+.usage-note strong{
+  color:#0875c9;
+}
+
 @media(max-width:600px){
+
+  .usage-card{
+    padding:17px 16px;
+  }
+
+  .usage-card h2{
+    font-size:18px;
+  }
+
+  .usage-step{
+    font-size:13px;
+    padding:9px 6px 9px 8px;
+  }
+
+  .usage-step span{
+    font-size:12px;
+  }
+
+  .header-inner{
+    display:block;
+  }
+
+  .header-description{
+    margin-top:12px;
+    max-width:none;
+    font-size:14px;
+  }
 
   .grid{
     grid-template-columns:1fr;
@@ -486,16 +584,17 @@ button:hover{
 ===================================================== -->
 
 <header>
+<div class="header-inner">
+  <h1>
+    <span class="app-title-sub">ケアマネが自ら育てるAI業務支援アプリ</span>
+    <span class="app-title-main">支援経過作成支援</span>
+  </h1>
 
-<h1>
-  <span class="app-title-sub">ケアマネが自ら育てるAI業務支援アプリ</span>
-  <span class="app-title-main">支援経過作成支援</span>
-</h1>
-
-<div>
-区分を選択 → 音声・手入力 → AI処理用にコピー
+  <div class="header-description">
+    ケアマネの仕事を、AIでもっと簡単に。<br>
+    ボタンを押して話すだけで記録ができるアプリです。
+  </div>
 </div>
-
 </header>
 
 <div style="max-width:900px;margin:0 auto;padding:0 12px;box-sizing:border-box;">
@@ -505,32 +604,49 @@ button:hover{
 
 
 <!-- =====================================================
-     基本設定：支援経過作成パターン
+     使い方の説明
+===================================================== -->
+<section class="card usage-card">
+<h2>使い方の説明</h2>
+<div class="usage-flow">
+  <div class="usage-step"><strong>① 支援経過の種類を選ぶ</strong></div>
+  <div class="usage-step"><strong>② 区分を選ぶ（複数選択可能）</strong></div>
+  <div class="usage-step"><strong>③ 音声・手入力にて状況を記載する</strong><br><span>簡単でいいですよ。ＡＩがまとめてくれますから</span></div>
+  <div class="usage-step"><strong>④ ＡＩ処理用にコピーする</strong></div>
+  <div class="usage-step"><strong>⑤ ChatGPT・Gemini・Claudeなどあなたのお好きなＡＩに貼り付けてください。</strong></div>
+
+<div class="usage-note">
+  <strong>🌱 慣れてきた方へ</strong><br>
+  下の「定型文・区分を自分用に編集」で、自分の好きな区分や定型文に編集したり、新しく登録することもできます。
+</div>
+</div>
+</section>
+
+<!-- =====================================================
+     支援経過の種類を選択
 ===================================================== -->
 <section class="card" id="patternArea">
-<h2>⚙ 基本設定：支援経過作成パターン</h2>
-<p class="description">作成する支援経過の書式を選択してください。選択したパターンのルールが「AI処理用にコピー」に自動反映されます。</p>
+<h2>支援経過の種類を選んでください</h2>
+<p class="description">作成したい支援経過の形を選択してください。選択した内容に応じて、「AI処理用にコピー」に使用する作成ルールが自動で反映されます。</p>
 <div class="pattern-grid">
   <label class="pattern-option">
     <input type="radio" name="supportPattern" value="A" onchange="setSupportPattern('A')">
-    <span><strong>支援経過Aパターン</strong><br><small>区分・内容・ケアマネ判断・利用者、家族の考え方に分ける</small></span>
+    <span><strong>📝 内容を項目ごとに整理</strong><br><small>区分・内容・ケアマネの判断・利用者・家族の考えを分けて記録</small></span>
   </label>
   <label class="pattern-option">
     <input type="radio" name="supportPattern" value="B" onchange="setSupportPattern('B')">
-    <span><strong>支援経過Bパターン</strong><br><small>区分は分け、内容の中にケアマネ判断・利用者、家族の考え方も含める</small></span>
+    <span><strong>💬 内容の中に考えもまとめる</strong><br><small>区分を分け、内容の中にケアマネの判断・利用者・家族の考えを含めて記録</small></span>
   </label>
   <label class="pattern-option">
     <input type="radio" name="supportPattern" value="C" onchange="setSupportPattern('C')">
-    <span><strong>支援経過Cパターン</strong><br><small>区分は分け、 定型文の【】の区分名を外し、本文を自然につなげる</small></span>
+    <span><strong>🌿 自然につながる文章</strong><br><small>区分を分けながら、区分名を表示せず自然な文章として記録</small></span>
   </label>
   <label class="pattern-option">
     <input type="radio" name="supportPattern" value="D" onchange="setSupportPattern('D')">
-    <span><strong>支援経過Dパターン</strong><br><small>区分は分け、 内容を一括して記載する</small></span>
+    <span><strong>✨ 一つにまとめて記録</strong><br><small>区分を分けず、内容を一つにまとめて記録</small></span>
   </label>
 </div>
-<div id="patternStatus" class="status">現在の設定：支援経過Aパターン</div>
 </section>
-
 
 <!-- =====================================================
      ① 区分を選択
@@ -680,7 +796,7 @@ onclick="goHome()"
 <h2>⚙ 定型文・区分を自分用に編集</h2>
 <div class="edit-note">
 ここでは、この端末で使用する区分と定型文を自由に編集できます。<br>
-追加・編集・削除した内容は、この端末のブラウザに保存されます。GitHubの元データは変更されません。
+追加・編集・削除した内容は、この端末のブラウザに保存されるため、それぞれ個々の端末の中でしか変更ができません。パソコンや携帯等複数台で管理される方はそれぞれの変更が必要になりますのでご注意ください。
 </div>
 
 <div id="editGrid" class="edit-grid"></div>
