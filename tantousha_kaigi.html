@@ -5,22 +5,38 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>サービス担当者会議要点作成支援アプリ（BlueOcean）</title>
 <style>
-body{margin:0;background:#eef5f7;color:#203238;font-family:-apple-system,BlinkMacSystemFont,"Yu Gothic","Meiryo",sans-serif}
-header{background:linear-gradient(135deg,#006b7a,#008fa3);color:white;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+body{margin:0;background:#f4fbff;color:#185477;font-family:-apple-system,BlinkMacSystemFont,"Yu Gothic","Meiryo",sans-serif}
+header{background:linear-gradient(135deg,#70dcfa 0%,#28bcef 38%,#138ee0 72%,#0875c9 100%);color:white;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
 header h1{font-size:21px;margin:0 0 6px 0;letter-spacing:.3px}
+.header-inner{
+  max-width:1120px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px;
+}
+.header-description{
+  flex:1;
+  max-width:430px;
+  font-size:15px;
+  line-height:1.7;
+  text-align:left;
+  opacity:.98;
+}
 header div{font-size:13px;opacity:.95}
 main{max-width:900px;margin:auto;padding:12px}
 .card{background:white;padding:16px;margin:12px 0;border-radius:15px;box-shadow:0 3px 10px rgba(0,80,100,.10);border:1px solid #dcebed}
-h2{font-size:18px;margin:0 0 13px 0;color:#075e6b}
+h2{font-size:18px;margin:0 0 13px 0;color:#0872c5}
 .description{font-size:14px;line-height:1.7;color:#44575c;background:#f3f7f9;border:1px solid #d9e3e6;border-radius:8px;padding:10px 12px;box-sizing:border-box}
 textarea{width:100%;box-sizing:border-box;border:1px solid #c9dde1;border-radius:10px;padding:12px;font-size:16px;line-height:1.7;min-height:220px;resize:vertical;outline:none}
 textarea:focus{border-color:#008fa3;box-shadow:0 0 0 2px rgba(0,143,163,.12)}
 button{border:0;border-radius:10px;color:white;padding:12px 16px;font-size:15px;margin:4px 2px;cursor:pointer;transition:.15s}
 button:hover{opacity:.9;transform:translateY(-1px)}
-.copy-button{background:linear-gradient(135deg,#007c8c,#009caf);font-weight:bold;font-size:18px;padding:14px 18px}
+.copy-button{background:linear-gradient(90deg,#22b9ed,#0879d4);font-weight:bold;font-size:18px;padding:14px 18px}
 .copy-button.copied{background:#16803c}
 .scroll-top-button{background:#607d83;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
-.home-button{background:#075e6b;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
+.home-button{background:#0875c9;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
 .status{background:#eef8fa;border:1px solid #d4eaed;color:#24545d;padding:10px;border-radius:9px;font-size:13px;margin-top:8px;white-space:pre-wrap}
 .status.success{background:#eaf8ef;border-color:#b9dfc5;color:#17652e;font-weight:bold}
 .pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
@@ -28,6 +44,51 @@ button:hover{opacity:.9;transform:translateY(-1px)}
 .pattern-option input{margin-top:3px;width:20px;height:20px;accent-color:#008fa3}
 .pattern-option:has(input:checked){border-color:#008fa3;background:#eef9fb;box-shadow:0 0 0 2px rgba(0,143,163,.10)}
 .pattern-option small{font-size:12px;color:#53686d;line-height:1.5}
+.usage-card{
+  margin-top:12px;
+  border:2px solid #8bd4ee;
+  border-radius:20px;
+  background:linear-gradient(180deg,#f9fdff 0%,#eefaff 100%);
+  box-shadow:0 6px 18px rgba(30,120,165,.08);
+  padding:20px 24px;
+}
+.usage-card h2{
+  font-size:18px;
+  margin:0 0 14px;
+  color:#0875c9;
+  text-align:center;
+}
+.usage-flow{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+.usage-step{
+  position:relative;
+  padding:10px 8px 10px 12px;
+  font-size:14px;
+  line-height:1.6;
+  color:#075e6b;
+  text-align:left;
+}
+.usage-step:not(:last-child){
+  border-bottom:1px dashed #b8dfec;
+}
+.usage-step span{
+  color:#0875c9;
+  font-size:13px;
+}
+.usage-note{
+  margin-top:16px;
+  padding-top:14px;
+  border-top:1px solid #c9e8f4;
+  color:#075e6b;
+  font-size:14px;
+  line-height:1.7;
+}
+.usage-note strong{
+  color:#0875c9;
+}
 .setting-box{margin-top:12px;padding:12px;border:1px solid #c9dde1;border-radius:10px;background:#fbfefe}
 .setting-label{font-weight:bold;color:#075e6b;margin-bottom:8px}
 .setting-help{font-size:12px;color:#52676d;line-height:1.6;margin-top:7px}
@@ -35,7 +96,7 @@ button:hover{opacity:.9;transform:translateY(-1px)}
 .edit-note{font-size:13px;line-height:1.7;color:#52676d;background:#f5fafb;border:1px solid #dcebed;border-radius:10px;padding:11px;margin-bottom:12px}
 .prompt-editor{min-height:650px;font-size:14px;line-height:1.7}
 .edit-actions{display:flex;gap:6px;flex-wrap:wrap}
-.save-button{background:#075e6b}
+.save-button{background:#0875c9}
 .restore-button{background:#527b62}
 .clear-button{background:#8a5a42}
 .bo-footer-brand{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px auto 26px;padding:16px 0 4px;border-top:1px solid #dcebed;max-width:720px}
@@ -49,8 +110,14 @@ button:hover{opacity:.9;transform:translateY(-1px)}
  button{width:100%;margin:4px 0}
  header h1{font-size:19px}
  .edit-actions{display:block}
+ .usage-card{padding:17px 16px}
+ .usage-card h2{font-size:18px}
+ .usage-step{font-size:13px;padding:9px 6px 9px 8px}
+ .usage-step span{font-size:12px}
+ .header-inner{display:block}
+ .header-description{margin-top:12px;max-width:none;font-size:14px}
 }
-.prompt-item{border:1px solid #c9dde1;border-radius:10px;background:#fff;padding:12px;margin-top:8px}.prompt-item.active{border:2px solid #008fa3;background:#eef9fb}.prompt-item-name{font-weight:bold;color:#075e6b;margin-bottom:8px}.prompt-item-actions{display:flex;gap:6px;flex-wrap:wrap}.prompt-item-actions button{border:0;border-radius:8px;padding:8px 12px;cursor:pointer;font-weight:bold}.prompt-select{background:#008fa3;color:#fff}.prompt-edit{background:#e5f0f2;color:#075e6b}.prompt-delete{background:#8a5a42;color:#fff}</style>
+.prompt-item{border:1px solid #c9dde1;border-radius:10px;background:#fff;padding:12px;margin-top:8px}.prompt-item.active{border:2px solid #008fa3;background:#eef9fb}.prompt-item-name{font-weight:bold;color:#0872c5;margin-bottom:8px}.prompt-item-actions{display:flex;gap:6px;flex-wrap:wrap}.prompt-item-actions button{border:0;border-radius:8px;padding:8px 12px;cursor:pointer;font-weight:bold}.prompt-select{background:#0879d4;color:#fff}.prompt-edit{background:#e5f0f2;color:#075e6b}.prompt-delete{background:#8a5a42;color:#fff}</style>
 <style id="requested-title-only">
 header .app-title-main,
 header .app-title-sub{
@@ -72,13 +139,39 @@ header .app-title-sub{
 <body>
 <header>
 <h1>
-  <span class="app-title-main">ケアマネが自ら育てるAI業務支援アプリ</span>
+  <span class="app-title-main">ケアマネが自ら育てるAI業務支援Webアプリ</span>
   <span class="app-title-sub">サービス担当者会議要点作成支援</span>
 </h1>
-<div>音声・手入力 → AI処理用にコピー</div>
+<div class="header-inner">
+  <div></div>
+  <div class="header-description">
+    ケアマネの仕事を、AIでもっと簡単に。<br>
+    ボタンを押して話すだけで記録ができるアプリです。
+  </div>
+</div>
 </header>
 
 <main>
+
+<section class="card usage-card">
+<h2>使い方の説明</h2>
+<div class="usage-flow">
+  <div class="usage-step">
+    <strong>① 音声・手入力にて状況を記載する</strong><br>
+    <span>その日に話し合った内容を少しでもいいので記入してください。簡単でいいですよ。ＡＩがまとめてくれますので。</span><br>
+    <span>例）最近デイサービスの利用について消極的で休みがち。入浴ができておらず清潔保持について課題がある。本人よりデイサービスの利用が週３回から２回に変更したいと希望があった。ヘルパーより、デイサービスが減った分、入浴についてはヘルパー支援で行ってはどうかと提案してもらった。来月よりデイサービスの利用を週２回にし、ヘルパーの身体介護を１回追加して週３回しっかりと入浴できるように予定することになった。本人、家族ともに同意している。</span><br>
+    <span>まずは音声入力すること、直接記入することが大切です。</span>
+  </div>
+  <div class="usage-step">
+    <strong>② ＡＩ処理用にコピーする</strong><br>
+    <span>ChatGPT・Gemini・Claudeなどあなたのお好きなＡＩに貼り付けてください。</span>
+  </div>
+  <div class="usage-note">
+    <strong>③🌱 慣れてきた方へ</strong><br>
+    下の「サービス担当者会議プロンプト」で、自分の好きなプロンプトに編集したり、新しく登録することもできます。
+  </div>
+</div>
+</section>
 
 <section class="card">
 <h2>① 音声・手入力</h2>
@@ -117,8 +210,8 @@ header .app-title-sub{
 <h2>⚙ サービス担当者会議プロンプト</h2>
 <div class="edit-note">
 ここでは、AIに使わせる「サービス担当者会議プロンプト」を自分で管理できます。<br>
-まず「今使っているプロンプト」を確認してください。文章を直接編集して保存できます。<br>
-別のプロンプトを追加した場合は、上の選択欄から使いたいものを選べます。
+「今のプロンプトを確認・編集」では、下の文章が、現在選択しているプロンプトの全文です。必要なところを自由に追加・修正できます。<br>
+追加・編集・削除した内容は、この端末のブラウザに保存されるため、それぞれ個々の端末の中でしか変更ができません。パソコンや携帯等複数台で管理される方はそれぞれの変更が必要になりますのでご注意ください。
 </div>
 
 <div class="setting-box">
@@ -186,7 +279,7 @@ window.scrollToTop = function(){
 };
 
 window.goHome = function(){
-  location.href = 'index.html';
+  location.href = 'https://blueocean2014.github.io/BlueOcean-Portal/';
 };
 
 window.copyAI = async function(){
