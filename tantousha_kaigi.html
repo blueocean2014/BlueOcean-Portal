@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>サービス担当者会議要点作成支援アプリ</title>
+<title>サービス担当者会議要点作成支援アプリ（BlueOcean）</title>
 <style>
 body{margin:0;background:#f4fbff;color:#185477;font-family:-apple-system,BlinkMacSystemFont,"Yu Gothic","Meiryo",sans-serif}
 header{background:linear-gradient(135deg,#70dcfa 0%,#28bcef 38%,#138ee0 72%,#0875c9 100%);color:white;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
@@ -135,6 +135,34 @@ header .app-title-sub{
   header .app-title-sub{font-size:20px}
 }
 </style>
+
+<style id="meeting-input-style">
+#memo{
+  background:#f4faff !important;
+  border:4px solid #8bd4ee !important;
+  border-radius:14px !important;
+  box-sizing:border-box !important;
+}
+#memo:focus{
+  background:#f4faff !important;
+  border-color:#8bd4ee !important;
+  box-shadow:0 0 0 3px rgba(139,212,238,.20) !important;
+}
+</style>
+
+
+<style id="ai-copy-green-button-style">
+button.ai-copy-green-button,
+button.ai-copy-green-button:hover,
+button.ai-copy-green-button:focus,
+button.ai-copy-green-button:active {
+  background-color: #2e9d57 !important;
+  background: #2e9d57 !important;
+  color: #ffffff !important;
+  border-color: #2e9d57 !important;
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -159,8 +187,79 @@ header .app-title-sub{
   <div class="usage-step">
     <strong>① 音声・手入力にて状況を記載する</strong><br>
     <span>その日に話し合った内容を少しでもいいので記入してください。簡単でいいですよ。ＡＩがまとめてくれますので。</span><br>
-    <span>例）最近デイサービスの利用について消極的で休みがち。入浴ができておらず清潔保持について課題がある。本人よりデイサービスの利用が週３回から２回に変更したいと希望があった。ヘルパーより、デイサービスが減った分、入浴についてはヘルパー支援で行ってはどうかと提案してもらった。来月よりデイサービスの利用を週２回にし、ヘルパーの身体介護を１回追加して週３回しっかりと入浴できるように予定することになった。本人、家族ともに同意している。</span><br>
-    <span>まずは音声入力すること、直接記入することが大切です。</span>
+    <span>まずは音声入力すること、直接記入することが大切です。
+<div id="example-copy-area" style="margin-top:12px;padding:14px 16px;background:#f8fafc;border:1px solid #dbe4ee;border-radius:12px;">
+  <div style="margin-bottom:10px;">書き方が分からない方は、試しに例文をコピーして貼り付けてみてください。</div>
+  <div style="padding:12px;background:#ffffff;border:1px solid #dbe4ee;border-radius:10px;line-height:1.7;">
+    最近デイサービスの利用について消極的で休みがち。入浴ができておらず清潔保持について課題がある。本人よりデイサービスの利用が週３回から２回に変更したいと希望があった。ヘルパーより、デイサービスが減った分、入浴についてはヘルパー支援で行ってはどうかと提案してもらった。来月よりデイサービスの利用を週２回にし、ヘルパーの身体介護を１回追加して週３回しっかりと入浴できるように予定することになった。本人、家族ともに同意している。
+  </div>
+  <button type="button" id="copyExampleButton" onclick="copyExampleText()" style="padding:15px 30px;background:#2e9d57 !important;color:#ffffff !important;border:0;border-radius:12px;cursor:pointer;font-size:1.08em;font-weight:700;">
+    例文をコピー
+  </button>
+</div>
+<script>
+function copyExampleText() {
+  const text = "最近デイサービスの利用について消極的で休みがち。入浴ができておらず清潔保持について課題がある。本人よりデイサービスの利用が週３回から２回に変更したいと希望があった。ヘルパーより、デイサービスが減った分、入浴についてはヘルパー支援で行ってはどうかと提案してもらった。来月よりデイサービスの利用を週２回にし、ヘルパーの身体介護を１回追加して週３回しっかりと入浴できるように予定することになった。本人、家族ともに同意している。";
+  const btn = document.getElementById('copyExampleButton');
+
+  function success() {
+    if (!btn) return;
+    btn.textContent = '✓ コピーしました';
+    btn.style.background = '#1f7f45';
+    setTimeout(function() {
+      btn.textContent = '例文をコピー';
+      btn.style.background = '#2e9d57';
+    }, 1800);
+  }
+
+  function failure() {
+    if (!btn) return;
+    btn.textContent = 'コピーできませんでした';
+    btn.style.background = '#b94a48';
+    setTimeout(function() {
+      btn.textContent = '例文をコピー';
+      btn.style.background = '#2e9d57';
+    }, 1800);
+  }
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(success).catch(function() {
+      fallbackCopy();
+    });
+  } else {
+    fallbackCopy();
+  }
+
+  function fallbackCopy() {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.top = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    ta.setSelectionRange(0, ta.value.length);
+
+    let copied = false;
+    try {
+      copied = document.execCommand('copy');
+    } catch (e) {
+      copied = false;
+    }
+
+    document.body.removeChild(ta);
+
+    if (copied) {
+      success();
+    } else {
+      failure();
+    }
+  }
+}
+</script>
+</span>
   </div>
   <div class="usage-step">
     <strong>② ＡＩ処理用にコピーする</strong><br>
@@ -191,7 +290,7 @@ header .app-title-sub{
 コピーした内容を、ChatGPT・Gemini・Claudeなど利用するAIへ貼り付けてください。
 </p>
 
-<button id="copyButton" class="copy-button" onclick="copyAI()">📋 AI処理用にコピー</button>
+<button id="copyButton" class="copy-button ai-copy-green-button" onclick="copyAI()">📋 AI処理用にコピー</button>
 <div id="cs" class="status">まだコピーされていません。</div>
 
 <div id="homeArea">
@@ -207,11 +306,28 @@ header .app-title-sub{
 </section>
 
 <section class="card edit-area" id="promptLibraryArea">
-<h2>⚙ サービス担当者会議プロンプト</h2>
+<h2>⚙ 設定　サービス担当者会議プロンプト</h2>
 <div class="edit-note">
 ここでは、AIに使わせる「サービス担当者会議プロンプト」を自分で管理できます。<br>
 「今のプロンプトを確認・編集」では、下の文章が、現在選択しているプロンプトの全文です。必要なところを自由に追加・修正できます。<br>
 追加・編集・削除した内容は、この端末のブラウザに保存されるため、それぞれ個々の端末の中でしか変更ができません。パソコンや携帯等複数台で管理される方はそれぞれの変更が必要になりますのでご注意ください。
+
+<div style="margin-top:18px;padding-top:14px;border-top:1px solid #dcebed;">
+<strong>設定について</strong><br>
+ここでは、この端末で使用する「サービス担当者会議プロンプト」を、ご自身の使いやすいように自由に追加・編集・削除できます。<br>
+追加・編集・削除した内容は、<strong>現在ご使用の端末のブラウザ内に保存されます。</strong><br>
+そのため、パソコンやスマートフォンなど、複数の端末でご利用になる場合は、<strong>端末ごとに設定内容を変更する必要があります。</strong><br>
+※ある端末で行った設定変更が、別の端末へ自動的に反映されるものではありませんので、ご注意ください。
+</div>
+
+<div style="margin-top:18px;padding-top:14px;border-top:1px solid #dcebed;">
+<strong>～管理者からのお願い～</strong><br><br>
+<strong>設定に関する注意点</strong><br>
+このアプリでは、「サービス担当者会議プロンプト」を、管理者側で追加・編集・削除することも可能です。<br><br>
+ただし、このアプリは、<strong>ご利用いただく皆様が、それぞれの業務や使い方に合わせて、必要な区分や定型文を自由に追加・編集・削除し、ご自身にとって使いやすい環境を作っていくこと</strong>を基本的な考え方としています。<br><br>
+そのため、<strong>管理者が一律に皆様の設定内容を変更するのではなく、必要に応じて各自で設定を変更していただく運用を基本としています。</strong><br><br>
+ご自身の業務に合わせて、使いやすいように設定を調整しながらご利用ください。
+</div>
 </div>
 
 <div class="setting-box">
