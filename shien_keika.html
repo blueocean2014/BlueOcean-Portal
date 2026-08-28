@@ -184,8 +184,10 @@ button:hover{
 .copy-button{
   background:linear-gradient(90deg,#18a98b,#087f68);
   font-weight:bold;
-  font-size:16px;
-  padding:14px 18px;
+  font-size:18px;
+  padding:17px 24px;
+  min-width:280px;
+  box-shadow:0 4px 10px rgba(0,100,90,.16);
 }
 
 .copy-button.copied{
@@ -200,14 +202,7 @@ button:hover{
   margin-top:10px;
   padding:14px;
 }
-.bo-final-top-button{
-  background:#243b6b;
-  font-weight:bold;
-  font-size:16px;
-  width:100%;
-  margin-top:10px;
-  padding:14px;
-}
+
 
 .home-button{
   background:#243b6b;
@@ -270,7 +265,10 @@ button:hover{
    スマートフォン
 ===================================================== */
 
-.pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.pattern-option{align-items:flex-start;background:#f8fcfd;border:1px solid #c9dde1}.pattern-option input{margin-top:3px}.pattern-option small{font-size:12px;color:#53686d;line-height:1.5}.pattern-option:has(input:checked){border-color:#0875c9;background:#eefaff;box-shadow:0 0 0 2px rgba(0,143,163,.10)}
+.pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}.pattern-option{display:block;align-items:flex-start;background:#f8fcfd;border:1px solid #c9dde1;padding:14px;border-radius:12px}
+.pattern-option{cursor:pointer;}
+.pattern-output-options{cursor:default;}
+.pattern-option>input{display:none}.pattern-option>span{display:block}.pattern-option small{font-size:12px;color:#53686d;line-height:1.5}.pattern-option:has(>input:checked),.pattern-option.pattern-selected{border-color:#3b9b68;background:#f0fff5;box-shadow:0 0 0 3px rgba(59,155,104,.16)}.pattern-output-wrap{margin-top:12px;padding-top:10px;border-top:1px dashed #c9dde1}.pattern-output-title{font-size:12px;font-weight:700;color:#587077;margin-bottom:7px}.pattern-output-options{display:flex;flex-wrap:wrap;gap:6px}.pattern-output-option{display:flex;align-items:center;gap:7px;border:1px solid #c9dde1;border-radius:999px;background:#fff;padding:7px 10px;font-size:12px;color:#36535b;cursor:pointer;user-select:none;transition:background .15s,border-color .15s,color .15s,box-shadow .15s}.pattern-output-option .output-radio-dot{width:13px;height:13px;border:2px solid #9fb5bb;border-radius:50%;box-sizing:border-box;flex:0 0 auto;background:#fff;transition:all .15s}.pattern-output-option.is-selected{border-color:#3b9b68;background:#effaf3;color:#2f7f52;font-weight:700;box-shadow:0 0 0 2px rgba(59,155,104,.12)}.pattern-output-option.is-selected .output-radio-dot{border-color:#3b9b68;box-shadow:inset 0 0 0 3px #fff;background:#3b9b68}
 
 .usage-card{
   margin-top:12px;
@@ -536,6 +534,191 @@ button:hover{
   font-size:12px;
 }
 
+
+@media (max-width: 600px) {
+  .pattern-grid{grid-template-columns:1fr;}
+  .pattern-output-option{width:100%;box-sizing:border-box;border-radius:10px;}
+  .copy-button{width:100%;min-width:0;font-size:17px;padding:16px 18px;}
+}
+
+
+/* 音声・手入力欄を見やすくする */
+#memo{
+  border:3px solid #62b38a !important;
+  background:#f5fff8 !important;
+  border-radius:14px !important;
+  min-height:240px;
+  box-shadow:0 3px 12px rgba(38,120,75,.10);
+}
+#memo:focus{
+  border-color:#2f8f5b !important;
+  background:#ffffff !important;
+  box-shadow:0 0 0 3px rgba(47,143,91,.16);
+}
+
+
+/* 出力設定：ラジオ風の〇点を使わず、選択したボタン全体を緑色にする */
+.pattern-output-option .output-radio-dot{display:none !important;}
+.pattern-output-option.is-selected{
+  border-color:#3b9b68 !important;
+  background:#3b9b68 !important;
+  color:#fff !important;
+  font-weight:700;
+  box-shadow:0 3px 10px rgba(59,155,104,.20);
+}
+.pattern-output-option.is-selected:hover{
+  background:#348c5e !important;
+  border-color:#348c5e !important;
+  color:#fff !important;
+}
+
+
+/* 支援経過の種類：タイトルを大きく見やすく */
+.pattern-option .pattern-title{
+  font-size:1.18rem !important;
+  font-weight:800 !important;
+  line-height:1.45 !important;
+}
+.pattern-option .pattern-description{
+  font-size:1rem !important;
+  line-height:1.65 !important;
+}
+
+
+/* 設定画面への導線：文字が確実に見えるボタン */
+button[onclick*="setting"], button[onclick*="Setting"],
+button[id*="setting"], button[id*="Setting"],
+a[href*="setting"], a[href*="Setting"]{
+  color:#1f5f3b !important;
+  background:#eaf8ef !important;
+  border:2px solid #3b9b68 !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  font-size:1rem !important;
+  font-weight:800 !important;
+  padding:12px 18px !important;
+  border-radius:12px !important;
+}
+
+
+/* 支援経過選択：タイトルを大きく、ボタンとして認識しやすくする */
+.pattern-option{
+  cursor:pointer !important;
+  position:relative;
+}
+.pattern-option .pattern-title{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  min-height:52px !important;
+  padding:8px 20px !important;
+  margin:2px 0 10px !important;
+  border:3px solid #78b995 !important;
+  border-radius:999px !important;
+  background:#f5fff8 !important;
+  color:#205b3a !important;
+  font-size:1.35rem !important;
+  font-weight:900 !important;
+  line-height:1.35 !important;
+  letter-spacing:.02em !important;
+  box-shadow:0 2px 6px rgba(38,120,75,.12) !important;
+}
+.pattern-option:hover .pattern-title{
+  border-color:#3b9b68 !important;
+  background:#effaf3 !important;
+}
+.pattern-option.pattern-selected .pattern-title,
+.pattern-option:has(>input:checked) .pattern-title{
+  background:#3b9b68 !important;
+  border-color:#3b9b68 !important;
+  color:#ffffff !important;
+  box-shadow:0 3px 9px rgba(59,155,104,.22) !important;
+}
+
+
+/* 設定導線：青色の目立つボタン */
+button[onclick*="setting"], button[onclick*="Setting"],
+button[id*="setting"], button[id*="Setting"],
+a[href*="setting"], a[href*="Setting"]{
+  color:#ffffff !important;
+  background:#1976d2 !important;
+  border:2px solid #1565c0 !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  font-size:1rem !important;
+  font-weight:800 !important;
+  padding:13px 20px !important;
+  border-radius:12px !important;
+  box-shadow:0 3px 8px rgba(25,118,210,.22);
+}
+button[onclick*="setting"]:hover, button[onclick*="Setting"]:hover,
+button[id*="setting"]:hover, button[id*="Setting"]:hover,
+a[href*="setting"]:hover, a[href*="Setting"]:hover{
+  background:#1565c0 !important;
+  border-color:#0d47a1 !important;
+}
+
+
+/* 支援経過選択：大きく、丸く、押せることが一目で分かるデザイン */
+.pattern-option .pattern-title{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:calc(100% - 10px) !important;
+  min-height:68px !important;
+  padding:12px 26px !important;
+  margin:4px 5px 14px !important;
+  border:4px solid #68a9df !important;
+  border-radius:999px !important;
+  background:#f4faff !important;
+  color:#155a91 !important;
+  font-size:1.55rem !important;
+  font-weight:900 !important;
+  line-height:1.3 !important;
+  letter-spacing:.025em !important;
+  box-shadow:0 4px 10px rgba(25,118,210,.14) !important;
+  cursor:pointer !important;
+  transition:all .15s ease !important;
+}
+.pattern-option:hover .pattern-title{
+  border-color:#1976d2 !important;
+  background:#eef7ff !important;
+  transform:translateY(-1px);
+  box-shadow:0 6px 14px rgba(25,118,210,.18) !important;
+}
+.pattern-option.pattern-selected .pattern-title,
+.pattern-option:has(>input:checked) .pattern-title{
+  background:#1976d2 !important;
+  border-color:#1565c0 !important;
+  color:#ffffff !important;
+  box-shadow:0 5px 14px rgba(25,118,210,.25) !important;
+}
+
+
+/* 支援経過選択ボタン：見出しを完全中央配置 */
+.pattern-option .pattern-title{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  width:calc(100% - 10px) !important;
+  margin-left:5px !important;
+  margin-right:5px !important;
+}
+
+
+/* 支援経過3種：見出しを枠の中央に固定 */
+.pattern-option .pattern-title{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+}
+
 </style>
 
 <style id="new-case-button-blue">
@@ -583,6 +766,82 @@ button:hover{
 }
 </style>
 
+
+<style id="force-visual-fix">
+/* 今回指定された3つの支援経過選択ボタンだけを強制的に中央配置 */
+.pattern-title-force{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  text-indent:0 !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  padding-left:20px !important;
+  padding-right:20px !important;
+}
+
+/* 一つにまとめて記録：不要な空ボタンを見えない形で残さず、対象カード内の空buttonを非表示 */
+.pattern-title-force + * button:empty,
+.pattern-title-force ~ button:empty{
+  display:none !important;
+}
+</style>
+
+
+<style id="final-visible-pattern-fix">
+.pattern-title-force{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  width:100% !important;
+  box-sizing:border-box !important;
+  min-height:82px !important;
+  padding:16px 30px !important;
+  margin:0 0 14px 0 !important;
+  border:4px solid #68a9df !important;
+  border-radius:999px !important;
+  background:#f4faff !important;
+  color:#155a91 !important;
+  font-size:1.7rem !important;
+  font-weight:900 !important;
+  line-height:1.25 !important;
+  box-shadow:0 5px 12px rgba(25,118,210,.18) !important;
+}
+.pattern-option:has(input:checked) .pattern-title-force{
+  background:#1976d2 !important;
+  border-color:#1565c0 !important;
+  color:#fff !important;
+}
+</style>
+
+
+<style id="heading-size-color-fix">
+/* 3つの見出し：現在1.7rem → 5分の3の1.02rem */
+.pattern-title-force{
+  font-size:1.02rem !important;
+}
+
+/* 選択時も色を変えない：通常時と同じ見た目を維持 */
+.pattern-option:has(input:checked) .pattern-title-force{
+  background:#f4faff !important;
+  border-color:#68a9df !important;
+  color:#155a91 !important;
+}
+</style>
+
+
+<style id="final-small-button-fix">
+/* 支援経過3種：丸型ボタンの枠サイズだけ少し縮小（中央配置・文字サイズは維持） */
+.pattern-title-force{
+  min-height:64px !important;
+  padding:10px 24px !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -606,6 +865,11 @@ button:hover{
 </header>
 
 <div style="max-width:900px;margin:0 auto;padding:0 12px;box-sizing:border-box;">
+</div>
+
+
+<div style="max-width:1100px;margin:0 auto 10px;display:flex;justify-content:flex-end;padding:0 16px;">
+  
 </div>
 
 <main>
@@ -637,35 +901,46 @@ button:hover{
 <h2>支援経過の種類を選んでください</h2>
 <p class="description">作成したい支援経過の形を選択してください。選択した内容に応じて、「AI処理用にコピー」に使用する作成ルールが自動で反映されます。</p>
 <div class="pattern-grid">
-  <label class="pattern-option">
+  <div class="pattern-option" role="button" tabindex="0" onclick="setSupportPattern('A')">
     <input type="radio" name="supportPattern" value="A" onchange="setSupportPattern('A')">
-    <span><strong>📝 内容を項目ごとに整理</strong><br><small>区分・内容・ケアマネの判断・利用者・家族の考えを分けて記録</small></span>
-  </label>
-  <label class="pattern-option">
+    <span><strong class="pattern-title-force">📝 内容を項目ごとに整理</strong><br><small>区分・内容・ケアマネの判断・利用者・家族の考えを分けて記録</small></span>
+    <span class="pattern-output-wrap">
+      <span class="pattern-output-title">支援経過の出し方を変えられます</span>
+      <span class="pattern-output-options" onclick="event.stopPropagation()">
+        <span class="pattern-output-option" role="radio" tabindex="0" data-output-pattern="A" data-output-mode="normal" onclick="event.stopPropagation();setSupportOutputMode('normal','A')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setSupportOutputMode('normal','A')}"><span class="output-radio-dot"></span>標準</span>
+        <span class="pattern-output-option" role="radio" tabindex="0" data-output-pattern="A" data-output-mode="withoutCategory" onclick="event.stopPropagation();setSupportOutputMode('withoutCategory','A')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setSupportOutputMode('withoutCategory','A')}"><span class="output-radio-dot"></span>区分以外を表示</span>
+        <span class="pattern-output-option" role="radio" tabindex="0" data-output-pattern="A" data-output-mode="contentOnly" onclick="event.stopPropagation();setSupportOutputMode('contentOnly','A')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setSupportOutputMode('contentOnly','A')}"><span class="output-radio-dot"></span>内容のみを表示</span>
+      </span>
+    </span>
+  </div>
+  <div class="pattern-option" role="button" tabindex="0" onclick="setSupportPattern('B')">
     <input type="radio" name="supportPattern" value="B" onchange="setSupportPattern('B')">
-    <span><strong>🌿 自然につながる文章</strong><br><small>区分と内容に分け、定型文の支援項目は表示せず自然な文章として記録</small></span>
-  </label>
-  <label class="pattern-option">
+    <span><strong class="pattern-title-force">🌿 自然に繋がる記録</strong><br><small>区分と内容に分け、定型文の支援項目は表示せず自然な文章として記録</small></span>
+    <span class="pattern-output-wrap">
+      <span class="pattern-output-title">支援経過の出し方を変えられます</span>
+      <span class="pattern-output-options" onclick="event.stopPropagation()">
+        <span class="pattern-output-option" role="radio" tabindex="0" data-output-pattern="B" data-output-mode="normal" onclick="event.stopPropagation();setSupportOutputMode('normal','B')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setSupportOutputMode('normal','B')}"><span class="output-radio-dot"></span>標準</span>
+        <span class="pattern-output-option" role="radio" tabindex="0" data-output-pattern="B" data-output-mode="withoutCategory" onclick="event.stopPropagation();setSupportOutputMode('withoutCategory','B')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setSupportOutputMode('withoutCategory','B')}"><span class="output-radio-dot"></span>区分以外を表示</span>
+        <span class="pattern-output-option" role="radio" tabindex="0" data-output-pattern="B" data-output-mode="contentOnly" onclick="event.stopPropagation();setSupportOutputMode('contentOnly','B')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setSupportOutputMode('contentOnly','B')}"><span class="output-radio-dot"></span>内容のみを表示</span>
+      </span>
+    </span>
+  </div>
+  <div class="pattern-option" role="button" tabindex="0" onclick="setSupportPattern('C')">
     <input type="radio" name="supportPattern" value="C" onchange="setSupportPattern('C')">
-    <span><strong>✨ 一つにまとめて記録</strong><br><small>区分と内容に分け、内容を一つにまとめて記録</small></span>
-  </label>
+    <span><strong class="pattern-title-force">✨ 一つにまとめて記録</strong><br><small>区分と内容に分け、内容を一つにまとめて記録</small></span>
+    <span class="pattern-output-wrap">
+      <span class="pattern-output-title">支援経過の出し方を変えられます</span>
+      <span class="pattern-output-options" onclick="event.stopPropagation()">
+        <span class="pattern-output-option" role="radio" tabindex="0" data-output-pattern="C" data-output-mode="normal" onclick="event.stopPropagation();setSupportOutputMode('normal','C')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setSupportOutputMode('normal','C')}"><span class="output-radio-dot"></span>標準</span>
+        <span class="pattern-output-option" role="radio" tabindex="0" data-output-pattern="C" data-output-mode="withoutCategory" onclick="event.stopPropagation();setSupportOutputMode('withoutCategory','C')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setSupportOutputMode('withoutCategory','C')}"><span class="output-radio-dot"></span>区分以外を表示</span>
+        </span>
+      </span>
+    </span>
+  </div>
 </div>
 
-<div style="margin-top:16px; padding-top:14px; border-top:1px solid #ddd;">
-  <div style="font-weight:700; margin-bottom:4px;">AI出力の追加設定（通常は変更不要）</div>
-  <div style="font-size:13px; color:#666; margin-bottom:8px;">通常は「通常どおり出力する」のままで使用してください。</div>
-  <label style="display:block; margin-bottom:6px;">
-    <input type="radio" name="supportOutputMode" value="normal" onchange="setSupportOutputMode('normal')">
-    通常どおり出力する
-  </label>
-  <label style="display:block; margin-bottom:6px;">
-    <input type="radio" name="supportOutputMode" value="withoutCategory" onchange="setSupportOutputMode('withoutCategory')">
-    区分以外を表示します
-  </label>
-  <label style="display:block;">
-    <input type="radio" name="supportOutputMode" value="contentOnly" onchange="setSupportOutputMode('contentOnly')">
-    内容のみ表示します
-  </label>
+<div style="margin-top:14px;font-size:12px;color:#687b80;text-align:center;">
+  ※通常は「標準」のままで大丈夫です。必要なときだけ変更してください。
 </div>
 </section>
 
@@ -789,6 +1064,8 @@ style="display:none;"
 
 </div>
 
+
+<div style="display:flex;justify-content:center;margin:18px 0 12px;"><button type="button" onclick="openAppSettings()" style="border:1px solid #cbd5e1;background:#fff;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:600;">① 定型文・区分を自分用に編集する方はこちらはこちら</button></div>
 <button
 class="scroll-top-button"
 onclick="scrollToTop()"
@@ -811,10 +1088,11 @@ onclick="goHome()"
 
 <!-- =====================================================
      個人用 区分・定型文編集エリア
-     ※通常利用画面とは十分な間隔を空けて下部に配置
+     ※設定画面から編集します
 ===================================================== -->
-<section class="card" id="editArea">
-<h2>⚙ 定型文・区分を自分用に編集</h2>
+<div id="editAreaPlaceholder" style="display:none;"></div>
+<section class="card" id="editArea" style="display:none;">
+<h2>① 定型文・区分を自分用に編集する方はこちら</h2>
 <div class="edit-note">
 ここでは、この端末で使用する区分と定型文を自由に編集できます。<br>
 追加・編集・削除した内容は、この端末のブラウザに保存されるため、それぞれ個々の端末の中でしか変更ができません。パソコンや携帯等複数台で管理される方はそれぞれの変更が必要になりますのでご注意ください。
@@ -834,19 +1112,7 @@ onclick="goHome()"
 
 
 
-<div style="text-align:center;margin:28px 0 10px;">
-  <button
-    type="button"
-    class="home-button bo-final-top-button"
-    onclick="scrollToTop()"
-  >▲ トップに戻る</button>
 
-<button
-    type="button"
-    class="home-button"
-    onclick="goHome()"
-  >⌂ トップ画面に戻る</button>
-</div>
 
 
 <div class="bo-footer-brand">
@@ -1224,11 +1490,22 @@ update();
 
 const SUPPORT_PATTERN_KEY = "bo_support_pattern";
 let supportPattern = localStorage.getItem(SUPPORT_PATTERN_KEY) || "A";
-const SUPPORT_OUTPUT_MODE_KEY = "bo_support_output_mode";
-let supportOutputMode = localStorage.getItem(SUPPORT_OUTPUT_MODE_KEY) || "normal";
+const SUPPORT_OUTPUT_MODE_KEY = "bo_support_output_modes";
+const SUPPORT_OUTPUT_MODES = ["normal","withoutCategory","contentOnly"];
+let supportOutputModes = {A:"normal", B:"normal", C:"normal"};
+try{
+  const savedModes = JSON.parse(localStorage.getItem(SUPPORT_OUTPUT_MODE_KEY) || "null");
+  if(savedModes && typeof savedModes === "object"){
+    ["A","B","C"].forEach(function(p){
+      if(SUPPORT_OUTPUT_MODES.includes(savedModes[p])) supportOutputModes[p] = savedModes[p];
+    });
+  }
+}catch(e){}
+let supportOutputMode = supportOutputModes[supportPattern] || "normal";
 
 function setSupportPattern(pattern){
   supportPattern = ["A","B","C"].includes(pattern) ? pattern : "A";
+  supportOutputMode = supportOutputModes[supportPattern] || "normal";
   localStorage.setItem(SUPPORT_PATTERN_KEY, supportPattern);
   updatePatternUI();
 }
@@ -1236,17 +1513,33 @@ function setSupportPattern(pattern){
 function updatePatternUI(){
   const radios = document.querySelectorAll('input[name="supportPattern"]');
   radios.forEach(function(r){ r.checked = r.value === supportPattern; });
+
+  const cards = document.querySelectorAll('.pattern-option[role="button"]');
+  cards.forEach(function(card){
+    const input = card.querySelector('input[name="supportPattern"]');
+    card.classList.toggle('pattern-selected', !!input && input.value === supportPattern);
+  });
+
   const status = document.getElementById("patternStatus");
   if(status){
     status.textContent = "現在の設定：" + (supportPattern === "A" ? "支援経過Aパターン" : supportPattern === "B" ? "支援経過Bパターン" : "支援経過Cパターン");
   }
-  const outputRadios = document.querySelectorAll('input[name="supportOutputMode"]');
-  outputRadios.forEach(function(r){ r.checked = r.value === supportOutputMode; });
+
+  const outputOptions = document.querySelectorAll('.pattern-output-option[data-output-mode]');
+  outputOptions.forEach(function(option){
+    const optionPattern = option.getAttribute('data-output-pattern');
+    const selected = optionPattern === supportPattern &&
+      option.getAttribute('data-output-mode') === (supportOutputModes[supportPattern] || "normal");
+    option.classList.toggle('is-selected', selected);
+    option.setAttribute('aria-checked', selected ? 'true' : 'false');
+  });
 }
 
-function setSupportOutputMode(mode){
-  supportOutputMode = ["normal", "withoutCategory", "contentOnly"].includes(mode) ? mode : "normal";
-  localStorage.setItem(SUPPORT_OUTPUT_MODE_KEY, supportOutputMode);
+function setSupportOutputMode(mode, pattern){
+  const targetPattern = ["A","B","C"].includes(pattern) ? pattern : supportPattern;
+  supportOutputModes[targetPattern] = SUPPORT_OUTPUT_MODES.includes(mode) ? mode : "normal";
+  supportOutputMode = supportOutputModes[supportPattern] || "normal";
+  localStorage.setItem(SUPPORT_OUTPUT_MODE_KEY, JSON.stringify(supportOutputModes));
   updatePatternUI();
 }
 
@@ -1450,6 +1743,7 @@ function copyAI() {
    .filter(Boolean);
 
   const additionalInput = inputParts.join("\n");
+  supportOutputMode = supportOutputModes[supportPattern] || "normal";
 
   const finalText = `あなたは経験豊富な介護支援専門員です。
 以下のプロンプトを一字一句変更せず、そのまま最優先の作成ルールとして使用してください。
@@ -1461,19 +1755,19 @@ ${pattern === "B" ? "支援経過Bパターン" : pattern === "C" ? "支援経�
 ${selectedPrompt}
 
 【AI出力形式】
-${supportOutputMode === "normal" ? "通常どおり出力する" : supportOutputMode === "contentOnly" ? "内容のみ表示します" : "区分以外を表示します"}
+${supportOutputMode === "normal" ? "標準" : supportOutputMode === "contentOnly" ? "" : "区分以外を表示"}
 
 【選択された区分】
 ${selectedCategories || "なし"}
 
 【AI出力形式の絶対ルール】
-「AI出力形式」が「通常どおり出力する」の場合は、選択された支援経過パターンのプロンプトに定められた通常の出力形式で出力すること。追加の出力形式による変更は行わないこと。
-「AI出力形式」が「区分以外を表示します」の場合は、選択された支援経過パターンの出力項目のうち「区分」だけを出力せず、それ以外の項目をすべて出力すること。
+「AI出力形式」が「標準」の場合は、選択された支援経過パターンのプロンプトに定められた通常の出力形式で出力すること。追加の出力形式による変更は行わないこと。
+「AI出力形式」が「区分以外を表示」の場合は、選択された支援経過パターンの出力項目のうち「区分」だけを出力せず、それ以外の項目をすべて出力すること。
 支援経過Aでは「内容」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」を出力し、Aパターンの内容内に定められた「【区分名】」の見出しはAパターンのルールどおり残すこと。
 支援経過Bでは「内容」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」の3項目を、この順番でそれぞれ1回だけ出力すること。
 支援経過Cでは「内容」のみを出力すること。
-「AI出力形式」が「内容のみ表示します」の場合は、支援経過A・B・Cのいずれであっても「内容」に相当する部分だけを出力し、「区分」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」は出力しないこと。
-「内容のみ表示します」の場合は「内容」という見出しも出力しないこと。
+「AI出力形式」が「」の場合は、支援経過A・B・Cのいずれであっても「内容」に相当する部分だけを出力し、「区分」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」は出力しないこと。
+「」の場合は「内容」という見出しも出力しないこと。
 
 【選択された区分】
 ${templates || "なし"}
@@ -1656,10 +1950,7 @@ function startNewSupportRecord(){
   const newCaseArea = document.getElementById("newCaseArea");
   if(newCaseArea) newCaseArea.style.display = "none";
 
-  if(memo){
-    memo.focus();
-    memo.scrollIntoView({behavior:"smooth",block:"center"});
-  }
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 
 /* =====================================================
@@ -2025,5 +2316,130 @@ window.location.href =
 }
 </script>
 
+
+<!-- ===== 設定・使い方ページ：ここから追加 ===== -->
+<style>
+.settings-overlay{display:none;position:fixed;inset:0;z-index:9999;background:#f5f7fb;overflow:auto}
+.settings-overlay.open{display:block}
+.settings-panel{min-height:100vh;background:#f5f7fb}
+.settings-head{position:sticky;top:0;z-index:2;background:#fff;border-bottom:1px solid #e5e7eb;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(15,23,42,.06)}
+.settings-head h2{margin:0;font-size:21px;color:#1e293b}
+.settings-close{border:1px solid #dbe2ea;background:#fff;border-radius:10px;padding:9px 13px;cursor:pointer;font-size:17px}
+.settings-body{max-width:1000px;margin:0 auto;padding:24px 18px 40px}
+.settings-intro{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:18px 20px;margin-bottom:18px}
+.settings-intro h3{margin:0 0 7px;color:#334155;font-size:18px}
+.settings-intro p{margin:0;color:#64748b;line-height:1.7}
+.settings-help{background:#fff;border:1px solid #e5e7eb;border-radius:16px;margin-bottom:18px;overflow:hidden}
+.settings-help button{width:100%;border:0;background:#fff;text-align:left;padding:16px 20px;font-size:16px;font-weight:700;color:#334155;cursor:pointer}
+.settings-help-content{display:none;padding:0 20px 18px;color:#475569;line-height:1.8}
+.settings-help-content.open{display:block}
+.settings-real-editor #editArea{display:block!important;margin:0!important}
+.settings-return{width:100%;padding:14px;border:0;border-radius:12px;background:#334155;color:#fff;font-weight:700;cursor:pointer;margin-top:18px;font-size:15px}
+@media(max-width:640px){.settings-body{padding:14px 10px 30px}.settings-head{padding:14px}}
+</style>
+<div id="appSettingsOverlay" class="settings-overlay" aria-hidden="true">
+  <div class="settings-panel">
+    <div class="settings-head">
+      <h2>⚙ 設定</h2>
+      <button class="settings-close" type="button" onclick="closeAppSettings()">✕</button>
+    </div>
+    <div class="settings-body">
+      <div class="settings-intro">
+        <h3>設定について</h3>
+        <p>
+          ここでは、この端末で使用する「区分」や「定型文」を、ご自身の使いやすいように自由に追加・編集・削除できます。
+        </p>
+        <p style="margin-top:12px;">
+          追加・編集・削除した内容は、<strong>現在ご使用の端末のブラウザ内に保存されます。</strong><br>
+          そのため、パソコンやスマートフォンなど、複数の端末でご利用になる場合は、<strong>端末ごとに設定内容を変更する必要があります。</strong>
+        </p>
+        <p style="margin-top:12px;">
+          ※ある端末で行った設定変更が、別の端末へ自動的に反映されるものではありませんので、ご注意ください。
+        </p>
+
+        <div style="margin-top:22px;padding-top:18px;border-top:1px solid #e5e7eb;">
+          <h3 style="margin:0 0 10px;color:#334155;font-size:18px;">～管理者からのお願い～</h3>
+          <h4 style="margin:0 0 8px;color:#475569;font-size:16px;">設定に関する注意点</h4>
+          <p>
+            このアプリでは、「区分」や「定型文」を、管理者側で追加・編集・削除することも可能です。
+          </p>
+          <p style="margin-top:12px;">
+            ただし、このアプリは、<strong>ご利用いただく皆様が、それぞれの業務や使い方に合わせて、必要な区分や定型文を自由に追加・編集・削除し、ご自身にとって使いやすい環境を作っていくこと</strong>を基本的な考え方としています。
+          </p>
+          <p style="margin-top:12px;">
+            そのため、制度改正や業務内容の変更等があった場合でも、<strong>管理者が一律に皆様の設定内容を変更するのではなく、必要に応じて各自で設定を変更していただく運用を基本としています。</strong>
+          </p>
+          <p style="margin-top:12px;">
+            ご自身の業務に合わせて、使いやすいように設定を調整しながらご利用ください。
+          </p>
+        </div>
+      </div>
+      <div class="settings-help">
+        
+        <div id="appHelpBox" class="settings-help-content">
+          ① 支援経過A・B・Cから作成したい形を選択します。<br>
+          ② 必要に応じて出力方法を選択します。通常は「標準」のままで使用できます。<br>
+          ③ 支援経過に必要な情報を入力します。<br>
+          ④ 「AI処理用にコピー」を押して、AI処理用の文章をコピーします。<br>
+          ⑤ 新しく作成するときは「新しい支援経過を作成」を使用します。
+        </div>
+      </div>
+      <div id="settingsEditorHost" class="settings-real-editor"></div>
+      <button class="settings-return" type="button" onclick="scrollSettingsToTop()">▲ 設定画面のトップに戻る</button>
+      <button class="settings-return" type="button" onclick="closeAppSettings()">← 作成画面へ戻る</button>
+    </div>
+  </div>
+</div>
+<script>
+window.openAppSettings=function(){
+  const overlay=document.getElementById('appSettingsOverlay');
+  const editor=document.getElementById('editArea');
+  const host=document.getElementById('settingsEditorHost');
+  if(!overlay||!editor||!host)return;
+  host.appendChild(editor);
+  editor.style.display='block';
+  if(typeof renderEditArea==='function')renderEditArea();
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden','false');
+  window.scrollTo({top:0,behavior:'instant'});
+};
+window.closeAppSettings=function(){
+  const overlay=document.getElementById('appSettingsOverlay');
+  const editor=document.getElementById('editArea');
+  const placeholder=document.getElementById('editAreaPlaceholder');
+  if(!overlay||!editor)return;
+  if(placeholder)placeholder.appendChild(editor);
+  editor.style.display='none';
+  overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden','true');
+  window.scrollTo({top:0,behavior:'instant'});
+};
+window.scrollSettingsToTop=function(){
+  const overlay=document.getElementById('appSettingsOverlay');
+  if(overlay)overlay.scrollTo({top:0,behavior:'smooth'});
+};
+window.toggleAppHelp=function(){
+  const el=document.getElementById('appHelpBox');
+  if(el)el.classList.toggle('open');
+};
+</script>
+<!-- ===== 設定・使い方ページ：ここまで追加 ===== -->
+
 </body>
+
+<style id="memo-final-color-fix">
+/* 音声・手入力欄：支援経過選択ボタンと同じ薄い青・同系統の枠 */
+textarea#memo{
+  background:#f4faff !important;
+  border:4px solid #68a9df !important;
+  border-radius:14px !important;
+  box-sizing:border-box !important;
+}
+textarea#memo:focus{
+  background:#f4faff !important;
+  border-color:#68a9df !important;
+  box-shadow:0 0 0 3px rgba(104,169,223,.20) !important;
+}
+</style>
+
 </html>
