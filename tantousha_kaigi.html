@@ -183,10 +183,22 @@ button.ai-copy-green-button:active {
 
 <section class="card usage-card">
 <h2>使い方の説明</h2>
+<div id="meeting-record-notice" style="margin:12px 0 16px 0;text-align:left;display:flex;align-items:flex-start;gap:8px;line-height:1.7;">
+  <span aria-hidden="true" style="color:#f2c94c;font-size:1.35em;line-height:1;animation:meetingNoticeBlink 1.2s ease-in-out infinite;">☆</span>
+  <span>このアプリは、録音や文字起こしサービスが利用できない環境だった時、ちょっとした時間に行った担当者会議（ちょっとした会議）の記録に大変便利です。</span>
+</div>
+<style id="meeting-record-notice-style">
+@keyframes meetingNoticeBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+</style>
+
 <div class="usage-flow">
   <div class="usage-step">
     <strong>① 音声・手入力にて状況を記載する</strong><br>
     <span>その日に話し合った内容を少しでもいいので記入してください。簡単でいいですよ。ＡＩがまとめてくれますので。</span><br>
+    <span></span><br>
     <span>まずは音声入力すること、直接記入することが大切です。
 <div id="example-copy-area" style="margin-top:12px;padding:14px 16px;background:#f8fafc;border:1px solid #dbe4ee;border-radius:12px;">
   <div style="margin-bottom:10px;">書き方が分からない方は、試しに例文をコピーして貼り付けてみてください。</div>
