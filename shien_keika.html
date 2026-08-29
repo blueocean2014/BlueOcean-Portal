@@ -719,6 +719,8 @@ a[href*="setting"]:hover, a[href*="Setting"]:hover{
   box-sizing:border-box !important;
 }
 
+
+.usage-open-button{background:#f5e6a8;color:#5f5500;font-weight:bold;font-size:16px;width:100%;max-width:520px;padding:14px;border:1px solid #d8c875;border-radius:8px;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.12)}
 </style>
 
 <style id="new-case-button-blue">
@@ -783,7 +785,7 @@ a[href*="setting"]:hover, a[href*="Setting"]:hover{
   padding-right:20px !important;
 }
 
-/* 一つにまとめて記録：不要な空ボタンを見えない形で残さず、対象カード内の空buttonを非表示 */
+/* 一つにまとめて整理：不要な空ボタンを見えない形で残さず、対象カード内の空buttonを非表示 */
 .pattern-title-force + * button:empty,
 .pattern-title-force ~ button:empty{
   display:none !important;
@@ -873,26 +875,16 @@ a[href*="setting"]:hover, a[href*="Setting"]:hover{
 </div>
 
 <main>
+<div style="text-align:center;margin:14px 0 18px;">
+<button type="button" class="usage-open-button" onclick="showUsageGuide()">📖 使い方の説明はこちら</button>
+</div>
+
 
 
 <!-- =====================================================
      使い方の説明
 ===================================================== -->
-<section class="card usage-card">
-<h2>使い方の説明</h2>
-<div class="usage-flow">
-  <div class="usage-step"><strong>① 支援経過の種類を選ぶ</strong></div>
-  <div class="usage-step"><strong>② 区分を選ぶ（複数選択可能）</strong></div>
-  <div class="usage-step"><strong>③ 音声・手入力にて状況を記載する</strong><br><span>簡単でいいですよ。ＡＩがまとめてくれますから</span></div>
-  <div class="usage-step"><strong>④ ＡＩ処理用にコピーする</strong></div>
-  <div class="usage-step"><strong>⑤ ChatGPT・Gemini・Claudeなどあなたのお好きなＡＩに貼り付けてください。</strong></div>
 
-<div class="usage-note">
-  <strong>🌱 慣れてきた方へ</strong><br>
-  下の「定型文・区分を自分用に編集」で、自分の好きな区分や定型文に編集したり、新しく登録することもできます。
-</div>
-</div>
-</section>
 
 <!-- =====================================================
      支援経過の種類を選択
@@ -915,7 +907,7 @@ a[href*="setting"]:hover, a[href*="Setting"]:hover{
   </div>
   <div class="pattern-option" role="button" tabindex="0" onclick="setSupportPattern('B')">
     <input type="radio" name="supportPattern" value="B" onchange="setSupportPattern('B')">
-    <span><strong class="pattern-title-force">🌿 自然に繋がる記録</strong><br><small>区分と内容に分け、定型文の支援項目は表示せず自然な文章として記録</small></span>
+    <span><strong class="pattern-title-force">定型文は残し少し自然に整理</strong><br><small>区分と内容に分け、定型文の支援項目は表示せず自然な文章として記録</small></span>
     <span class="pattern-output-wrap">
       <span class="pattern-output-title">支援経過の出し方を変えられます</span>
       <span class="pattern-output-options" onclick="event.stopPropagation()">
@@ -927,12 +919,12 @@ a[href*="setting"]:hover, a[href*="Setting"]:hover{
   </div>
   <div class="pattern-option" role="button" tabindex="0" onclick="setSupportPattern('C')">
     <input type="radio" name="supportPattern" value="C" onchange="setSupportPattern('C')">
-    <span><strong class="pattern-title-force">✨ 一つにまとめて記録</strong><br><small>区分と内容に分け、内容を一つにまとめて記録</small></span>
+    <span><strong class="pattern-title-force">✨ 一つにまとめて整理</strong><br><small>区分と内容に分け、内容を一つにまとめて記録</small></span>
     <span class="pattern-output-wrap">
       <span class="pattern-output-title">支援経過の出し方を変えられます</span>
       <span class="pattern-output-options" onclick="event.stopPropagation()">
         <span class="pattern-output-option" role="radio" tabindex="0" data-output-pattern="C" data-output-mode="normal" onclick="event.stopPropagation();setSupportOutputMode('normal','C')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setSupportOutputMode('normal','C')}"><span class="output-radio-dot"></span>標準</span>
-        <span class="pattern-output-option" role="radio" tabindex="0" data-output-pattern="C" data-output-mode="withoutCategory" onclick="event.stopPropagation();setSupportOutputMode('withoutCategory','C')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setSupportOutputMode('withoutCategory','C')}"><span class="output-radio-dot"></span>区分以外を表示</span>
+        <span class="pattern-output-option" role="radio" tabindex="0" data-output-pattern="C" data-output-mode="contentOnly" onclick="event.stopPropagation();setSupportOutputMode('contentOnly','C')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setSupportOutputMode('contentOnly','C')}"><span class="output-radio-dot"></span>内容のみを表示</span>
         </span>
       </span>
     </span>
@@ -1065,7 +1057,7 @@ style="display:none;"
 </div>
 
 
-<div style="display:flex;justify-content:center;margin:18px 0 12px;"><button type="button" onclick="openAppSettings()" style="border:1px solid #cbd5e1;background:#fff;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:600;">① 定型文・区分を自分用に編集する方はこちらはこちら</button></div>
+<div style="display:flex;justify-content:center;margin:18px 0 12px;"><button type="button" onclick="openAppSettings()" style="border:1px solid #d97706!important;background:#f28c28!important;color:#fff!important;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:600;">① 定型文・区分を自分用に編集する方はこちらはこちら</button></div>
 <button
 class="scroll-top-button"
 onclick="scrollToTop()"
@@ -1082,6 +1074,22 @@ onclick="goHome()"
 
 </div>
 
+</section>
+
+<section class="card usage-card">
+<h2>使い方の説明</h2>
+<div class="usage-flow">
+  <div class="usage-step"><strong>① 支援経過の種類を選ぶ</strong></div>
+  <div class="usage-step"><strong>② 区分を選ぶ（複数選択可能）</strong></div>
+  <div class="usage-step"><strong>③ 音声・手入力にて状況を記載する</strong><br><span>簡単でいいですよ。ＡＩがまとめてくれますから</span></div>
+  <div class="usage-step"><strong>④ ＡＩ処理用にコピーする</strong></div>
+  <div class="usage-step"><strong>⑤ ChatGPT・Gemini・Claudeなどあなたのお好きなＡＩに貼り付けてください。</strong></div>
+
+<div class="usage-note">
+  <strong>🌱 慣れてきた方へ</strong><br>
+  下の「定型文・区分を自分用に編集」で、自分の好きな区分や定型文に編集したり、新しく登録することもできます。
+</div>
+</div>
 </section>
 
 
@@ -2351,15 +2359,15 @@ window.location.href =
         </p>
         <p style="margin-top:12px;">
           追加・編集・削除した内容は、<strong>現在ご使用の端末のブラウザ内に保存されます。</strong><br>
-          そのため、パソコンやスマートフォンなど、複数の端末でご利用になる場合は、<strong>端末ごとに設定内容を変更する必要があります。</strong>
+          そのため、パソコンやスマートフォンなど、複数の端末でご利用になる場合は、<strong style="color:#d00000!important;">端末ごとに設定内容を変更する必要があります。</strong>
         </p>
         <p style="margin-top:12px;">
           ※ある端末で行った設定変更が、別の端末へ自動的に反映されるものではありませんので、ご注意ください。
         </p>
 
         <div style="margin-top:22px;padding-top:18px;border-top:1px solid #e5e7eb;">
-          <h3 style="margin:0 0 10px;color:#334155;font-size:18px;">～管理者からのお願い～</h3>
-          <h4 style="margin:0 0 8px;color:#475569;font-size:16px;">設定に関する注意点</h4>
+          <h3 style="margin:0 0 10px;color:#334155;font-size:18px;;color:#d00000!important">～管理者からのお願い～</h3>
+          <h4 style="margin:0 0 8px;color:#475569;font-size:16px;;color:#d00000!important">設定に関する注意点</h4>
           <p>
             このアプリでは、「区分」や「定型文」を、管理者側で追加・編集・削除することも可能です。
           </p>
@@ -2386,7 +2394,7 @@ window.location.href =
       </div>
       <div id="settingsEditorHost" class="settings-real-editor"></div>
       <button class="settings-return" type="button" onclick="scrollSettingsToTop()">▲ 設定画面のトップに戻る</button>
-      <button class="settings-return" type="button" onclick="closeAppSettings()">← 作成画面へ戻る</button>
+      <button class="settings-return" type="button" onclick="closeAppSettings()" style="background:#172554!important;color:#fff!important;border-color:#172554!important;">メイン画面に戻る</button>
     </div>
   </div>
 </div>
@@ -2422,6 +2430,11 @@ window.toggleAppHelp=function(){
   const el=document.getElementById('appHelpBox');
   if(el)el.classList.toggle('open');
 };
+
+function showUsageGuide(){
+  const usage = document.querySelector(".usage-card");
+  if(usage) usage.scrollIntoView({behavior:"smooth", block:"start"});
+}
 </script>
 <!-- ===== 設定・使い方ページ：ここまで追加 ===== -->
 
