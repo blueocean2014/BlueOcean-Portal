@@ -105,6 +105,15 @@ button:hover{opacity:.9;transform:translateY(-1px)}
 .bo-footer-brand-title{font-size:17px;font-weight:bold;letter-spacing:.3px}
 .bo-footer-brand-subtitle{font-size:12px}
 #newCaseButton{background:#1976d2!important;background-image:none!important;color:#fff!important;border:1px solid #1565c0!important;box-shadow:0 2px 5px rgba(0,0,0,.15)!important;border-radius:8px;padding:12px 34px;min-width:260px;font-size:15px;cursor:pointer}
+.settings-open-button{background:#e58a00!important;color:#fff!important;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
+.view-back-button{background:#607d83;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
+.view-hidden{display:none!important}
+body.settings-view-active main > *:not(#promptLibraryArea){display:none!important}
+body.settings-view-active #promptLibraryArea{display:block!important}
+
+.usage-open-button{background:#f5e6a8;color:#5f5500;font-weight:bold;font-size:16px;width:100%;max-width:520px;padding:14px;border:1px solid #25864a;border-radius:8px;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.12)}
+
+
 @media(max-width:600px){
  .pattern-grid{grid-template-columns:1fr}
  button{width:100%;margin:4px 0}
@@ -181,6 +190,122 @@ button.ai-copy-green-button:active {
 
 <main>
 
+<div style="text-align:center;margin:14px 0 18px;">
+<button type="button" class="usage-open-button" onclick="showUsageGuide()">📖 使い方の説明はこちら</button>
+</div>
+
+<div id="mainView">
+
+
+<section class="card">
+<h2>① 音声・手入力</h2>
+<p class="description">
+サービス担当者会議で共有・検討した内容、本人・家族の発言、各サービス事業所からの報告・意見、ケアマネジャーの判断、医師からの意見、今後の支援方針などを入力してください。
+<br><br>
+<strong>Windowsの場合は「Windowsキー＋H」で音声入力できます。</strong>
+</p>
+<textarea id="memo" placeholder="ここにサービス担当者会議で話した内容や会議録に残したい内容を入力してください。"></textarea>
+</section>
+
+<section class="card">
+<h2>② AI処理用にコピー</h2>
+<p class="description">
+「AI処理用にコピー」を押すと、サービス担当者会議プロンプト・今回の音声入力・手入力内容をまとめてコピーします。
+<br><br>
+コピーした内容を、ChatGPT・Gemini・Claudeなど利用するAIへ貼り付けてください。
+</p>
+
+<button id="copyButton" class="copy-button ai-copy-green-button" onclick="copyAI()">📋 AI処理用にコピー</button>
+<div id="cs" class="status">まだコピーされていません。</div>
+
+<div id="homeArea">
+<div id="newCaseArea" style="display:none;text-align:center;margin:16px 0;">
+<button type="button" id="newCaseButton" onclick="startNewMeetingRecord()">＋ 新しいサービス担当者会議を作成</button>
+</div>
+
+<div id="homeStatus" class="status success" style="display:none;">✓ コピーが完了しました。</div>
+
+</div>
+</section>
+
+
+
+</div>
+
+<section class="card edit-area view-hidden" id="promptLibraryArea">
+<h2>⚙ 設定　サービス担当者会議プロンプト</h2>
+<button type="button" class="view-back-button" onclick="showMainView()">← メイン画面に戻る</button>
+<div class="edit-note">
+ここでは、AIに使わせる「サービス担当者会議プロンプト」を自分で管理できます。<br>
+「今のプロンプトを確認・編集」では、下の文章が、現在選択しているプロンプトの全文です。必要なところを自由に追加・修正できます。<br>
+追加・編集・削除した内容は、この端末のブラウザに保存されるため、それぞれ個々の端末の中でしか変更ができません。パソコンや携帯等複数台で管理される方はそれぞれの変更が必要になりますのでご注意ください。
+
+<div style="margin-top:18px;padding-top:14px;border-top:1px solid #dcebed;">
+<strong>設定について</strong><br>
+ここでは、この端末で使用する「サービス担当者会議プロンプト」を、ご自身の使いやすいように自由に追加・編集・削除できます。<br>
+追加・編集・削除した内容は、<strong>現在ご使用の端末のブラウザ内に保存されます。</strong><br>
+そのため、パソコンやスマートフォンなど、複数の端末でご利用になる場合は、<strong>端末ごとに設定内容を変更する必要があります。</strong><br>
+※ある端末で行った設定変更が、別の端末へ自動的に反映されるものではありませんので、ご注意ください。
+</div>
+
+<div style="margin-top:18px;padding-top:14px;border-top:1px solid #dcebed;">
+<strong>～管理者からのお願い～</strong><br><br>
+<strong>設定に関する注意点</strong><br>
+このアプリでは、「サービス担当者会議プロンプト」を、管理者側で追加・編集・削除することも可能です。<br><br>
+ただし、このアプリは、<strong>ご利用いただく皆様が、それぞれの業務や使い方に合わせて、必要な区分や定型文を自由に追加・編集・削除し、ご自身にとって使いやすい環境を作っていくこと</strong>を基本的な考え方としています。<br><br>
+そのため、<strong>管理者が一律に皆様の設定内容を変更するのではなく、必要に応じて各自で設定を変更していただく運用を基本としています。</strong><br><br>
+ご自身の業務に合わせて、使いやすいように設定を調整しながらご利用ください。
+</div>
+</div>
+
+<div class="setting-box">
+<div class="setting-label">① 今使っているプロンプト</div>
+<div id="activePromptName" class="status success" style="font-size:16px;font-weight:700;">標準プロンプト</div>
+<div style="margin-top:10px;">
+<label for="promptSelector" style="font-weight:700;display:block;margin-bottom:6px;">使うプロンプトを選択</label>
+<select id="promptSelector" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #c9dde1;border-radius:10px;font-size:15px;background:#fff;"></select>
+</div>
+</div>
+
+<div class="setting-box">
+<div class="setting-label">② 今のプロンプトを確認・編集</div>
+<p class="description" style="margin-bottom:10px;">下の文章が、現在選択しているプロンプトの全文です。必要なところを自由に追加・修正できます。</p>
+<label for="selectedPromptName" style="font-weight:700;display:block;margin-bottom:6px;">プロンプト名</label>
+<input id="selectedPromptName" type="text" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #c9dde1;border-radius:10px;margin-bottom:10px;font-size:14px;">
+<label for="selectedPromptText" style="font-weight:700;display:block;margin-bottom:6px;">プロンプト本文（全文）</label>
+<textarea id="selectedPromptText" class="prompt-editor" style="min-height:520px;"></textarea>
+<div class="edit-actions">
+<button type="button" class="save-button" onclick="saveSelectedMeetingPrompt()">💾 このプロンプトを保存</button>
+<button type="button" class="restore-button" onclick="restoreSelectedMeetingPrompt()">↩ 標準プロンプトに戻す</button>
+<button type="button" class="clear-button" onclick="deleteSelectedMeetingPrompt()">🗑 このプロンプトを削除</button>
+</div>
+<div id="selectedPromptStatus" class="status">現在選択しているプロンプトを表示しています。</div>
+</div>
+
+<div class="setting-box">
+<div class="setting-label">③ 新しいプロンプトを追加</div>
+<p class="description" style="margin-bottom:10px;">今のプロンプトとは別に、新しい作成ルールを登録したい場合はこちらを使います。</p>
+<button type="button" id="showAddPromptButton" class="save-button" onclick="showAddPromptForm()">＋ 新しいプロンプトを作る</button>
+<div id="addPromptForm" style="display:none;margin-top:14px;">
+<label for="newPromptName" style="font-weight:700;display:block;margin-bottom:6px;">新しいプロンプトの名前</label>
+<input id="newPromptName" type="text" placeholder="例：サービス担当者会議・更新時" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #c9dde1;border-radius:10px;margin-bottom:10px;font-size:14px;">
+<label for="newPromptText" style="font-weight:700;display:block;margin-bottom:6px;">新しいプロンプト本文</label>
+<textarea id="newPromptText" class="prompt-editor" style="min-height:420px;" placeholder="ここに新しいプロンプトを全文入力してください。"></textarea>
+<div class="edit-actions">
+<button type="button" class="save-button" onclick="addMeetingPrompt()">＋ この内容を新しいプロンプトとして保存</button>
+<button type="button" class="restore-button" onclick="cancelAddPrompt()">キャンセル</button>
+</div>
+<div id="addPromptStatus" class="status">新しいプロンプトを作成できます。</div>
+</div>
+</div>
+</section>
+
+<div style="text-align:center;margin:28px 0 10px;">
+<button type="button" class="settings-open-button" onclick="showSettingsView()">⚙ 設定　サービス担当者会議プロンプトの編集、追加はこちらから</button>
+<button type="button" class="home-button" onclick="scrollToTop()">トップに戻る</button>
+<button type="button" class="home-button" onclick="goHome()">⌂ トップ画面へ戻る</button>
+</div>
+
 <section class="card usage-card">
 <h2>使い方の説明</h2>
 <div id="meeting-record-notice" style="margin:12px 0 16px 0;text-align:left;display:flex;align-items:flex-start;gap:8px;line-height:1.7;">
@@ -197,11 +322,10 @@ button.ai-copy-green-button:active {
 <div class="usage-flow">
   <div class="usage-step">
     <strong>① 音声・手入力にて状況を記載する</strong><br>
-    <span>その日に話し合った内容を少しでもいいので記入してください。簡単でいいですよ。ＡＩがまとめてくれますので。</span><br>
-    <span></span><br>
-    <span>まずは音声入力すること、直接記入することが大切です。
+    <span>しっかりとAIがまとめてくれますので、話し合った内容を思いついたまま記入してください。</span>
 <div id="example-copy-area" style="margin-top:12px;padding:14px 16px;background:#f8fafc;border:1px solid #dbe4ee;border-radius:12px;">
-  <div style="margin-bottom:10px;">書き方が分からない方は、試しに例文をコピーして貼り付けてみてください。</div>
+  <div style="margin-bottom:10px;">書き方が分からない方は、試しに例文をコピーして貼り付けて作成してみてください。どんなイメージでできあがるのかが分かります。</div>
+  <div style="margin-top:8px;">たくさん書いて情報が多いほど確実な記録にはなりますが、こんな簡単な情報でもしっかりと会議録は作れますので、まずは思いついたまま記載することが大切です。</div>
   <div style="padding:12px;background:#ffffff;border:1px solid #dbe4ee;border-radius:10px;line-height:1.7;">
     最近デイサービスの利用について消極的で休みがち。入浴ができておらず清潔保持について課題がある。本人よりデイサービスの利用が週３回から２回に変更したいと希望があった。ヘルパーより、デイサービスが減った分、入浴についてはヘルパー支援で行ってはどうかと提案してもらった。来月よりデイサービスの利用を週２回にし、ヘルパーの身体介護を１回追加して週３回しっかりと入浴できるように予定することになった。本人、家族ともに同意している。
   </div>
@@ -279,115 +403,10 @@ function copyExampleText() {
   </div>
   <div class="usage-note">
     <strong>③🌱 慣れてきた方へ</strong><br>
-    下の「サービス担当者会議プロンプト」で、自分の好きなプロンプトに編集したり、新しく登録することもできます。
+    「⚙ 設定　サービス担当者会議プロンプトの編集、追加はこちらから」のボタンから、自分の好きなプロンプトに編集したり、新しく登録することもできます。
   </div>
 </div>
 </section>
-
-<section class="card">
-<h2>① 音声・手入力</h2>
-<p class="description">
-サービス担当者会議で共有・検討した内容、本人・家族の発言、各サービス事業所からの報告・意見、ケアマネジャーの判断、医師からの意見、今後の支援方針などを入力してください。
-<br><br>
-<strong>Windowsの場合は「Windowsキー＋H」で音声入力できます。</strong>
-</p>
-<textarea id="memo" placeholder="ここにサービス担当者会議で話した内容や会議録に残したい内容を入力してください。"></textarea>
-</section>
-
-<section class="card">
-<h2>② AI処理用にコピー</h2>
-<p class="description">
-「AI処理用にコピー」を押すと、サービス担当者会議プロンプト・今回の音声入力・手入力内容をまとめてコピーします。
-<br><br>
-コピーした内容を、ChatGPT・Gemini・Claudeなど利用するAIへ貼り付けてください。
-</p>
-
-<button id="copyButton" class="copy-button ai-copy-green-button" onclick="copyAI()">📋 AI処理用にコピー</button>
-<div id="cs" class="status">まだコピーされていません。</div>
-
-<div id="homeArea">
-<div id="newCaseArea" style="display:none;text-align:center;margin:16px 0;">
-<button type="button" id="newCaseButton" onclick="startNewMeetingRecord()">＋ 新しいサービス担当者会議を作成</button>
-</div>
-
-<div id="homeStatus" class="status success" style="display:none;">✓ コピーが完了しました。</div>
-
-<button class="scroll-top-button" onclick="scrollToTop()">▲ トップに戻る</button>
-<button class="home-button" onclick="goHome()">⌂ トップ画面へ戻る</button>
-</div>
-</section>
-
-<section class="card edit-area" id="promptLibraryArea">
-<h2>⚙ 設定　サービス担当者会議プロンプト</h2>
-<div class="edit-note">
-ここでは、AIに使わせる「サービス担当者会議プロンプト」を自分で管理できます。<br>
-「今のプロンプトを確認・編集」では、下の文章が、現在選択しているプロンプトの全文です。必要なところを自由に追加・修正できます。<br>
-追加・編集・削除した内容は、この端末のブラウザに保存されるため、それぞれ個々の端末の中でしか変更ができません。パソコンや携帯等複数台で管理される方はそれぞれの変更が必要になりますのでご注意ください。
-
-<div style="margin-top:18px;padding-top:14px;border-top:1px solid #dcebed;">
-<strong>設定について</strong><br>
-ここでは、この端末で使用する「サービス担当者会議プロンプト」を、ご自身の使いやすいように自由に追加・編集・削除できます。<br>
-追加・編集・削除した内容は、<strong>現在ご使用の端末のブラウザ内に保存されます。</strong><br>
-そのため、パソコンやスマートフォンなど、複数の端末でご利用になる場合は、<strong>端末ごとに設定内容を変更する必要があります。</strong><br>
-※ある端末で行った設定変更が、別の端末へ自動的に反映されるものではありませんので、ご注意ください。
-</div>
-
-<div style="margin-top:18px;padding-top:14px;border-top:1px solid #dcebed;">
-<strong>～管理者からのお願い～</strong><br><br>
-<strong>設定に関する注意点</strong><br>
-このアプリでは、「サービス担当者会議プロンプト」を、管理者側で追加・編集・削除することも可能です。<br><br>
-ただし、このアプリは、<strong>ご利用いただく皆様が、それぞれの業務や使い方に合わせて、必要な区分や定型文を自由に追加・編集・削除し、ご自身にとって使いやすい環境を作っていくこと</strong>を基本的な考え方としています。<br><br>
-そのため、<strong>管理者が一律に皆様の設定内容を変更するのではなく、必要に応じて各自で設定を変更していただく運用を基本としています。</strong><br><br>
-ご自身の業務に合わせて、使いやすいように設定を調整しながらご利用ください。
-</div>
-</div>
-
-<div class="setting-box">
-<div class="setting-label">① 今使っているプロンプト</div>
-<div id="activePromptName" class="status success" style="font-size:16px;font-weight:700;">標準プロンプト</div>
-<div style="margin-top:10px;">
-<label for="promptSelector" style="font-weight:700;display:block;margin-bottom:6px;">使うプロンプトを選択</label>
-<select id="promptSelector" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #c9dde1;border-radius:10px;font-size:15px;background:#fff;"></select>
-</div>
-</div>
-
-<div class="setting-box">
-<div class="setting-label">② 今のプロンプトを確認・編集</div>
-<p class="description" style="margin-bottom:10px;">下の文章が、現在選択しているプロンプトの全文です。必要なところを自由に追加・修正できます。</p>
-<label for="selectedPromptName" style="font-weight:700;display:block;margin-bottom:6px;">プロンプト名</label>
-<input id="selectedPromptName" type="text" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #c9dde1;border-radius:10px;margin-bottom:10px;font-size:14px;">
-<label for="selectedPromptText" style="font-weight:700;display:block;margin-bottom:6px;">プロンプト本文（全文）</label>
-<textarea id="selectedPromptText" class="prompt-editor" style="min-height:520px;"></textarea>
-<div class="edit-actions">
-<button type="button" class="save-button" onclick="saveSelectedMeetingPrompt()">💾 このプロンプトを保存</button>
-<button type="button" class="restore-button" onclick="restoreSelectedMeetingPrompt()">↩ 標準プロンプトに戻す</button>
-<button type="button" class="clear-button" onclick="deleteSelectedMeetingPrompt()">🗑 このプロンプトを削除</button>
-</div>
-<div id="selectedPromptStatus" class="status">現在選択しているプロンプトを表示しています。</div>
-</div>
-
-<div class="setting-box">
-<div class="setting-label">③ 新しいプロンプトを追加</div>
-<p class="description" style="margin-bottom:10px;">今のプロンプトとは別に、新しい作成ルールを登録したい場合はこちらを使います。</p>
-<button type="button" id="showAddPromptButton" class="save-button" onclick="showAddPromptForm()">＋ 新しいプロンプトを作る</button>
-<div id="addPromptForm" style="display:none;margin-top:14px;">
-<label for="newPromptName" style="font-weight:700;display:block;margin-bottom:6px;">新しいプロンプトの名前</label>
-<input id="newPromptName" type="text" placeholder="例：サービス担当者会議・更新時" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #c9dde1;border-radius:10px;margin-bottom:10px;font-size:14px;">
-<label for="newPromptText" style="font-weight:700;display:block;margin-bottom:6px;">新しいプロンプト本文</label>
-<textarea id="newPromptText" class="prompt-editor" style="min-height:420px;" placeholder="ここに新しいプロンプトを全文入力してください。"></textarea>
-<div class="edit-actions">
-<button type="button" class="save-button" onclick="addMeetingPrompt()">＋ この内容を新しいプロンプトとして保存</button>
-<button type="button" class="restore-button" onclick="cancelAddPrompt()">キャンセル</button>
-</div>
-<div id="addPromptStatus" class="status">新しいプロンプトを作成できます。</div>
-</div>
-</div>
-</section>
-
-<div style="text-align:center;margin:28px 0 10px;">
-<button type="button" class="home-button" onclick="scrollToTop()">トップに戻る</button>
-<button type="button" class="home-button" onclick="goHome()">⌂ トップ画面へ戻る</button>
-</div>
 
 <div class="bo-footer-brand">
 <img src="https://blueocean2014.github.io/BlueOcean-Portal/BlueOceanimage.png" alt="BlueOcean ロゴ">
@@ -403,6 +422,29 @@ function copyExampleText() {
 (function(){
 
 window.scrollToTop = function(){
+  window.scrollTo({top:0, behavior:"smooth"});
+};
+
+window.showUsageGuide = function(){
+  const usage = document.querySelector(".usage-card");
+  if(usage) usage.scrollIntoView({behavior:"smooth", block:"start"});
+};
+
+window.showSettingsView = function(){
+  const mainView = document.getElementById("mainView");
+  const settingsView = document.getElementById("promptLibraryArea");
+  document.body.classList.add("settings-view-active");
+  if(mainView) mainView.classList.add("view-hidden");
+  if(settingsView) settingsView.classList.remove("view-hidden");
+  window.scrollTo({top:0, behavior:"smooth"});
+};
+
+window.showMainView = function(){
+  const mainView = document.getElementById("mainView");
+  const settingsView = document.getElementById("promptLibraryArea");
+  document.body.classList.remove("settings-view-active");
+  if(settingsView) settingsView.classList.add("view-hidden");
+  if(mainView) mainView.classList.remove("view-hidden");
   window.scrollTo({top:0, behavior:"smooth"});
 };
 
