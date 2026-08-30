@@ -1,4 +1,4 @@
-!doctype html>
+<!doctype html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -7,720 +7,277 @@
 <title>支援経過作成支援アプリ</title>
 
 <style>
-
 /* =====================================================
-   全体
+   BlueOcean Design System
+   青＝基本 / 緑＝選択・有効 / 黄色＝注意・説明
 ===================================================== */
-
+:root{
+  --blue:#138ee0;
+  --blue-dark:#0875c9;
+  --blue-deep:#0875c9;
+  --blue-light:#eef7ff;
+  --blue-pale:#f4faff;
+  --blue-border:#9bc7ee;
+  --green:#3b9b68;
+  --green-dark:#2f7f52;
+  --green-pale:#effaf3;
+  --yellow:#f5e6a8;
+  --yellow-dark:#6b5b00;
+  --text:#24445c;
+  --muted:#5d7282;
+  --white:#fff;
+}
+*{box-sizing:border-box}
 body{
   margin:0;
-  background:#f4fbff;
-  color:#185477;
+  background:var(--blue-pale);
+  color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,"Yu Gothic","Meiryo",sans-serif;
 }
-
-/* =====================================================
-   ヘッダー
-===================================================== */
-
 header{
-  background:linear-gradient(135deg,#70dcfa 0%,#28bcef 38%,#138ee0 72%,#0875c9 100%);
-  color:white;
+  background:var(--blue);
+  color:#fff;
   padding:24px 16px;
-  box-shadow:0 2px 8px rgba(0,0,0,.15);
+  box-shadow:0 2px 8px rgba(13,71,161,.18);
 }
-
 .header-inner{
-  max-width:900px;
-  margin:0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:28px;
+  max-width:900px;margin:0 auto;display:flex;align-items:center;
+  justify-content:space-between;gap:28px;
 }
+.header-description{flex:1;max-width:430px;font-size:15px;line-height:1.7;text-align:left;opacity:.98}
+header h1{font-size:24px;margin:0 0 6px;letter-spacing:.3px}
+header .app-title-main,header .app-title-sub{display:block}
+header .app-title-sub{font-size:27px;margin-bottom:6px}
+header .app-title-main{font-size:24px}
+header div{font-size:13px;opacity:.95}
 
-.header-description{
-  flex:1;
-  max-width:430px;
-  font-size:15px;
-  line-height:1.7;
-  text-align:left;
-  opacity:.98;
-}
-
-header h1{
-  font-size:24px;
-  margin:0 0 6px 0;
-  letter-spacing:.3px;
-}
-
-header .app-title-main,
-header .app-title-sub{
-  display:block;
-}
-
-header .app-title-sub{
-  font-size:27px;
-  margin-bottom:6px;
-}
-
-header .app-title-main{
-  font-size:24px;
-}
-
-header div{
-  font-size:13px;
-  opacity:.95;
-}
-
-/* =====================================================
-   メイン
-===================================================== */
-
-main{
-  max-width:900px;
-  margin:auto;
-  padding:12px;
-}
-
-/* =====================================================
-   カード
-===================================================== */
-
+main{max-width:900px;margin:auto;padding:12px}
 .card{
-  background:white;
-  padding:16px;
-  margin:12px 0;
-  border-radius:15px;
-  box-shadow:0 3px 10px rgba(0,80,100,.10);
-  border:1px solid #dcebed;
+  background:#fff;padding:16px;margin:12px 0;border-radius:14px;
+  box-shadow:0 3px 10px rgba(25,118,210,.08);
+  border:2px solid var(--blue-border);
 }
-
 h2{
-  font-size:18px;
-  margin:0 0 13px 0;
-  color:#0872c5;
+  font-size:18px;margin:0 0 13px;color:var(--blue);
+  font-weight:800;
 }
-
-/* =====================================================
-   区分
-===================================================== */
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px;
-}
-
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 label{
-  border:1px solid #c9dde1;
-  border-radius:10px;
-  padding:11px;
-  display:flex;
-  gap:8px;
-  align-items:center;
-  background:#fbfefe;
-  cursor:pointer;
-  transition:.15s;
+  border:2px solid #c8def2;border-radius:10px;padding:11px;display:flex;
+  gap:8px;align-items:center;background:#fff;cursor:pointer;transition:.15s;
 }
-
-label:hover{
-  background:#eefaff;
-  border-color:#8bd4ee;
-}
-
-input[type=checkbox]{
-  width:20px;
-  height:20px;
-  accent-color:#008fa3;
-}
-
-/* =====================================================
-   テキストエリア
-===================================================== */
+label:hover{background:var(--blue-light);border-color:#70afe3}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--green)}
 
 textarea{
-  width:100%;
-  box-sizing:border-box;
-  border:1px solid #c9dde1;
-  border-radius:10px;
-  padding:12px;
-  font-size:16px;
-  line-height:1.7;
-  min-height:220px;
-  resize:vertical;
-  outline:none;
+  width:100%;box-sizing:border-box;border:2px solid #9bc7ee;border-radius:10px;
+  padding:12px;font-size:16px;line-height:1.7;min-height:220px;resize:vertical;outline:none;
 }
-
-textarea:focus{
-  border-color:#0875c9;
-  box-shadow:0 0 0 2px rgba(0,143,163,.12);
-}
-
-/* =====================================================
-   ボタン
-===================================================== */
+textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(25,118,210,.14)}
 
 button{
-  border:0;
-  border-radius:10px;
-  color:white;
-  padding:12px 16px;
-  font-size:15px;
-  margin:4px 2px;
-  cursor:pointer;
+  border:0;border-radius:10px;color:#fff;padding:12px 16px;font-size:15px;
+  margin:4px 2px;cursor:pointer;transition:.15s;
+}
+button:hover{opacity:.92;transform:translateY(-1px)}
+.gray{background:#6b7f8c}
+.copy-button{
+  background:var(--blue);font-weight:bold;font-size:18px;padding:17px 24px;
+  min-width:280px;box-shadow:0 4px 10px rgba(25,118,210,.16);
+}
+.copy-button.copied{background:var(--green)}
+.scroll-top-button,.home-button{
+  background:var(--blue-dark);font-weight:bold;font-size:16px;width:100%;
+  margin-top:10px;padding:14px;
+}
+.status{
+  background:var(--blue-light);border:1px solid #c8def2;color:#315b78;
+  padding:10px;border-radius:9px;font-size:13px;margin-top:8px;white-space:pre-wrap;
+}
+.status.success{
+  background:var(--green-pale);border-color:#b9dfc5;color:#17652e;font-weight:bold;
+}
+.description{
+  font-size:14px;line-height:1.7;color:#4d6576;background:#f7fbff;
+  border:1px solid #c8def2;border-radius:9px;padding:10px 12px;box-sizing:border-box;
+}
+#homeArea{display:block;margin-top:12px;padding-top:10px;border-top:2px solid #c8def2}
+
+/* 支援経過の種類：同一デザイン体系 */
+.pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.pattern-option{
+  display:block;align-items:flex-start;background:#fff;border:2px solid #9bc7ee;
+  padding:14px;border-radius:12px;cursor:pointer;position:relative;transition:.15s;
+}
+.pattern-option:hover{background:var(--blue-light);border-color:#70afe3;box-shadow:0 3px 9px rgba(25,118,210,.10)}
+.pattern-option>input{display:none}
+.pattern-option>span{display:block}
+.pattern-option small{font-size:12px;color:#536b7b;line-height:1.5}
+.pattern-option:has(>input:checked),.pattern-option.pattern-selected{
+  border-color:var(--green);background:var(--green-pale);
+  box-shadow:0 0 0 3px rgba(59,155,104,.14)
+}
+.pattern-title-force{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  text-align:center!important;width:100%!important;box-sizing:border-box!important;
+  min-height:64px!important;padding:10px 24px!important;margin:0 0 14px!important;
+  border:2px solid var(--blue)!important;border-radius:10px!important;
+  background:var(--blue-pale)!important;color:var(--blue-deep)!important;
+  font-size:1.02rem!important;font-weight:900!important;line-height:1.35!important;
+  letter-spacing:.02em;box-shadow:0 3px 8px rgba(25,118,210,.10)!important;
   transition:.15s;
 }
-
-button:hover{
-  opacity:.9;
-  transform:translateY(-1px);
+.pattern-option:hover .pattern-title-force{background:var(--blue-light)!important;border-color:var(--blue-dark)!important}
+.pattern-option:has(input:checked) .pattern-title-force{
+  background:var(--green)!important;border-color:var(--green-dark)!important;color:#fff!important;
 }
-
-.gray{
-  background:#607d83;
+.pattern-output-wrap{margin-top:12px;padding-top:10px;border-top:1px dashed #b9d5ec}
+.pattern-output-title{font-size:12px;font-weight:700;color:#587077;margin-bottom:7px}
+.pattern-output-options{display:flex;flex-wrap:wrap;gap:6px}
+.pattern-output-options{cursor:default}
+.pattern-output-option{
+  display:flex;align-items:center;gap:7px;border:1px solid #c8def2;border-radius:10px;
+  background:#fff;padding:7px 10px;font-size:12px;color:#36535b;cursor:pointer;user-select:none;
+  transition:background .15s,border-color .15s,color .15s,box-shadow .15s
 }
-
-.copy-button{
-  background:linear-gradient(90deg,#18a98b,#087f68);
-  font-weight:bold;
-  font-size:18px;
-  padding:17px 24px;
-  min-width:280px;
-  box-shadow:0 4px 10px rgba(0,100,90,.16);
+.pattern-output-option .output-radio-dot{display:none!important}
+.pattern-output-option.is-selected{
+  border-color:var(--green)!important;background:var(--green)!important;color:#fff!important;
+  font-weight:700;box-shadow:0 3px 10px rgba(59,155,104,.20)
 }
+.pattern-output-option.is-selected:hover{background:var(--green-dark)!important;border-color:var(--green-dark)!important}
 
-.copy-button.copied{
-  background:#16803c;
+/* 説明・注意＝黄色 */
+.usage-open-button{
+  background:var(--yellow);color:var(--yellow-dark);font-weight:bold;font-size:16px;
+  width:100%;max-width:520px;padding:14px;border:2px solid #d8c875;border-radius:10px;
+  cursor:pointer;box-shadow:0 2px 5px rgba(107,91,0,.10)
 }
-
-.scroll-top-button{
-  background:#243b6b;
-  font-weight:bold;
-  font-size:16px;
-  width:100%;
-  margin-top:10px;
-  padding:14px;
-}
-
-
-.home-button{
-  background:#243b6b;
-  font-weight:bold;
-  font-size:16px;
-  width:100%;
-  margin-top:10px;
-  padding:14px;
-}
-
-/* =====================================================
-   状態表示
-===================================================== */
-
-.status{
-  background:#eef8fa;
-  border:1px solid #d4eaed;
-  color:#24545d;
-  padding:10px;
-  border-radius:9px;
-  font-size:13px;
-  margin-top:8px;
-  white-space:pre-wrap;
-}
-
-.status.success{
-  background:#eaf8ef;
-  border-color:#b9dfc5;
-  color:#17652e;
-  font-weight:bold;
-}
-
-/* =====================================================
-   説明文
-===================================================== */
-
-.description{
-  font-size:14px;
-  line-height:1.7;
-  color:#44575c;
-  background:#f3f7f9;
-  border:1px solid #d9e3e6;
-  border-radius:8px;
-  padding:10px 12px;
-  box-sizing:border-box;
-}
-
-/* =====================================================
-   トップへ戻るエリア
-===================================================== */
-
-#homeArea{
-  display:block;
-  margin-top:12px;
-  padding-top:10px;
-  border-top:1px solid #dcebed;
-}
-
-/* =====================================================
-   スマートフォン
-===================================================== */
-
-.pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}.pattern-option{display:block;align-items:flex-start;background:#f8fcfd;border:1px solid #c9dde1;padding:14px;border-radius:12px}
-.pattern-option{cursor:pointer;}
-.pattern-output-options{cursor:default;}
-.pattern-option>input{display:none}.pattern-option>span{display:block}.pattern-option small{font-size:12px;color:#53686d;line-height:1.5}.pattern-option:has(>input:checked),.pattern-option.pattern-selected{border-color:#3b9b68;background:#f0fff5;box-shadow:0 0 0 3px rgba(59,155,104,.16)}.pattern-output-wrap{margin-top:12px;padding-top:10px;border-top:1px dashed #c9dde1}.pattern-output-title{font-size:12px;font-weight:700;color:#587077;margin-bottom:7px}.pattern-output-options{display:flex;flex-wrap:wrap;gap:6px}.pattern-output-option{display:flex;align-items:center;gap:7px;border:1px solid #c9dde1;border-radius:999px;background:#fff;padding:7px 10px;font-size:12px;color:#36535b;cursor:pointer;user-select:none;transition:background .15s,border-color .15s,color .15s,box-shadow .15s}.pattern-output-option .output-radio-dot{width:13px;height:13px;border:2px solid #9fb5bb;border-radius:50%;box-sizing:border-box;flex:0 0 auto;background:#fff;transition:all .15s}.pattern-output-option.is-selected{border-color:#3b9b68;background:#effaf3;color:#2f7f52;font-weight:700;box-shadow:0 0 0 2px rgba(59,155,104,.12)}.pattern-output-option.is-selected .output-radio-dot{border-color:#3b9b68;box-shadow:inset 0 0 0 3px #fff;background:#3b9b68}
-
 .usage-card{
-  margin-top:12px;
-  border:2px solid #8bd4ee;
-  border-radius:20px;
-  background:linear-gradient(180deg,#f9fdff 0%,#eefaff 100%);
-  box-shadow:0 6px 18px rgba(30,120,165,.08);
-  padding:20px 24px;
+  margin-top:12px;border:2px solid #d8c875;border-radius:14px;
+  background:#fffdf3;box-shadow:0 5px 14px rgba(107,91,0,.07);padding:20px 24px
 }
-
-.usage-card h2{
-  font-size:18px;
-  margin:0 0 14px;
-  color:#0875c9;
-  text-align:center;
-}
-
-.usage-flow{
-  display:flex;
-  flex-direction:column;
-  gap:0;
-}
-
+.usage-card h2{font-size:18px;margin:0 0 14px;color:var(--blue);text-align:center}
+.usage-flow{display:flex;flex-direction:column;gap:0}
 .usage-step{
-  position:relative;
-  padding:10px 8px 10px 12px;
-  font-size:14px;
-  line-height:1.6;
-  color:#0872c5;
-  text-align:left;
+  position:relative;padding:10px 8px 10px 12px;font-size:14px;line-height:1.6;
+  color:var(--text);text-align:left
 }
-
-.usage-step:not(:last-child){
-  border-bottom:1px dashed #b8dfec;
-}
-
-.usage-step span{
-  color:#0875c9;
-  font-size:13px;
-}
-
+.usage-step:not(:last-child){border-bottom:1px dashed #e2d99f}
+.usage-step span{color:#6b5b00;font-size:13px}
 .usage-note{
-  margin-top:16px;
-  padding-top:14px;
-  border-top:1px solid #c9e8f4;
-  color:#0872c5;
-  font-size:14px;
-  line-height:1.7;
+  margin-top:16px;padding:14px;border:2px solid #d8c875;border-radius:10px;
+  background:#fff9d9;color:#6b5b00;font-size:14px;line-height:1.7
 }
+.usage-note strong{color:#5b4e00}
 
-.usage-note strong{
-  color:#0875c9;
-}
-
-@media(max-width:600px){
-
-  .usage-card{
-    padding:17px 16px;
-  }
-
-  .usage-card h2{
-    font-size:18px;
-  }
-
-  .usage-step{
-    font-size:13px;
-    padding:9px 6px 9px 8px;
-  }
-
-  .usage-step span{
-    font-size:12px;
-  }
-
-  .header-inner{
-    display:block;
-  }
-
-  .header-description{
-    margin-top:12px;
-    max-width:none;
-    font-size:14px;
-  }
-
-  .grid{
-    grid-template-columns:1fr;
-  }
-
-  .pattern-grid{
-    grid-template-columns:1fr;
-  }
-
-  button{
-    width:100%;
-    margin:4px 0;
-  }
-
-  header h1{
-    font-size:21px;
-  }
-
-  header .app-title-sub{
-    font-size:23px;
-  }
-
-  header .app-title-main{
-    font-size:21px;
-  }
-
-}
-
-
-/* =====================================================
-   個人用 区分・定型文編集エリア
-===================================================== */
-#editArea{
-  margin-top:80px;
-  border-top:4px solid #dcebed;
-  padding-top:24px;
-}
+/* 編集エリア */
+#editArea{margin-top:80px;border-top:3px solid #9bc7ee;padding-top:24px}
 .edit-note{
-  font-size:13px;
-  line-height:1.7;
-  color:#52676d;
-  background:#f9fdff;
-  border:1px solid #dcebed;
-  border-radius:10px;
-  padding:11px;
+  font-size:13px;line-height:1.7;color:#52676d;background:var(--blue-pale);
+  border:1px solid #c8def2;border-radius:10px;padding:11px
 }
 .edit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
-.edit-card{border:1px solid #c9dde1;border-radius:10px;padding:12px;background:#fff}
-.edit-title{font-weight:bold;color:#0872c5;margin-bottom:7px}
-.edit-preview{white-space:pre-wrap;font-size:13px;line-height:1.55;background:#f9fcfc;border:1px solid #e3eef0;border-radius:8px;padding:8px;max-height:100px;overflow:auto}
+.edit-card{border:2px solid #9bc7ee;border-radius:10px;padding:12px;background:#fff}
+.edit-title{font-weight:bold;color:var(--blue);margin-bottom:7px}
+.edit-preview{white-space:pre-wrap;font-size:13px;line-height:1.55;background:#f7fbff;border:1px solid #d6e6f4;border-radius:8px;padding:8px;max-height:100px;overflow:auto}
 .edit-textarea{width:100%;min-height:150px;box-sizing:border-box;margin-top:8px}
-.edit-btn{background:#607d83;padding:8px 12px;font-size:13px}
-.edit-save{background:#075e6b}
-.edit-delete{background:#8b4c4c}
-.edit-add{background:#0875c9;width:100%;margin-top:8px}
-.edit-add-area{margin-top:18px;padding-top:16px;border-top:1px solid #dcebed}
+.edit-btn{background:#6b7f8c;padding:8px 12px;font-size:13px}
+.edit-save{background:var(--blue)}
+.edit-delete{background:#8a5a42}
+.edit-add{background:var(--blue);width:100%;margin-top:8px}
+.edit-add-area{margin-top:18px;padding-top:16px;border-top:1px solid #c8def2}
 .edit-add-area input,.edit-add-area textarea{margin-top:7px}
-#addTemporaryCategoryName,
-#addCategoryName{
-  width:45%;
-  max-width:320px;
-  min-height:40px;
-  box-sizing:border-box;
-}
-@media(max-width:600px){.edit-grid{grid-template-columns:1fr}}
+#addTemporaryCategoryName,#addCategoryName{width:45%;max-width:320px;min-height:40px;box-sizing:border-box}
 
+/* BlueOcean編集エリア */
+#boEditArea{margin-top:80px;padding-top:24px;border-top:3px solid #9bc7ee}
+.bo-edit-note{font-size:13px;line-height:1.6;color:#52666b;background:var(--blue-pale);border:1px solid #c8def2;border-radius:10px;padding:10px 12px;margin-bottom:14px}
+.bo-edit-item{border:2px solid #9bc7ee;border-radius:10px;padding:12px;margin:9px 0;background:#fff}
+.bo-edit-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.bo-edit-name{flex:1 1 230px;min-width:180px;box-sizing:border-box;padding:9px;border:1px solid #b9d3e9;border-radius:8px;font-size:14px}
+.bo-edit-template{width:100%;min-height:110px;box-sizing:border-box;margin-top:8px;padding:9px;border:1px solid #b9d3e9;border-radius:8px;font-size:14px;line-height:1.6;resize:vertical}
+.bo-edit-btn{border:0;border-radius:8px;padding:8px 12px;cursor:pointer;background:#6b7f8c;color:#fff}
+.bo-edit-btn.save{background:var(--blue)}
+.bo-edit-btn.delete{background:#8a5a42}
+.bo-edit-btn.restore{background:var(--green)}
+.bo-edit-add{margin-top:18px;padding-top:16px;border-top:1px solid #c8def2}
+.edit-label{margin:8px 0 4px;font-size:12px;font-weight:bold;color:var(--blue)}
+.edit-name-input{width:100%;box-sizing:border-box;padding:9px;border:1px solid #b9d3e9;border-radius:8px;font-size:14px;margin-bottom:5px}
 
-/* ===== BlueOcean 編集エリア ===== */
-#boEditArea{
-  margin-top:80px;
-  padding-top:24px;
-  border-top:3px solid #dcebed;
+/* フッター */
+.bo-footer-brand{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px auto 26px;padding:16px 0 4px;border-top:2px solid #c8def2;max-width:720px}
+.bo-footer-brand img{width:58px;height:58px;object-fit:contain;flex:none}
+.bo-footer-brand-text{display:flex;flex-direction:column;gap:3px;text-align:left}
+.bo-footer-brand-title{font-size:17px;font-weight:bold;letter-spacing:.3px;color:var(--blue-deep)}
+.bo-footer-brand-subtitle{font-size:12px;color:var(--muted)}
+
+/* 設定導線＝主要操作なので青 */
+button[onclick*="setting"],button[onclick*="Setting"],button[id*="setting"],button[id*="Setting"],a[href*="setting"],a[href*="Setting"]{
+  color:#fff!important;background:var(--blue)!important;border:2px solid var(--blue-dark)!important;
+  opacity:1!important;visibility:visible!important;font-size:1rem!important;font-weight:800!important;
+  padding:13px 20px!important;border-radius:10px!important;box-shadow:0 3px 8px rgba(25,118,210,.18)
 }
-.bo-edit-note{
-  font-size:13px;
-  line-height:1.6;
-  color:#52666b;
-  background:#f9fdff;
-  border:1px solid #dcebed;
-  border-radius:10px;
-  padding:10px 12px;
-  margin-bottom:14px;
-}
-.bo-edit-item{
-  border:1px solid #cbdfe3;
-  border-radius:10px;
-  padding:12px;
-  margin:9px 0;
-  background:#fff;
-}
-.bo-edit-row{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  flex-wrap:wrap;
-}
-.bo-edit-name{
-  flex:1 1 230px;
-  min-width:180px;
-  box-sizing:border-box;
-  padding:9px;
-  border:1px solid #cbdfe3;
-  border-radius:8px;
-  font-size:14px;
-}
-.bo-edit-template{
-  width:100%;
-  min-height:110px;
-  box-sizing:border-box;
-  margin-top:8px;
-  padding:9px;
-  border:1px solid #cbdfe3;
-  border-radius:8px;
-  font-size:14px;
-  line-height:1.6;
-  resize:vertical;
-}
-.bo-edit-btn{
-  border:0;
-  border-radius:8px;
-  padding:8px 12px;
-  cursor:pointer;
-  background:#607d83;
-  color:#fff;
-}
-.bo-edit-btn.save{background:#0875c9;}
-.bo-edit-btn.delete{background:#8a5a42;}
-.bo-edit-btn.restore{background:#527b62;}
-.bo-edit-add{
-  margin-top:18px;
-  padding-top:16px;
-  border-top:1px solid #dcebed;
+button[onclick*="setting"]:hover,button[onclick*="Setting"]:hover,button[id*="setting"]:hover,button[id*="Setting"]:hover,a[href*="setting"]:hover{
+  background:var(--blue-dark)!important;border-color:var(--blue-deep)!important
 }
 
-
-.edit-label{
-  margin:8px 0 4px;
-  font-size:12px;
-  font-weight:bold;
-  color:#0872c5;
-}
-.edit-name-input{
-  width:100%;
-  box-sizing:border-box;
-  padding:9px;
-  border:1px solid #cbdfe3;
-  border-radius:8px;
-  font-size:14px;
-  margin-bottom:5px;
-}
-
-
-.bo-footer-brand{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  margin:10px auto 26px;
-  padding:16px 0 4px;
-  border-top:1px solid #dcebed;
-  max-width:720px;
-}
-.bo-footer-brand img{
-  width:58px;
-  height:58px;
-  object-fit:contain;
-  flex:none;
-}
-.bo-footer-brand-text{
-  display:flex;
-  flex-direction:column;
-  gap:3px;
-  text-align:left;
-}
-.bo-footer-brand-title{
-  font-size:17px;
-  font-weight:bold;
-  letter-spacing:.3px;
-}
-.bo-footer-brand-subtitle{
-  font-size:12px;
-}
-
-
-@media (max-width: 600px) {
-  .pattern-grid{grid-template-columns:1fr;}
-  .pattern-output-option{width:100%;box-sizing:border-box;border-radius:10px;}
-  .copy-button{width:100%;min-width:0;font-size:17px;padding:16px 18px;}
-}
-
-
-/* 音声・手入力欄を見やすくする */
+/* 音声・手入力：青を基本に統一 */
 #memo{
-  border:3px solid #62b38a !important;
-  background:#f5fff8 !important;
-  border-radius:14px !important;
-  min-height:240px;
-  box-shadow:0 3px 12px rgba(38,120,75,.10);
+  border:2px solid var(--blue)!important;background:var(--blue-pale)!important;
+  border-radius:10px!important;min-height:240px;box-shadow:0 3px 12px rgba(25,118,210,.08)
 }
-#memo:focus{
-  border-color:#2f8f5b !important;
-  background:#ffffff !important;
-  box-shadow:0 0 0 3px rgba(47,143,91,.16);
+#memo:focus{border-color:var(--blue-dark)!important;background:#fff!important;box-shadow:0 0 0 3px rgba(25,118,210,.14)}
+textarea#memo{background:var(--blue-pale)!important;border:2px solid var(--blue)!important;border-radius:10px!important;box-sizing:border-box!important}
+textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!important;box-shadow:0 0 0 3px rgba(25,118,210,.14)!important}
+
+/* 新規作成 */
+#newCaseButton{
+  background:var(--blue)!important;background-image:none!important;color:#fff!important;
+  border:2px solid var(--blue-dark)!important;box-shadow:0 2px 5px rgba(25,118,210,.15)!important;
+  border-radius:10px;padding:12px 34px;min-width:260px;font-size:15px;cursor:pointer
 }
+#newCaseButton:hover{background:var(--blue-dark)!important}
 
+/* =====================================================
+   設定画面も同じデザイン体系
+===================================================== */
+.settings-overlay{display:none;position:fixed;inset:0;z-index:9999;background:var(--blue-pale);overflow:auto}
+.settings-overlay.open{display:block}
+.settings-panel{min-height:100vh;background:var(--blue-pale)}
+.settings-head{position:sticky;top:0;z-index:2;background:var(--blue);border-bottom:2px solid var(--blue-dark);padding:16px 22px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(13,71,161,.12)}
+.settings-head h2{margin:0;font-size:21px;color:#fff}
+.settings-close{border:2px solid #fff;background:#fff;color:var(--blue);border-radius:10px;padding:9px 13px;cursor:pointer;font-size:17px}
+.settings-body{max-width:1000px;margin:0 auto;padding:24px 18px 40px}
+.settings-intro{background:#fff;border:2px solid var(--blue-border);border-radius:14px;padding:18px 20px;margin-bottom:18px}
+.settings-intro h3{margin:0 0 7px;color:var(--blue);font-size:18px}
+.settings-intro p{margin:0;color:#64748b;line-height:1.7}
+.settings-help{background:#fff;border:2px solid #d8c875;border-radius:14px;margin-bottom:18px;overflow:hidden}
+.settings-help button{width:100%;border:0;background:#fff;text-align:left;padding:16px 20px;font-size:16px;font-weight:700;color:var(--blue);cursor:pointer}
+.settings-help-content{display:none;padding:0 20px 18px;color:#475569;line-height:1.8}
+.settings-help-content.open{display:block}
+.settings-real-editor #editArea{display:block!important;margin:0!important}
+.settings-return{width:100%;padding:14px;border:0;border-radius:10px;background:var(--blue-dark);color:#fff;font-weight:700;cursor:pointer;margin-top:18px;font-size:15px}
 
-/* 出力設定：ラジオ風の〇点を使わず、選択したボタン全体を緑色にする */
-.pattern-output-option .output-radio-dot{display:none !important;}
-.pattern-output-option.is-selected{
-  border-color:#3b9b68 !important;
-  background:#3b9b68 !important;
-  color:#fff !important;
-  font-weight:700;
-  box-shadow:0 3px 10px rgba(59,155,104,.20);
+@media(max-width:600px){
+  .usage-card{padding:17px 16px}
+  .usage-card h2{font-size:18px}
+  .usage-step{font-size:13px;padding:9px 6px 9px 8px}
+  .usage-step span{font-size:12px}
+  .header-inner{display:block}
+  .header-description{margin-top:12px;max-width:none;font-size:14px}
+  .grid,.pattern-grid{grid-template-columns:1fr}
+  button{width:100%;margin:4px 0}
+  header h1{font-size:21px}
+  header .app-title-sub{font-size:23px}
+  header .app-title-main{font-size:21px}
+  .edit-grid{grid-template-columns:1fr}
+  .pattern-output-option{width:100%;box-sizing:border-box;border-radius:10px}
+  .copy-button{width:100%;min-width:0;font-size:17px;padding:16px 18px}
+  #addTemporaryCategoryName,#addCategoryName{width:100%;max-width:none}
+  .settings-body{padding:14px 10px 30px}
+  .settings-head{padding:14px}
 }
-.pattern-output-option.is-selected:hover{
-  background:#348c5e !important;
-  border-color:#348c5e !important;
-  color:#fff !important;
-}
-
-
-/* 支援経過の種類：タイトルを大きく見やすく */
-.pattern-option .pattern-title{
-  font-size:1.18rem !important;
-  font-weight:800 !important;
-  line-height:1.45 !important;
-}
-.pattern-option .pattern-description{
-  font-size:1rem !important;
-  line-height:1.65 !important;
-}
-
-
-/* 設定画面への導線：文字が確実に見えるボタン */
-button[onclick*="setting"], button[onclick*="Setting"],
-button[id*="setting"], button[id*="Setting"],
-a[href*="setting"], a[href*="Setting"]{
-  color:#1f5f3b !important;
-  background:#eaf8ef !important;
-  border:2px solid #3b9b68 !important;
-  opacity:1 !important;
-  visibility:visible !important;
-  font-size:1rem !important;
-  font-weight:800 !important;
-  padding:12px 18px !important;
-  border-radius:12px !important;
-}
-
-
-/* 支援経過選択：タイトルを大きく、ボタンとして認識しやすくする */
-.pattern-option{
-  cursor:pointer !important;
-  position:relative;
-}
-.pattern-option .pattern-title{
-  display:inline-flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  min-height:52px !important;
-  padding:8px 20px !important;
-  margin:2px 0 10px !important;
-  border:3px solid #78b995 !important;
-  border-radius:999px !important;
-  background:#f5fff8 !important;
-  color:#205b3a !important;
-  font-size:1.35rem !important;
-  font-weight:900 !important;
-  line-height:1.35 !important;
-  letter-spacing:.02em !important;
-  box-shadow:0 2px 6px rgba(38,120,75,.12) !important;
-}
-.pattern-option:hover .pattern-title{
-  border-color:#3b9b68 !important;
-  background:#effaf3 !important;
-}
-.pattern-option.pattern-selected .pattern-title,
-.pattern-option:has(>input:checked) .pattern-title{
-  background:#3b9b68 !important;
-  border-color:#3b9b68 !important;
-  color:#ffffff !important;
-  box-shadow:0 3px 9px rgba(59,155,104,.22) !important;
-}
-
-
-/* 設定導線：青色の目立つボタン */
-button[onclick*="setting"], button[onclick*="Setting"],
-button[id*="setting"], button[id*="Setting"],
-a[href*="setting"], a[href*="Setting"]{
-  color:#ffffff !important;
-  background:#1976d2 !important;
-  border:2px solid #1565c0 !important;
-  opacity:1 !important;
-  visibility:visible !important;
-  font-size:1rem !important;
-  font-weight:800 !important;
-  padding:13px 20px !important;
-  border-radius:12px !important;
-  box-shadow:0 3px 8px rgba(25,118,210,.22);
-}
-button[onclick*="setting"]:hover, button[onclick*="Setting"]:hover,
-button[id*="setting"]:hover, button[id*="Setting"]:hover,
-a[href*="setting"]:hover, a[href*="Setting"]:hover{
-  background:#1565c0 !important;
-  border-color:#0d47a1 !important;
-}
-
-
-/* 支援経過選択：大きく、丸く、押せることが一目で分かるデザイン */
-.pattern-option .pattern-title{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  width:calc(100% - 10px) !important;
-  min-height:68px !important;
-  padding:12px 26px !important;
-  margin:4px 5px 14px !important;
-  border:4px solid #68a9df !important;
-  border-radius:999px !important;
-  background:#f4faff !important;
-  color:#155a91 !important;
-  font-size:1.55rem !important;
-  font-weight:900 !important;
-  line-height:1.3 !important;
-  letter-spacing:.025em !important;
-  box-shadow:0 4px 10px rgba(25,118,210,.14) !important;
-  cursor:pointer !important;
-  transition:all .15s ease !important;
-}
-.pattern-option:hover .pattern-title{
-  border-color:#1976d2 !important;
-  background:#eef7ff !important;
-  transform:translateY(-1px);
-  box-shadow:0 6px 14px rgba(25,118,210,.18) !important;
-}
-.pattern-option.pattern-selected .pattern-title,
-.pattern-option:has(>input:checked) .pattern-title{
-  background:#1976d2 !important;
-  border-color:#1565c0 !important;
-  color:#ffffff !important;
-  box-shadow:0 5px 14px rgba(25,118,210,.25) !important;
-}
-
-
-/* 支援経過選択ボタン：見出しを完全中央配置 */
-.pattern-option .pattern-title{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  text-align:center !important;
-  width:calc(100% - 10px) !important;
-  margin-left:5px !important;
-  margin-right:5px !important;
-}
-
-
-/* 支援経過3種：見出しを枠の中央に固定 */
-.pattern-option .pattern-title{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  text-align:center !important;
-  margin-left:auto !important;
-  margin-right:auto !important;
-  width:100% !important;
-  box-sizing:border-box !important;
-}
-
-
-.usage-open-button{background:#f5e6a8;color:#5f5500;font-weight:bold;font-size:16px;width:100%;max-width:520px;padding:14px;border:1px solid #d8c875;border-radius:8px;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.12)}
 </style>
 
 <style id="new-case-button-blue">
@@ -764,7 +321,29 @@ a[href*="setting"]:hover, a[href*="Setting"]:hover{
 <style id="remove-category-row-lines">
 /* 区分一覧の各項目を囲む線だけ非表示 */
 #cats label{
-  border: none !important;
+  border: 2px solid var(--blue) !important;
+  border-radius: 999px !important;
+  background: var(--blue-pale) !important;
+  color: var(--blue-deep) !important;
+  padding: 10px 14px !important;
+  box-sizing: border-box;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+
+#cats label:hover{
+  background: var(--blue-light) !important;
+  border-color: var(--blue-dark) !important;
+}
+
+#cats label:has(input:checked){
+  background: var(--green-light) !important;
+  border-color: var(--green) !important;
+  color: var(--green-dark) !important;
+  font-weight: 700;
+}
+
+#cats input[type="checkbox"]{
+  accent-color: var(--green) !important;
 }
 </style>
 
@@ -844,6 +423,57 @@ a[href*="setting"]:hover, a[href*="Setting"]:hover{
 }
 </style>
 
+
+<style id="final-blue-selection-adjustment">
+/* 今回指定：出力方法の選択状態を青に統一 */
+.pattern-output-option.is-selected{
+  border-color:var(--blue)!important;
+  background:var(--blue)!important;
+  color:#fff!important;
+  font-weight:700;
+  box-shadow:0 3px 10px rgba(25,118,210,.18);
+}
+.pattern-output-option.is-selected:hover{
+  background:var(--blue-dark)!important;
+  border-color:var(--blue-dark)!important;
+}
+
+/* 今回指定：区分は初期状態を背景なし・細い青枠にする */
+#cats label{
+  border:1px solid var(--blue)!important;
+  border-radius:999px!important;
+  background:transparent!important;
+  color:var(--blue-deep)!important;
+}
+#cats label:hover{
+  background:var(--blue-light)!important;
+  border-color:var(--blue)!important;
+}
+#cats label:has(input:checked){
+  background:var(--blue)!important;
+  border-color:var(--blue)!important;
+  color:#fff!important;
+  font-weight:700;
+}
+#cats input[type="checkbox"]{
+  accent-color:var(--blue)!important;
+}
+</style>
+
+<style id="final-category-background-fix">
+/* 区分：未選択は白、チェック後のみ薄い水色。枠・その他の設定は維持 */
+#cats label {
+  background:#ffffff !important;
+}
+#cats label:hover {
+  background:#ffffff !important;
+}
+#cats label:has(input[type="checkbox"]:checked) {
+  background:#e8f4ff !important;
+  border-color:var(--blue) !important;
+  color:var(--blue-deep) !important;
+}
+</style>
 </head>
 
 <body>
@@ -957,7 +587,7 @@ a[href*="setting"]:hover, a[href*="Setting"]:hover{
 <div class="edit-add-area" id="temporaryCategoryArea">
 <h3 style="margin:0;color:#0872c5;">今回だけ使用する区分を追加</h3>
 <input id="addTemporaryCategoryName" type="text" placeholder="区分名（例：退院前カンファレンス）">
-<button type="button" class="edit-add" onclick="addTemporaryCategory()">＋ 今回だけの区分を追加</button>
+<button type="button" id="addTemporaryCategoryButton" class="edit-add">＋ 今回だけの区分を追加</button>
 <div id="temporaryCategoryStatus" class="edit-note" style="margin-top:8px;">
 ここで追加した区分は今回の入力だけに使用し、定型文は設定しません。画面を閉じると消えます。
 </div>
@@ -1031,6 +661,8 @@ class="status"
 </div>
 
 
+</section>
+
 <!-- =====================================================
      トップへ戻るエリア
      ※コピー前から表示
@@ -1057,7 +689,6 @@ style="display:none;"
 </div>
 
 
-<div style="display:flex;justify-content:center;margin:18px 0 12px;"><button type="button" onclick="openAppSettings()" style="border:1px solid #d97706!important;background:#f28c28!important;color:#fff!important;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:600;">① 定型文・区分を自分用に編集する方はこちらはこちら</button></div>
 <button
 class="scroll-top-button"
 onclick="scrollToTop()"
@@ -1072,9 +703,9 @@ onclick="goHome()"
 ⌂ トップ画面に戻る
 </button>
 
-</div>
+<div style="display:flex;justify-content:center;margin:18px 0 12px;"><button type="button" onclick="openAppSettings()" style="border:1px solid #d97706!important;background:#f28c28!important;color:#fff!important;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:600;">① 定型文・区分を自分用に編集する方はこちらはこちら</button></div>
 
-</section>
+</div>
 
 <section class="card usage-card">
 <h2>使い方の説明</h2>
@@ -1427,23 +1058,41 @@ return x.value;
 ===================================================== */
 function addTemporaryCategory(){
   const input=document.getElementById("addTemporaryCategoryName");
+  if(!input)return;
+
   const name=(input.value||"").trim();
+
   if(!name){
     alert("区分名を入力してください。");
+    input.focus();
     return;
   }
-  if(allCategories().includes(name)){
+
+  const categories=allCategories();
+  if(categories.includes(name)){
     alert("同じ区分名がすでにあります。");
+    input.focus();
     return;
   }
 
   const temporary=getTemporaryCategories();
-  temporary.push(name);
+
+  if(!temporary.includes(name)){
+    temporary.push(name);
+  }
+
   saveTemporaryCategories(temporary);
   input.value="";
   renderCategories();
   update();
-  alert("「"+name+"」を今回だけの区分として追加しました。定型文は設定されません。");
+
+  const added=document.querySelector('#cats input[type="checkbox"][value="'+CSS.escape(name)+'"]');
+  if(added){
+    added.checked=true;
+    update();
+  }
+
+  input.focus();
 }
 
 /* =====================================================
@@ -2292,6 +1941,13 @@ renderEditArea();
 update();
 updatePatternUI();
 
+const addTemporaryCategoryButton = document.getElementById("addTemporaryCategoryButton");
+if(addTemporaryCategoryButton){
+  addTemporaryCategoryButton.addEventListener("click", function(){
+    addTemporaryCategory();
+  });
+}
+
 
 
 </script>
@@ -2394,7 +2050,7 @@ window.location.href =
       </div>
       <div id="settingsEditorHost" class="settings-real-editor"></div>
       <button class="settings-return" type="button" onclick="scrollSettingsToTop()">▲ 設定画面のトップに戻る</button>
-      <button class="settings-return" type="button" onclick="closeAppSettings()" style="background:#172554!important;color:#fff!important;border-color:#172554!important;">メイン画面に戻る</button>
+      <button class="settings-return" type="button" onclick="closeAppSettings()" style="background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%)!important;color:#fff!important;border-color:#0875c9!important;">メイン画面に戻る</button>
     </div>
   </div>
 </div>
@@ -2438,6 +2094,58 @@ function showUsageGuide(){
 </script>
 <!-- ===== 設定・使い方ページ：ここまで追加 ===== -->
 
+
+<style id="final-blue-choice-unification">
+/* 今回指定：未選択＝白、選択＝薄い水色。枠は青で少し太く統一 */
+.pattern-option{
+  background:#fff !important;
+  border:3px solid var(--blue) !important;
+}
+.pattern-option:hover{
+  background:#fff !important;
+  border-color:var(--blue-dark) !important;
+}
+.pattern-option:has(>input:checked),
+.pattern-option.pattern-selected{
+  background:#e8f4ff !important;
+  border-color:var(--blue) !important;
+  box-shadow:0 3px 10px rgba(25,118,210,.12) !important;
+}
+.pattern-option:has(input:checked) .pattern-title-force{
+  background:#e8f4ff !important;
+  border-color:var(--blue) !important;
+  color:var(--blue-deep) !important;
+}
+.pattern-output-option{
+  background:#fff !important;
+  border:3px solid var(--blue) !important;
+}
+.pattern-output-option:hover{
+  background:#fff !important;
+  border-color:var(--blue-dark) !important;
+}
+.pattern-output-option.is-selected{
+  background:var(--blue) !important;
+  border-color:var(--blue-dark) !important;
+  color:#fff !important;
+  box-shadow:0 3px 10px rgba(25,118,210,.12) !important;
+}
+.pattern-output-option.is-selected:hover{
+  background:var(--blue) !important;
+  border-color:var(--blue-dark) !important;
+  color:#fff !important;
+}
+/* 区分：未選択＝白、選択＝薄い水色。既存の青い細枠は維持 */
+#cats label:has(input:checked){
+  background:#ffffff !important;
+  border-color:var(--blue) !important;
+  color:var(--blue-deep) !important;
+  font-weight:700;
+}
+#cats input[type="checkbox"]{
+  accent-color:var(--blue) !important;
+}
+</style>
 </body>
 
 <style id="memo-final-color-fix">
@@ -2455,4 +2163,190 @@ textarea#memo:focus{
 }
 </style>
 
+<style id="final-output-selection-blue-fix">
+/* 今回指定：標準・区分以外を表示・内容のみを表示は、決定後のみ青背景＋白文字 */
+.pattern-output-option.is-selected{
+  background:var(--blue) !important;
+  border-color:var(--blue-dark) !important;
+  color:#fff !important;
+}
+.pattern-output-option.is-selected:hover{
+  background:var(--blue-dark) !important;
+  border-color:var(--blue-dark) !important;
+  color:#fff !important;
+}
+</style>
+
+
+<style id="final-output-pill-white-fix">
+/* 今回指定：3つの丸い枠は常時白背景。選択時のみ青背景＋白文字 */
+.pattern-output-option{
+  background:#fff !important;
+  color:var(--blue-deep) !important;
+}
+.pattern-output-option:hover{
+  background:#fff !important;
+  color:var(--blue-deep) !important;
+}
+.pattern-output-option.is-selected,
+.pattern-output-option.is-selected:hover{
+  background:var(--blue) !important;
+  border-color:var(--blue) !important;
+  color:#fff !important;
+}
+</style>
+
+<style id="final-pattern-title-white-fix">
+/* 指定箇所：3つの丸いタイトル枠の内部背景は常時白に固定。その他は変更しない */
+.pattern-title-force,
+.pattern-option:hover .pattern-title-force,
+.pattern-option:has(input:checked) .pattern-title-force{
+  background:#fff !important;
+}
+</style>
+
+
+<style id="final-pattern-exact-color-fix">
+/* 最終指定：大きな支援経過種類カードは未選択白・選択時薄い水色。3つの丸枠と出力方法は白・選択時青。 */
+.pattern-option {
+  background:#fff !important;
+}
+.pattern-option:hover {
+  background:#fff !important;
+}
+.pattern-option:has(>input:checked),
+.pattern-option.pattern-selected {
+  background:#e8f4ff !important;
+}
+.pattern-option:has(input:checked) .pattern-title-force {
+  background:var(--blue) !important;
+  border-color:var(--blue) !important;
+  color:#fff !important;
+}
+.pattern-title-force {
+  background:#fff !important;
+}
+.pattern-option:hover .pattern-title-force {
+  background:#fff !important;
+}
+.pattern-option:has(input:checked) .pattern-title-force {
+  background:var(--blue) !important;
+  color:#fff !important;
+}
+.pattern-output-option {
+  background:#fff !important;
+  color:var(--blue-deep) !important;
+}
+.pattern-output-option:hover {
+  background:#fff !important;
+  color:var(--blue-deep) !important;
+}
+.pattern-output-option.is-selected,
+.pattern-output-option.is-selected:hover {
+  background:var(--blue) !important;
+  border-color:var(--blue) !important;
+  color:#fff !important;
+}
+</style>
+
+<style id="blueocean-gradient-final">
+/* =====================================================
+   BlueOcean カラー最終統一
+   ※色・グラデーションのみ変更。レイアウト・機能・サイズ等は変更しない。
+   ===================================================== */
+
+/* メインタイトル部分 */
+header{
+  background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%) !important;
+}
+
+/* 支援経過種類のタイトル */
+.pattern-title-force,
+.pattern-option:has(input:checked) .pattern-title-force{
+  background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%) !important;
+  border-color:#0875c9 !important;
+  color:#fff !important;
+}
+
+/* メイン画面のBlueOcean系主要ボタン */
+.copy-button:not(.copied),
+.scroll-top-button,
+.home-button,
+.edit-save,
+.edit-add,
+.bo-edit-btn.save,
+#newCaseButton{
+  background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%) !important;
+  border-color:#0875c9 !important;
+  color:#fff !important;
+}
+
+/* 設定画面のタイトル */
+.settings-head{
+  background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%) !important;
+  border-bottom-color:#0875c9 !important;
+}
+.settings-head h2{
+  color:#fff !important;
+}
+
+/* 設定画面の「戻る」ボタン */
+.settings-return{
+  background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%) !important;
+  border-color:#0875c9 !important;
+  color:#fff !important;
+}
+</style>
+
+
+<style id="blueocean-requested-final-adjustment">
+/* 今回指定の最終カラー・幅調整：指定箇所以外は変更しない */
+.pattern-title-force,
+.pattern-option:hover .pattern-title-force{
+  background:#fff !important;
+  border-color:#0875c9 !important;
+  color:var(--blue-deep) !important;
+}
+.pattern-option:has(input:checked) .pattern-title-force,
+.pattern-option.pattern-selected .pattern-title-force{
+  background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%) !important;
+  border-color:#0875c9 !important;
+  color:#fff !important;
+}
+.pattern-output-option,
+.pattern-output-option:hover{
+  background:#fff !important;
+  border-color:#0875c9 !important;
+  color:var(--blue-deep) !important;
+}
+.pattern-output-option.is-selected,
+.pattern-output-option.is-selected:hover{
+  background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%) !important;
+  border-color:#0875c9 !important;
+  color:#fff !important;
+}
+.usage-open-button{
+  width:auto !important;
+  max-width:none !important;
+}
+.scroll-top-button,
+.home-button{
+  width:auto !important;
+  padding-left:14px !important;
+  padding-right:14px !important;
+  display:block !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+
+/* 設定画面の戻るボタン：文字が入る程度の幅に限定 */
+.settings-return{
+  width:auto !important;
+  padding-left:14px !important;
+  padding-right:14px !important;
+  display:block !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+}
+</style>
 </html>
