@@ -105,6 +105,11 @@ button:hover{opacity:.92;transform:translateY(-1px)}
 
 /* 支援経過の種類：同一デザイン体系 */
 .pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.summary-mode-button{display:block;width:max-content;max-width:100%;margin:14px auto 0;padding:14px 18px;border:2px solid var(--blue)!important;border-radius:999px;background:#fff!important;color:var(--blue-deep)!important;font-size:1.02rem;font-weight:900;line-height:1.35;cursor:pointer;box-sizing:border-box;transition:.15s;box-shadow:0 3px 8px rgba(25,118,210,.10)}
+.summary-mode-button:hover{background:#fff!important;border-color:var(--blue-dark)!important;color:var(--blue-deep)!important}
+.summary-mode-button.is-selected{background:linear-gradient(135deg,var(--blue),var(--blue-dark))!important;border-color:var(--blue-dark)!important;color:#fff!important;box-shadow:0 3px 10px rgba(25,118,210,.18)}
+.summary-mode-note{display:block;margin-top:8px;font-size:12px;line-height:1.5;color:#3f6f4d;text-align:center}
+.summary-mode-note.is-visible{display:block}
 .pattern-option{
   display:block;align-items:flex-start;background:#fff;border:2px solid #9bc7ee;
   padding:14px;border-radius:12px;cursor:pointer;position:relative;transition:.15s;
@@ -474,6 +479,80 @@ textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!impo
   color:var(--blue-deep) !important;
 }
 </style>
+
+<style id="pattern-selection-compact-adjustment">
+/* 支援経過タイプ選択：枠を少しコンパクトにし、各項目を中央寄せ */
+.pattern-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:8px !important;
+}
+.pattern-option{
+  padding:8px !important;
+  height:100% !important;
+  box-sizing:border-box !important;
+  align-self:stretch !important;
+}
+.pattern-option>span:first-of-type{
+  text-align:center !important;
+  height:108px !important;
+  min-height:108px !important;
+  box-sizing:border-box !important;
+}
+.pattern-title-force{
+  height:64px !important;
+  min-height:64px !important;
+  padding:7px 12px !important;
+  margin:0 0 7px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+}
+.pattern-option small{
+  display:block !important;
+  text-align:center !important;
+  line-height:1.4 !important;
+}
+.pattern-output-wrap{
+  margin-top:8px !important;
+  padding-top:7px !important;
+  text-align:center !important;
+}
+.pattern-output-title{
+  display:block !important;
+  text-align:center !important;
+  margin-bottom:5px !important;
+}
+.pattern-output-options{
+  justify-content:center !important;
+}
+@media (max-width:760px){
+  .pattern-grid{
+    grid-template-columns:1fr !important;
+  }
+}
+</style>
+<style id="summary-mode-blueocean-final">
+/* 文章をまとめるボタン：支援経過A・B・Cと同じBlueOceanカラーに統一 */
+#summaryModeButton.summary-mode-button{
+  background:#fff !important;
+  border:2px solid #0875c9 !important;
+  color:#155a91 !important;
+  border-radius:999px !important;
+}
+#summaryModeButton.summary-mode-button:hover{
+  background:#fff !important;
+  border-color:#0875c9 !important;
+  color:#155a91 !important;
+}
+#summaryModeButton.summary-mode-button.is-selected,
+#summaryModeButton.summary-mode-button.is-selected:hover{
+  background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%) !important;
+  border-color:#0875c9 !important;
+  color:#fff !important;
+}
+</style>
 </head>
 
 <body>
@@ -525,7 +604,7 @@ textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!impo
 <div class="pattern-grid">
   <div class="pattern-option" role="button" tabindex="0" onclick="setSupportPattern('A')">
     <input type="radio" name="supportPattern" value="A" onchange="setSupportPattern('A')">
-    <span><strong class="pattern-title-force">📝 内容を項目ごとに整理</strong><br><small>区分・内容・ケアマネの判断・利用者・家族の考えを分けて記録</small></span>
+    <span><strong class="pattern-title-force">📝 内容を項目ごとに整理</strong><small>区分・内容・ケアマネの判断・利用者・家族の考えを分けて記録</small></span>
     <span class="pattern-output-wrap">
       <span class="pattern-output-title">支援経過の出し方を変えられます</span>
       <span class="pattern-output-options" onclick="event.stopPropagation()">
@@ -537,7 +616,7 @@ textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!impo
   </div>
   <div class="pattern-option" role="button" tabindex="0" onclick="setSupportPattern('B')">
     <input type="radio" name="supportPattern" value="B" onchange="setSupportPattern('B')">
-    <span><strong class="pattern-title-force">定型文は残し少し自然に整理</strong><br><small>区分と内容に分け、定型文の支援項目は表示せず自然な文章として記録</small></span>
+    <span><strong class="pattern-title-force">🌿 内容に支援項目をなくし整理</strong><small>定型文の支援項目は表示せず自然な文章として記録</small></span>
     <span class="pattern-output-wrap">
       <span class="pattern-output-title">支援経過の出し方を変えられます</span>
       <span class="pattern-output-options" onclick="event.stopPropagation()">
@@ -549,7 +628,7 @@ textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!impo
   </div>
   <div class="pattern-option" role="button" tabindex="0" onclick="setSupportPattern('C')">
     <input type="radio" name="supportPattern" value="C" onchange="setSupportPattern('C')">
-    <span><strong class="pattern-title-force">✨ 一つにまとめて整理</strong><br><small>区分と内容に分け、内容を一つにまとめて記録</small></span>
+    <span><strong class="pattern-title-force">✨ 一つにまとめて整理</strong><small>区分と内容に分け、内容を一つにまとめて記録</small></span>
     <span class="pattern-output-wrap">
       <span class="pattern-output-title">支援経過の出し方を変えられます</span>
       <span class="pattern-output-options" onclick="event.stopPropagation()">
@@ -564,15 +643,18 @@ textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!impo
 <div style="margin-top:14px;font-size:12px;color:#687b80;text-align:center;">
   ※通常は「標準」のままで大丈夫です。必要なときだけ変更してください。
 </div>
+
+<div id="summaryModeNote" class="summary-mode-note">🖊 とりあえず文章をまとめるモードでは音声・手入力の文章だけを整理します。 支援経過に関係なく、文章を整理したい時にご使用ください。</div>
+<button type="button" id="summaryModeButton" class="summary-mode-button" onclick="setSummaryMode()">🖊 とりあえず文章をまとめる</button>
 </section>
 
 <!-- =====================================================
-     ① 区分を選択
+     ① 項目を選択
 ===================================================== -->
 
 <section class="card">
 
-<h2>① 区分を選択</h2>
+<h2>① 項目を選択</h2>
 
 <div id="cats" class="grid"></div>
 
@@ -585,11 +667,11 @@ textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!impo
 </div>
 
 <div class="edit-add-area" id="temporaryCategoryArea">
-<h3 style="margin:0;color:#0872c5;">今回だけ使用する区分を追加</h3>
-<input id="addTemporaryCategoryName" type="text" placeholder="区分名（例：退院前カンファレンス）">
+<h3 style="margin:0;color:#0872c5;">今回だけ使用する項目を追加</h3>
+<input id="addTemporaryCategoryName" type="text" placeholder="項目名（例：退院前カンファレンス）">
 <button type="button" id="addTemporaryCategoryButton" class="edit-add">＋ 今回だけの区分を追加</button>
 <div id="temporaryCategoryStatus" class="edit-note" style="margin-top:8px;">
-ここで追加した区分は今回の入力だけに使用し、定型文は設定しません。画面を閉じると消えます。
+ここで追加した項目は今回の入力だけに使用し、定型文は設定しません。画面を閉じると消えます。
 </div>
 </div>
 
@@ -635,7 +717,7 @@ placeholder="ここに話した内容や支援経過に残したい内容を入�
 
 <p class="description">
 
-「AI処理用にコピー」を押すと、選択した区分・定型文・入力内容・
+「AI処理用にコピー」を押すと、選択した項目・定型文・入力内容・
 支援経過作成ルールをまとめてコピーします。
 
 <br>
@@ -703,7 +785,7 @@ onclick="goHome()"
 ⌂ トップ画面に戻る
 </button>
 
-<div style="display:flex;justify-content:center;margin:18px 0 12px;"><button type="button" onclick="openAppSettings()" style="border:1px solid #d97706!important;background:#f28c28!important;color:#fff!important;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:600;">① 定型文・区分を自分用に編集する方はこちらはこちら</button></div>
+<div style="display:flex;justify-content:center;margin:18px 0 12px;"><button type="button" onclick="openAppSettings()" style="border:1px solid #d97706!important;background:#f28c28!important;color:#fff!important;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:600;">① 定型文・項目を自分用に編集する方はこちらはこちら</button></div>
 
 </div>
 
@@ -711,14 +793,14 @@ onclick="goHome()"
 <h2>使い方の説明</h2>
 <div class="usage-flow">
   <div class="usage-step"><strong>① 支援経過の種類を選ぶ</strong></div>
-  <div class="usage-step"><strong>② 区分を選ぶ（複数選択可能）</strong></div>
+  <div class="usage-step"><strong>② 項目を選ぶ（複数選択可能）</strong></div>
   <div class="usage-step"><strong>③ 音声・手入力にて状況を記載する</strong><br><span>簡単でいいですよ。ＡＩがまとめてくれますから</span></div>
   <div class="usage-step"><strong>④ ＡＩ処理用にコピーする</strong></div>
   <div class="usage-step"><strong>⑤ ChatGPT・Gemini・Claudeなどあなたのお好きなＡＩに貼り付けてください。</strong></div>
 
 <div class="usage-note">
   <strong>🌱 慣れてきた方へ</strong><br>
-  下の「定型文・区分を自分用に編集」で、自分の好きな区分や定型文に編集したり、新しく登録することもできます。
+  下の「定型文・項目を自分用に編集」で、自分の好きな区分や定型文に編集したり、新しく登録することもできます。
 </div>
 </div>
 </section>
@@ -731,7 +813,7 @@ onclick="goHome()"
 ===================================================== -->
 <div id="editAreaPlaceholder" style="display:none;"></div>
 <section class="card" id="editArea" style="display:none;">
-<h2>① 定型文・区分を自分用に編集する方はこちら</h2>
+<h2>① 定型文・項目を自分用に編集する方はこちら</h2>
 <div class="edit-note">
 ここでは、この端末で使用する区分と定型文を自由に編集できます。<br>
 追加・編集・削除した内容は、この端末のブラウザに保存されるため、それぞれ個々の端末の中でしか変更ができません。パソコンや携帯等複数台で管理される方はそれぞれの変更が必要になりますのでご注意ください。
@@ -741,9 +823,9 @@ onclick="goHome()"
 
 <div class="edit-add-area">
 <h3 style="margin:0;color:#0872c5;">区分を追加</h3>
-<input id="addCategoryName" type="text" placeholder="区分名（例：退院調整）">
+<input id="addCategoryName" type="text" placeholder="項目名（例：退院調整）">
 <textarea id="addCategoryTemplate" placeholder="定型文"></textarea>
-<button type="button" class="edit-add" onclick="addCustomCategory()">＋ 区分と定型文を追加</button>
+<button type="button" class="edit-add" onclick="addCustomCategory()">＋ 項目と定型文を追加</button>
 </div>
 </section>
 
@@ -1063,14 +1145,14 @@ function addTemporaryCategory(){
   const name=(input.value||"").trim();
 
   if(!name){
-    alert("区分名を入力してください。");
+    alert("項目名を入力してください。");
     input.focus();
     return;
   }
 
   const categories=allCategories();
   if(categories.includes(name)){
-    alert("同じ区分名がすでにあります。");
+    alert("同じ項目名がすでにあります。");
     input.focus();
     return;
   }
@@ -1103,6 +1185,11 @@ function update(){
 
 const a =
 selected();
+
+if(summaryMode){
+selElement.textContent = "🖊 文章をまとめるモード";
+return;
+}
 
 if(a.length){
 
@@ -1161,6 +1248,13 @@ try{
 let supportOutputMode = supportOutputModes[supportPattern] || "normal";
 
 function setSupportPattern(pattern){
+  if(summaryMode){
+    summaryMode = false;
+    const summaryButton = document.getElementById("summaryModeButton");
+    const summaryNote = document.getElementById("summaryModeNote");
+    if(summaryButton) summaryButton.classList.remove("is-selected");
+    if(summaryNote) summaryNote.classList.remove("is-visible");
+  }
   supportPattern = ["A","B","C"].includes(pattern) ? pattern : "A";
   supportOutputMode = supportOutputModes[supportPattern] || "normal";
   localStorage.setItem(SUPPORT_PATTERN_KEY, supportPattern);
@@ -1200,21 +1294,31 @@ function setSupportOutputMode(mode, pattern){
   updatePatternUI();
 }
 
-const COMMON_RULE = `【①区分ルール】
+const COMMON_RULE = `【①区分・項目・定型文の構造ルール】
 
-選択された入力語句と同一の語句を、1行1項目で記載する。行頭に「・」などの記号は付けない。
-「自宅訪問」を選択した場合は、自宅訪問・本人・家族をそれぞれ改行して記載する。
-その他の区分は、選択された語句をそのまま記載する。
+支援経過の基本構造は「区分」「内容」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」の4要素とする。
+
+「区分」の中に、各種の「項目」が存在する。「利用票交付」「モニタリング」「アセスメント実施」「サービス担当者会議」「短期目標更新」などは「項目」であり、「区分」と同一のものとして扱わない。
+
+「項目：」に続く名称を項目として認識し、「定型文：」に続く文章を、その項目に紐づく定型文として認識する。
+
+項目と定型文は必ず1つのセットとして管理する。ある項目に、別の項目に紐づく定型文を使用・入れ替え・混同してはならない。
+
+選択された項目については、その項目に登録された定型文のみを使用する。定型文がない項目については、固定の定型文を補わず、音声・手入力された情報をもとに分析する。
+
+利用者が独自に追加した項目についても、標準項目と同じ構造で「項目＋その項目に紐づく定型文」を1つのセットとして管理する。
+
+「項目：」「定型文：」は管理・認識のための内部ラベルであり、原則として最終出力には表示しない。項目名を最終出力に表示するかどうか、またどのように表示するかは、選択された支援経過タイプの出力ルールに従う。
 
 【②共通内容ルール】
 
-出力は通常の文章形式で記載し、Markdownの表形式（｜で区切る表）や水平線・区切り線は使用しない。区分や内容を表の罫線で囲む形式にもせず、各項目をそのままコピーしやすい形で記載する。
-定型文がある区分は、【選択された区分の定型文】に渡された定型文を使用し、内容を推測・変更・省略・創作しない。
-「自宅訪問」は区分にのみ記載し、内容には記載しない。
-「連絡調整」は自由記載とする。
+出力は通常の文章形式で記載し、Markdownの表形式（｜で区切る表）や水平線・区切り線は使用しない。
+「区分」を出力する場合は、選択された各項目を必ず箇条書きで記載し、各項目を「・」から始めて1項目1行で記載する。複数の区分を同一行に横並びで記載してはならない。
+定型文がある項目は、選択された項目に対応する定型文を正確に使用し、内容を推測・変更・省略・創作しない。
+「自宅訪問」は項目として扱い、内容の定型文には含めない。
 内容は、訪問時の状況、会話内容、生活状況、サービス利用状況、連絡内容等を事実ベースで、自然で読みやすい支援経過記録としてまとめる。
-報告書のような硬い表現や、感情・印象を補足する表現は記載しない。
-入力されていない事実は追加しない。`;
+音声・手入力された情報は、「内容」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」に該当する情報に分けて分析することを基本とし、最終的な分離・統合はA・B・Cそれぞれの出力ルールに従う。
+入力されていない事実は追加しない。`
 
 const RULE_A = `支援経過Aパターン
 
@@ -1224,10 +1328,10 @@ ${COMMON_RULE}
 
 出力項目は「区分」「内容」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」とする。
 
-内容には、選択された区分の定型文をすべて選択順に記載し、その後に本人・家族からの相談内容や本人・家族に関する事実、その他の入力情報を記載する。
+内容には、選択された項目に対応する定型文をすべて選択順に記載し、その後に本人・家族からの相談内容や本人・家族に関する事実、その他の入力情報を記載する。
 【最重要】選択された区分のうち定型文が登録されている区分は、音声・手入力による追加情報の有無にかかわらず、必ず「内容」に記載すること。
-【最重要】Aパターンでは、定型文が登録されている各区分について、その区分の支援経過項目名を内容の見出しとして必ず1回記載し、見出しは必ず「【区分名】」の形式にすること。定型文そのものに【】付きの見出しが含まれている場合も、その表記をそのまま流用するのではなく、選択された区分名を正確に確認し、内容の見出しを必ず「【選択された区分名】」とすること。
-【最重要】「定型文の支援経過項目名が定型文本文に含まれていない」「定型文本文に【】が付いていない」「後から追加・編集された定型文である」ことを理由に、内容への区分名の記載や【】付き見出しの記載を省略してはならない。現在【選択された区分の定型文】として渡された最新の定型文を対象に、選択順を維持して漏れなく記載すること。
+【最重要】Aパターンでは、定型文が登録されている各区分について、その区分の項目名を内容の見出しとして必ず1回記載し、見出しは必ず「【項目名】」の形式にすること。定型文そのものに【】付きの見出しが含まれている場合も、その表記をそのまま流用するのではなく、選択された項目名を正確に確認し、内容の見出しを必ず「【選択された項目名】」とすること。
+【最重要】「定型文の支援経過項目名が定型文本文に含まれていない」「定型文本文に【】が付いていない」「後から追加・編集された定型文である」ことを理由に、内容への項目名の記載や【】付き見出しの記載を省略してはならない。現在【選択された項目に対応する定型文】として渡された最新の定型文を対象に、選択順を維持して漏れなく記載すること。
 定型文を各追加情報の直前に挿入せず、すべての定型文を先に記載する。
 
 本人・家族からの相談内容や本人・家族に関する事実は「内容」に記載する。
@@ -1253,15 +1357,16 @@ ${COMMON_RULE}
 出力項目は「区分」「内容」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」とする。
 
 【区分】
-選択された区分をすべて、入力された語句と同一の語句で、1回だけまとめて記載する。
-「自宅訪問」を選択した場合は、自宅訪問・本人・家族をそれぞれ改行して記載する。
-その他の選択区分は、それぞれ1行でそのまま記載する。
+選択された項目をすべて、入力された語句と同一の語句で、1回だけ記載する。
+各項目は必ず「・」から始めて1項目1行の箇条書きで記載し、複数の項目を同一行に横並びで記載しない。
+「自宅訪問」を選択した場合は、自宅訪問・本人・家族をそれぞれ「・」から始める箇条書きとして改行して記載する。
+その他の選択項目も、それぞれ「・」から始めて1行ずつ記載する。
 
 【内容】
 内容欄は1つだけ作成する。
-選択された区分のうち定型文があるものについては、選択順に、対応する定型文本文だけをそのまま記載する。
+選択された項目のうち定型文があるものについては、選択順に、対応する定型文本文だけをそのまま記載する。
 定型文の本文に含まれる支援項目名や見出しは、内容欄には記載しない。
-定型文のない区分については、内容欄に区分名を見出しとして記載しない。
+定型文のない項目については、内容欄に項目名を見出しとして記載しない。
 すべての定型文を記載した後、その下に音声・手入力による追加情報のうち、本人・家族に関する事実をまとめて記載する。
 
 【関係機関・介護支援専門員の判断】
@@ -1284,7 +1389,7 @@ ${COMMON_RULE}
 必ず次の構造で出力する。
 
 区分
-［選択された区分をまとめて記載］
+［選択された項目をまとめて記載］
 
 内容
 ［定型文の本文と、本人・家族に関する事実を記載］
@@ -1296,7 +1401,7 @@ ${COMMON_RULE}
 ［本人・家族の意見・希望を記載］
 
 「区分：」「内容：」などの表記にせず、各項目を独立した見出しとして記載すること。
-「内容」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」を選択された区分ごとに繰り返さないこと。`
+「内容」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」を選択された項目ごとに繰り返さないこと。`
 
 const RULE_C = `支援経過Cパターン
 
@@ -1307,9 +1412,10 @@ ${COMMON_RULE}
 出力項目は「区分」「内容」とする。
 
 【区分】
-選択された支援項目（区分）を、入力された語句と同一の語句で1行1項目として記載する。
-「自宅訪問」を選択した場合は、自宅訪問・本人・家族をそれぞれ改行して記載する。
-その他の区分は、選択された語句をそのまま記載する。
+選択された項目を、入力された語句と同一の語句で、「・」から始める1項目1行の箇条書きとして記載する。
+複数の項目を同一行に横並びで記載しない。
+「自宅訪問」を選択した場合は、自宅訪問・本人・家族をそれぞれ「・」から始める箇条書きとして改行して記載する。
+その他の項目も、選択された語句をそのまま「・」から始めて1行ずつ記載する。
 
 【内容】
 ・本人の発言や訴えを事実に基づいて簡潔に整理する
@@ -1324,14 +1430,65 @@ ${COMMON_RULE}
 ・「～とのこと」「～を希望」「～を依頼」「～となった」など、支援経過記録として客観的な表現を使用する
 ・本人の迷いや判断も必要に応じて残し、本人の意思決定の経過が分かるようにする
 
-内容には、選択された区分の定型文がある場合はその内容を必要に応じて反映し、音声・手入力による追加情報を含めること。区分名や「【】」で囲まれた区分見出しは内容には記載しない。` ;
+内容には、選択された項目に対応する定型文がある場合はその内容を必要に応じて反映し、音声・手入力による追加情報を含めること。項目名や「【】」で囲まれた項目見出しは内容には記載しない。` ;
 
+
+/* =====================================================
+   文章をまとめるモード
+===================================================== */
+let summaryMode = false;
+
+function setSummaryMode(){
+  summaryMode = !summaryMode;
+  const button = document.getElementById("summaryModeButton");
+  const note = document.getElementById("summaryModeNote");
+
+  if(summaryMode){
+    document.querySelectorAll('input[name="supportPattern"]').forEach(function(r){ r.checked = false; });
+    document.querySelectorAll('.pattern-option[role="button"]').forEach(function(card){
+      card.classList.remove('pattern-selected');
+    });
+    document.querySelectorAll('.pattern-output-option[data-output-mode]').forEach(function(option){
+      option.classList.remove('is-selected');
+      option.setAttribute('aria-checked','false');
+    });
+  }
+
+  if(button) button.classList.toggle("is-selected", summaryMode);
+  if(note) note.classList.toggle("is-visible", summaryMode);
+  if(typeof update === "function") update();
+}
 
 /* =====================================================
    AI処理用コピー
 ===================================================== */
 
 function copyAI() {
+  if(summaryMode){
+    const memoElement = document.getElementById("memo");
+    const additionalInput = memoElement
+      ? (memoElement.value || "").trim()
+      : "";
+    const summaryPrompt = `以下の文章を読み、内容を整理して、意味を変えずに分かりやすく自然な文章にまとめてください。
+
+話し言葉、重複、言い直し、順不同の情報などを整理してください。
+
+本人・家族・支援者等の発言や事実関係は、入力された内容の範囲で整理してください。
+
+入力されていない情報を推測して追加しないでください。
+
+項目名、区分名、見出し、分類名は出力しないでください。
+
+「関係機関・介護支援専門員の判断」「利用者・家族の考え方」等の既存の支援経過項目には分類しないでください。
+
+完成した整理文章のみを出力してください。
+
+【今回の音声・手入力】
+${additionalInput || "なし"}`;
+    copyText(summaryPrompt.trim(), copyButton, "✓ コピーしました");
+    return;
+  }
+
   const checkedPattern = document.querySelector('input[name="supportPattern"]:checked');
   const pattern = checkedPattern ? checkedPattern.value : "A";
 
@@ -1362,7 +1519,7 @@ function copyAI() {
       .filter(Boolean).join("\n");
   }
 
-  // 区分の定型文をすべて先にまとめる
+  // 項目の定型文をすべて先にまとめる
   let templates = "";
   try {
     const checked = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
@@ -1414,30 +1571,33 @@ ${selectedPrompt}
 【AI出力形式】
 ${supportOutputMode === "normal" ? "標準" : supportOutputMode === "contentOnly" ? "" : "区分以外を表示"}
 
-【選択された区分】
+【選択された項目】
 ${selectedCategories || "なし"}
 
 【AI出力形式の絶対ルール】
 「AI出力形式」が「標準」の場合は、選択された支援経過パターンのプロンプトに定められた通常の出力形式で出力すること。追加の出力形式による変更は行わないこと。
 「AI出力形式」が「区分以外を表示」の場合は、選択された支援経過パターンの出力項目のうち「区分」だけを出力せず、それ以外の項目をすべて出力すること。
-支援経過Aでは「内容」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」を出力し、Aパターンの内容内に定められた「【区分名】」の見出しはAパターンのルールどおり残すこと。
+支援経過Aでは「内容」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」を出力し、Aパターンの内容内に定められた「【項目名】」の見出しはAパターンのルールどおり残すこと。
 支援経過Bでは「内容」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」の3項目を、この順番でそれぞれ1回だけ出力すること。
 支援経過Cでは「内容」のみを出力すること。
+特に支援経過Cパターンで「AI出力形式」が「」の場合は、「内容」に相当する本文だけを出力し、「区分」を一切出力しないこと。Cパターンの通常出力形式に記載された「区分」のルールよりも、この内容のみの出力指定を最優先すること。
 「AI出力形式」が「」の場合は、支援経過A・B・Cのいずれであっても「内容」に相当する部分だけを出力し、「区分」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」は出力しないこと。
-特に支援経過Bパターンで「AI出力形式」が「」の場合は、「内容」に含めるべき情報だけを出力し、「関係機関・介護支援専門員の判断」および「利用者・家族の考え方」に該当する情報・文章・見出しを一切出力しないこと。Bパターンの通常出力形式に記載されたこれら2項目のルールよりも、この内容のみの出力指定を優先すること。
+特に支援経過Bパターンで「AI出力形式」が「」の場合は、「内容」に含めるべき情報だけを出力し、「区分」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」に該当する情報・文章・見出しを一切出力しないこと。Bパターンの通常出力形式に記載されたこれら3項目のルールよりも、この内容のみの出力指定を最優先すること。
+【最重要：Bパターン・内容のみ】「選択された項目」「今回だけ追加された項目」はAIが内容を作成するための参照情報であり、出力本文には項目名・区分名を一切再掲しないこと。選択された項目名、区分名、項目見出し、箇条書き、項目名を【】で囲んだ見出し、項目名に続く説明を、内容本文の中に出力してはならないこと。定型文を使用する場合も、定型文本文中に含まれる項目名・区分名・見出しは出力せず、支援内容として必要な本文だけを記載すること。出力は内容そのものだけとし、区分名や項目名を説明・列挙・再掲する文章も作成しないこと。
 「」の場合は「内容」という見出しも出力しないこと。
 
-【選択された区分】
+【選択された項目】
 ${templates || "なし"}
 
-【今回だけ追加された区分（定型文なし）】
+【今回だけ追加された項目（定型文なし）】
 ${temporaryCategories.length ? temporaryCategories.join("\n") : "なし"}
 
-【今回だけ追加された区分の処理方法】
-上記の「今回だけ追加された区分」は定型文を記載しないこと。
-「今回だけ追加された区分」は区分欄に区分名のみを記載し、内容欄には区分名を見出しとして記載しないこと。
+【今回だけ追加された項目の処理方法】
+上記の「今回だけ追加された項目」は定型文を記載しないこと。
+「AI出力形式」が「」の場合は、今回だけ追加された項目を区分欄にも出力せず、内容作成のための参照情報としてのみ扱うこと。内容欄には項目名を見出しとして記載しないこと。
+「AI出力形式」が「標準」の場合は、「今回だけ追加された項目」は区分欄に項目名のみを記載し、内容欄には項目名を見出しとして記載しないこと。
 今回の音声・手入力による追加情報から、その区分に該当する事実を判断し、Bパターンの各項目の記載ルールに従って適切な欄に記載すること。
-「その他」などの文字は区分名に付けないこと。
+「その他」などの文字は項目名に付けないこと。
 入力されていない事実は追加しないこと。
 
 【今回の音声入力・手入力による追加情報】
@@ -1445,7 +1605,8 @@ ${additionalInput || "なし"}
 
 【Cパターンの追加情報の扱い】
 Cパターンでは、上記の音声・手入力による追加情報を必ず作成資料に含めること。
-Cパターンは「区分」「内容」の2項目とし、区分は内容に記載しないこと。
+Cパターンの「AI出力形式」が「」の場合は、「区分」を出力せず、「内容」に相当する本文だけを出力すること。選択された項目名・区分名・項目見出しを内容本文に記載しないこと。
+Cパターンの「AI出力形式」が「標準」の場合は、「区分」「内容」の2項目とし、区分は内容に記載しないこと。
 内容は「本人の状況 → 本人の意向 → 支援者の対応 → 調整結果 → 今後の予定」の順で、1つのまとまった文章として記載すること。
 
 【最重要】
@@ -1454,7 +1615,7 @@ Cパターンは「区分」「内容」の2項目とし、区分は内容に記
 介護支援専門員が行ったこと、判断、サービス事業所からの相談・意見・依頼等が入力されている場合は必ず反映すること。
 本人・家族の言葉が入力されている場合は必ず反映すること。
 入力されていない事実を推測して追加しないこと。
-選択された区分の定型文がある場合は、選択順を維持して反映すること。
+選択された項目に対応する定型文がある場合は、選択順を維持して反映すること。
 支援経過A・B・Cそれぞれの選択パターンの記載方法を厳密に守り、他パターンの出力形式を混在させないこと。
 
 `;
@@ -1584,6 +1745,11 @@ block:"nearest"
 
 
 function startNewSupportRecord(){
+  summaryMode = false;
+  const summaryButton = document.getElementById("summaryModeButton");
+  const summaryNote = document.getElementById("summaryModeNote");
+  if(summaryButton) summaryButton.classList.remove("is-selected");
+  if(summaryNote) summaryNote.classList.remove("is-visible");
   const ok = window.confirm(
     "今回の支援経過の入力内容をクリアして、新しい支援経過を作成しますか？"
   );
@@ -1750,13 +1916,13 @@ function renderEditArea(){
         const newTemplate=ta.value;
 
         if(!newName){
-          alert("区分名を入力してください。");
+          alert("項目名を入力してください。");
           return;
         }
 
         const names=allCategories();
         if(newName!==displayName && names.includes(newName)){
-          alert("その区分名はすでに存在します。");
+          alert("その項目名はすでに存在します。");
           return;
         }
 
@@ -1812,7 +1978,7 @@ updatePatternUI();
     const del=document.createElement("button");
     del.type="button";
     del.className="edit-btn edit-delete";
-    del.textContent="この区分を削除";
+    del.textContent="この項目を削除";
     del.onclick=function(){
 
       if(!confirm("「"+displayName+"」を削除しますか？"))return;
@@ -1847,12 +2013,12 @@ updatePatternUI();
     root.appendChild(card);
   });
 
-  /* 削除した標準区分だけ、同じ編集エリア内で復元 */
+  /* 削除した標準項目だけ、同じ編集エリア内で復元 */
   const deleted=getDeletedCategories();
 
   if(deleted.length){
     const restoreTitle=document.createElement("h3");
-    restoreTitle.textContent="削除した標準区分";
+    restoreTitle.textContent="削除した標準項目";
     restoreTitle.style.marginTop="18px";
     root.appendChild(restoreTitle);
 
@@ -1893,15 +2059,11 @@ function addCustomCategory(){
   const text=t.value.trim();
 
   if(!name){
-    alert("区分名を入力してください。");
-    return;
-  }
-  if(!text){
-    alert("定型文を入力してください。");
+    alert("項目名を入力してください。");
     return;
   }
   if(allCategories().includes(name)){
-    alert("同じ区分名がすでにあります。");
+    alert("同じ項目名がすでにあります。");
     return;
   }
 
@@ -2012,7 +2174,7 @@ window.location.href =
       <div class="settings-intro">
         <h3>設定について</h3>
         <p>
-          ここでは、この端末で使用する「区分」や「定型文」を、ご自身の使いやすいように自由に追加・編集・削除できます。
+          ここでは、この端末で使用する「項目」や「定型文」を、ご自身の使いやすいように自由に追加・編集・削除できます。
         </p>
         <p style="margin-top:12px;">
           追加・編集・削除した内容は、<strong>現在ご使用の端末のブラウザ内に保存されます。</strong><br>
@@ -2026,10 +2188,10 @@ window.location.href =
           <h3 style="margin:0 0 10px;color:#334155;font-size:18px;;color:#d00000!important">～管理者からのお願い～</h3>
           <h4 style="margin:0 0 8px;color:#475569;font-size:16px;;color:#d00000!important">設定に関する注意点</h4>
           <p>
-            このアプリでは、「区分」や「定型文」を、管理者側で追加・編集・削除することも可能です。
+            このアプリでは、「項目」や「定型文」を、管理者側で追加・編集・削除することも可能です。
           </p>
           <p style="margin-top:12px;">
-            ただし、このアプリは、<strong>ご利用いただく皆様が、それぞれの業務や使い方に合わせて、必要な区分や定型文を自由に追加・編集・削除し、ご自身にとって使いやすい環境を作っていくこと</strong>を基本的な考え方としています。
+            ただし、このアプリは、<strong>ご利用いただく皆様が、それぞれの業務や使い方に合わせて、必要な項目や定型文を自由に追加・編集・削除し、ご自身にとって使いやすい環境を作っていくこと</strong>を基本的な考え方としています。
           </p>
           <p style="margin-top:12px;">
             そのため、制度改正や業務内容の変更等があった場合でも、<strong>管理者が一律に皆様の設定内容を変更するのではなく、必要に応じて各自で設定を変更していただく運用を基本としています。</strong>
@@ -2147,6 +2309,21 @@ function showUsageGuide(){
   accent-color:var(--blue) !important;
 }
 </style>
+
+<style id="final-pattern-title-center-fix">
+/* 3つの支援経過タイプの丸枠と文字を確実に中央配置 */
+.pattern-option > span:first-of-type{
+  text-align:center !important;
+}
+.pattern-option > span:first-of-type .pattern-title-force{
+  margin-left:auto !important;
+  margin-right:auto !important;
+  text-align:center !important;
+  justify-content:center !important;
+  align-items:center !important;
+}
+</style>
+
 </body>
 
 <style id="memo-final-color-fix">
@@ -2348,6 +2525,29 @@ header{
   display:block !important;
   margin-left:auto !important;
   margin-right:auto !important;
+}
+
+/* 支援経過タイプ内の説明文・出力方法を左寄せ */
+.pattern-option > span:first-of-type {
+  display:block !important;
+  text-align:left !important;
+}
+.pattern-title-force {
+  text-align:left !important;
+  height:58px !important;
+  min-height:58px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+}
+.pattern-output-wrap {
+  text-align:left !important;
+}
+.pattern-output-title {
+  text-align:left !important;
+}
+.pattern-output-options {
+  justify-content:flex-start !important;
 }
 </style>
 </html>
