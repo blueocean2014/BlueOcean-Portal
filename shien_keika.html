@@ -105,7 +105,8 @@ button:hover{opacity:.92;transform:translateY(-1px)}
 
 /* 支援経過の種類：同一デザイン体系 */
 .pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
-.summary-mode-button{display:block;width:max-content;max-width:100%;margin:14px auto 0;padding:14px 18px;border:2px solid var(--blue)!important;border-radius:999px;background:#fff!important;color:var(--blue-deep)!important;font-size:1.02rem;font-weight:900;line-height:1.35;cursor:pointer;box-sizing:border-box;transition:.15s;box-shadow:0 3px 8px rgba(25,118,210,.10)}
+.summary-mode-buttons{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+.summary-mode-button{display:block;width:max-content;max-width:100%;margin:0;padding:14px 18px;border:2px solid var(--blue)!important;border-radius:999px;background:#fff!important;color:var(--blue-deep)!important;font-size:1.02rem;font-weight:900;line-height:1.35;cursor:pointer;box-sizing:border-box;transition:.15s;box-shadow:0 3px 8px rgba(25,118,210,.10)}
 .summary-mode-button:hover{background:#fff!important;border-color:var(--blue-dark)!important;color:var(--blue-deep)!important}
 .summary-mode-button.is-selected{background:linear-gradient(135deg,var(--blue),var(--blue-dark))!important;border-color:var(--blue-dark)!important;color:#fff!important;box-shadow:0 3px 10px rgba(25,118,210,.18)}
 .summary-mode-note{display:block;margin-top:8px;font-size:12px;line-height:1.5;color:#3f6f4d;text-align:center}
@@ -265,6 +266,8 @@ textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!impo
 .settings-return{width:100%;padding:14px;border:0;border-radius:10px;background:var(--blue-dark);color:#fff;font-weight:700;cursor:pointer;margin-top:18px;font-size:15px}
 
 @media(max-width:600px){
+  .summary-mode-buttons{flex-direction:column;align-items:stretch}
+  .summary-mode-buttons .summary-mode-button{width:100%;margin:0}
   .usage-card{padding:17px 16px}
   .usage-card h2{font-size:18px}
   .usage-step{font-size:13px;padding:9px 6px 9px 8px}
@@ -534,20 +537,24 @@ textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!impo
 }
 </style>
 <style id="summary-mode-blueocean-final">
-/* 文章をまとめるボタン：支援経過A・B・Cと同じBlueOceanカラーに統一 */
-#summaryModeButton.summary-mode-button{
+/* 文章整理ボタン：2つとも支援経過A・B・Cと同じBlueOceanカラーに統一 */
+#summaryModeButton.summary-mode-button,
+#bulletSummaryModeButton.summary-mode-button{
   background:#fff !important;
   border:2px solid #0875c9 !important;
   color:#155a91 !important;
   border-radius:999px !important;
 }
-#summaryModeButton.summary-mode-button:hover{
+#summaryModeButton.summary-mode-button:hover,
+#bulletSummaryModeButton.summary-mode-button:hover{
   background:#fff !important;
   border-color:#0875c9 !important;
   color:#155a91 !important;
 }
 #summaryModeButton.summary-mode-button.is-selected,
-#summaryModeButton.summary-mode-button.is-selected:hover{
+#summaryModeButton.summary-mode-button.is-selected:hover,
+#bulletSummaryModeButton.summary-mode-button.is-selected,
+#bulletSummaryModeButton.summary-mode-button.is-selected:hover{
   background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%) !important;
   border-color:#0875c9 !important;
   color:#fff !important;
@@ -644,8 +651,11 @@ textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!impo
   ※通常は「標準」のままで大丈夫です。必要なときだけ変更してください。
 </div>
 
-<div id="summaryModeNote" class="summary-mode-note">🖊 とりあえず文章をまとめるモードでは音声・手入力の文章だけを整理します。 支援経過に関係なく、文章を整理したい時にご使用ください。</div>
+<div class="summary-mode-buttons">
 <button type="button" id="summaryModeButton" class="summary-mode-button" onclick="setSummaryMode()">🖊 とりあえず文章をまとめる</button>
+<button type="button" id="bulletSummaryModeButton" class="summary-mode-button" onclick="setBulletSummaryMode()">🖊 とりあえず文章を箇条書でまとめる</button>
+</div>
+<div id="summaryModeNote" class="summary-mode-note">🖊 とりあえずモードは音声・手入力の文章だけを整理します。 支援経過に関係なく、文章を整理したい時にご使用ください。</div>
 </section>
 
 <!-- =====================================================
@@ -792,9 +802,9 @@ onclick="goHome()"
 <section class="card usage-card">
 <h2>使い方の説明</h2>
 <div class="usage-flow">
-  <div class="usage-step"><strong>① 支援経過の種類を選ぶ</strong></div>
-  <div class="usage-step"><strong>② 項目を選ぶ（複数選択可能）</strong></div>
-  <div class="usage-step"><strong>③ 音声・手入力にて状況を記載する</strong><br><span>簡単でいいですよ。ＡＩがまとめてくれますから</span></div>
+  <div class="usage-step"><strong>① 支援経過の種類を選ぶ</strong> または<strong>とりあえずモードを選ぶ</strong></div>
+  <div class="usage-step"><strong>② 項目を選ぶ（複数選択可能）</strong>（とりあえずモードの際は項目の選択は不要です）</div>
+  <div class="usage-step"><strong>③ 音声・手入力にて状況を記載する</strong></div>
   <div class="usage-step"><strong>④ ＡＩ処理用にコピーする</strong></div>
   <div class="usage-step"><strong>⑤ ChatGPT・Gemini・Claudeなどあなたのお好きなＡＩに貼り付けてください。</strong></div>
 
@@ -1191,6 +1201,11 @@ selElement.textContent = "🖊 文章をまとめるモード";
 return;
 }
 
+if(bulletSummaryMode){
+selElement.textContent = "🖊 文章を箇条書でまとめるモード";
+return;
+}
+
 if(a.length){
 
 selElement.textContent =
@@ -1248,12 +1263,10 @@ try{
 let supportOutputMode = supportOutputModes[supportPattern] || "normal";
 
 function setSupportPattern(pattern){
-  if(summaryMode){
+  if(summaryMode || bulletSummaryMode){
     summaryMode = false;
-    const summaryButton = document.getElementById("summaryModeButton");
-    const summaryNote = document.getElementById("summaryModeNote");
-    if(summaryButton) summaryButton.classList.remove("is-selected");
-    if(summaryNote) summaryNote.classList.remove("is-visible");
+    bulletSummaryMode = false;
+    updateSummaryModeButtons();
   }
   supportPattern = ["A","B","C"].includes(pattern) ? pattern : "A";
   supportOutputMode = supportOutputModes[supportPattern] || "normal";
@@ -1437,25 +1450,43 @@ ${COMMON_RULE}
    文章をまとめるモード
 ===================================================== */
 let summaryMode = false;
+let bulletSummaryMode = false;
+
+function clearSupportPatternSelection(){
+  document.querySelectorAll('input[name="supportPattern"]').forEach(function(r){ r.checked = false; });
+  document.querySelectorAll('.pattern-option[role="button"]').forEach(function(card){ card.classList.remove('pattern-selected'); });
+  document.querySelectorAll('.pattern-output-option[data-output-mode]').forEach(function(option){
+    option.classList.remove('is-selected');
+    option.setAttribute('aria-checked','false');
+  });
+}
+
+function updateSummaryModeButtons(){
+  const button = document.getElementById("summaryModeButton");
+  const bulletButton = document.getElementById("bulletSummaryModeButton");
+  const note = document.getElementById("summaryModeNote");
+  if(button) button.classList.toggle("is-selected", summaryMode);
+  if(bulletButton) bulletButton.classList.toggle("is-selected", bulletSummaryMode);
+  if(note) note.classList.toggle("is-visible", summaryMode);
+}
 
 function setSummaryMode(){
   summaryMode = !summaryMode;
-  const button = document.getElementById("summaryModeButton");
-  const note = document.getElementById("summaryModeNote");
-
   if(summaryMode){
-    document.querySelectorAll('input[name="supportPattern"]').forEach(function(r){ r.checked = false; });
-    document.querySelectorAll('.pattern-option[role="button"]').forEach(function(card){
-      card.classList.remove('pattern-selected');
-    });
-    document.querySelectorAll('.pattern-output-option[data-output-mode]').forEach(function(option){
-      option.classList.remove('is-selected');
-      option.setAttribute('aria-checked','false');
-    });
+    bulletSummaryMode = false;
+    clearSupportPatternSelection();
   }
+  updateSummaryModeButtons();
+  if(typeof update === "function") update();
+}
 
-  if(button) button.classList.toggle("is-selected", summaryMode);
-  if(note) note.classList.toggle("is-visible", summaryMode);
+function setBulletSummaryMode(){
+  bulletSummaryMode = !bulletSummaryMode;
+  if(bulletSummaryMode){
+    summaryMode = false;
+    clearSupportPatternSelection();
+  }
+  updateSummaryModeButtons();
   if(typeof update === "function") update();
 }
 
@@ -1464,11 +1495,37 @@ function setSummaryMode(){
 ===================================================== */
 
 function copyAI() {
-  if(summaryMode){
+  if(summaryMode || bulletSummaryMode){
     const memoElement = document.getElementById("memo");
-    const additionalInput = memoElement
-      ? (memoElement.value || "").trim()
-      : "";
+    const additionalInput = memoElement ? (memoElement.value || "").trim() : "";
+
+    if(bulletSummaryMode){
+      const bulletSummaryPrompt = `以下の文章を読み、入力された内容だけをもとに、情報を整理して箇条書きでまとめてください。
+
+話し言葉、重複、言い直し、順不同の情報などを整理し、意味や事実関係を変えずに、分かりやすく自然な文章にしてください。
+
+本人・家族・支援者等の発言や事実関係は、入力された内容の範囲で整理してください。
+
+入力されていない情報を推測・補完・創作して追加しないでください。
+
+同じ内容が複数回出ている場合は、意味を変えない範囲で整理して重複をまとめてください。
+
+情報の順番は、内容が分かりやすくなるように整理して構いません。
+
+出力は箇条書きとしてください。
+
+項目名、区分名、見出し、分類名は出力しないでください。
+
+「関係機関・介護支援専門員の判断」「利用者・家族の考え方」等の既存の支援経過項目には分類しないでください。
+
+支援経過の項目に当てはめたり、評価・判断・分析を加えたりせず、入力された情報そのものを整理してください。
+
+【今回の音声・手入力】
+${additionalInput || "なし"}`;
+      copyText(bulletSummaryPrompt.trim(), copyButton, "✓ コピーしました");
+      return;
+    }
+
     const summaryPrompt = `以下の文章を読み、内容を整理して、意味を変えずに分かりやすく自然な文章にまとめてください。
 
 話し言葉、重複、言い直し、順不同の情報などを整理してください。
@@ -1746,10 +1803,8 @@ block:"nearest"
 
 function startNewSupportRecord(){
   summaryMode = false;
-  const summaryButton = document.getElementById("summaryModeButton");
-  const summaryNote = document.getElementById("summaryModeNote");
-  if(summaryButton) summaryButton.classList.remove("is-selected");
-  if(summaryNote) summaryNote.classList.remove("is-visible");
+  bulletSummaryMode = false;
+  updateSummaryModeButtons();
   const ok = window.confirm(
     "今回の支援経過の入力内容をクリアして、新しい支援経過を作成しますか？"
   );
