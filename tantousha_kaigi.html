@@ -34,7 +34,7 @@ textarea:focus{border-color:#008fa3;box-shadow:0 0 0 2px rgba(0,143,163,.12)}
 button{border:0;border-radius:10px;color:white;padding:12px 16px;font-size:15px;margin:4px 2px;cursor:pointer;transition:.15s}
 button:hover{opacity:.9;transform:translateY(-1px)}
 .copy-button{background:linear-gradient(90deg,#22b9ed,#0879d4);font-weight:bold;font-size:18px;padding:14px 18px}
-.copy-button.copied{background:#16803c}
+.copy-button.copied{background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9)}
 .scroll-top-button{background:#607d83;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
 .home-button{background:#0875c9;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
 .status{background:#eef8fa;border:1px solid #d4eaed;color:#24545d;padding:10px;border-radius:9px;font-size:13px;margin-top:8px;white-space:pre-wrap}
@@ -172,10 +172,289 @@ button.ai-copy-green-button:active {
 }
 </style>
 
+
+<style id="blue-ocean-design-system-override">
+/* デザインのみの上書き。機能・HTML構造・JavaScriptは変更しない。 */
+:root{
+  --blue:#1976d2;
+  --blue-dark:#1565c0;
+  --blue-light:#eaf5ff;
+  --blue-pale:#f4faff;
+  --yellow:#fff7d6;
+  --yellow-border:#e6c94c;
+  --text:#185477;
+}
+body{background:#f4faff;color:var(--text)}
+header{background:var(--blue);box-shadow:0 2px 8px rgba(25,118,210,.18)}
+.card{background:#fff;border:2px solid #b9d9f5;border-radius:18px;box-shadow:0 3px 12px rgba(25,118,210,.08)}
+h2{color:var(--blue-dark)}
+.description{background:#fff;border:1px solid #cfe3f7;border-radius:12px;color:#44575c}
+textarea{background:#fff;border:2px solid #9fc7eb;border-radius:14px}
+textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(25,118,210,.12)}
+button{border-radius:12px}
+.copy-button,
+.copy-button.copied,
+button.ai-copy-green-button,
+button.ai-copy-green-button:hover,
+button.ai-copy-green-button:focus,
+button.ai-copy-green-button:active,
+.save-button,
+.prompt-select,
+#newCaseButton{background:var(--blue)!important;background-image:none!important;color:#fff!important;border-color:var(--blue-dark)!important}
+.copy-button:hover,
+button.ai-copy-green-button:hover,
+.save-button:hover,
+.prompt-select:hover,
+#newCaseButton:hover{background:var(--blue-dark)!important}
+.scroll-top-button,
+.view-back-button,
+.home-button{background:var(--blue)!important;color:#fff!important;border:1px solid var(--blue-dark)!important}
+.settings-open-button{background:var(--blue)!important;color:#fff!important;border:1px solid var(--blue-dark)!important}
+.usage-open-button{background:var(--yellow)!important;color:#675700!important;border:2px solid var(--yellow-border)!important;border-radius:12px}
+.pattern-option{background:#fff;border:2px solid #9fc7eb;border-radius:14px}
+.pattern-option:has(input:checked){background:var(--blue-light);border-color:var(--blue);box-shadow:0 0 0 2px rgba(25,118,210,.08)}
+.pattern-option input{accent-color:var(--blue)}
+.setting-box{background:#fff;border:2px solid #b9d9f5;border-radius:14px}
+.setting-label{color:var(--blue-dark)}
+.edit-note{background:#fff;border:1px solid #cfe3f7;border-radius:12px}
+.edit-area{border-top:3px solid #b9d9f5}
+.prompt-item{background:#fff;border:2px solid #b9d9f5;border-radius:14px}
+.prompt-item.active{border:2px solid var(--blue);background:var(--blue-light)}
+.prompt-item-name{color:var(--blue-dark)}
+.prompt-edit{background:#fff;color:var(--blue-dark);border:1px solid #9fc7eb!important}
+.restore-button{background:var(--blue)!important;color:#fff!important}
+.clear-button{background:var(--blue-dark)!important;color:#fff!important}
+.status{background:#f4faff;border:1px solid #cfe3f7;color:#24545d;border-radius:12px}
+.status.success{background:#f4faff;border-color:#b9d9f5;color:var(--blue-dark)}
+.usage-card{background:#fff;border:2px solid #9fc7eb;border-radius:18px;box-shadow:0 4px 14px rgba(25,118,210,.08)}
+.usage-card h2,.usage-note strong{color:var(--blue-dark)}
+.usage-step{color:#245c80}
+.usage-step span{color:var(--blue-dark)}
+.usage-step:not(:last-child){border-bottom:1px dashed #b9d9f5}
+.usage-note{border-top:1px solid #cfe3f7;color:#245c80}
+.bo-footer-brand{border-top:1px solid #b9d9f5}
+@media(max-width:600px){
+  .card{border-radius:16px}
+  .pattern-option{border-radius:13px}
+  .setting-box,.prompt-item{border-radius:13px}
+}
+</style>
+
+<style id="settings-button-orange-only">
+/* 設定ボタンだけをオレンジ色に変更 */
+button[onclick="openPromptSettings()"]{
+  background:#f39c12 !important;
+  border-color:#e67e22 !important;
+  color:#fff !important;
+}
+button[onclick="openPromptSettings()"]:hover{
+  background:#e67e22 !important;
+}
+</style>
+
+
+<style id="settings-orange-and-bottom-navigation">
+/* 指定された設定ボタンだけオレンジ */
+button.settings-orange-target{
+  background:#f39c12 !important;
+  border-color:#e67e22 !important;
+  color:#fff !important;
+}
+button.settings-orange-target:hover{
+  background:#e67e22 !important;
+  border-color:#d96f0b !important;
+}
+
+/* 設定画面の一番下に追加するナビゲーション */
+.settings-bottom-navigation{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:28px 0 8px;
+}
+.settings-bottom-navigation .settings-bottom-home{
+  margin:0 !important;
+}
+</style>
+
+
+<style id="three-return-buttons-small-unified">
+/* 3つの戻る系ボタンだけ、文字量に合わせた小型・同一幅にする */
+button.settings-bottom-home,
+button[onclick="goHome()"],
+button[onclick="showMainView()"]{
+  width:auto !important;
+  min-width:0 !important;
+  max-width:none !important;
+  padding:8px 16px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  white-space:nowrap !important;
+}
+</style>
+
+
+<style id="return-buttons-final-size">
+/* 戻る系ボタン3種類だけを、文字が入る程度の小さな同一サイズにする */
+button.home-button.settings-bottom-home,
+button.home-button[onclick="scrollToTop()"],
+button.home-button[onclick="goHome()"],
+button.view-back-button[onclick="showMainView()"]{
+  width:auto !important;
+  min-width:0 !important;
+  max-width:none !important;
+  box-sizing:border-box !important;
+  padding:8px 14px !important;
+  margin-top:0 !important;
+  white-space:nowrap !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+</style>
+
+
+<style id="usage-open-button-width-only">
+/* 「📖 使い方の説明はこちら」の横幅だけを文字量に合わせる */
+.usage-open-button{
+  width:auto !important;
+  max-width:none !important;
+}
+</style>
+
+
+<style id="blueocean-color-only">
+/* BlueOcean 基本カラー：#70dcfa → #28bcef → #138ee0 → #0875c9 */
+:root{
+  --bo-light:#70dcfa;
+  --bo-sky:#28bcef;
+  --bo-blue:#138ee0;
+  --bo-deep:#0875c9;
+}
+
+/* タイトル・主要見出し */
+header,
+.app-header,
+.page-header,
+.main-header{
+  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+}
+
+/* 青系の既存アクセントをBlueOceanグラデーションへ */
+h1,h2,h3,
+.section-title,
+.card-title{
+  color:var(--bo-deep) !important;
+}
+
+/* 主要ボタン・青系ボタン */
+button.primary,
+button.btn-primary,
+button.home-button,
+button[class*="blue"],
+button[class*="primary"]{
+  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  border-color:var(--bo-blue) !important;
+  color:#fff !important;
+}
+
+/* 青系の枠線 */
+.card,
+.section,
+.panel,
+.input-group,
+textarea:focus,
+input:focus,
+select:focus{
+  border-color:var(--bo-blue) !important;
+}
+
+/* 青系の強調・選択状態 */
+.selected,
+.active,
+.choice.selected,
+.option.selected{
+  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue)) !important;
+  border-color:var(--bo-blue) !important;
+  color:#fff !important;
+}
+
+/* 青系の既存グラデーション背景をBlueOcean基準へ */
+[style*="#70dcfa"],
+[style*="#28bcef"],
+[style*="#138ee0"],
+[style*="#0875c9"]{
+  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+}
+</style>
+
+
+<style id="blueocean-target-buttons-only">
+/* 指定された5つのボタンだけBlueOceanカラーを明示適用 */
+button.view-back-button[onclick="showMainView()"],
+button.ai-copy-green-button,
+button.save-button,
+button.restore-button,
+button#showAddPromptButton{
+  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  background-image:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  border-color:var(--bo-blue) !important;
+  color:#fff !important;
+}
+
+button.view-back-button[onclick="showMainView()"]:hover,
+button.ai-copy-green-button:hover,
+button.save-button:hover,
+button.restore-button:hover,
+button#showAddPromptButton:hover{
+  background:linear-gradient(135deg,var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  background-image:linear-gradient(135deg,var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  border-color:var(--bo-deep) !important;
+  color:#fff !important;
+}
+</style>
+
+<style id="bo-white-title-only">
+/* 指定されたタイトルの文字色だけを白に変更 */
+h1.bo-white-title{
+  color:#fff !important;
+}
+</style>
+
+<style id="meeting-pattern-blueocean-style">
+/* 要点のタイプ周辺のみBlueOceanのイメージに合わせて文字色・選択枠を調整 */
+#meetingPatternSelector option[value="default"]{color:#0875c9;font-weight:700;}
+#meetingPatternSelector option[value="update"]{color:#008fa3;font-weight:700;}
+#meetingPatternSelector option[value="change"]{color:#075e6b;font-weight:700;}
+#mainView section.card:has(#meetingPatternSelector) h2{color:#0875c9;}
+#mainView section.card:has(#meetingPatternSelector) > .description{color:#075e6b;}
+#mainView section.card:has(#meetingPatternSelector) label[for="meetingPatternSelector"]{color:#0875c9;}
+#mainView section.card:has(#meetingPatternSelector) .setting-box{
+  border:2px solid #7ccfe3 !important;
+  background:linear-gradient(180deg,#f2fbfd 0%,#eaf7fb 100%) !important;
+  box-shadow:0 3px 10px rgba(8,117,201,.10);
+}
+#meetingPatternSelector{
+  border:2px solid #1aa6c8 !important;
+  background:#ffffff !important;
+  color:#075e6b !important;
+  font-weight:700 !important;
+  box-shadow:0 0 0 3px rgba(26,166,200,.10);
+  outline:none;
+}
+#meetingPatternSelector:focus{
+  border-color:#0875c9 !important;
+  box-shadow:0 0 0 4px rgba(8,117,201,.16) !important;
+}
+#meetingPatternStatus{color:#075e6b !important;}
+</style>
+
 </head>
 <body>
 <header>
-<h1>
+<h1 class="bo-white-title">
   <span class="app-title-main">ケアマネが自ら育てる業務支援アプリ</span>
   <span class="app-title-sub">サービス担当者会議要点作成支援</span>
 </h1>
@@ -198,7 +477,17 @@ button.ai-copy-green-button:active {
 
 
 <section class="card">
-<h2>① 音声・手入力</h2>
+<h2>① サービス担当者会議のタイプを選択</h2>
+<p class="description">作成するサービス担当者会議の要点のタイプを選択してください。選択したタイプのプロンプトが、下の「AI処理用にコピー」に使用されます。</p>
+<div class="setting-box" style="margin-top:12px;">
+<label for="meetingPatternSelector" style="font-weight:700;display:block;margin-bottom:6px;">要点のタイプ</label>
+<select id="meetingPatternSelector" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #c9dde1;border-radius:10px;font-size:15px;background:#fff;"></select>
+<div id="meetingPatternStatus" class="status" style="margin-top:8px;">現在選択中の会議タイプを使用します。</div>
+</div>
+</section>
+
+<section class="card">
+<h2>② 音声・手入力</h2>
 <p class="description">
 サービス担当者会議で共有・検討した内容、本人・家族の発言、各サービス事業所からの報告・意見、ケアマネジャーの判断、医師からの意見、今後の支援方針などを入力してください。
 <br><br>
@@ -208,7 +497,7 @@ button.ai-copy-green-button:active {
 </section>
 
 <section class="card">
-<h2>② AI処理用にコピー</h2>
+<h2>③ AI処理用にコピー</h2>
 <p class="description">
 「AI処理用にコピー」を押すと、サービス担当者会議プロンプト・今回の音声入力・手入力内容をまとめてコピーします。
 <br><br>
@@ -260,7 +549,7 @@ button.ai-copy-green-button:active {
 
 <div class="setting-box">
 <div class="setting-label">① 今使っているプロンプト</div>
-<div id="activePromptName" class="status success" style="font-size:16px;font-weight:700;">標準プロンプト</div>
+<div id="activePromptName" class="status success" style="font-size:16px;font-weight:700;">タイプA（標準）</div>
 <div style="margin-top:10px;">
 <label for="promptSelector" style="font-weight:700;display:block;margin-bottom:6px;">使うプロンプトを選択</label>
 <select id="promptSelector" style="width:100%;box-sizing:border-box;padding:12px;border:1px solid #c9dde1;border-radius:10px;font-size:15px;background:#fff;"></select>
@@ -298,11 +587,16 @@ button.ai-copy-green-button:active {
 <div id="addPromptStatus" class="status">新しいプロンプトを作成できます。</div>
 </div>
 </div>
+
+<div class="settings-bottom-navigation">
+  <button type="button" class="home-button settings-bottom-home" onclick="document.getElementById('promptLibraryArea').scrollIntoView({behavior:'smooth', block:'start'})">▲トップに戻る</button>
+  <button type="button" class="home-button settings-bottom-home" onclick="goHome()">⌂ トップ画面に戻る</button>
+</div>
 </section>
 
 <div style="text-align:center;margin:28px 0 10px;">
-<button type="button" class="settings-open-button" onclick="showSettingsView()">⚙ 設定　サービス担当者会議プロンプトの編集、追加はこちらから</button>
-<button type="button" class="home-button" onclick="scrollToTop()">トップに戻る</button>
+<button class="settings-orange-target" type="button" class="settings-open-button" onclick="showSettingsView()">⚙ 設定　サービス担当者会議プロンプトの編集、追加はこちらから</button>
+<button type="button" class="home-button" onclick="scrollToTop()">▲トップに戻る</button>
 <button type="button" class="home-button" onclick="goHome()">⌂ トップ画面へ戻る</button>
 </div>
 
@@ -321,7 +615,11 @@ button.ai-copy-green-button:active {
 
 <div class="usage-flow">
   <div class="usage-step">
-    <strong>① 音声・手入力にて状況を記載する</strong><br>
+    <strong>① 要点のタイプを選択する</strong><br>
+    <span>作成したいサービス担当者会議の要点に合わせて、タイプA・タイプB・タイプCから選択してください。</span>
+  </div>
+  <div class="usage-step">
+    <strong>② 音声・手入力にて状況を記載する</strong><br>
     <span>しっかりとAIがまとめてくれますので、話し合った内容を思いついたまま記入してください。</span>
 <div id="example-copy-area" style="margin-top:12px;padding:14px 16px;background:#f8fafc;border:1px solid #dbe4ee;border-radius:12px;">
   <div style="margin-bottom:10px;">書き方が分からない方は、試しに例文をコピーして貼り付けて作成してみてください。どんなイメージでできあがるのかが分かります。</div>
@@ -329,22 +627,24 @@ button.ai-copy-green-button:active {
   <div style="padding:12px;background:#ffffff;border:1px solid #dbe4ee;border-radius:10px;line-height:1.7;">
     最近デイサービスの利用について消極的で休みがち。入浴ができておらず清潔保持について課題がある。本人よりデイサービスの利用が週３回から２回に変更したいと希望があった。ヘルパーより、デイサービスが減った分、入浴についてはヘルパー支援で行ってはどうかと提案してもらった。来月よりデイサービスの利用を週２回にし、ヘルパーの身体介護を１回追加して週３回しっかりと入浴できるように予定することになった。本人、家族ともに同意している。
   </div>
-  <button type="button" id="copyExampleButton" onclick="copyExampleText()" style="padding:15px 30px;background:#2e9d57 !important;color:#ffffff !important;border:0;border-radius:12px;cursor:pointer;font-size:1.08em;font-weight:700;">
+  <button type="button" id="copyExampleButton" onclick="copyExampleText()" style="padding:15px 30px;background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9) !important;background-image:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9) !important;color:#ffffff !important;border:0;border-radius:12px;cursor:pointer;font-size:1.08em;font-weight:700;">
     例文をコピー
   </button>
 </div>
 <script>
 function copyExampleText() {
-  const text = "最近デイサービスの利用について消極的で休みがち。入浴ができておらず清潔保持について課題がある。本人よりデイサービスの利用が週３回から２回に変更したいと希望があった。ヘルパーより、デイサービスが減った分、入浴についてはヘルパー支援で行ってはどうかと提案してもらった。来月よりデイサービスの利用を週２回にし、ヘルパーの身体介護を１回追加して週３回しっかりと入浴できるように予定することになった。本人、家族ともに同意している。";
+  const exampleElement = document.querySelector('#example-copy-area > div[style*="background:#ffffff"]');
+  const exampleText = exampleElement ? exampleElement.textContent.trim() : "";
+  const text = exampleText;
   const btn = document.getElementById('copyExampleButton');
 
   function success() {
     if (!btn) return;
-    btn.textContent = '✓ コピーしました';
-    btn.style.background = '#1f7f45';
+    btn.textContent = 'コピーしました。📋 次に、② 音声・手入力の欄に貼り付けてください';
+    btn.style.background = 'linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9)';
     setTimeout(function() {
       btn.textContent = '例文をコピー';
-      btn.style.background = '#2e9d57';
+      btn.style.background = 'linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9)';
     }, 1800);
   }
 
@@ -354,7 +654,7 @@ function copyExampleText() {
     btn.style.background = '#b94a48';
     setTimeout(function() {
       btn.textContent = '例文をコピー';
-      btn.style.background = '#2e9d57';
+      btn.style.background = 'linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9)';
     }, 1800);
   }
 
@@ -398,11 +698,11 @@ function copyExampleText() {
 </span>
   </div>
   <div class="usage-step">
-    <strong>② ＡＩ処理用にコピーする</strong><br>
+    <strong>③ ＡＩ処理用にコピーする</strong><br>
     <span>ChatGPT・Gemini・Claudeなどあなたのお好きなＡＩに貼り付けてください。</span>
   </div>
   <div class="usage-note">
-    <strong>③🌱 慣れてきた方へ</strong><br>
+    <strong>④🌱 慣れてきた方へ</strong><br>
     「⚙ 設定　サービス担当者会議プロンプトの編集、追加はこちらから」のボタンから、自分の好きなプロンプトに編集したり、新しく登録することもできます。
   </div>
 </div>
@@ -474,7 +774,7 @@ ${memo}`;
     await navigator.clipboard.writeText(text);
     if (button) {
       button.classList.add("copied");
-      button.textContent = "✓ コピーしました";
+      button.textContent = "コピーしました。そのままAIに貼り付けてください。";
       setTimeout(() => {
         button.classList.remove("copied");
         button.textContent = "📋 AI処理用にコピー";
@@ -505,7 +805,7 @@ ${memo}`;
     if (copied) {
       if (button) {
         button.classList.add("copied");
-        button.textContent = "✓ コピーしました";
+        button.textContent = "コピーしました。そのままAIに貼り付けてください。";
         setTimeout(() => {
           button.classList.remove("copied");
           button.textContent = "📋 AI処理用にコピー";
@@ -531,13 +831,95 @@ const DEFAULT_PROMPT_TEXT="情報が入力されていない項目は空欄と�
 let promptLibrary=[];
 let activePromptId="default";
 
+const UPDATE_PROMPT_TEXT=`あなたは経験豊富な介護支援専門員です。以下の会議記録を基に、サービス担当者会議の要点を、介護支援専門員の公式記録として適切な文章に整理してください。
+
+会議で実際に話し合われた内容のみを使用し、記録にない情報は推測・補完しないでください。情報がない項目は空欄としてください。
+
+【出力構成】
+
+■検討した項目
+会議で検討した内容を項目名として整理する。
+
+■検討内容
+
+利用者の現状と課題
+
+利用者・家族からの意見・要望
+
+各サービス事業所からの報告・意見
+
+利用者の現状・課題はケアマネジャーの視点で整理する。本人・家族の意見は発言内容を分かりやすく記載する。各サービス事業所は、現在の支援状況、専門職としての評価、今後の支援内容が分かるようにサービスごとに整理する。
+
+■結論
+会議で決定した事項、サービスの継続・変更・追加、今後の支援方針を具体的に整理する。医師からの意見や医学的所見は、情報があれば記載し、なければ「なし」とする。
+
+■残された課題
+今後も継続して確認・検討する事項、連携が必要な事項を記載する。
+
+文章は簡潔・客観的な記録文体とし、会議で実際に話し合われていない内容は記載しない。`;
+const CHANGE_PROMPT_TEXT=`情報が入力されていない項目は空欄とする。
+
+ただし「医師からの意見や医学的所見」の項目のみ、情報がない場合は「なし」と記載する。
+
+総括は情報が存在する項目のみ作成する。 
+
+出力本文には、指示文や設定条件（例：ケアマネ視点、200字以内 等）を一切記載しない。これらは内部処理として遵守する。 
+
+あなたは経験豊富な介護支援専門員です。以下の記録内容を基に、運営指導において指摘を受けない水準のサービス担当者会議要点を作成してください。出力は必ず下記構成で作成すること。
+
+【出力構成】■検討した項目■検討内容■結論■残された課題
+
+【検討した項目】
+
+会議で検討した内容を項目名として整理する。 
+
+【検討内容】
+
+1.利用者の現状と課題（箇条書き禁止。ケアマネ視点で総合的に文章でまとめる）
+
+2.利用者・家族からの意見・要望：本人：〇〇〇　家族：〇〇〇（話し言葉で記載。発言がない場合は空欄可） 
+
+3.各サービス事業所からの報告・意見
+
+各サービス事業所の内容は、単なる発言記録ではなく、「現状の支援状況」「専門職としての評価」「今後の支援に関する提案」の3点を含めて、ケアマネジャーが整理統合して記載すること。
+
+「報告があった」「確認された」「提案があった」「示された」「述べられた」等の会議経過表現は使用しない。
+
+主語は「訪問介護」「通所介護」「訪問看護」「福祉用具専門相談員」等の職種名とし、各専門職の評価・支援状況・今後の対応を**記録文体（常体）で簡潔に記載する。**
+
+内容は支援場面が具体的にイメージできるよう、観察状況・支援内容・今後の対応を含め、それぞれの意見ごとに記載する。
+
+「利用者の現状と課題」「ケアマネジャーの所見」はケアマネジャーの視点で総括文章として記載する。
+
+「各サービス事業所からの報告・意見」は
+
+各サービス事業所ごとに区切って記載する。
+
+サービスごとの内容は、ケアマネジャーが整理統合した文章としてまとめ、サービス内では箇条書きを使用しない。
+
+サービス区分（例：施設介護職、訪問看護、福祉用具専門相談員等）のみ箇条書きとし、その後に続く内容は文章で記載する。
+
+【結論】
+
+1.決定事項・今後の支援方針・サービス調整内容（新規導入・変更・継続）を具体的かつ実務的に記載（単なる羅列ではなく、ケアマネジャーが内容を整理統合した上で、各決定事項ごとに箇条書きで記載する。 
+
+【残された課題】
+
+1.継続検討事項や連携が必要な事項を記録する。
+
+以上の条件を厳守し、介護支援専門員の公式記録として適切な専門的文体で作成すること。`;
+
 function loadPromptLibrary(){
   try{
     const saved=JSON.parse(localStorage.getItem(LIBRARY_KEY)||"null");
     if(Array.isArray(saved)&&saved.length) promptLibrary=saved;
   }catch(e){}
   if(!promptLibrary.length){
-    promptLibrary=[{id:"default",name:"標準プロンプト",text:DEFAULT_PROMPT_TEXT,builtin:true}];
+    promptLibrary=[
+      {id:"default",name:"タイプA（標準）",text:DEFAULT_PROMPT_TEXT,builtin:true},
+      {id:"update",name:"タイプB",text:UPDATE_PROMPT_TEXT,builtin:true},
+      {id:"change",name:"タイプC",text:CHANGE_PROMPT_TEXT,builtin:true}
+    ];
   }
   activePromptId=localStorage.getItem(ACTIVE_KEY)||"default";
   if(!promptLibrary.some(p=>p.id===activePromptId)) activePromptId=promptLibrary[0].id;
@@ -550,25 +932,51 @@ function savePromptLibrary(){
 
 // 標準プロンプトは今回指定された内容を初期値として使用する。
 // 既に保存済みの自作プロンプトはそのまま保持する。
-(function ensureStandardPrompt(){
+(function ensureBuiltinMeetingPrompts(){
   try{
     const saved=JSON.parse(localStorage.getItem(LIBRARY_KEY)||"null");
     if(Array.isArray(saved)&&saved.length){
-      const standard=saved.find(p=>p.id==="default");
-      if(standard){
-        standard.name="標準プロンプト";
-        standard.text=DEFAULT_PROMPT_TEXT;
-        standard.builtin=true;
-        localStorage.setItem(LIBRARY_KEY,JSON.stringify(saved));
-      }
+      const builtins={
+        default:{name:"タイプA（標準）",text:DEFAULT_PROMPT_TEXT},
+        update:{name:"タイプB",text:UPDATE_PROMPT_TEXT},
+        change:{name:"タイプC",text:CHANGE_PROMPT_TEXT}
+      };
+      Object.keys(builtins).forEach(function(id){
+        const item=saved.find(function(p){return p.id===id;});
+        if(!item){
+          saved.push({id:id,name:builtins[id].name,text:builtins[id].text,builtin:true});
+        }else if(item.builtin){
+          item.name=builtins[id].name;
+          item.text=builtins[id].text;
+        }
+      });
+      localStorage.setItem(LIBRARY_KEY,JSON.stringify(saved));
     }
   }catch(e){}
 })();
 
 function activePrompt(){return promptLibrary.find(p=>p.id===activePromptId)||promptLibrary[0];}
 
+function renderMeetingPatternSelector(){
+  const selector=document.getElementById("meetingPatternSelector");
+  const status=document.getElementById("meetingPatternStatus");
+  if(selector){
+    selector.innerHTML="";
+    promptLibrary.forEach(function(item){
+      const o=document.createElement("option");
+      o.value=item.id;
+      o.textContent=item.name;
+      o.selected=item.id===activePromptId;
+      selector.appendChild(o);
+    });
+  }
+  const p=activePrompt();
+  if(status&&p) status.textContent="現在選択中：「"+p.name+"」";
+}
+
 function renderPromptManager(){
   const p=activePrompt(); if(!p)return;
+  renderMeetingPatternSelector();
   const name=document.getElementById("activePromptName");
   const selector=document.getElementById("promptSelector");
   const editName=document.getElementById("selectedPromptName");
@@ -649,6 +1057,12 @@ document.addEventListener("DOMContentLoaded",function(){
   const selector=document.getElementById("promptSelector");
   if(selector) selector.addEventListener("change",function(){
     activePromptId=this.value;savePromptLibrary();renderPromptManager();
+  });
+  const meetingPatternSelector=document.getElementById("meetingPatternSelector");
+  if(meetingPatternSelector) meetingPatternSelector.addEventListener("change",function(){
+    activePromptId=this.value;
+    savePromptLibrary();
+    renderPromptManager();
   });
   renderPromptManager();
 });
