@@ -86,9 +86,15 @@ button:hover{opacity:.92;transform:translateY(-1px)}
   min-width:280px;box-shadow:0 4px 10px rgba(25,118,210,.16);
 }
 .copy-button.copied{background:var(--green)}
+.top-nav-buttons{
+  display:flex;justify-content:flex-end;align-items:center;gap:12px;margin-top:10px;
+}
 .scroll-top-button,.home-button{
-  background:var(--blue-dark);font-weight:bold;font-size:16px;width:100%;
-  margin-top:10px;padding:14px;
+  background:var(--blue-dark);font-weight:bold;font-size:16px;width:auto;
+  margin-top:0;padding:14px;
+}
+@media(max-width:600px){
+  .top-nav-buttons{justify-content:center;}
 }
 .status{
   background:var(--blue-light);border:1px solid #c8def2;color:#315b78;
@@ -656,6 +662,9 @@ textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!impo
 <button type="button" id="bulletSummaryModeButton" class="summary-mode-button" onclick="setBulletSummaryMode()">🖊 とりあえず文章を箇条書でまとめる</button>
 </div>
 <div id="summaryModeNote" class="summary-mode-note">🖊 とりあえずモードは音声・手入力の文章だけを整理します。 支援経過に関係なく、文章を整理したい時にご使用ください。</div>
+
+<!-- 利用者が追加した独自の経過記録プロンプト -->
+<div id="customPromptPatternArea" class="custom-prompt-pattern-area" style="display:none;"></div>
 </section>
 
 <!-- =====================================================
@@ -679,7 +688,7 @@ textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!impo
 <div class="edit-add-area" id="temporaryCategoryArea">
 <h3 style="margin:0;color:#0872c5;">今回だけ使用する項目を追加</h3>
 <input id="addTemporaryCategoryName" type="text" placeholder="項目名（例：退院前カンファレンス）">
-<button type="button" id="addTemporaryCategoryButton" class="edit-add">＋ 今回だけの区分を追加</button>
+<button type="button" id="addTemporaryCategoryButton" class="edit-add">＋ 今回だけの区分を追加する方はこちら</button>
 <div id="temporaryCategoryStatus" class="edit-note" style="margin-top:8px;">
 ここで追加した項目は今回の入力だけに使用し、定型文は設定しません。画面を閉じると消えます。
 </div>
@@ -781,6 +790,7 @@ style="display:none;"
 </div>
 
 
+<div class="top-nav-buttons">
 <button
 class="scroll-top-button"
 onclick="scrollToTop()"
@@ -794,8 +804,9 @@ onclick="goHome()"
 >
 ⌂ トップ画面に戻る
 </button>
+</div>
 
-<div style="display:flex;justify-content:center;margin:18px 0 12px;"><button type="button" onclick="openAppSettings()" style="border:1px solid #d97706!important;background:#f28c28!important;color:#fff!important;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:600;">① 定型文・項目を自分用に編集する方はこちらはこちら</button></div>
+<div style="display:flex;justify-content:center;margin:18px 0 12px;"><button type="button" onclick="openAppSettings()" style="border:1px solid #d97706!important;background:#f28c28!important;color:#fff!important;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:600;">項目・定型文・支援経過のプロンプトを自分用に編集・追加する方はこちらはこちら</button></div>
 
 </div>
 
@@ -810,7 +821,7 @@ onclick="goHome()"
 
 <div class="usage-note">
   <strong>🌱 慣れてきた方へ</strong><br>
-  下の「定型文・項目を自分用に編集」で、自分の好きな区分や定型文に編集したり、新しく登録することもできます。
+  下の「項目・定型文・支援経過のプロンプトを自分用に編集・追加する方はこちらから」で、自分の好きな項目や定型文に編集したり、項目・定型文・支援経過のプロンプトともに新しく追加登録することもできます。
 </div>
 </div>
 </section>
@@ -823,7 +834,7 @@ onclick="goHome()"
 ===================================================== -->
 <div id="editAreaPlaceholder" style="display:none;"></div>
 <section class="card" id="editArea" style="display:none;">
-<h2>① 定型文・項目を自分用に編集する方はこちら</h2>
+<h2>項目・定型文・支援経過のプロンプトを自分用に編集・追加する方はこちらはこちら</h2>
 <div class="edit-note">
 ここでは、この端末で使用する区分と定型文を自由に編集できます。<br>
 追加・編集・削除した内容は、この端末のブラウザに保存されるため、それぞれ個々の端末の中でしか変更ができません。パソコンや携帯等複数台で管理される方はそれぞれの変更が必要になりますのでご注意ください。
@@ -832,10 +843,22 @@ onclick="goHome()"
 <div id="editGrid" class="edit-grid"></div>
 
 <div class="edit-add-area">
-<h3 style="margin:0;color:#0872c5;">区分を追加</h3>
+<h3 style="margin:0;color:#0872c5;">区分を追加する方はこちら</h3>
 <input id="addCategoryName" type="text" placeholder="項目名（例：退院調整）">
-<textarea id="addCategoryTemplate" placeholder="定型文"></textarea>
+<textarea id="addCategoryTemplate" class="edit-textarea" placeholder="定型文"></textarea>
 <button type="button" class="edit-add" onclick="addCustomCategory()">＋ 項目と定型文を追加</button>
+</div>
+
+<!-- 利用者独自の経過記録プロンプト -->
+<div class="edit-add-area" id="customPromptEditorArea">
+<h3 style="margin:0;color:#0872c5;">経過記録のプロンプトを追加する方はこちら</h3>
+<div class="edit-note" style="margin-top:8px;">
+設定済みの支援経過とは別に、ご自身で作成した経過記録用プロンプトを追加できます。追加したプロンプトは、メイン画面の「とりあえずモード」の説明の下に表示されます。
+</div>
+<input id="addCustomPromptName" class="edit-name-input" type="text" placeholder="プロンプト名を入力してください。">
+<textarea id="addCustomPromptText" class="edit-textarea" placeholder="AI処理用プロンプトを入力してください。"></textarea>
+<button type="button" class="edit-add" onclick="addCustomSupportPrompt()">＋ 経過記録のプロンプトを追加する方はこちら</button>
+<div id="customPromptEditGrid" class="edit-grid" style="margin-top:12px;"></div>
 </div>
 </section>
 
@@ -1146,7 +1169,7 @@ return x.value;
 
 
 /* =====================================================
-   今回だけの区分を追加
+   今回だけの区分を追加する方はこちら
 ===================================================== */
 function addTemporaryCategory(){
   const input=document.getElementById("addTemporaryCategoryName");
@@ -1247,6 +1270,43 @@ update();
    AI処理ルール
 ===================================================== */
 
+const CUSTOM_SUPPORT_PROMPTS_KEY = "bo_custom_support_prompts";
+
+function getCustomSupportPrompts(){
+  try{
+    const d = JSON.parse(localStorage.getItem(CUSTOM_SUPPORT_PROMPTS_KEY) || "[]");
+    return Array.isArray(d) ? d : [];
+  }catch(e){ return []; }
+}
+
+function saveCustomSupportPrompts(d){
+  localStorage.setItem(CUSTOM_SUPPORT_PROMPTS_KEY, JSON.stringify(d));
+}
+
+/* 基本設定として登録されていた旧サンプルだけを削除する。
+   利用者が追加したその他の独自プロンプトは変更しない。 */
+function removeDefaultCustomSupportPromptSample(){
+  const current = getCustomSupportPrompts();
+  const filtered = current.filter(function(item){
+    return item && item.id !== "custom_support_prompt_1";
+  });
+  if(filtered.length !== current.length){
+    saveCustomSupportPrompts(filtered);
+  }
+}
+
+
+function getCustomSupportPromptById(id){
+  return getCustomSupportPrompts().find(function(x){ return x.id === id; }) || null;
+}
+
+function isCustomSupportPattern(pattern){
+  return typeof pattern === "string" && pattern.indexOf("CUSTOM:") === 0 &&
+    !!getCustomSupportPromptById(pattern.substring(7));
+}
+
+removeDefaultCustomSupportPromptSample();
+
 const SUPPORT_PATTERN_KEY = "bo_support_pattern";
 let supportPattern = localStorage.getItem(SUPPORT_PATTERN_KEY) || "A";
 const SUPPORT_OUTPUT_MODE_KEY = "bo_support_output_modes";
@@ -1268,7 +1328,11 @@ function setSupportPattern(pattern){
     bulletSummaryMode = false;
     updateSummaryModeButtons();
   }
-  supportPattern = ["A","B","C"].includes(pattern) ? pattern : "A";
+  if(["A","B","C"].includes(pattern) || isCustomSupportPattern(pattern)){
+    supportPattern = pattern;
+  }else{
+    supportPattern = "A";
+  }
   supportOutputMode = supportOutputModes[supportPattern] || "normal";
   localStorage.setItem(SUPPORT_PATTERN_KEY, supportPattern);
   updatePatternUI();
@@ -1284,9 +1348,19 @@ function updatePatternUI(){
     card.classList.toggle('pattern-selected', !!input && input.value === supportPattern);
   });
 
+  const customArea = document.getElementById("customPromptPatternArea");
+  if(customArea) customArea.style.display = getCustomSupportPrompts().length ? "block" : "none";
+
   const status = document.getElementById("patternStatus");
   if(status){
-    status.textContent = "現在の設定：" + (supportPattern === "A" ? "支援経過Aパターン" : supportPattern === "B" ? "支援経過Bパターン" : "支援経過Cパターン");
+    let statusName = "支援経過Aパターン";
+    if(supportPattern === "B") statusName = "支援経過Bパターン";
+    else if(supportPattern === "C") statusName = "支援経過Cパターン";
+    else if(isCustomSupportPattern(supportPattern)){
+      const cp = getCustomSupportPromptById(supportPattern.substring(7));
+      statusName = cp ? cp.name : "独自経過記録プロンプト";
+    }
+    status.textContent = "現在の設定：" + statusName;
   }
 
   const outputOptions = document.querySelectorAll('.pattern-output-option[data-output-mode]');
@@ -1305,6 +1379,60 @@ function setSupportOutputMode(mode, pattern){
   supportOutputMode = supportOutputModes[supportPattern] || "normal";
   localStorage.setItem(SUPPORT_OUTPUT_MODE_KEY, JSON.stringify(supportOutputModes));
   updatePatternUI();
+}
+
+function renderCustomSupportPromptPatterns(){
+  const root = document.getElementById("customPromptPatternArea");
+  if(!root) return;
+
+  const prompts = getCustomSupportPrompts();
+  root.innerHTML = "";
+  if(!prompts.length){
+    root.style.display = "none";
+    return;
+  }
+  root.style.display = "block";
+
+  const grid = document.createElement("div");
+  grid.className = "pattern-grid custom-prompt-pattern-grid";
+
+  prompts.forEach(function(item){
+    const card = document.createElement("div");
+    card.className = "pattern-option custom-prompt-pattern-option";
+    card.setAttribute("role","button");
+    card.setAttribute("tabindex","0");
+    card.onclick = function(){ setSupportPattern("CUSTOM:" + item.id); };
+    card.onkeydown = function(e){
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        setSupportPattern("CUSTOM:" + item.id);
+      }
+    };
+
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.name = "supportPattern";
+    radio.value = "CUSTOM:" + item.id;
+    radio.checked = supportPattern === radio.value;
+    radio.addEventListener("change",function(){ setSupportPattern(radio.value); });
+    card.appendChild(radio);
+
+    const titleWrap = document.createElement("span");
+    const title = document.createElement("strong");
+    title.className = "pattern-title-force";
+    title.textContent = item.name;
+    titleWrap.appendChild(title);
+
+    const small = document.createElement("small");
+    small.textContent = "自分で作成したプロンプト";
+    titleWrap.appendChild(small);
+    card.appendChild(titleWrap);
+
+    card.classList.toggle("pattern-selected", supportPattern === "CUSTOM:" + item.id);
+    grid.appendChild(card);
+  });
+
+  root.appendChild(grid);
 }
 
 const COMMON_RULE = `【①区分・項目・定型文の構造ルール】
@@ -1614,6 +1742,43 @@ ${additionalInput || "なし"}`;
    .filter(Boolean);
 
   const additionalInput = inputParts.join("\n");
+
+  /* 独自プロンプトは、そのプロンプト自体を最優先ルールとして使用する。
+     A・B・Cの固定出力ルールは自動追加しない。 */
+  if(isCustomSupportPattern(pattern)){
+    const customPrompt = getCustomSupportPromptById(pattern.substring(7));
+    if(!customPrompt){
+      alert("選択された独自経過記録プロンプトが見つかりません。設定画面から確認してください。");
+      return;
+    }
+
+    const customFinalText = `あなたは経験豊富な介護支援専門員です。
+以下のプロンプトを一字一句変更せず、そのまま最優先の作成ルールとして使用してください。
+
+【選択された経過記録プロンプト】
+${customPrompt.name}
+
+【選択したプロンプト（原文そのまま）】
+${customPrompt.prompt}
+
+【選択された項目】
+${selectedCategories || "なし"}
+
+【選択された項目の定型文】
+${templates || "なし"}
+
+【今回の音声入力・手入力による追加情報】
+${additionalInput || "なし"}
+
+【独自プロンプトの使用ルール】
+上記の独自プロンプトに記載された作成ルール・出力形式を最優先してください。
+支援経過A・B・Cの固有ルールは自動追加・適用しないでください。
+入力されていない事実は推測・補完・創作して追加しないでください。`;
+
+    copyText(customFinalText.trim(), copyButton, "✓ コピーしました");
+    return;
+  }
+
   supportOutputMode = supportOutputModes[supportPattern] || "normal";
 
   const finalText = `あなたは経験豊富な介護支援専門員です。
@@ -2136,6 +2301,173 @@ function addCustomCategory(){
   alert("「"+name+"」を追加しました。");
 }
 
+function renderCustomSupportPromptEditor(){
+  const root = document.getElementById("customPromptEditGrid");
+  if(!root)return;
+
+  root.innerHTML = "";
+  const prompts = getCustomSupportPrompts();
+
+  prompts.forEach(function(item){
+    const card = document.createElement("div");
+    card.className = "edit-card";
+
+    const title = document.createElement("div");
+    title.className = "edit-title";
+    title.textContent = item.name;
+
+    const preview = document.createElement("div");
+    preview.className = "edit-preview";
+    preview.textContent = item.prompt;
+
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.className = "edit-btn";
+    edit.textContent = "編集";
+    edit.onclick = function(){
+      card.innerHTML = "";
+
+      const nameLabel = document.createElement("div");
+      nameLabel.className = "edit-label";
+      nameLabel.textContent = "プロンプト名";
+
+      const nameInput = document.createElement("input");
+      nameInput.className = "edit-name-input";
+      nameInput.value = item.name;
+
+      const promptLabel = document.createElement("div");
+      promptLabel.className = "edit-label";
+      promptLabel.textContent = "AI処理用プロンプト";
+
+      const ta = document.createElement("textarea");
+      ta.className = "edit-textarea";
+      ta.value = item.prompt;
+
+      const save = document.createElement("button");
+      save.type = "button";
+      save.className = "edit-btn edit-save";
+      save.textContent = "保存";
+
+      const cancel = document.createElement("button");
+      cancel.type = "button";
+      cancel.className = "edit-btn";
+      cancel.textContent = "キャンセル";
+
+      save.onclick = function(){
+        const newName = nameInput.value.trim();
+        const newPrompt = ta.value.trim();
+
+        if(!newName){
+          alert("プロンプト名を入力してください。");
+          return;
+        }
+        if(!newPrompt){
+          alert("AI処理用プロンプトを入力してください。");
+          return;
+        }
+
+        const list = getCustomSupportPrompts();
+        if(list.some(function(x){ return x.id !== item.id && x.name === newName; })){
+          alert("同じプロンプト名がすでにあります。");
+          return;
+        }
+
+        const target = list.find(function(x){ return x.id === item.id; });
+        if(target){
+          target.name = newName;
+          target.prompt = newPrompt;
+          saveCustomSupportPrompts(list);
+        }
+
+        renderCustomSupportPromptEditor();
+        renderCustomSupportPromptPatterns();
+        updatePatternUI();
+      };
+
+      cancel.onclick = function(){ renderCustomSupportPromptEditor(); };
+
+      card.appendChild(nameLabel);
+      card.appendChild(nameInput);
+      card.appendChild(promptLabel);
+      card.appendChild(ta);
+      card.appendChild(save);
+      card.appendChild(cancel);
+    };
+
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "edit-btn edit-delete";
+    del.textContent = "このプロンプトを削除";
+    del.onclick = function(){
+      if(!confirm("「"+item.name+"」を削除しますか？"))return;
+
+      saveCustomSupportPrompts(getCustomSupportPrompts().filter(function(x){
+        return x.id !== item.id;
+      }));
+
+      if(supportPattern === "CUSTOM:" + item.id){
+        supportPattern = "A";
+        localStorage.setItem(SUPPORT_PATTERN_KEY, supportPattern);
+      }
+
+      renderCustomSupportPromptEditor();
+      renderCustomSupportPromptPatterns();
+      updatePatternUI();
+      update();
+    };
+
+    card.appendChild(title);
+    card.appendChild(preview);
+    card.appendChild(edit);
+    card.appendChild(del);
+    root.appendChild(card);
+  });
+}
+
+function addCustomSupportPrompt(){
+  const n = document.getElementById("addCustomPromptName");
+  const t = document.getElementById("addCustomPromptText");
+  if(!n || !t)return;
+
+  const name = n.value.trim();
+  const prompt = t.value.trim();
+
+  if(!name){
+    alert("プロンプト名を入力してください。");
+    n.focus();
+    return;
+  }
+  if(!prompt){
+    alert("AI処理用プロンプトを入力してください。");
+    t.focus();
+    return;
+  }
+
+  const list = getCustomSupportPrompts();
+  if(list.some(function(x){ return x.name === name; })){
+    alert("同じプロンプト名がすでにあります。");
+    n.focus();
+    return;
+  }
+
+  list.push({
+    id:"custom_support_prompt_" + Date.now(),
+    name:name,
+    prompt:prompt,
+    createdAt:new Date().toISOString()
+  });
+  saveCustomSupportPrompts(list);
+
+  n.value = "";
+  t.value = "";
+
+  renderCustomSupportPromptEditor();
+  renderCustomSupportPromptPatterns();
+  updatePatternUI();
+
+  alert("「"+name+"」を追加しました。");
+}
+
 /* =====================================================
    画面の最上部へ戻る
 ===================================================== */
@@ -2156,6 +2488,8 @@ behavior: "smooth"
 
 renderCategories();
 renderEditArea();
+renderCustomSupportPromptEditor();
+renderCustomSupportPromptPatterns();
 update();
 updatePatternUI();
 
@@ -2312,6 +2646,51 @@ function showUsageGuide(){
 </script>
 <!-- ===== 設定・使い方ページ：ここまで追加 ===== -->
 
+
+<style id="custom-support-prompt-pattern-style">
+/* =====================================================
+   利用者独自の経過記録プロンプト
+   支援経過A・B・Cと同じBlueOceanデザイン体系
+===================================================== */
+.custom-prompt-pattern-area{
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px dashed #9bc7ee;
+}
+.custom-prompt-pattern-grid{
+  margin-top:0 !important;
+}
+.custom-prompt-pattern-option{
+  min-height:100% !important;
+}
+.custom-prompt-pattern-option > span:first-of-type{
+  display:block !important;
+  text-align:left !important;
+}
+.custom-prompt-pattern-option .pattern-title-force{
+  text-align:center !important;
+  justify-content:center !important;
+  align-items:center !important;
+}
+.custom-prompt-pattern-option.pattern-selected{
+  background:#e8f4ff !important;
+  border-color:var(--blue) !important;
+  box-shadow:0 3px 10px rgba(25,118,210,.12) !important;
+}
+.custom-prompt-pattern-option.pattern-selected .pattern-title-force{
+  background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%) !important;
+  border-color:#0875c9 !important;
+  color:#fff !important;
+}
+#customPromptEditorArea{
+  margin-top:18px;
+}
+@media(max-width:760px){
+  .custom-prompt-pattern-grid{
+    grid-template-columns:1fr !important;
+  }
+}
+</style>
 
 <style id="final-blue-choice-unification">
 /* 今回指定：未選択＝白、選択＝薄い水色。枠は青で少し太く統一 */
@@ -2567,9 +2946,10 @@ header{
   width:auto !important;
   padding-left:14px !important;
   padding-right:14px !important;
-  display:block !important;
-  margin-left:auto !important;
-  margin-right:auto !important;
+  display:inline-block !important;
+  margin-left:6px !important;
+  margin-right:6px !important;
+  vertical-align:middle !important;
 }
 
 /* 設定画面の戻るボタン：文字が入る程度の幅に限定 */
