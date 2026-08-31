@@ -1650,7 +1650,7 @@ function copyAI() {
 
 【今回の音声・手入力】
 ${additionalInput || "なし"}`;
-      copyText(bulletSummaryPrompt.trim(), copyButton, "✓ コピーしました");
+      copyText(bulletSummaryPrompt.trim(), copyButton, "コピーしました！それではお好きなAIへ貼り付けてください！");
       return;
     }
 
@@ -1670,7 +1670,7 @@ ${additionalInput || "なし"}`;
 
 【今回の音声・手入力】
 ${additionalInput || "なし"}`;
-    copyText(summaryPrompt.trim(), copyButton, "✓ コピーしました");
+    copyText(summaryPrompt.trim(), copyButton, "コピーしました！それではお好きなAIへ貼り付けてください！");
     return;
   }
 
@@ -1775,7 +1775,7 @@ ${additionalInput || "なし"}
 支援経過A・B・Cの固有ルールは自動追加・適用しないでください。
 入力されていない事実は推測・補完・創作して追加しないでください。`;
 
-    copyText(customFinalText.trim(), copyButton, "✓ コピーしました");
+    copyText(customFinalText.trim(), copyButton, "コピーしました！それではお好きなAIへ貼り付けてください！");
     return;
   }
 
@@ -1842,7 +1842,7 @@ Cパターンの「AI出力形式」が「標準」の場合は、「区分」�
 
 `;
 
-  copyText(finalText.trim(), copyButton, "✓ コピーしました");
+  copyText(finalText.trim(), copyButton, "コピーしました！それではお好きなAIへ貼り付けてください！");
 }
 
 /* =====================================================
@@ -1919,7 +1919,7 @@ element.classList.add(
 );
 
 copyButton.textContent =
-"✓ コピーしました";
+"コピーしました！それではお好きなAIへ貼り付けてください！";
 
 copyButton.classList.add(
 "copied"
