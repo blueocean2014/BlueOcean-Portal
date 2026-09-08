@@ -198,6 +198,7 @@ textarea{
   padding:40px 0 20px 0;
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -205,8 +206,19 @@ textarea{
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
     <h2>🔒 社内専用システム</h2>
-    <p>パスワードを入力してください</p>
-    <input type="password" id="passwordInput">
+    <p>登録したメールアドレスとパスワードを入力してください</p>
+    <input
+      type="email"
+      id="emailInput"
+      placeholder="メールアドレス"
+      autocomplete="username"
+    >
+    <input
+      type="password"
+      id="passwordInput"
+      placeholder="パスワード"
+      autocomplete="current-password"
+    >
     <button onclick="checkPassword()">ログイン</button>
     <p id="errorMsg" style="color:#ff8080;"></p>
   </div>
@@ -2442,37 +2454,85 @@ JSONコードブロックのみ出力すること。
 <div id="toast" class="toast">コピーしました</div>
 
 <script>
-const PASSWORD = "blue2026";
-const LOGOUT_VERSION = "v1";
+/* ===== Supabase 認証設定 =====
+   ※ SUPABASE_PUBLISHABLE_KEY に
+      Supabaseで取得した「Publishable key」を貼り付けてください。
+   ※ Secret key / service_role key は絶対に貼り付けないでください。
+*/
+const SUPABASE_URL = "https://nmzowasvtqzkvqhhamb.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_sZVfz3boIz7UWUpZo0DNuA_p3YUnL4M";
 
-function checkPassword(){
-  const input = document.getElementById("passwordInput").value;
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
-  if(input === PASSWORD){
-    localStorage.setItem("blueLoggedIn", "true");
-    localStorage.setItem("logoutVersion", LOGOUT_VERSION);
-    document.getElementById("loginScreen").style.display = "none";
+/* ===== ログイン後の表示 ===== */
+function showPortal(){
+  document.getElementById("loginScreen").style.display = "none";
 
-    const welcome = document.getElementById("welcomeScreen");
-    welcome.classList.add("show");
-    setTimeout(()=>{ welcome.classList.remove("show"); }, 800);
+  const welcome = document.getElementById("welcomeScreen");
+  welcome.classList.add("show");
 
-  } else {
-    document.getElementById("errorMsg").innerText = "パスワードが違います";
+  setTimeout(()=>{
+    welcome.classList.remove("show");
+  }, 800);
+}
+
+/* ===== Supabaseでスタッフログイン ===== */
+async function checkPassword(){
+  const email = document.getElementById("emailInput").value.trim();
+  const password = document.getElementById("passwordInput").value;
+  const errorMsg = document.getElementById("errorMsg");
+
+  errorMsg.innerText = "";
+
+  if(!email || !password){
+    errorMsg.innerText = "メールアドレスとパスワードを入力してください";
+    return;
+  }
+
+  try{
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+    if(error){
+      errorMsg.innerText =
+        "メールアドレスまたはパスワードが違います";
+      return;
+    }
+
+    if(data && data.session){
+      showPortal();
+    }else{
+      errorMsg.innerText =
+        "ログイン状態を確認できませんでした";
+    }
+
+  }catch(error){
+    console.error(error);
+    errorMsg.innerText =
+      "ログイン処理でエラーが発生しました";
   }
 }
 
-window.onload = function(){
-  const savedVersion = localStorage.getItem("logoutVersion");
-  const loggedIn = localStorage.getItem("blueLoggedIn");
+/* ===== ページを開いたとき、既にログイン済みならそのまま入る ===== */
+window.addEventListener("DOMContentLoaded", async ()=>{
+  try{
+    const {
+      data: { session }
+    } = await supabaseClient.auth.getSession();
 
-  if (savedVersion !== LOGOUT_VERSION) {
-    localStorage.removeItem("blueLoggedIn");
-    localStorage.removeItem("logoutVersion");
-  } else if (loggedIn === "true") {
-    document.getElementById("loginScreen").style.display = "none";
+    if(session){
+      showPortal();
+    }
+  }catch(error){
+    console.error(error);
   }
-}
+});
 
 async function copyText(id, btn){
   const text = document.getElementById(id);
