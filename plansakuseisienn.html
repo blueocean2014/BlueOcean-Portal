@@ -1,0 +1,3637 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ケアプラン（案）、介護予防プラン（案）、課題整理総括表（案）作成支援アプリ（BlueOcean）</title>
+<style>
+body{margin:0;background:#f4fbff;color:#185477;font-family:-apple-system,BlinkMacSystemFont,"Yu Gothic","Meiryo",sans-serif}
+.care-manager-message{
+  margin:18px 0;
+  border:3px solid #f0a000;
+  border-radius:16px;
+  background:linear-gradient(180deg,#fffaf0 0%,#fffdf8 100%);
+  box-shadow:0 4px 14px rgba(180,110,0,.16);
+  overflow:hidden;
+}
+.care-manager-message-title{
+  padding:13px 16px;
+  background:#fff0c7;
+  color:#8a4f00;
+  font-size:17px;
+  font-weight:800;
+  line-height:1.5;
+  border-bottom:2px solid #f0c05a;
+}
+.care-manager-message-body{
+  padding:17px 18px;
+  color:#4b3a20;
+  font-size:15px;
+  line-height:1.85;
+}
+.care-manager-message-body strong{color:#7b3f00;}
+@media(max-width:600px){
+  .care-manager-message-title{font-size:16px;}
+  .care-manager-message-body{font-size:14px;padding:15px;line-height:1.8;}
+}
+
+header{background:linear-gradient(135deg,#70dcfa 0%,#28bcef 38%,#138ee0 72%,#0875c9 100%);color:white;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+header h1{font-size:21px;margin:0 0 6px 0;letter-spacing:.3px}
+.header-inner{
+  max-width:1120px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px;
+}
+.header-description{
+  flex:1;
+  max-width:430px;
+  font-size:15px;
+  line-height:1.7;
+  text-align:left;
+  opacity:.98;
+}
+header div{font-size:13px;opacity:.95}
+main{max-width:900px;margin:auto;padding:12px}
+.card{background:white;padding:16px;margin:12px 0;border-radius:15px;box-shadow:0 3px 10px rgba(0,80,100,.10);border:1px solid #dcebed}
+h2{font-size:18px;margin:0 0 13px 0;color:#0872c5}
+.description{font-size:14px;line-height:1.7;color:#44575c;background:#f3f7f9;border:1px solid #d9e3e6;border-radius:8px;padding:10px 12px;box-sizing:border-box}
+textarea{width:100%;box-sizing:border-box;border:1px solid #c9dde1;border-radius:10px;padding:12px;font-size:16px;line-height:1.7;min-height:220px;resize:vertical;outline:none}
+textarea:focus{border-color:#008fa3;box-shadow:0 0 0 2px rgba(0,143,163,.12)}
+button{border:0;border-radius:10px;color:white;padding:12px 16px;font-size:15px;margin:4px 2px;cursor:pointer;transition:.15s}
+button:hover{opacity:.9;transform:translateY(-1px)}
+.copy-button{background:linear-gradient(90deg,#22b9ed,#0879d4);font-weight:bold;font-size:18px;padding:14px 18px}
+.copy-button.copied{background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9)}
+.scroll-top-button{background:#607d83;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
+.home-button{background:#0875c9;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
+.status{background:#eef8fa;border:1px solid #d4eaed;color:#24545d;padding:10px;border-radius:9px;font-size:13px;margin-top:8px;white-space:pre-wrap}
+.status.success{background:#eaf8ef;border-color:#b9dfc5;color:#17652e;font-weight:bold}
+.pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.pattern-option{align-items:flex-start;background:#f8fcfd;border:1px solid #c9dde1;border-radius:10px;padding:11px;display:flex;gap:8px;cursor:pointer}
+.pattern-option input{margin-top:3px;width:20px;height:20px;accent-color:#008fa3}
+.pattern-option:has(input:checked){border-color:#008fa3;background:#eef9fb;box-shadow:0 0 0 2px rgba(0,143,163,.10)}
+.pattern-option small{font-size:12px;color:#53686d;line-height:1.5}
+.usage-card{
+  margin-top:12px;
+  border:2px solid #8bd4ee;
+  border-radius:20px;
+  background:#fffdf3;
+  box-shadow:0 6px 18px rgba(30,120,165,.08);
+  padding:20px 24px;
+}
+.usage-card h2{
+  font-size:18px;
+  margin:0 0 14px;
+  color:#0875c9;
+  text-align:center;
+}
+.usage-flow{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+.usage-step{
+  position:relative;
+  padding:10px 8px 10px 12px;
+  font-size:14px;
+  line-height:1.6;
+  color:#075e6b;
+  text-align:left;
+}
+.usage-step:not(:last-child){
+  border-bottom:1px dashed #b8dfec;
+}
+.usage-step span{
+  color:#0875c9;
+  font-size:13px;
+}
+.usage-note{background:#fff9d9;border:2px solid #d8c875;border-radius:10px;color:#6b5b00;}
+.usage-note strong{
+  color:#0875c9;
+}
+.setting-box{margin-top:12px;padding:12px;border:1px solid #c9dde1;border-radius:10px;background:#fbfefe}
+.setting-label{font-weight:bold;color:#075e6b;margin-bottom:8px}
+.setting-help{font-size:12px;color:#52676d;line-height:1.6;margin-top:7px}
+.edit-area{margin-top:80px;border-top:3px solid #dcebed;padding-top:24px}
+.edit-note{font-size:13px;line-height:1.7;color:#52676d;background:#f5fafb;border:1px solid #dcebed;border-radius:10px;padding:11px;margin-bottom:12px}
+.edit-actions{display:flex;gap:6px;flex-wrap:wrap}
+.save-button{background:#0875c9}
+.restore-button{background:#527b62}
+.clear-button{background:#8a5a42}
+.bo-footer-brand{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px auto 26px;padding:16px 0 4px;border-top:1px solid #dcebed;max-width:720px}
+.bo-footer-brand img{width:58px;height:58px;object-fit:contain;flex:none}
+.bo-footer-brand-text{display:flex;flex-direction:column;gap:3px;text-align:left}
+.bo-footer-brand-title{font-size:17px;font-weight:bold;letter-spacing:.3px}
+.bo-footer-brand-subtitle{font-size:12px}
+#newCaseButton{background:#1976d2!important;background-image:none!important;color:#fff!important;border:1px solid #1565c0!important;box-shadow:0 2px 5px rgba(0,0,0,.15)!important;border-radius:8px;padding:12px 34px;min-width:260px;font-size:15px;cursor:pointer}
+.settings-open-button{background:#e58a00!important;color:#fff!important;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
+.view-back-button{background:#607d83;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
+.view-hidden{display:none!important}
+body.settings-view-active main > *:not(#promptLibraryArea){display:none!important}
+body.settings-view-active #promptLibraryArea{display:block!important}
+
+.usage-open-button{background:#f5e6a8;color:#5f5500;font-weight:bold;font-size:16px;width:100%;max-width:520px;padding:14px;border:1px solid #25864a;border-radius:8px;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.12)}
+
+
+@media(max-width:600px){
+ .pattern-grid{grid-template-columns:1fr}
+ button{width:100%;margin:4px 0}
+ header h1{font-size:19px}
+ .edit-actions{display:block}
+ .usage-card{padding:17px 16px}
+ .usage-card h2{font-size:18px}
+ .usage-step{font-size:13px;padding:9px 6px 9px 8px}
+ .usage-step span{font-size:12px}
+ .header-inner{display:block}
+ .header-description{margin-top:12px;max-width:none;font-size:14px}
+}
+#preventivePrivacyResult.warn{color:#6b4a00!important;background:#fff8e5;border-color:#d9a441}
+.privacy-result.warn{color:#6b4a00!important;background:#fff8e5!important;border-color:#d9a441!important}
+
+/* 個人情報チェック工程：次へ進める状態を明確化 */
+.ai-paste-guide{margin:12px 0 14px;padding:14px;border:2px solid #b9dbe6;border-radius:12px;background:#f7fcfe;line-height:1.65}.ai-paste-title{font-size:16px;font-weight:800;color:#173b49;margin-bottom:10px}.ai-paste-flow{display:flex;flex-direction:column;gap:7px}.ai-paste-item{padding:10px 12px;background:#fff;border:1px solid #d6e6eb;border-radius:9px}.ai-paste-num{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:50%;background:#1b6f85;color:#fff;font-weight:800;margin-right:5px}.ai-paste-arrow{text-align:center;font-weight:900;color:#5790a0}.ai-paste-emphasis{display:inline-block;margin-top:6px;padding:8px 12px;background:#fff8df;border:1px solid #e6cf78;border-radius:8px;font-weight:800}.ai-paste-note{margin-top:10px;padding:11px 12px;background:#fff4e5;border-left:5px solid #e6a21a;border-radius:7px}.privacy-check-box{position:relative}
+.privacy-check-guide{margin:10px 0 14px;padding:12px 14px;border-radius:10px;background:#f5f9fc;border:1px solid #cfe1ea;line-height:1.75;font-size:13px}
+.privacy-check-guide strong{color:#173b49}
+.privacy-check-button{width:100%;font-size:16px!important;font-weight:800!important;padding:14px 18px!important;border-radius:10px!important;transition:.2s}
+.privacy-check-button.ready{background:#198754!important;color:#fff!important;border-color:#198754!important;box-shadow:0 3px 8px rgba(25,135,84,.22)}
+.privacy-check-button.review{background:#e6a21a!important;color:#fff!important;border-color:#e6a21a!important}
+.privacy-next-note{display:none;margin-top:10px;padding:11px 13px;border-radius:9px;background:#edf9f0;border:1px solid #8bc79d;color:#175c2d;font-weight:700;line-height:1.6}
+.privacy-next-note.show{display:block}
+.prompt-copy-button{white-space:pre-line;line-height:1.55;min-height:48px}\n.prompt-copy-button.copied{
+  background:#198754!important;
+  color:#fff!important;
+  border-color:#198754!important;
+  box-shadow:0 3px 8px rgba(25,135,84,.22);
+}
+.prompt-copy-status{
+  display:none;
+  margin-top:10px;
+  padding:11px 13px;
+  border-radius:9px;
+  background:#edf9f0;
+  border:1px solid #8bc79d;
+  color:#175c2d;
+  font-weight:700;
+  line-height:1.6;
+}
+.prompt-copy-status.show{display:block}
+
+#preventivePromptBox.ready-next{border:2px solid #198754;box-shadow:0 0 0 3px rgba(25,135,84,.08)}
+.preventive-self-assessment-note{margin:10px 0 14px 0;padding:14px 16px;line-height:1.8;border:1px solid #f2c36b;border-radius:10px;background:#fffaf0;color:#5b4a2f;font-size:14px}.preventive-self-assessment-note>div+div{margin-top:6px}.preventive-self-assessment-note strong{color:#b85c00}.preventive-star{display:inline-block;font-size:22px;font-weight:bold;color:#e6a400;animation:preventiveStarBlink 1.2s ease-in-out infinite}.preventive-draft-note{padding:9px 11px;border-radius:8px;background:#fff1f1;border-left:4px solid #e36b6b;color:#7d3030}.preventive-draft-note strong{color:#c13b3b}@keyframes preventiveStarBlink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.15;transform:scale(1.18)}}
+.final-copy-button-copied{background:#2e7d32 !important;color:#fff !important;border-color:#2e7d32 !important;font-weight:700;white-space:normal;line-height:1.5;}
+
+.important-step-alert{
+  color:#d00000!important;
+  font-weight:800;
+  line-height:1.8;
+}
+.important-step-alert-starred{
+  color:#d00000!important;
+  font-weight:800;
+  text-decoration:underline;
+  animation:importantStepStarredBlink 1s steps(1,start) infinite;
+}
+@keyframes importantStepStarredBlink{
+  50%{opacity:.15;}
+}
+
+
+.bo-next-step{display:inline-block;margin-top:8px;padding:10px 14px;border-left:5px solid #0b78d0;border-radius:7px;background:linear-gradient(90deg,rgba(11,120,208,.14),rgba(11,120,208,.05));color:#075fa8;font-size:18px;font-weight:800;line-height:1.6;letter-spacing:.01em;}
+
+.checked-file-name-box{margin-top:12px;padding:12px 14px;border:2px solid #198754;border-radius:9px;background:#f0fff4;line-height:1.7}
+.checked-file-name{display:inline-block;margin-top:4px;font-weight:800;word-break:break-all}
+.checked-file-name-box small{display:inline-block;margin-top:5px;color:#365044}
+
+<style>
+.ai-first-stage-toggle{display:block;margin:12px 0 10px;width:100%;padding:14px 16px;border:2px solid #176b43;border-radius:10px;background:#eaf7ef;color:#176b43;font-weight:700;font-size:16px;cursor:pointer;text-align:left;box-shadow:0 2px 5px rgba(0,0,0,.08)}
+.ai-first-stage-toggle:hover{background:#dff2e7}
+.ai-first-stage-guide{display:none;margin-bottom:14px}
+.ai-first-stage-guide .ai-flow-stage-title{font-weight:700;font-size:16px}
+
+/* 第一段階ボタンの表示を明確にする（他の設定は変更しない） */
+#aiFirstStageToggle {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: #176b43 !important;
+  background: #eaf7ef !important;
+  border: 2px solid #176b43 !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+}
+
+.ai-claude-button{border:1px solid #c4b5fd;background:#f5f3ff;color:#5b21b6;}
+</style>
+</style>
+<style id="ai-flow-guidance-only">
+.ai-flow-stage{
+  margin-top:12px;
+  padding:14px 16px;
+  border:2px solid #0875c9;
+  border-radius:10px;
+  background:#f7fbff;
+}
+.ai-flow-stage-title{
+  font-size:17px;
+  font-weight:800;
+  color:#075fa8;
+  margin-bottom:10px;
+}
+.ai-flow-action{
+  margin:9px 0;
+  padding:11px 13px;
+  border-radius:8px;
+  background:#fff;
+  border:1px solid #c9ddec;
+  line-height:1.7;
+}
+.ai-flow-action strong{
+  font-weight:800;
+}
+.ai-flow-switch{
+  margin:12px 0;
+  padding:10px 12px;
+  text-align:center;
+  font-weight:800;
+  color:#7a4b00;
+  background:#fff8e8;
+  border:1px dashed #d59a22;
+  border-radius:8px;
+}
+.ai-flow-return{
+  margin-top:12px;
+  padding:12px 14px;
+  border:2px solid #198754;
+  border-radius:9px;
+  background:#f0fff4;
+  line-height:1.7;
+}
+.ai-flow-return-title{
+  font-weight:800;
+  color:#176b43;
+}
+.ai-flow-arrow{
+  text-align:center;
+  font-size:20px;
+  font-weight:800;
+  margin:5px 0;
+}
+</style>
+
+<style id="requested-title-only">
+header .app-title-main,
+header .app-title-sub{
+  display:block;
+}
+header .app-title-main{
+  font-size:27px;
+}
+header .app-title-sub{
+  font-size:24px;
+  margin-top:6px;
+}
+@media(max-width:600px){
+  header .app-title-main{font-size:23px}
+  header .app-title-sub{font-size:20px}
+}
+</style>
+
+
+
+
+
+<style id="blue-ocean-design-system-override">
+/* デザインのみの上書き。機能・HTML構造・JavaScriptは変更しない。 */
+:root{
+  --blue:#1976d2;
+  --blue-dark:#1565c0;
+  --blue-light:#eaf5ff;
+  --blue-pale:#f4faff;
+  --yellow:#fff7d6;
+  --yellow-border:#e6c94c;
+  --text:#185477;
+}
+body{background:#f4faff;color:var(--text)}
+header{background:var(--blue);box-shadow:0 2px 8px rgba(25,118,210,.18)}
+.card{background:#fff;border:2px solid #b9d9f5;border-radius:18px;box-shadow:0 3px 12px rgba(25,118,210,.08)}
+h2{color:var(--blue-dark)}
+.description{background:#fff;border:1px solid #cfe3f7;border-radius:12px;color:#44575c}
+textarea{background:#fff;border:2px solid #9fc7eb;border-radius:14px}
+textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(25,118,210,.12)}
+button{border-radius:12px}
+.copy-button,
+.copy-button.copied,
+button.ai-copy-green-button,
+button.ai-copy-green-button:hover,
+button.ai-copy-green-button:focus,
+button.ai-copy-green-button:active,
+.save-button,
+.prompt-select,
+#newCaseButton{background:var(--blue)!important;background-image:none!important;color:#fff!important;border-color:var(--blue-dark)!important}
+.copy-button:hover,
+button.ai-copy-green-button:hover,
+.save-button:hover,
+.prompt-select:hover,
+#newCaseButton:hover{background:var(--blue-dark)!important}
+.scroll-top-button,
+.view-back-button,
+.home-button{background:var(--blue)!important;color:#fff!important;border:1px solid var(--blue-dark)!important}
+.settings-open-button{background:var(--blue)!important;color:#fff!important;border:1px solid var(--blue-dark)!important}
+.usage-open-button{background:var(--yellow)!important;color:#675700!important;border:2px solid var(--yellow-border)!important;border-radius:12px}
+.pattern-option{background:#fff;border:2px solid #9fc7eb;border-radius:14px}
+.pattern-option:has(input:checked){background:var(--blue-light);border-color:var(--blue);box-shadow:0 0 0 2px rgba(25,118,210,.08)}
+.pattern-option input{accent-color:var(--blue)}
+.setting-box{background:#fff;border:2px solid #b9d9f5;border-radius:14px}
+.setting-label{color:var(--blue-dark)}
+.edit-note{background:#fff;border:1px solid #cfe3f7;border-radius:12px}
+.edit-area{border-top:3px solid #b9d9f5}
+.prompt-item{background:#fff;border:2px solid #b9d9f5;border-radius:14px}
+.prompt-item.active{border:2px solid var(--blue);background:var(--blue-light)}
+.prompt-item-name{color:var(--blue-dark)}
+.prompt-edit{background:#fff;color:var(--blue-dark);border:1px solid #9fc7eb!important}
+.restore-button{background:var(--blue)!important;color:#fff!important}
+.clear-button{background:var(--blue-dark)!important;color:#fff!important}
+.status{background:#f4faff;border:1px solid #cfe3f7;color:#24545d;border-radius:12px}
+.status.success{background:#f4faff;border-color:#b9d9f5;color:var(--blue-dark)}
+.usage-card{background:#fffdf3;border:2px solid #9fc7eb;border-radius:18px;box-shadow:0 4px 14px rgba(25,118,210,.08)}
+.usage-card h2,.usage-note strong{color:var(--blue-dark)}
+.usage-step{color:#245c80}
+.usage-step span{color:var(--blue-dark)}
+.usage-step:not(:last-child){border-bottom:1px dashed #b9d9f5}
+.usage-note{border-top:1px solid #cfe3f7;color:#245c80}
+.bo-footer-brand{border-top:1px solid #b9d9f5}
+@media(max-width:600px){
+  .card{border-radius:16px}
+  .pattern-option{border-radius:13px}
+  .setting-box,.prompt-item{border-radius:13px}
+}
+</style>
+
+<style id="settings-button-orange-only">
+/* 設定ボタンだけをオレンジ色に変更 */
+button[onclick="openPromptSettings()"]{
+  background:#f39c12 !important;
+  border-color:#e67e22 !important;
+  color:#fff !important;
+}
+button[onclick="openPromptSettings()"]:hover{
+  background:#e67e22 !important;
+}
+</style>
+
+
+<style id="settings-orange-and-bottom-navigation">
+/* 指定された設定ボタンだけオレンジ */
+button.settings-orange-target{
+  background:#f39c12 !important;
+  border-color:#e67e22 !important;
+  color:#fff !important;
+}
+button.settings-orange-target:hover{
+  background:#e67e22 !important;
+  border-color:#d96f0b !important;
+}
+
+/* 設定画面の一番下に追加するナビゲーション */
+.settings-bottom-navigation{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:28px 0 8px;
+}
+.settings-bottom-navigation .settings-bottom-home{
+  margin:0 !important;
+}
+</style>
+
+
+<style id="three-return-buttons-small-unified">
+/* 3つの戻る系ボタンだけ、文字量に合わせた小型・同一幅にする */
+button.settings-bottom-home,
+button[onclick="goHome()"],
+button[onclick="showMainView()"]{
+  width:auto !important;
+  min-width:0 !important;
+  max-width:none !important;
+  padding:8px 16px !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  white-space:nowrap !important;
+}
+</style>
+
+
+<style id="return-buttons-final-size">
+/* 戻る系ボタン3種類だけを、文字が入る程度の小さな同一サイズにする */
+button.home-button.settings-bottom-home,
+button.home-button[onclick="scrollToTop()"],
+button.home-button[onclick="goHome()"],
+button.view-back-button[onclick="showMainView()"]{
+  width:auto !important;
+  min-width:0 !important;
+  max-width:none !important;
+  box-sizing:border-box !important;
+  padding:8px 14px !important;
+  margin-top:0 !important;
+  white-space:nowrap !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+</style>
+
+
+<style id="usage-open-button-width-only">
+/* 「📖 使い方の説明はこちら」の横幅だけを文字量に合わせる */
+.usage-open-button{
+  width:auto !important;
+  max-width:none !important;
+}
+</style>
+
+
+<style id="blueocean-color-only">
+/* BlueOcean 基本カラー：#70dcfa → #28bcef → #138ee0 → #0875c9 */
+:root{
+  --bo-light:#70dcfa;
+  --bo-sky:#28bcef;
+  --bo-blue:#138ee0;
+  --bo-deep:#0875c9;
+}
+
+/* タイトル・主要見出し */
+header,
+.app-header,
+.page-header,
+.main-header{
+  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+}
+
+/* 青系の既存アクセントをBlueOceanグラデーションへ */
+h1,h2,h3,
+.section-title,
+.card-title{
+  color:var(--bo-deep) !important;
+}
+
+/* 主要ボタン・青系ボタン */
+button.primary,
+button.btn-primary,
+button.home-button,
+button[class*="blue"],
+button[class*="primary"]{
+  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  border-color:var(--bo-blue) !important;
+  color:#fff !important;
+}
+
+/* 青系の枠線 */
+.card,
+.section,
+.panel,
+.input-group,
+textarea:focus,
+input:focus,
+select:focus{
+  border-color:var(--bo-blue) !important;
+}
+
+/* 青系の強調・選択状態 */
+.selected,
+.active,
+.choice.selected,
+.option.selected{
+  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue)) !important;
+  border-color:var(--bo-blue) !important;
+  color:#fff !important;
+}
+
+/* 青系の既存グラデーション背景をBlueOcean基準へ */
+[style*="#70dcfa"],
+[style*="#28bcef"],
+[style*="#138ee0"],
+[style*="#0875c9"]{
+  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+}
+</style>
+
+
+<style id="blueocean-target-buttons-only">
+/* 指定された5つのボタンだけBlueOceanカラーを明示適用 */
+button.view-back-button[onclick="showMainView()"],
+button.ai-copy-green-button,
+button.save-button,
+button.restore-button,
+button#showAddPromptButton{
+  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  background-image:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  border-color:var(--bo-blue) !important;
+  color:#fff !important;
+}
+
+button.view-back-button[onclick="showMainView()"]:hover,
+button.ai-copy-green-button:hover,
+button.save-button:hover,
+button.restore-button:hover,
+button#showAddPromptButton:hover{
+  background:linear-gradient(135deg,var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  background-image:linear-gradient(135deg,var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  border-color:var(--bo-deep) !important;
+  color:#fff !important;
+}
+</style>
+
+<style id="bo-white-title-only">
+/* 指定されたタイトルの文字色だけを白に変更 */
+h1.bo-white-title{
+  color:#fff !important;
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>if(window.pdfjsLib){pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.9.0/mammoth.browser.min.js"></script>
+<style id="preventive-plan-import-style">
+.preventive-launch-card{background:linear-gradient(180deg,#f7fcff 0%,#eef8ff 100%)!important;border:2px solid #8bd4ee!important}
+.preventive-launch-button{background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9)!important;color:#fff!important;font-weight:700;font-size:17px;width:100%;padding:15px 18px}
+.preventive-area{margin-top:12px}
+.file-drop-zone{border:3px dashed #8bd4ee;border-radius:16px;padding:22px;text-align:center;background:#f8fdff;cursor:pointer;transition:.15s}
+.file-drop-zone:hover,.file-drop-zone.dragover{background:#eef9ff;border-color:#138ee0}
+.file-drop-zone strong{display:block;font-size:18px;color:#0875c9;margin-bottom:6px}
+.file-drop-zone span{font-size:13px;color:#263f48;font-weight:600}
+.file-list{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.file-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;background:#fff;border:1px solid #b9d9f5;border-radius:10px}
+.file-item-name{font-weight:800;color:#123d52;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-item-meta{font-size:13px;color:#203f4a;white-space:nowrap;font-weight:700}
+.file-remove{background:#8a5a42!important;padding:7px 10px!important;font-size:12px!important;margin:0!important;flex:none}
+.file-content{width:100%;min-height:360px;box-sizing:border-box;border:3px solid #8bd4ee;border-radius:14px;padding:14px;background:#f8fdff;font-size:14px;line-height:1.7;white-space:pre-wrap;overflow:auto}
+.privacy-warning{background:#fff8d9;border:2px solid #e6c94c;border-radius:14px;padding:14px 16px;color:#5f5500;line-height:1.7;margin-bottom:14px}
+.privacy-warning strong{color:#9a6b00}
+.preventive-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.preventive-actions button{margin:0}
+.secondary-action{background:#607d83!important}
+@media(max-width:600px){.file-item{align-items:flex-start}.file-item-meta{white-space:normal}.preventive-actions button{width:100%}}
+</style>
+<style id="preventive-ai-review-style">
+.ai-review-box{margin-top:12px;padding:14px;border:2px solid #8bd4ee;border-radius:14px;background:#f8fdff}
+.ai-review-step{font-weight:800;color:#0875c9;font-size:17px;margin-bottom:9px}
+.ai-review-help{font-size:13px;line-height:1.75;color:#425b63;background:#fff;border:1px solid #cfe3f7;border-radius:10px;padding:11px 12px;margin-bottom:10px}
+.ai-review-textarea{min-height:420px;background:#fff!important;border:3px solid #8bd4ee!important;font-size:14px;line-height:1.75}
+.ai-review-textarea:focus{border-color:#138ee0!important;box-shadow:0 0 0 3px rgba(19,142,224,.14)!important}
+.ai-review-confirm,.ai-review-copy{background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9)!important;color:#fff!important;font-weight:800;width:100%;font-size:17px;padding:14px 18px}
+.ai-review-status{margin-top:8px}
+.ai-review-complete{padding:14px;border:2px solid #7bc58e;border-radius:12px;background:#f3fbf5;color:#17652e;line-height:1.75;font-weight:700}
+.document-choice-box{margin-top:12px;padding:14px;border:2px solid #8bd4ee;border-radius:14px;background:#f8fdff}
+.document-choice-title{font-size:17px;font-weight:900;color:#0875c9;margin-bottom:6px}
+.document-choice-help{font-size:13px;line-height:1.7;color:#425b63;margin-bottom:10px}
+.document-choice-grid{display:grid;grid-template-columns:1fr;gap:9px}
+.document-choice-button{width:100%;margin:0!important;padding:14px 16px!important;background:#fff!important;color:#0875c9!important;border:2px solid #8bd4ee!important;font-weight:900!important;font-size:16px!important}
+.document-choice-button:hover{background:#eef8ff!important;border-color:#138ee0!important}
+.document-choice-button.selected{background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9)!important;color:#fff!important;border-color:#138ee0!important}
+.selected-document-status{margin-top:10px;padding:10px 12px;border-radius:9px;background:#fff;border:1px solid #cfe3f7;color:#24545d;font-weight:700;line-height:1.6}
+
+@media(max-width:600px){.ai-review-textarea{min-height:360px}}
+</style>
+<style id="preventive-plan-new-style">
+.privacy-result{padding:16px;border:2px solid #b9d9f5;border-radius:12px;background:#f8fcff;line-height:1.8;color:#173b49;font-weight:600;white-space:pre-wrap}
+.privacy-result.ok{background:#f3fbf5;border-color:#7bc58e;color:#17652e}
+.privacy-result.alert{background:#fff7f3;border-color:#e39a7d;color:#8a3f22}
+.privacy-ok-message{padding:16px;border:2px solid #7bc58e;border-radius:12px;background:#f3fbf5;color:#17652e;line-height:1.8}
+.ai-caution{padding:16px;border:2px solid #e6c94c;border-radius:12px;background:#fff9df;color:#665500;line-height:1.8}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<style id="preventive-loader-refactor-style">
+#preventiveLoadButton{min-height:54px;font-size:18px;font-weight:900;color:#fff!important;background:#0875c9!important;border:2px solid #075b9e!important}
+#preventiveLoadButton:disabled{background:#6c7a80!important;border-color:#56646a!important}
+#preventiveLoadStatus,#preventiveFileStatus{color:#173b49;font-weight:700;line-height:1.75;white-space:pre-wrap}
+#preventiveLoadStatus.success,#preventiveFileStatus.success{color:#124d28!important;background:#edf9f0;border-color:#2c9954}
+#preventiveLoadStatus.alert,#preventiveFileStatus.alert{color:#7b1717!important;background:#fff1f1;border-color:#cf3b3b}
+#preventiveLoadStatus.next-check-message{font-size:18px!important;font-weight:900!important;line-height:1.8!important;padding:15px 16px!important;border-width:2px!important;margin-top:12px!important}
+.preventive-file-state{font-weight:800!important;color:#173b49!important}
+.preventive-file-detail{margin-top:6px;padding:7px 9px;border-left:4px solid #138ee0;background:#f5fbff;border-radius:5px;color:#23424d;font-size:12px;font-weight:600;line-height:1.55;white-space:pre-wrap}
+</style>
+
+
+<style id="ai-review-return-guide-only">
+.ai-review-return-guide{
+  margin-top:10px;
+  padding:12px 14px;
+  border:1px solid #c9ddec;
+  border-radius:8px;
+  background:#f8fbfd;
+  line-height:1.7;
+}
+.ai-review-return-guide-title{
+  font-weight:800;
+  margin-bottom:7px;
+}
+.ai-review-return-guide-warning{
+  margin:10px 0;
+  padding:9px 11px;
+  border:1px solid #e2b84b;
+  border-radius:7px;
+  background:#fffaf0;
+}
+</style>
+
+
+<style>
+.privacy-important-box {
+  margin: 18px 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.privacy-important-box > .privacy-summary {
+  display: block;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+  padding: 18px 20px;
+}
+.privacy-important-box > .privacy-summary::-webkit-details-marker {
+  display: none;
+}
+.privacy-important-box > .privacy-summary::after {
+  content: " ▼";
+  float: right;
+}
+.privacy-important-box[open] > .privacy-summary::after {
+  content: " ▲";
+}
+</style>
+
+
+<style>
+.privacy-important-box{
+  margin:18px 0;
+  border:3px solid #f0a000;
+  border-radius:16px;
+  background:linear-gradient(180deg,#fffaf0 0%,#fffdf8 100%);
+  box-shadow:0 4px 14px rgba(180,110,0,.16);
+  overflow:hidden;
+}
+.privacy-important-box > .privacy-summary{
+  display:block;
+  cursor:pointer;
+  list-style:none;
+  padding:15px 18px;
+  background:#fff0c7;
+  color:#8a4f00;
+  font-size:17px;
+  font-weight:800;
+  line-height:1.5;
+}
+.privacy-important-box > .privacy-summary::-webkit-details-marker{
+  display:none;
+}
+.privacy-important-box > .privacy-summary::after{
+  content:" ▼";
+  float:right;
+  font-size:14px;
+}
+.privacy-important-box[open] > .privacy-summary::after{
+  content:" ▲";
+}
+.privacy-important-body{
+  padding:17px 18px;
+  color:#4b3a20;
+  font-size:15px;
+  line-height:1.85;
+}
+@media(max-width:600px){
+  .privacy-important-box > .privacy-summary{font-size:15px;}
+  .privacy-important-body{font-size:14px;padding:15px;}
+}
+</style>
+
+
+<style>
+/* 個人情報・認定資料の説明：段落間隔を均一化 */
+.privacy-important-body p {
+  margin-top: 0.7em;
+  margin-bottom: 0.7em;
+  line-height: 1.75;
+}
+.privacy-important-body p:first-child {
+  margin-top: 0;
+}
+.privacy-important-body p:last-child {
+  margin-bottom: 0;
+}
+.privacy-important-body br + br {
+  display: none;
+}
+</style>
+
+
+<style id="blueocean-visual-html-editor">
+/* ===== HTMLを画面を見ながら編集する機能 ===== */
+#boVisualEditorOpen{
+  display:block;
+  margin:18px auto;
+  padding:14px 22px;
+  border:2px solid #075fa8;
+  border-radius:12px;
+  background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9);
+  color:#fff;
+  font-size:16px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 3px 9px rgba(0,80,140,.16);
+}
+#boVisualEditorOverlay{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:none;
+  background:rgba(15,35,50,.72);
+  padding:18px;
+  box-sizing:border-box;
+}
+#boVisualEditorOverlay.bo-editor-open{display:block}
+.bo-editor-window{
+  width:100%;
+  height:100%;
+  max-width:1500px;
+  margin:0 auto;
+  background:#f4faff;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 15px 50px rgba(0,0,0,.3);
+  display:flex;
+  flex-direction:column;
+}
+.bo-editor-head{
+  flex:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 16px;
+  background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9);
+  color:#fff;
+}
+.bo-editor-head-title{font-size:18px;font-weight:900}
+.bo-editor-head-help{font-size:12px;opacity:.95}
+.bo-editor-head-actions{display:flex;gap:6px;flex-wrap:wrap}
+.bo-editor-head-actions button{
+  margin:0;
+  padding:8px 12px;
+  border-radius:9px;
+  background:#fff;
+  color:#075fa8;
+  font-size:13px;
+  font-weight:800;
+}
+.bo-editor-main{
+  min-height:0;
+  flex:1;
+  display:grid;
+  grid-template-columns:minmax(360px,1fr) minmax(420px,1.15fr);
+  gap:10px;
+  padding:10px;
+}
+.bo-editor-pane{
+  min-width:0;
+  min-height:0;
+  background:#fff;
+  border:2px solid #b9d9f5;
+  border-radius:12px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.bo-editor-pane-title{
+  flex:none;
+  padding:9px 12px;
+  background:#eef7ff;
+  color:#075fa8;
+  font-weight:900;
+  border-bottom:1px solid #cfe3f7;
+}
+#boHtmlSource{
+  flex:1;
+  width:100%;
+  min-height:0;
+  resize:none;
+  box-sizing:border-box;
+  border:0;
+  outline:0;
+  padding:14px;
+  font-family:Consolas,"Courier New",monospace;
+  font-size:13px;
+  line-height:1.55;
+  color:#18384a;
+  tab-size:2;
+}
+#boHtmlPreview{
+  flex:1;
+  width:100%;
+  min-height:0;
+  border:0;
+  background:#fff;
+}
+.bo-editor-foot{
+  flex:none;
+  padding:8px 12px;
+  border-top:1px solid #cfe3f7;
+  background:#fff;
+  color:#536b78;
+  font-size:12px;
+  line-height:1.5;
+}
+.bo-editor-status{
+  display:inline-block;
+  margin-left:8px;
+  padding:3px 8px;
+  border-radius:7px;
+  background:#edf9f0;
+  color:#17652e;
+  font-weight:800;
+}
+@media(max-width:850px){
+  #boVisualEditorOverlay{padding:8px}
+  .bo-editor-main{grid-template-columns:1fr;grid-template-rows:45% 55%}
+  .bo-editor-head-help{display:none}
+}
+</style>
+
+
+<style id="help-slide-panel-restore">
+.privacy-help-toggle{display:block;margin:8px 0 10px;padding:8px 14px;border:1px solid #198754;border-radius:8px;background:#fff;color:#198754;font-weight:700;cursor:pointer}
+.privacy-help-toggle:hover{background:#f0fff4}
+.privacy-help-panel{max-height:0;overflow:hidden;opacity:0;margin:0;padding:0 14px;border:0 solid #198754;border-radius:10px;line-height:1.8;transition:max-height .3s ease,opacity .25s ease,padding .3s ease,margin .3s ease,border-width .3s ease}
+.privacy-help-panel.is-open{max-height:1200px;opacity:1;margin:0 0 12px;padding:14px;border-width:1px;background:#f7fff9}
+.ai-preorganize-help-toggle{display:block;margin:8px 0 10px;padding:8px 14px;border:1px solid #198754;border-radius:8px;background:#fff;color:#198754;font-weight:700;cursor:pointer;text-align:left}
+.ai-preorganize-help-toggle:hover{background:#f0fff4}
+.ai-preorganize-help-panel{max-height:0;overflow:hidden;opacity:0;margin:0;padding:0 14px;border:0 solid #8bd4ee;border-radius:10px;line-height:1.8;background:#f8fdff;transition:max-height .35s ease,opacity .25s ease,padding .35s ease,margin .35s ease,border-width .35s ease}
+.ai-preorganize-help-panel.is-open{max-height:1400px;opacity:1;margin:0 0 12px;padding:14px;border-width:1px}
+.ai-preorganize-help-panel p{margin:0 0 10px}
+</style>
+
+<style id="ai-launch-buttons-style">
+.ai-launch-box{margin-top:14px;padding:15px;border:3px solid #2f80ed;border-radius:14px;background:#eef6ff;box-shadow:0 3px 12px rgba(47,128,237,.14);}
+.ai-launch-title{font-size:18px;font-weight:900;color:#075fa8;margin-bottom:8px;}
+.ai-launch-title::after{content:"  ← ここからAIを選択してください";color:#d35400;font-size:14px;font-weight:900;}
+.ai-launch-note{padding:10px 12px;border-radius:9px;background:#fffdf3;border:1px solid #e6c94c;color:#5f5500;line-height:1.75;font-size:14px;}
+.ai-launch-main-instruction{background:#fff4e8;border:2px solid #f08a24;color:#8a4300;font-size:15px;box-shadow:0 2px 8px rgba(240,138,36,.12);}
+.ai-launch-button{background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9)!important;color:#fff!important;font-weight:900!important;padding:12px 18px!important;border:1px solid #138ee0!important;min-width:190px;}
+.ai-launch-button:hover{background:linear-gradient(135deg,#28bcef,#138ee0,#0875c9)!important;}
+.ai-launch-help{margin-top:8px;font-size:12px;color:#536b78;line-height:1.6;}
+</style>
+
+<style id="ai-launch-button-layout-v2">
+.ai-launch-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px;}
+.ai-launch-buttons button{width:100%;margin:0!important;padding:13px 10px!important;font-size:15px!important;font-weight:800!important;border-radius:10px!important;}
+.ai-chatgpt-button{background:#111!important;color:#fff!important;}
+.ai-gemini-button{background:#4285f4!important;color:#fff!important;}
+.ai-launch-help-v2{margin-top:10px;padding:10px 12px;border-radius:9px;background:#f4faff;border:1px solid #cfe3f7;color:#245c80;font-size:13px;line-height:1.7;}
+.ai-return-tip{margin-top:8px;padding:9px 11px;border-left:4px solid #0875c9;background:#eef7ff;border-radius:7px;color:#245c80;font-size:13px;line-height:1.65;}
+@media(max-width:600px){.ai-launch-buttons{grid-template-columns:1fr;}.ai-launch-buttons button{font-size:16px!important;}}
+</style>
+</head>
+<!-- BlueOcean revised: common プラン workflow / selectable final document prompts -->
+<body>
+<header>
+<h1 class="bo-white-title">
+  <span class="app-title-main">ケアマネが自ら育てる業務支援アプリ</span>
+  <span class="app-title-sub">ケアプラン（案）・介護予防プラン（案）・課題整理総括表（案）作成支援</span>
+</h1>
+<div class="header-inner">
+  <div></div>
+  <div class="header-description">
+    このアプリは<br>
+    各種プラン（案）を作成するために必要になるAIへの指示書を作るアプリです。<br>
+    慣れてしまうと、これは「便利！」やみつきになるかもしれませんよ。<br>
+    ケアマネ一人では思いつかなかったまた別の視点が分かり、気づきになります。
+  </div>
+</div>
+</header>
+
+<main>
+
+<div style="text-align:center;margin:14px 0 18px;">
+<button type="button" class="usage-open-button" onclick="showUsageGuide()">📖 使い方の説明はこちら</button>
+</div>
+
+<section class="card preventive-launch-card">
+<h2>ケアプラン（案）、介護予防プラン（案）、課題整理総括表（案）作成支援アプリ</h2>
+<div class="preventive-flow-explanation" style="margin:14px 0;padding:14px 16px;background:#f8fbfd;border:1px solid #cfe5ec;border-radius:12px;line-height:1.8;">このアプリは、まずプラン作成に必要な資料を読み込み、個人情報の可能性がある記載を確認します。<br>その後、AIに資料を事前整理させ、整理結果をこのアプリに貼り付けていただきます。<br>ケアマネジャーご自身で整理内容を確認・修正したうえで、確認済み情報を保存します。<br><strong>最後に、作成したい書類のプロンプトを選択し、確認済み情報と一つにまとめてAIへ渡します。</strong></div>
+<p class="description">PDF・Excel・Wordなど、パソコンに保存している資料をこの画面で読み込み、内容を確認してからプラン作成の工程へ進めます。</p>
+
+<details class="privacy-important-box">
+  <summary class="privacy-summary">⚠️このアプリで最も大切にしていること【個人情報を守るための仕組み】とケアマネジャーの皆さんへの大切なお願い　始める前に必ずご一読ください</summary>
+  <div class="privacy-important-body">
+  <div>このアプリの大きな特徴は、資料をAIに渡す前に、<strong>個人情報が残ったままにならないよう、個人を直接特定できる情報をしっかりとチェックし、排除・匿名化するための確認工程を設けていること</strong>です。
+  <div style="margin-top:10px;">本アプリから資料をAIへ直接送信する仕組みではありません。まずアプリ内で資料を確認し、個人を特定できる情報が含まれていない状態に加工・確認したうえで、ケアマネジャーご自身が使用するAIへ資料を渡していただきます。</div>
+  <div style="margin-top:10px;"><strong>つまり、このアプリは「個人情報を含んだ資料をそのままAIに渡す」のではなく、「個人を特定できない形に整理した基礎資料を、AIによる事前整理に利用できる状態にする」ことを大切にしています。</strong></div>
+  <div style="margin-top:10px;">ただし、自動チェックだけですべての個人情報を完全に検出できるわけではありません。最終的には、必ずケアマネジャーご自身で資料全体を確認し、個人を特定できる情報が残っていないことを確認してからAIへ渡してください。</div>
+
+  <hr style="border:0;border-top:2px solid #e6c77a;margin:18px 0;">
+  <div style="font-weight:800;font-size:18px;color:#9a6500;margin-bottom:10px;">ケアマネジャーの皆さんへの大切なお願い</div>
+  <div>必要な資料は、皆さんがお使いのアセスメントシートや認定資料等が考えられます。これらの資料を参考に、ケアプラン（案）、介護予防プラン（案）、課題整理総括表（案）の作成を支援します。<br><br>
+
+    <strong>【認定資料について】</strong><br>
+    認定資料をAIによる分析に使用することについては、少し抵抗を感じる方もいらっしゃるかもしれません。ですが、認定資料は、ケアマネジャーがアセスメントを行う際の参考資料として各市町村から取り寄せるものであり、利用者の心身の状態や生活状況を把握し、アセスメントを行ううえで重要な資料の一つです。<br><br>
+    実際のケアマネジャー業務においても、認定資料に記載されている情報を確認し、それを自分のアセスメントシートに反映させる場面があります。つまり、認定資料に書かれている事実を確認し、自身のアセスメントの中に取り入れていくことは、日頃のケアマネジメントでも行われていることです。<br><br>
+    そのため、認定資料に記載された内容を「そのまま本人のプランにする」のではなく、<strong>認定資料に記載された事実を一つの参考情報として整理し、そこにケアマネジャー自身の視点や確認した情報を加えたり、必要に応じて修正したりしながら、利用者のアセスメントにつなげていく</strong>という考え方で、このアプリをご利用ください。
+<p><strong>【資料を活用するための前提】</strong><br>
+アセスメント資料や認定資料などをこのアプリで活用する際は、事前に個人情報を削除・加工してください。パソコン上の設定や機能で氏名等を削除できる場合は、その方法で構いません。紙面でもらっている資料については、必ず修正テープ等を使用して、利用者・家族に関する氏名、住所、連絡先、介護保険証番号、医師の氏名、住所、連絡先等、個人に関係する情報をすべて消したうえで、スキャンやPDF化などの加工を行ってください。</strong></p>
+<p>個人情報が残ったままの資料については、<strong>個人情報保護のため、このアプリが提供された情報を拒絶し、次に進めない設定</strong>にしています。個人情報保護を徹底することは、利用者・家族を守るだけでなく、<strong>ケアマネジャーの皆様自身を守ることにもつながります。</strong></p><br><br>
+    なお、ここでAIが作成するのは、あくまで<strong>「ケアプラン（案）」「介護予防プラン（案）」「課題整理総括表（案）」</strong>です。<br><br>
+    AIによる整理結果は、あくまで下準備です。<br>AIによる整理結果を参考にしながら、最後は<strong>ケアマネジャー自身が、利用者本人の生活、本人・家族の意向、環境、人間関係、社会資源などを踏まえて内容を確認・修正し、その方に合ったプランに仕上げていく</strong>ことが大切です。<br><br>
+
+    <br><br>
+    AIによる分析後は、<strong>不足している情報や、AIが誤って分析した内容を必ずケアマネジャーご自身で確認・追加・修正してから、最終的な書類作成へ進んでください。</strong><br><br>
+    これは、ケアマネジャーとして一番大事な部分だと思います。このアプリは、ただ仕事を楽にするためだけに作ったものではありません。ケアマネジャーとして大切な視点や判断を忘れないためにも、<strong>AIに仕事をさせるのではなく、AIはあくまで補助機能として活用し、ケアマネジャーがしっかりとグリップを持ち、AIをコントロールする意識</strong>を大切にしてください。
+    <br><br>ＡＩが作るものですから、例えば、社会資源や利用者、家族の考え方等、しっかりと情報として入っていなければ、普段我々ケアマネジャーがしているような、その方の人間関係や環境を理解して想像して組み立てるというような視点でのプラン作成はできません。ですから、作成したものを見ても、なんかちょっと違うな？？・・・と思うものが多いんです。でも、それがとても大事なんです。それでいいんです。だから最後はケアマネジャーで仕上げる。ケアマネジャーは、絶対に必要な役割なんです。ＡＩに全てを依存してはいけません。
+  </div>
+  </div>
+</details>
+
+<button type="button" class="preventive-launch-button" onclick="showPreventivePlanView()">📄 プラン作成支援を開始</button>
+</section>
+
+<div id="mainView">
+<section id="preventivePlanArea" class="card preventive-area" style="display:none;">
+<h2>プラン作成支援：資料の確認</h2>
+<div class="privacy-warning">このアプリでは、PDF・Excel・Wordなどの資料をAIに渡す前に、本人を直接特定できる可能性が高い情報が残っていないかを自動チェックします。疾患名や発症年など、プラン作成に必要な情報を一律に除外するものではありません。</div>
+<div class="setting-box">
+<div class="setting-label">① まずはじめに、こちらに「分析する資料」を添付してください</div>
+<p class="description">パソコンに保存しているPDF、Excel、Word、TXT、CSVなどを選択してください。複数の資料をまとめて確認できます。</p>
+<input id="preventiveFileInput" type="file" multiple accept=".pdf,.xlsx,.xls,.docx,.doc,.txt,.csv,.jpg,.jpeg,.png" style="display:none;">
+<div id="preventiveDropZone" class="file-drop-zone" tabindex="0">
+<strong>📂 資料を選択</strong>
+<span>ここをクリックして、パソコン内の資料を選択してください。</span>
+</div>
+<div id="preventiveFileList" class="file-list"></div>
+<div id="preventiveFileStatus" class="status">まだ資料が選択されていません。</div>
+<div style="margin-top:10px;">
+  <button id="preventiveLoadButton" type="button" class="btn" onclick="loadPreventiveFiles()" disabled>📥 読み込み開始</button>
+</div>
+<div id="preventiveOcrNote" style="font-size:13px;color:#555;margin-top:8px;">※文字情報のないスキャンPDFは、ブラウザ内でOCR処理して個人情報チェックを行います。資料そのものを外部サーバーへ送信する処理ではありません。</div>
+<div id="preventiveLoadStatus" class="status">資料を選択した後、「📥 読み込み開始」を押してください。</div>
+</div>
+<div class="setting-box privacy-check-box">
+<div class="setting-label">② 個人情報をチェック　<span style="font-size:12px;font-weight:700;color:#b71c1c;">★ここが重要</span></div>
+<button type="button" class="privacy-help-toggle" id="privacyHelpToggle" aria-expanded="false">ℹ️ この工程についての説明はこちら</button>
+<div class="privacy-help-panel" id="privacyHelpPanel">
+<strong>この工程では「AIに資料を渡してよい状態か」を確認します。</strong><br>
+①「🔎 読み込んだ資料に個人情報が入っていないかチェックする」を押す → ② <strong>🔴 強い警告がなければ次へ進めます</strong> → ③ 強い警告があれば、該当箇所を削除・匿名化してからもう一度確認します。<br>
+🟠「確認推奨」は内容を確認したうえで、そのまま次へ進めます。<br><br>
+選択した資料の文字情報をブラウザ内で確認し、<strong>本人を直接特定できる可能性が高い情報</strong>を中心に自動検出します。<br>
+氏名・生年月日・住所・電話番号・介護保険被保険者番号・マイナンバー・主治医/医師の氏名・家族/キーパーソンの氏名等は<strong>強い警告</strong>として次工程を停止し、医療機関名・施設名・事業所名等は<strong>確認推奨</strong>として区別します。<br>
+疾患名、発症年、年齢、要介護度、ADL・IADL、服薬、介助内容など、プラン作成に必要な情報そのものは、原則として個人情報検出の対象から除外します。<br>
+資料そのものを変更・保存・サーバー送信する処理は行いません。
+</div>
+<div id="preventivePrivacyResult" class="privacy-result">資料を選択すると、ここにチェック結果が表示されます。</div>
+<div class="preventive-actions">
+<button type="button" id="preventivePrivacyCheckButton" class="preventive-launch-button privacy-check-button" onclick="checkPreventivePrivacy()">🔎 読み込んだ資料に個人情報が入っていないかチェックする</button>
+<div id="preventiveNextNote" class="privacy-next-note">✓ <strong>次の工程へ進めます。</strong><br>下の「③ AIに資料を事前整理してもらう」が表示されていれば、個人情報チェックは通過しています。</div>
+</div>
+</div>
+<div class="setting-box ai-review-box" id="preventivePromptBox" style="display:none;">
+<div class="ai-review-step">③ AIに資料を事前整理してもらう</div>
+<button type="button" class="ai-preorganize-help-toggle" id="aiPreorganizeHelpToggle" aria-expanded="false">ℹ️ AIに資料を事前整理してもらうの説明はこちらから</button>
+<div class="ai-preorganize-help-panel" id="aiPreorganizeHelpPanel">
+<p>個人情報の確認が終わったら、下のボタンで「事前整理用プロンプト」をコピーしてください。</p>
+<p>その後、<strong>コピーした指示書と、個人情報チェックを通過した資料の両方を、同じAIの画面に入れます。</strong><br>AIには、ケアプランを作成させるのではなく、まず資料の情報だけを整理させます。</p>
+<div class="ai-paste-title">📌 コピーした後にすること</div>
+<div class="ai-paste-flow">
+  <div class="ai-paste-item"><span class="ai-paste-num">①</span><strong>下のボタンを押す</strong><br>AIへの「指示書（プロンプト）」をコピーします。</div>
+  <div class="ai-paste-arrow">↓</div>
+  <div class="ai-paste-item"><span class="ai-paste-num">②</span><strong>お使いのAIを開く</strong><br>ChatGPT・Gemini・Claudeなど、普段お使いのAIを開きます。</div>
+  <div class="ai-paste-arrow">↓</div>
+  <div class="ai-paste-item"><span class="ai-paste-num">③</span><strong>2つをAIに入れる</strong><br><span class="ai-paste-emphasis">📋 コピーした指示書（プロンプト）<br>＋<br>📄 個人情報チェックを通過した資料</span><br>この<strong>両方</strong>を同じAIの画面に貼り付け・添付して送信してください。</div>
+</div>
+<div class="ai-paste-note">⚠️ <strong>重要：</strong>資料だけをAIに送るのではありません。<strong>「資料」＋「こちらでコピーした指示書（プロンプト）」</strong>の2つをAIに渡してください。</div>
+</div>
+<button type="button" id="preventivePrePromptCopyButton" class="preventive-launch-button" onclick="copyPreventivePrePrompt()">📋このボタンを押すと、あなたのAIに貼り付ける用のプロンプトをコピーできます</button>
+<button type="button" id="aiFirstStageToggle" class="ai-first-stage-toggle" onclick="toggleFirstStageGuide()">【第一段階】あなたのAIに「指示書」と「資料」を渡します。※ここが一番重要　説明を見るにはここをクリック！</button>
+<div id="aiFirstStageGuide" class="ai-first-stage-guide">
+  <div class="ai-flow-stage">
+    <div class="ai-flow-action"><strong>①あなたの AIに今コピーできている指示書（プロンプト）をそのまま貼り付けます。</strong><br>今、コピーできています。このまま、あなたがお使いのAI（ChatGPT・Gemini・Claudeなど）を開いて、貼り付けてください。</div>
+    <div class="ai-flow-arrow">↓</div>
+    <div class="ai-flow-action"><strong>② 先ほど個人情報チェックで通過した下に表示してあるファイルを、もう一度今度はあなたのAIに貼り付けてください。</strong><br><br><strong>📋 指示書 ＋ 📄 資料</strong> の両方をAIに渡します。</div>
+  </div>
+  <div class="ai-flow-arrow">↓</div>
+  <div class="ai-flow-return"><div class="ai-flow-return-title">AIに①の指示書と②の資料を添付して検索すると、AIが自動で情報を分析し整理してくれますので、そのできあがった情報をコピーしたら、もう一度このアプリの画面に戻ります。</div>
+  AIに①の指示書と②の資料を渡したら、AIから整理結果が返ってくるまで、そのままAIの画面で作業を進めてください。<br>整理結果が返ってきたら、もう一度このアプリの画面に戻ります。</div>
+  <div class="ai-flow-arrow">↓</div>
+</div>
+<div class="ai-launch-box" id="preAiLaunchBox" style="display:none;">
+  <div class="ai-flow-stage-title">【第一段階】あなたのAIに「指示書」と「資料」を渡します。<span style="color:#d32f2f;">※ここが一番重要</span></div>
+  <div class="ai-launch-title">🤖 AIの検索画面を開く</div>
+  <div class="ai-launch-note ai-launch-main-instruction"><strong>①コピーしたプロンプト</strong> と <strong>②個人情報をチェックした資料</strong><br>この２つを貼り付けて検索してください。</div>
+  <div class="ai-launch-note">あくまで「AIのサイトを開く」だけです。<br><strong>実際の文章をAIに渡すのは、みなさんが自分で貼り付ける操作になります。</strong></div>
+  <div class="ai-launch-buttons">
+    <button type="button" class="ai-chatgpt-button" onclick="openAI('chatgpt')">🤖 ChatGPTを開く</button>
+    <button type="button" class="ai-gemini-button" onclick="openAI('gemini')">✨ Geminiを開く</button>
+    <button type="button" class="ai-claude-button" onclick="openAI('claude')">🟣 Claudeを開く</button>
+  </div>
+  <div class="ai-launch-help-v2">コピーした「指示書」を開いたAIへ貼り付け、個人情報チェックを通過した資料も同じAIへ添付してください。</div>
+  <div class="ai-return-tip">↩ AIでの整理が終わったら、ブラウザ上部にある<strong>「BlueOcean」のタブをクリック</strong>すると、このアプリへすぐ戻れます。</div>
+</div>
+
+<div id="preventivePrePromptStatus" class="status ai-review-status">まだコピーしていません。</div>
+
+
+
+<div style="height:12px;"></div>
+
+<div class="ai-review-step"><span class="step4-ai-paste-guide">④ AIが整理した情報をこのアプリに貼り付けてください。</span></div>
+
+
+
+<textarea id="preventiveOrganizedInput" class="ai-review-textarea" placeholder="ここにAIが整理した情報を貼り付けてください。&#10;&#10;例：&#10;【健康状態】&#10;・高血圧&#10;・膝痛あり&#10;&#10;【ADL】&#10;・歩行器で5m歩行可能&#10;・食事自立"></textarea>
+<div class="ai-review-return-guide">
+  <div class="ai-review-return-guide-title">☆ AIが整理した内容を必ずご自身で確認してください。</div>
+  <div>内容を確認し、不足している情報を補足したり、AIによる誤った解釈を訂正したりすることで、単にAIが資料から作成したものではなく、<strong>皆さん自身のアセスメントに基づいた、より実践的な資料に仕上げることができます。</strong></div>
+  <div class="ai-review-return-guide-warning">⚠️ <strong>ここで作成される資料は、あくまで「案」です。正式なプランではありません。</strong><br>作成後は、必ずご自身で内容を確認し、必要な修正・追加を行ったうえで、適切なケアマネジメントに活用してください。</div>
+  <div>第一段階でAIに「指示書＋資料」を渡したあと、AIから返された整理結果をここへ戻って貼り付けてください。コードブロックを含めてそのまま下の欄に貼り付けます。貼り付けた後、ケアマネジャーご自身で内容を確認・修正できます。</div>
+</div>
+<button type="button" id="preventiveOrganizedConfirmButton" class="ai-review-confirm" onclick="confirmPreventiveOrganizedInfo()">→✓ 整理情報を確認後、プラン作成用のデータとして保存しますので、こちらをクリックしてください。</button>
+<div id="preventiveOrganizedStatus" class="status ai-review-status">AIの整理結果を貼り付けてから確認してください。</div>
+</div>
+
+<div class="setting-box ai-review-box" id="preventiveFinalBox" style="display:none;">
+<div class="ai-review-step">⑤ 確認済み情報から作成する書類を選択</div>
+<div class="ai-review-complete">✓ 整理情報の確認・修正が完了しました。<br>ここから、同じ「ケアマネジャー確認済み情報」を使って、作成したい書類のプロンプトを選択できます。</div>
+<div class="document-choice-box">
+  <div class="document-choice-title">📋 作成する書類を選択してください</div>
+  <div class="document-choice-help">同じ確認済み情報から、続けて別の書類を作成することもできます。</div>
+  <div class="document-choice-grid">
+    <button type="button" class="document-choice-button" data-document-type="care" onclick="selectFinalDocument('care')">📄 ケアプラン（案）</button>
+    <button type="button" class="document-choice-button" data-document-type="preventive" onclick="selectFinalDocument('preventive')">📄 介護予防プラン（案）</button>
+    <button type="button" class="document-choice-button" data-document-type="issue" onclick="selectFinalDocument('issue')">📄 課題整理総括表（案）</button>
+  </div>
+  <div id="selectedDocumentStatus" class="selected-document-status">まだ書類を選択していません。</div>
+</div>
+<div style="height:10px;"></div>
+<button type="button" id="preventiveFinalCopyButton" class="ai-review-copy" onclick="copySelectedFinalData()" disabled>📋 選択した書類のAI用データをコピーする</button>
+<div id="preventiveFinalStatus" class="status ai-review-status">書類を選択すると、確認済み情報＋選択した書類の作成用プロンプトをコピーできます。</div>
+
+<div class="ai-launch-box" id="finalAiLaunchBox">
+  <div class="ai-launch-title">🤖 使用するAIを開く</div>
+  <div class="ai-launch-note">あくまで「AIのサイトを開く」だけです。<br><strong>実際の文章をAIに渡すのは、みなさんが自分で貼り付ける操作になります。</strong></div>
+  <div class="ai-launch-buttons">
+    <button type="button" class="ai-chatgpt-button" onclick="openAI('chatgpt')">🤖 ChatGPTを開く</button>
+    <button type="button" class="ai-gemini-button" onclick="openAI('gemini')">✨ Geminiを開く</button>
+    <button type="button" class="ai-claude-button" onclick="openAI('claude')">🟣 Claudeを開く</button>
+  </div>
+  <div class="ai-launch-help-v2">コピーした内容を、開いたAIの入力欄へ<strong>自分で貼り付けて</strong>ください。</div>
+  <div class="ai-return-tip">↩ AIでの作業が終わったら、ブラウザ上部にある<strong>「BlueOcean」のタブをクリック</strong>すると、このアプリへすぐ戻れます。</div>
+</div>
+
+<div class="ai-review-help" style="margin-top:10px;">コピー後、ChatGPT・Geminiなどのお使いのAIを開き、コピーした内容を一括で貼り付けてください。別の書類を作成する場合は、この画面で別のボタンを選択してください。</div>
+</div>
+
+<div class="setting-box">
+<div class="setting-label">⚠️ AIを利用するときの注意点</div>
+<div class="ai-caution"><strong>AIは100％正確に分析するものではありません。</strong><br>AIが作成した作成されたプラン（案）には、誤りや不適切な表現、資料にない内容が含まれる可能性があります。また、基本的に添付されたアセスメント情報等から読み取ることを基本としており、もとより記載のない情報を想像で作ることはしません。そのため、アセスメント内容等の情報が多ければ多いほど、より具体的でしっかりとした介護予防プランを作成しやすくなります。一方で、情報が少なければ、その分、十分な内容や確実性のあるプランを作成することは難しくなります。この特徴を十分に理解したうえで、添付する情報の内容を確認し、介護予防プランを作成してください。<br><br><strong>必ずケアマネジャー自身が作成された計画書の内容を確認し、必要な修正を行ってください。</strong><br>最終的な計画書の内容については、ケアマネジャー自身が責任を持って確認・判断してください。</div>
+</div>
+<div class="preventive-actions">
+<button type="button" class="secondary-action" onclick="closePreventivePlanView()">← メイン画面へ戻る</button>
+</div>
+</section>
+
+
+
+</div>
+
+<section class="card edit-area view-hidden" id="promptLibraryArea">
+<h2>⚙ 設定　プラン作成支援について</h2>
+<button type="button" class="view-back-button" onclick="showMainView()">← メイン画面に戻る</button>
+
+<div class="edit-note">
+<strong>このアプリの現在の基本的な流れ</strong><br>
+このアプリは、ケアプラン（案）、介護予防プラン（案）、課題整理総括表（案）の作成を支援するためのものです。<br>
+資料をこのアプリで読み込み、個人情報の可能性がある記載を確認した後、外部AIを使って資料の事前整理を行います。AIの整理結果をケアマネジャー自身が確認・修正し、その確認済み情報を使って、作成したい書類のプロンプトと一つにまとめてAIへ渡します。
+</div>
+
+<div class="setting-box">
+<div class="setting-label">① プラン作成に必要な資料を読み込む</div>
+<p class="description">アセスメントシート、認定情報、主治医意見書など、対象利用者の状態を把握するために必要な資料を選択します。PDF・Excel・Word・TXT・CSV・画像など、複数の資料をまとめて読み込めます。「読み込み開始」を押した時に資料の中身を解析します。</p>
+</div>
+
+<div class="setting-box">
+<div class="setting-label">② AIへ渡す前に個人情報を確認する</div>
+<p class="description">読み込んだ資料をブラウザ内で確認し、氏名、生年月日、住所、電話番号、被保険者番号、マイナンバー、主治医・家族等の氏名など、本人を直接特定できる可能性が高い情報を中心に自動チェックします。医療機関名・施設名・事業所名などは「確認推奨」として区別します。</p>
+<div class="privacy-warning" style="margin-top:10px;"><strong>⚠️ 重要</strong><br>自動チェックは100％確実ではありません。検出されなかった場合でも、AIへ資料を添付する前に、必ずケアマネジャーご自身で資料全体を確認してください。個人情報が残っている資料はAIへ渡さないでください。</div>
+</div>
+
+<div class="setting-box">
+<div class="setting-label">③ AIに資料を「事前整理」してもらう</div>
+<p class="description">個人情報の確認が済んだら、「①あなたの AIに今コピーできている指示書（プロンプト）をそのまま貼り付けます。をコピーする」で事前整理用プロンプトをコピーします。ChatGPT・Gemini・Claudeなど、お使いのAIを開き、<strong>コピーした指示書と、個人情報チェックを通過した資料の両方</strong>を同じAIへ渡してください。この段階では、いきなり完成したプランを作らせるのではなく、まず資料に記載されている情報を整理します。</p>
+</div>
+
+<div class="setting-box">
+<div class="setting-label">④ AIの整理結果をケアマネジャー自身が確認・修正する</div>
+<p class="description">AIから返された整理結果をこのアプリへ貼り付けます。ここが重要な工程です。整理結果をそのまま採用せず、ケアマネジャー自身が内容を確認し、不足している情報を追加し、AIの誤った解釈や誤記があれば直接修正してください。確認・修正が終わった情報を、プラン作成に使用する「ケアマネジャー確認済み情報」として保存します。</p>
+</div>
+
+<div class="setting-box">
+<div class="setting-label">⑤ 作成する書類を選択し、確認済み情報とプロンプトを一つにまとめる</div>
+<p class="description">「ケアプラン（案）」「介護予防プラン（案）」「課題整理総括表（案）」から作成する書類を選択します。選択した書類の作成用プロンプトと、④で確認・修正した情報を一つにまとめてコピーし、お使いのAIへ一括で貼り付けます。同じ確認済み情報から、別の書類を続けて作成することもできます。</p>
+</div>
+
+<div class="setting-box">
+<div class="setting-label">⚠️ このアプリで一番大切にしていること</div>
+<div class="care-manager-message-body" style="background:#fffaf0;border:2px solid #f0a000;border-radius:12px;padding:16px;line-height:1.85;">
+<strong>AIに仕事を任せきりにしないでください。</strong><br>
+資料を貼り付けてAIに整理させるだけでは、十分なアセスメントになるとは限りません。AIの整理結果はあくまで下準備です。<br><br>
+<strong>ケアマネジャーご自身が必ず内容を確認し、不足情報の追加、誤った分析・解釈の修正を行ってください。</strong><br><br>
+このアプリは、ただ仕事を楽にするためだけのものではありません。ケアマネジャーとして大切な視点や判断を忘れないためにも、<strong>AIは補助機能、ケアマネジャーが主体</strong>という関係を大切にしてください。AIに仕事をさせるのではなく、ケアマネジャーがしっかりとグリップを持ち、AIをコントロールする意識でご利用ください。
+</div>
+</div>
+
+<div class="setting-box">
+<div class="setting-label">⚠️ AI利用時の最終確認</div>
+<div class="ai-caution"><strong>AIは100％正確ではありません。</strong><br>AIが作成した書類（案）には、誤り、不適切な表現、資料にない内容が含まれる可能性があります。最終的な内容は、資料との整合性、本人・家族の意向、課題、目標、支援内容等をケアマネジャー自身が確認・判断し、必要な修正を行ってください。ここで作成されるものはあくまで「案」であり、正式なプランではありません。</div>
+</div>
+</section>
+
+<div style="text-align:center;margin:28px 0 10px;">
+<button class="settings-orange-target settings-open-button" type="button" onclick="showSettingsView()">⚙ 設定　プラン作成支援について</button>
+<button type="button" class="home-button" onclick="scrollToTop()">▲トップに戻る</button>
+<button type="button" class="home-button" onclick="goHome()">⌂ トップ画面へ戻る</button>
+</div>
+
+<div class="privacy-warning-box" style="margin:18px 0;padding:18px 20px;border:2px solid #d32f2f;background:#fff5f5;border-radius:12px;line-height:1.8;text-align:left;">
+<div style="font-size:1.12em;font-weight:800;color:#b71c1c;margin-bottom:10px;">⚠️ 重要：個人情報について</div>
+<div style="margin-bottom:12px;">氏名、住所、電話番号、被保険者番号、医療機関名、主治医名その他個人を特定できる情報は、できるだけ入力しないでください。可能な場合は「利用者A」など匿名化した表記を使用してください。読み込んだ資料は、この機能ではサーバーへ送信せず、ブラウザ内で処理する設計です。</div>
+<div style="font-weight:800;color:#b71c1c;">個人情報の記載されている書類については、AIに添付して分析してはいけません。</div>
+<div style="font-weight:800;color:#b71c1c;">個人情報の流出を防ぐため、必ずご自身で書類の内容を確認する習慣をつけてください。</div>
+<div style="margin-top:8px;">※このアプリの自動チェックは100％確実ではありません。最終確認は必ずご自身で行ってください。</div>
+</div>
+<section class="card usage-card">
+<h2>プラン作成支援アプリの使い方</h2>
+<div class="usage-flow">
+  <div class="usage-step"><strong>① プラン作成に必要な資料を選択する</strong><br><span>アセスメントシート、認定情報など、対象利用者の状態を把握するために必要な資料を複数選択します。選択しただけでは解析されず、「📥 読み込み開始」を押してから中身を読み込みます。</span></div>
+  <div class="usage-step"><strong>② 個人情報をチェックする</strong><br><span>読み込んだ資料をブラウザ内で自動チェックします。強い警告が出た場合は、該当箇所を削除・匿名化して再確認してください。自動チェックは100％ではないため、最後は必ずケアマネジャー自身で資料全体を確認します。</span></div>
+  <div class="usage-step"><strong>③ AIに資料を事前整理してもらう</strong><br><span>下の「AIへの指示書（プロンプト）をコピーする」ボタンを押し、ChatGPT・Gemini・Claudeなどのお使いのAIへ指示書を貼り付けます。さらに、個人情報チェックを通過した資料も同じAIへ添付して送信します。この段階では完成したプランではなく、資料の情報整理を行わせます。</span></div>
+  <div class="usage-step"><strong>④ 整理結果をアプリへ貼り付け、ケアマネジャー自身で確認・修正する</strong><br><span>AIが返した整理結果を貼り付けます。<strong>ここが最も大切な工程です。</strong>不足情報を追加し、AIの誤った分析・解釈を修正したうえで、「整理情報を確認後、プラン作成用のデータとして保存しますので、こちらをクリックしてください。」を押します。</span></div>
+  <div class="usage-step"><strong>⑤ 作成する書類を選択し、確認済み情報＋プロンプトをコピーする</strong><br><span>ケアプラン（案）、介護予防プラン（案）、課題整理総括表（案）から作成する書類を選択します。④で確認・修正した情報と選択した書類の作成用プロンプトを一つにまとめてコピーし、お使いのAIへ一括で貼り付けます。</span></div>
+  <div class="usage-note"><strong>⚠️ AIに仕事を任せきりにしないでください</strong><br>AIはあくまで補助機能です。AIの整理・作成結果をそのまま採用せず、ケアマネジャーが主導権を持って確認・修正・判断してください。最終的な書類は必ずご自身で確認し、必要な修正を行ってください。</div>
+</div>
+</section>
+
+<div class="bo-footer-brand">
+<img src="https://blueocean2014.github.io/BlueOcean-Portal/BlueOceanimage.png" alt="BlueOcean ロゴ">
+<div class="bo-footer-brand-text">
+<div class="bo-footer-brand-title">BLUE OCEAN PROMPT SYSTEM</div>
+<div class="bo-footer-brand-subtitle">Next Stage Care Innovation</div>
+</div>
+</div>
+
+
+<!-- HTMLを画面を見ながら編集する入口 -->
+<div style="text-align:center;margin:18px 0 8px;">
+  <button id="boVisualEditorOpen" type="button" onclick="boOpenVisualHtmlEditor()">
+    🖥️ HTMLを画面を見ながら編集する
+  </button>
+</div>
+
+</main>
+
+<script>
+(function(){
+
+window.scrollToTop = function(){
+  window.scrollTo({top:0, behavior:"smooth"});
+};
+
+window.showUsageGuide = function(){
+  const usage = document.querySelector(".usage-card");
+  if(usage) usage.scrollIntoView({behavior:"smooth", block:"start"});
+};
+
+window.showSettingsView = function(){
+  const mainView = document.getElementById("mainView");
+  const settingsView = document.getElementById("promptLibraryArea");
+  document.body.classList.add("settings-view-active");
+  if(mainView) mainView.classList.add("view-hidden");
+  if(settingsView) settingsView.classList.remove("view-hidden");
+  window.scrollTo({top:0, behavior:"smooth"});
+};
+
+window.showMainView = function(){
+  const mainView = document.getElementById("mainView");
+  const settingsView = document.getElementById("promptLibraryArea");
+  document.body.classList.remove("settings-view-active");
+  if(settingsView) settingsView.classList.add("view-hidden");
+  if(mainView) mainView.classList.remove("view-hidden");
+  window.scrollTo({top:0, behavior:"smooth"});
+};
+
+window.goHome = function(){
+  location.href = 'https://blueocean2014.github.io/BlueOcean-Portal/';
+};
+
+/* =========================================================
+   介護予防計画書：資料読み込み・個人情報チェック
+   方針：
+   ・ファイル選択では登録のみ。自動解析しない。
+   ・「読み込み開始」を押した時だけ実際のファイル解析を行う。
+   ・文字情報を取得できない場合は成功扱いにしない。
+   ・取得した文字情報は既存の個人情報チェックへ渡す。
+   ・元ファイルそのものは加工・アップロードしない。
+   ========================================================= */
+(function(){
+  'use strict';
+
+  const preventiveFiles=[];
+  const $=id=>document.getElementById(id);
+  const FILE_TYPES={pdf:'PDF',xlsx:'Excel',xls:'Excel',docx:'Word',doc:'Word（DOC）',txt:'TXT',csv:'CSV',jpg:'画像',jpeg:'画像',png:'画像'};
+
+  function getExtension(file){
+    const match=String(file?.name||'').toLowerCase().match(/\.([a-z0-9]+)$/i);
+    return match?match[1]:'';
+  }
+  function kindOf(file){return FILE_TYPES[getExtension(file)]||'その他';}
+  function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+
+  function setStatus(message,type=''){
+    const el=$('preventiveLoadStatus');
+    if(!el)return;
+    const isNextCheckMessage=String(message).includes('<span class="bo-next-step">次に「🔎 読み込んだ資料に個人情報が入っていないかチェックする」に進んでください。</span>');
+    el.className='status'+(type?' '+type:'')+(isNextCheckMessage?' next-check-message':'');
+    el.textContent=message;
+  }
+  function setFileStatus(message,type=''){
+    const el=$('preventiveFileStatus');
+    if(!el)return;
+    el.className='status'+(type?' '+type:'');
+    el.textContent=message;
+  }
+  function updateLoadButton(){
+    const btn=$('preventiveLoadButton');
+    if(!btn)return;
+    const busy=btn.dataset.busy==='1';
+    btn.disabled=busy||preventiveFiles.length===0;
+    btn.textContent=busy?'⏳ 読み込み中…':'📥 読み込み開始';
+  }
+  function renderFileList(){
+    const list=$('preventiveFileList');
+    if(!list)return;
+    list.innerHTML=preventiveFiles.map((item,index)=>{
+      let state='未読み込み',detail='';
+      if(item.loading){state='⏳ 読み込み中';detail=item.progress||'資料を解析しています…';}
+      else if(item.loaded){state='✓ 読み込み成功';detail='取得文字数：'+item.charCount.toLocaleString()+'文字'+(item.detail?'\n'+item.detail:'');}
+      else if(item.error){state='✕ 読み込み失敗';detail='エラー：'+item.error;}
+      return '<div class="file-item"><div style="min-width:0;flex:1">'
+        +'<div class="file-item-name">'+escapeHtml(item.file.name)+'</div>'
+        +'<div class="file-item-meta preventive-file-state">'+escapeHtml(item.kind)+'　｜　'+escapeHtml(state)+'</div>'
+        +(detail?'<div class="preventive-file-detail">'+escapeHtml(detail)+'</div>':'')
+        +'</div><button type="button" class="file-remove" onclick="removePreventiveFile('+index+')">削除</button></div>';
+    }).join('');
+  }
+  function updateProgress(index,total,file,message){
+    const item=preventiveFiles[index];
+    if(item){item.loading=true;item.progress=message;}
+    setStatus('⏳ '+(index+1)+'/'+total+'件目を読み込み中…\n'+file.name+'\n'+message);
+    renderFileList();
+  }
+  function requireLibrary(globalName,message){
+    if(!window[globalName])throw new Error(message);
+  }
+
+  async function extractPdf(file,progress){
+    requireLibrary('pdfjsLib','PDF読み込み機能が利用できません。ページを再読み込みしてください。');
+    const pdf=await window.pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
+    let output='',textPages=0;
+    for(let pageNo=1;pageNo<=pdf.numPages;pageNo++){
+      progress('PDF文字情報を解析中… '+pageNo+'/'+pdf.numPages+'ページ');
+      const page=await pdf.getPage(pageNo);
+      const content=await page.getTextContent();
+      const text=(content.items||[]).map(item=>item.str||'').join(' ').trim();
+      if(text){output+='\n【PDF '+pageNo+'ページ】\n'+text;textPages++;}
+      await new Promise(r=>setTimeout(r,0));
+    }
+    if(output.trim())return {text:output.trim(),detail:'PDF '+pdf.numPages+'ページ中 '+textPages+'ページから文字情報を取得'};
+
+    requireLibrary('Tesseract','スキャンPDFのOCR機能が利用できません。インターネット接続を確認してページを再読み込みしてください。');
+    let ocr='';
+    for(let pageNo=1;pageNo<=pdf.numPages;pageNo++){
+      progress('スキャンPDFをOCR処理中… '+pageNo+'/'+pdf.numPages+'ページ');
+      const page=await pdf.getPage(pageNo);
+      const viewport=page.getViewport({scale:1.8});
+      const canvas=document.createElement('canvas');
+      const ctx=canvas.getContext('2d',{willReadFrequently:true});
+      canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);
+      await page.render({canvasContext:ctx,viewport}).promise;
+      const result=await window.Tesseract.recognize(canvas,'jpn+eng',{
+        logger:m=>{if(m?.status==='recognizing text')progress('スキャンPDFをOCR処理中… '+pageNo+'/'+pdf.numPages+'ページ（'+Math.round((m.progress||0)*100)+'%）');}
+      });
+      const text=String(result?.data?.text||'').trim();
+      if(text)ocr+='\n【PDF '+pageNo+'ページ OCR】\n'+text;
+      canvas.width=1;canvas.height=1;
+    }
+    if(!ocr.trim())throw new Error('PDFは開けましたが、文字情報を取得できませんでした。');
+    return {text:ocr.trim(),detail:'スキャンPDFをOCR処理して '+pdf.numPages+'ページを確認'};
+  }
+
+  async function extractExcel(file,progress){
+    requireLibrary('XLSX','Excel読み込み機能が利用できません。ページを再読み込みしてください。');
+    progress('Excelファイルを開いています…');
+    const workbook=window.XLSX.read(await file.arrayBuffer(),{type:'array',cellDates:true,cellNF:false,cellText:true});
+    if(!workbook.SheetNames?.length)throw new Error('Excelに読み込み可能なシートがありません。');
+    let output='',totalCells=0,totalRows=0;
+    for(let s=0;s<workbook.SheetNames.length;s++){
+      const sheetName=workbook.SheetNames[s];
+      progress('Excelを解析中… シート '+(s+1)+'/'+workbook.SheetNames.length+'「'+sheetName+'」');
+      const sheet=workbook.Sheets[sheetName];
+      if(!sheet)continue;
+      const rows=window.XLSX.utils.sheet_to_json(sheet,{header:1,raw:false,defval:'',blankrows:false});
+      let sheetOutput='';
+      rows.forEach((row,rowIndex)=>{
+        const values=(Array.isArray(row)?row:[]).map(cell=>{
+          const value=String(cell??'').trim();if(value)totalCells++;return value;
+        });
+        const line=values.join('\t');
+        if(line.trim()){totalRows++;sheetOutput+='【'+(rowIndex+1)+'行目】 '+line+'\n';}
+      });
+      if(sheetOutput.trim())output+='\n【Excelシート：'+sheetName+'】\n'+sheetOutput;
+      await new Promise(r=>setTimeout(r,0));
+    }
+    if(!output.trim()||totalCells===0)throw new Error('Excelは開けましたが、文字情報の入ったセルを取得できませんでした。');
+    return {text:output.trim(),detail:workbook.SheetNames.length+'シート・'+totalCells.toLocaleString()+'セル・'+totalRows.toLocaleString()+'行を取得'};
+  }
+
+  async function extractWord(file,progress){
+    requireLibrary('mammoth','Word読み込み機能が利用できません。ページを再読み込みしてください。');
+    progress('Word（DOCX）を解析しています…');
+    const buffer=await file.arrayBuffer();
+    const result=await window.mammoth.extractRawText({arrayBuffer:buffer});
+    let text=String(result?.value||'').replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim();
+    if(!text){
+      try{
+        const htmlResult=await window.mammoth.convertToHtml({arrayBuffer:buffer});
+        const temp=document.createElement('div');temp.innerHTML=htmlResult?.value||'';
+        text=String(temp.innerText||temp.textContent||'').replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim();
+      }catch(e){}
+    }
+    if(!text)throw new Error('Word（DOCX）は開けましたが、文字情報を取得できませんでした。');
+    return {text,detail:'Word本文を取得'};
+  }
+
+  async function extractText(file,progress){
+    switch(getExtension(file)){
+      case 'pdf':return extractPdf(file,progress);
+      case 'xlsx':case 'xls':return extractExcel(file,progress);
+      case 'docx':return extractWord(file,progress);
+      case 'doc':throw new Error('旧形式のWord（.doc）はブラウザだけでは安全に解析できません。.docx形式で保存してから選択してください。');
+      case 'txt':case 'csv':{
+        progress('テキストを読み込んでいます…');
+        const text=String(await file.text()).trim();
+        if(!text)throw new Error('文字情報がありません。');
+        return {text,detail:'テキスト '+text.length.toLocaleString()+'文字を取得'};
+      }
+      case 'jpg':case 'jpeg':case 'png':{
+        requireLibrary('Tesseract','画像OCR機能が利用できません。インターネット接続を確認してページを再読み込みしてください。');
+        progress('画像をOCR処理しています…');
+        const result=await window.Tesseract.recognize(file,'jpn+eng',{logger:m=>{if(m?.status==='recognizing text')progress('画像をOCR処理中… '+Math.round((m.progress||0)*100)+'%');}});
+        const text=String(result?.data?.text||'').trim();
+        if(!text)throw new Error('画像から文字情報を取得できませんでした。');
+        return {text,detail:'画像をOCR処理して文字情報を取得'};
+      }
+      default:throw new Error('このファイル形式は自動読み込みに対応していません。');
+    }
+  }
+
+  window.showPreventivePlanView=function(){const area=$('preventivePlanArea'),launch=document.querySelector('.preventive-launch-card');if(area)area.style.display='block';if(launch)launch.style.display='none';window.scrollTo({top:0,behavior:'smooth'});};
+  window.closePreventivePlanView=function(){const area=$('preventivePlanArea'),launch=document.querySelector('.preventive-launch-card');if(area)area.style.display='none';if(launch)launch.style.display='block';window.scrollTo({top:0,behavior:'smooth'});};
+
+  window.removePreventiveFile=function(index){
+    if(index<0||index>=preventiveFiles.length)return;
+    preventiveFiles.splice(index,1);renderFileList();updateLoadButton();
+    $('preventivePromptBox').style.display='none';
+    const privacy=$('preventivePrivacyResult');if(privacy){privacy.className='privacy-result';privacy.textContent='資料を選択すると、ここにチェック結果が表示されます。';}
+    setFileStatus(preventiveFiles.length?'資料を選択しています。':'まだ資料が選択されていません。');
+    setStatus(preventiveFiles.length?'📄 資料を選択済みです。「📥 読み込み開始」を押してください。':'資料を選択してください。');
+  };
+
+  window.addPreventiveFiles=function(fileList){
+    const files=Array.from(fileList||[]);if(!files.length)return;
+    files.forEach(file=>preventiveFiles.push({file,kind:kindOf(file),text:'',loaded:false,loading:false,error:null,progress:'',detail:'',charCount:0}));
+    renderFileList();updateLoadButton();$('preventivePromptBox').style.display='none';
+    setStatus('📄 '+preventiveFiles.length+'件の資料を選択しました。\nまだ中身は解析していません。\n「📥 読み込み開始」を押してください。');
+    setFileStatus('📄 資料を選択済みです。読み込み開始ボタンを押すと、実際に中身を解析します。');
+  };
+
+  window.loadPreventiveFiles=async function(){
+    if(!preventiveFiles.length){setStatus('⚠️ 先に資料を選択してください。','alert');return;}
+    preventiveFiles.forEach(item=>{item.loaded=false;item.loading=false;item.error=null;item.text='';item.progress='';item.detail='';item.charCount=0;});
+    $('preventivePromptBox').style.display='none';
+    const btn=$('preventiveLoadButton');if(btn){btn.dataset.busy='1';btn.style.opacity='.7';btn.style.cursor='wait';}updateLoadButton();renderFileList();
+    let success=0,failed=0;const errors=[];
+    for(let i=0;i<preventiveFiles.length;i++){
+      const item=preventiveFiles[i];
+      try{
+        updateProgress(i,preventiveFiles.length,item.file,'ファイルを開いています…');
+        await new Promise(r=>setTimeout(r,20));
+        const result=await extractText(item.file,message=>updateProgress(i,preventiveFiles.length,item.file,message));
+        const text=String(result?.text||'').trim();
+        if(!text)throw new Error('資料から確認可能な文字情報を取得できませんでした。');
+        item.text=text;item.charCount=text.length;item.detail=result.detail||'';item.loaded=true;item.loading=false;item.error=null;item.progress='';success++;
+      }catch(error){
+        item.text='';item.charCount=0;item.detail='';item.loaded=false;item.loading=false;item.error=error?.message||'資料を読み込めませんでした。';errors.push('・'+item.file.name+'：'+item.error);failed++;
+      }
+      renderFileList();await new Promise(r=>setTimeout(r,20));
+    }
+    if(btn){btn.dataset.busy='0';btn.style.opacity='';btn.style.cursor='';}updateLoadButton();
+    if(failed===0&&success===preventiveFiles.length){
+      const totalChars=preventiveFiles.reduce((sum,item)=>sum+item.charCount,0);
+      setStatus('✓ 読み込み成功\n'+success+'件すべての資料の中身を取得しました。\n合計取得文字数：'+totalChars.toLocaleString()+'文字\n次に「🔎 読み込んだ資料に個人情報が入っていないかチェックする」に進んでください。','success');
+      setFileStatus('✓ '+success+'件すべての資料を正常に読み込みました。各資料の取得文字数を確認してください。','success');
+    }else{
+      setStatus('⚠️ 読み込み失敗\n成功：'+success+'件　失敗：'+failed+'件\n\n'+errors.join('\n')+'\n\n失敗した資料があるため、個人情報チェックには進めません。','alert');
+      setFileStatus('⚠️ 一部または全部の資料を正常に読み込めませんでした。','alert');
+    }
+  };
+
+  window.checkPreventivePrivacy=function(){
+  const result=$('preventivePrivacyResult');if(!result)return;
+  const checkBtn=$('preventivePrivacyCheckButton'),nextNote=$('preventiveNextNote'),promptBox=$('preventivePromptBox');
+  if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button';checkBtn.textContent='🔎 読み込んだ資料に個人情報が入っていないかチェックする';}
+  if(nextNote)nextNote.classList.remove('show');
+  if(promptBox)promptBox.classList.remove('ready-next');
+  if(!preventiveFiles.length){
+    result.className='privacy-result alert';
+    result.textContent='⚠️ 先に資料を選択してください。';
+    return;
+  }
+
+  const notReady=preventiveFiles.filter(item=>!item.loaded||!String(item.text||'').trim());
+  if(notReady.length){
+    result.className='privacy-result alert';
+    result.textContent='⚠️ 個人情報チェックを開始できません。\n\nすべての資料について「📥 読み込み開始」を押し、✓ 読み込み成功になっていることを確認してください。';
+    if(promptBox)promptBox.style.display='none';
+    return;
+  }
+
+  // 🔴 強い警告・次工程停止
+  // 本人を直接特定できる情報、および主治医・家族・キーパーソン等の「氏名」を検出。
+  const strongPatterns=[
+    ['本人の氏名らしき記載',/(?:氏名|名前|利用者氏名|利用者名|本人氏名|本人名)\s*[:：]\s*(?!本人|なし|不明|未記載)[一-龥々]{2,6}(?:\s*[一-龥々]{1,5})?/g],
+    ['主治医・医師の氏名らしき記載',/(?:主治医|担当医|主治医名|担当医名|医師名)\s*[:：]\s*(?!なし|不明|未定|未記載)[一-龥々]{2,6}(?:\s*[一-龥々]{1,5})?/g],
+    ['家族・キーパーソンの氏名らしき記載',/(?:キーパーソン|キーパーソン名|家族氏名|家族名|長女|次女|三女|長男|次男|三男|妻|夫|配偶者|娘|息子)\s*[:：]\s*(?!本人|家族|長女|次女|三女|長男|次男|三男|妻|夫|配偶者|娘|息子|なし|不明|未定|未記載)[一-龥々]{2,6}(?:\s*[一-龥々]{1,5})?/g],
+    ['住所らしき記載',/(?:住所|現住所|所在地|居住地)\s*[:：]\s*[^\n]{3,}/g],
+    ['電話番号らしき記載',/(?:0\d{1,4}[-ー－]\d{1,4}[-ー－]\d{3,4}|0\d{9,10})/g],
+    ['郵便番号らしき記載',/〒?\s*\d{3}[-ー－]\d{4}/g],
+    ['メールアドレス',/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi],
+    ['介護保険被保険者番号等',/(?:被保険者番号|介護保険被保険者番号|保険者番号|認定番号|受給者番号)\s*[:：]?\s*[0-9０-９\-ー－]{5,}/g],
+    ['マイナンバー・個人番号',/(?:マイナンバー|個人番号)\s*[:：]?\s*[0-9０-９]{12}/g],
+    ['生年月日らしき記載',/(?:生年月日|誕生日|出生年月日)\s*[:：]\s*[^\n]{4,}/g],
+    ['市町村番号等',/(?:市町村番号|市区町村番号)\s*[:：]?\s*[0-9０-９\-ー－]{3,}/g]
+  ];
+
+  // 🟠 確認推奨
+  // 医療機関・施設・事業所の「名称」は、主治医個人の氏名とは区別。
+  const advisoryPatterns=[
+    ['医療機関名らしき記載',/[^\n]{0,25}(?:病院|医院|クリニック|診療所|医療センター)[^\n]{0,25}/g],
+    ['施設・事業所名らしき記載',/[^\n]{0,25}(?:施設名|事業所名)[^\n]{0,25}/g]
+  ];
+
+  const strongHits=[];
+  const advisoryHits=[];
+
+  preventiveFiles.forEach(item=>{
+    strongPatterns.forEach(pattern=>{
+      pattern[1].lastIndex=0;
+      if(pattern[1].test(item.text||'')) strongHits.push(item.file.name+'：'+pattern[0]);
+      pattern[1].lastIndex=0;
+    });
+    advisoryPatterns.forEach(pattern=>{
+      pattern[1].lastIndex=0;
+      if(pattern[1].test(item.text||'')) advisoryHits.push(item.file.name+'：'+pattern[0]);
+      pattern[1].lastIndex=0;
+    });
+  });
+
+  if(strongHits.length){
+    result.className='privacy-result alert';
+    result.textContent='🔴 個人情報の可能性が高い記載を検出しました。次の工程には進めません。\n\n'
+      +[...new Set(strongHits)].join('\n')
+      +(advisoryHits.length?'\n\n🟠 あわせて確認推奨：\n'+[...new Set(advisoryHits)].join('\n'):'')
+      +'\n\n氏名・生年月日・住所・電話番号・介護保険番号・マイナンバー等に加え、主治医・医師の氏名、家族・キーパーソンの氏名も強い警告の対象です。該当する氏名を削除・匿名化してから再確認してください。';
+    if(promptBox)promptBox.style.display='none';
+    if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button';checkBtn.textContent='🔴 強い警告あり → 修正して再確認';}
+    return;
+  }
+
+  if(advisoryHits.length){
+    result.className='privacy-result warn';
+    result.textContent='🟠 確認推奨の記載があります。\n\n'
+      +[...new Set(advisoryHits)].join('\n')
+      +'\n\n医療機関名・施設名・事業所名などは、本人や医師等の個人名とは区別して「確認推奨」としています。内容を確認したうえでAIへ渡してください。'
+      +'\n\n「家族」「長女」「次女」「長男」「次男」「妻」「夫」など、続柄だけの記載は強い警告の対象ではありません。';
+    if(promptBox){promptBox.style.display='block';promptBox.classList.add('ready-next');}
+    if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button review';checkBtn.textContent='✓ 強い警告なし';}
+    if(nextNote){nextNote.innerHTML='✓ <strong>強い警告はありません。次の工程へ進めます。</strong><br>🟠 確認推奨の内容だけ、表示された内容を確認してから進んでください。';nextNote.classList.add('show');}
+    return;
+  }
+
+  result.className='privacy-result ok';
+  result.textContent='✓ 自動チェックでは、直接本人や関係者を特定できる可能性が高い情報は検出されませんでした。\n\n'
+    +'「家族」「長女」「次女」「長男」などの続柄だけの記載、疾患名、発症年、年齢、要介護度、HDS-R、ADL・IADL、服薬、サービス利用回数、介助内容などは、通常のケアプラン作成情報として検出対象にしていません。'
+    +'\n\nただし、自動チェックは100％確実ではありません。AIへ渡す前に、必ずケアマネジャー自身で資料全体を確認してください。';
+  if(promptBox){promptBox.style.display='block';promptBox.classList.add('ready-next');}
+  if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button ready';checkBtn.textContent='✓ 個人情報チェック完了 → 次の工程へ';}
+  if(nextNote){nextNote.innerHTML='✓ <strong>個人情報チェックを通過しました。次の工程へ進めます。</strong><br>③「AIに資料を事前整理してもらう」へ進み、📋このボタンを押すと、あなたのAIに貼り付ける用のプロンプトをコピーできます を押してください。';nextNote.classList.add('show');}
+};
+const PREVENTIVE_PRE_PROMPT_BASE = `あなたは優秀なケアマネジャーです。 以下の条件を踏まえたケアプラン作成に必要なアセスメントをします。アセスメントの前に、情報をまとめますが、下記の各項目に沿って情報を細かく分析して 作成しコードブロックで出力させてください。
+
+作成の為のルール
+
+①支援の方向性については、それぞれの項目で出てきた課題について、介護保険を利用し、自立した日常生活を送る為の方向性の案を詳しく記載してください。（介護保険のサービス名は記載しない）
+
+②各項目、自立以外の情報や課題については、具体的にどのように行っているのか、どのように手助けしているのか、援助が必要な状態か、どのような機器を使用しているのか、誰がどのように手助けしているのか事実のまま記載してください。
+
+③全介助の場合も、具体的な介助している内容を記載する。
+③【認知】については、日ごろの被害妄想、異食、物盗られ等、短期記憶力の具体的症状、困っていること等具体的に記載してください。
+④利用している機器や、介護、看護をしている内容、回数等具体的な状況、支援についてはそのまま記載すること
+⑤認定調査票の「介助度（全介助・一部介助等）」のみで記載しないこと。
+
+必ず「特記事項」や「入力されている情報」に記載されている具体的介助内容を優先して抽出し、
+
+「誰が」「どのように」「どの程度」「どんな場面で」
+
+介助しているのかを文章化すること。
+
+良い例：
+
+「下肢筋力低下があり歩行不可。車椅子生活であり、職員が身体を抱えてベッド・便座間の移乗介助を行っている。」
+
+「認知機能低下により声かけしても指示が入りにくく、職員が上衣更衣を準備し袖通しから着衣介助を実施。」
+
+「食事は職員がセッティング後に声かけを行うと数口は自力摂取できるが継続困難であり、その後は職員が全介助している。」
+
+特記事項に記載されている内容を最優先で詳細記載すること。
+介助度の単語だけで終わらせないこと。
+
+⑥記載のない情報は「記載なし」「不明」等の表現は記載しない。 
+
+【健康状態】
+
+健康状態症状：
+
+既往歴、主傷病：
+
+痛み等：
+
+主治医意見書：
+
+受診状況
+
+【本人や家族の意見】
+
+【方向性案】
+
+【ADL】
+寝返り：
+起き上がり： 
+移乗・移動： 
+移動手段： 
+歩行： 
+立位保持： 
+座位保持： 
+立ち上がり： 
+上着に： 
+下衣の着脱： 
+入浴移動： 
+入浴・洗身、洗髪： 
+整容： 
+爪切り： 
+食事・摂食動作： 
+排泄動作： 
+
+【本人や家族の意見】
+
+【方向性案】
+
+【IADL】
+調理： 
+献立を考え、調理すること：
+買い物： 
+日常に必要な品物を自分で選んで買う事について ：
+掃除： 
+洗濯： 
+ごみ捨て： 
+服薬管理金銭管理： 
+預貯金の出し入れ：
+電話の利用： 
+交通機関の利用： 
+
+【本人や家族の意見】
+
+【方向性案】
+
+【認知】
+認知能力： 
+物忘れの状況： 
+精神状態： 
+日常の意思決定： 
+
+【本人や家族の意見】
+
+【方向性案】
+
+【コミュニケーション能力】
+視力： 
+聴力： 
+意思の伝達： 
+他者の理解： 
+眼鏡： 
+補聴器： 
+障がい： 
+
+【本人や家族の意見】
+
+【方向性案】
+
+【社会との関り】
+社会活動参加意欲： 
+友人を招いたり友人宅を訪問すること：
+喪失感： 
+孤立感について： 
+他者との関わり： 
+集団への不適応： 
+定期的な外出： 
+
+【本人や家族の意見】
+
+【方向性案】
+
+【排尿・排便】
+尿意、便意： 
+尿失禁： 
+便失禁： 
+トイレへの移乗： 
+移動： 
+後始末： 
+用具の使用： 
+
+【本人や家族の意見】
+
+【方向性案】
+
+【麻痺・拘縮　関節の痛み　皮膚の問題】
+麻痺：
+拘縮：
+褥瘡：
+痛み：
+皮膚の状態：
+
+【本人や家族の意見】
+
+【方向性案】
+
+【口腔衛生】
+口腔内の問題： 
+義歯： 
+口腔衛生： 
+歯磨き： 
+
+【本人や家族の意見】
+
+【方向性案】
+
+【食事摂取】
+食事摂取： 
+使用器具： 
+食事形態： 
+嚥下： 
+アレルギー： 
+栄養状況： 
+水分摂取： 
+制限等： 
+
+【本人や家族の意見】
+
+【方向性案】
+
+【介護力】
+主介護者： 
+キーパーソン： 
+介護意思： 
+仕事： 
+介護負担： 
+費用負担： 
+虐待の有無： 
+
+【本人や家族の意見】
+
+【方向性案】
+
+【住居環境】
+住宅改修の問題： 
+照明の問題： 
+段差の問題： 
+履物の状況・問題： 
+床、じゅうたんの状況： 
+危険個所： 
+
+【本人や家族の意見】
+
+【方向性案】
+
+【特別な状況】
+ターミナルや独居等の状況`;
+const PREVENTIVE_PRE_PROMPT_ADDITIONAL_RULES = ``;
+const PREVENTIVE_PRE_PROMPT = PREVENTIVE_PRE_PROMPT_BASE;
+
+  const PREVENTIVE_CARE_PLAN_PROMPT = `介護予防サービス支援計画表作成プロンプト
+あなたは優秀なケアマネジャーです。 以下の条件を踏まえた介護予防サービス支援計画表を作ります。
+ 下記は、介護予防サービス支援計画表 を作成するための条件。
+
+## 介護予防サービス支援計画表 「アセスメント領域と現在の状況 」「本人・家族の意欲・意向 」「領域における課題（背景・原因） 」「総合的課題 」「課題に対する目標と具体策の提案 」「具体策についての意向 本人・家族 」「目標」「目標についての支援のポイント」「本人等のセルフケアや家族の支援インフォーマルサービス「介護保険サービス又は地域支援事業」がある。
+
+## 「アセスメント領域と現在の状況 」それぞれの領域（各２５０字以内）には①運動・移動について（主にADL全般においての生活上の課題を挙げる） ②日常生活（家庭生活）について（IADL 全般においての生活上の課題を挙げる） ③社会参加、対人関係・コミュニケーションについて（友人や地域、家族の等周りとの関りについてまとめ、課題を挙げる） ④健康管理について（疾患や受診の状況、医療面からの課題を挙げる） の４つに分かれており①～④それぞれの領域ごとに課題を記載する。
+
+## 領域それぞれに「本人・家族の意欲・意向 」（150字以内）
+
+## 本人⇒
+
+## 家族⇒
+
+## のように本人と家族の何とか助けてもらいたいという思いを、それぞれの意向に分けて記載し、〇〇したいです。〇〇を希望します。のようにできる限り自立に向かえるように希望する気持ちを話口調でまとめ、次に「領域における課題（背景・原因） 」ごとに （熟練のｹｱマネジャーとして考える課題）（150字以内）を記載してください。
+
+## ①～④を記載後、「総合的課題 」 をまとめ（300字以内）、「課題に対する目標と具体策の提案 」 について２～３つほど記載してください（記載方法は、【目標】と【具体策】に分けて記載（１つの目標と具体策につき160字）
+
+## 次に「課題に対する目標と具体策の提案 」 に対しての「具体策についての意向 本人・家族 」 を記載（話口調）
+
+## 次に「目標」 については「課題に対する目標と具体策の提案 」 で記載した【目標】を一つひとつに分けて記載し、一つの目標に対してそれぞれ「目標についての支援のポイント」「本人等のセルフケアや家族の支援インフォーマルサービス」（本人のできる事や家族が協力できるところや協力してほしいところ）、「介護保険サービス又は地域支援事業」（介護保険サービスにて行うべきサービス内容を分かりやすく記載） にわけて記載してください。
+
+## 作成時の重要事項
+
+【事実情報について】
+
+下記の情報に記載されている内容を最優先の事実情報として使用してください。
+
+情報に記載されていないことを、事実として推測・補完して記載しないでください。
+
+特に、疾患名、身体状況、認知機能、ADL・IADL、家族構成、家族の介助能力、本人の発言、家族の発言、利用しているサービス、生活状況等について、情報にない内容を追加しないでください。
+
+情報から判断して課題を整理することは構いませんが、**「事実」と「ケアマネジャーとしての分析・判断」は区別してください。**
+
+【本人・家族の意欲・意向について】
+
+「本人・家族の意欲・意向」は、提供された情報の中に本人・家族の具体的な発言や希望が記載されている場合は、それを最優先して反映してください。
+
+本人・家族の具体的な発言が記載されていない場合は、提供された確認済み情報から無理のない範囲で、本人・家族が希望すると考えられる内容をケアマネジャーとして整理し、話し言葉の形で記載してください。
+
+ただし、その場合は、**実際に本人・家族がその言葉を発言した事実があるものとして扱わないでください。**
+
+意向を作成する際には、本人が現在できていることや本人の力をできるだけ活かし、「できることは自分で続けたい」「今の生活をできるだけ続けたい」「必要なところは手伝ってほしい」など、本人の自立につながる方向性を基本としてください。
+
+家族についても、提供された情報から確認できる家族の役割や介助状況を踏まえ、家族に過度な負担を求める内容にならないようにしてください。
+
+【課題・目標・具体策について】
+
+「領域における課題（背景・原因）」「総合的課題」「課題に対する目標と具体策の提案」「目標についての支援のポイント」は、提供された事実情報を基に、熟練したケアマネジャーとして分析して作成してください。
+
+本人が現在できていることは、必要以上に介助する方向ではなく、**現在できている能力を維持・継続できるようにする視点**を持ってください。
+
+課題を記載する際は、単に「転倒リスクがある」「生活に支援が必要」などで終わらせず、**現在の状態、背景・原因、本人ができていること、支援が必要な部分を関連付けて記載してください。**
+
+支援内容については、「見守る」「安心して生活する」などの抽象的な表現だけで終わらせず、**誰が、どの場面で、何を、どのように支援するのか**が分かるように、できるだけ具体的に記載してください。
+
+ただし、提供された情報にない具体的な支援内容を、実際に行っている支援として断定しないでください。必要な支援として提案する場合は、情報から必要性が判断できる範囲で記載してください。
+
+【サービスについて】
+
+「介護保険サービス又は地域支援事業」については、提供された情報に現在利用しているサービスが記載されている場合は、その内容を踏まえてください。
+
+現在利用していることが確認できないサービスについては、実際に利用しているものとして記載しないでください。
+
+必要なサービスを提案する場合は、「必要な支援」として、本人の状態や課題に合わせて具体的なサービス内容を分かりやすく記載してください。
+
+【表示方法について】
+
+作成した内容は、**コードブロック、JSON、表形式にはせず、通常の文章として表示してください。**
+
+また、内容だけでなく、**以下の項目の順番、見出し、改行、表示方法を維持して、見やすく整理してください。**
+
+各領域は必ず、
+
+① ○○について
+
+**アセスメント領域と現在の状況**
+
+……
+
+**本人・家族の意欲・意向**
+
+本人⇒……
+
+家族⇒……
+
+**領域における課題（背景・原因）**
+
+……
+
+の順番で記載してください。
+
+その後、
+
+**総合的課題**
+
+……
+
+**課題に対する目標と具体策の提案**
+
+①
+ 【目標】……
+ 【具体策】……
+
+②
+ 【目標】……
+ 【具体策】……
+
+のように記載してください。
+
+続いて、
+
+**具体策についての意向 本人・家族**
+
+①
+ 本人⇒……
+ 家族⇒……
+
+②
+ 本人⇒……
+ 家族⇒……
+
+のように記載してください。
+
+最後に、「課題に対する目標と具体策の提案」で設定した目標を一つひとつ取り上げ、
+
+**目標①**
+
+【目標】……
+
+**目標についての支援のポイント**
+
+……
+
+**本人等のセルフケアや家族の支援インフォーマルサービス**
+
+……
+
+**介護保険サービス又は地域支援事業**
+
+……
+
+という形で、目標ごとに整理してください。
+
+**項目を省略したり、順番を入れ替えたりせず、上記の構成を維持してください。**
+
+上記条件を踏まえ、下記の情報をもとに介護予防サービス支援計画表 を作成してください。
+`;
+
+
+  function cleanAIResult(text){
+    return String(text||"")
+      .replace(/```(?:text|txt|markdown|md|json)?\s*/gi,"")
+      .replace(/```\s*/g,"")
+      .trim();
+  }
+
+  async function copyTextToClipboard(text){
+    try{
+      await navigator.clipboard.writeText(text);
+      return true;
+    }catch(e){
+      const textarea=document.createElement('textarea');
+      textarea.value=text;
+      textarea.style.position='fixed';
+      textarea.style.left='-9999px';
+      textarea.style.top='0';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      let copied=false;
+      try{copied=document.execCommand('copy');}catch(err){copied=false;}
+      textarea.remove();
+      return copied;
+    }
+  }
+
+  // 第一段階ガイドの開閉を一か所で管理します。
+  window.toggleFirstStageGuide=function(){
+    const guide=document.getElementById('aiFirstStageGuide');
+    const button=document.getElementById('aiFirstStageToggle');
+    if(!guide||!button)return;
+
+    const isOpen=guide.style.display==='block';
+    guide.style.display=isOpen?'none':'block';
+    button.textContent=isOpen
+      ? '【第一段階】あなたのAIに「指示書」と「資料」を渡します。※ここが一番重要　説明を見るにはここをクリック！'
+      : '【第一段階】説明を閉じる';
+
+    const aiLaunchBox=document.getElementById('preAiLaunchBox');
+    if(aiLaunchBox) aiLaunchBox.style.display='block';
+  };
+
+  window.copyPreventivePrePrompt=async function(){
+    const btn=$('preventivePrePromptCopyButton'),status=$('preventivePrePromptStatus');
+    const copiedMessage='✓ 資料が個人情報チェックを通過したため、プロンプトをコピーしました！';
+    const setCopiedState=()=>{
+      if(btn){
+        btn.classList.add('prompt-copy-button','copied');
+        btn.textContent=copiedMessage;
+      }
+      const preLaunchBox=document.getElementById('preAiLaunchBox');
+      if(preLaunchBox) preLaunchBox.style.display='block';
+      const firstToggle=document.getElementById('aiFirstStageToggle');
+      const firstGuide=document.getElementById('aiFirstStageGuide');
+      if(firstToggle) firstToggle.style.display='block';
+      if(firstGuide) firstGuide.style.display='none';
+      if(status){
+        status.className='status ai-review-status';
+        status.innerHTML='';
+        status.style.display='none';
+      }
+    };
+    const copied=await copyTextToClipboard(PREVENTIVE_PRE_PROMPT);
+    if(copied){
+      setCopiedState();
+    }else if(status){
+      status.style.display='block';
+      status.className='status';
+      status.textContent='コピーできませんでした。ブラウザのコピー権限を確認してください。';
+    }
+  };
+
+  window.confirmPreventiveOrganizedInfo=function(){
+    const input=$('preventiveOrganizedInput'),status=$('preventiveOrganizedStatus'),finalBox=$('preventiveFinalBox');
+    if(!input||!status||!finalBox)return;
+    const cleaned=cleanAIResult(input.value);
+    if(!cleaned){
+      status.className='status alert';
+      status.textContent='⚠️ AIが整理した情報を貼り付けてください。';
+      finalBox.style.display='none';
+      return;
+    }
+    input.value=cleaned;
+    if(typeof finalDocumentState !== 'undefined') finalDocumentState.confirmedOrganizedInfo=cleaned;
+    status.className='status success';
+    status.textContent='✓ 整理情報を保存しました。内容を確認・修正したうえで、最終コピーへ進んでください。';
+    finalBox.style.display='block';
+    updateFinalSelectionUI();
+    finalBox.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+
+  // 各書類の正式プロンプト：ユーザー指定内容をそのまま登録
+  const PLAN_DOCUMENT_PROMPTS = {
+    care: {
+      name: 'ケアプラン（案）',
+      prompt: `あなたは経験豊富な介護支援専門員（主任ケアマネジャー）です。
+
+以下に入力された利用者の情報をもとに、ケアプラン作成に必要な情報を分析・整理し、「ニーズの抽出 → ケアプラン第1表 → 第2表 → 第3表」までを一連の流れとして作成してください。
+
+**作成した内容は、指定された各項目・表の表示形式に沿って、画面上に見やすく表示してください。**
+
+単に入力情報を並べるのではなく、利用者の現在の生活、本人の意向、家族の意向、心身の状態、生活環境、残存能力、介護力等を総合的に分析し、「本人がどのような生活を続けたいのか」「その生活を妨げているものは何か」「何を支援すれば、その人らしい生活を継続できるのか」という視点からケアプランを作成してください。
+
+【作成の基本的な流れ】
+
+① 利用者の生活状況を把握
+↓
+② 心身の状態・生活環境・介護力等を分析
+↓
+③ 自立した日常生活を妨げている要因を整理
+↓
+④ 本人・家族の意向を整理
+↓
+⑤ 生活全般の解決すべき課題を抽出
+↓
+⑥ 優先順位をつけてニーズを6～8項目作成
+↓
+⑦ ケアプラン第1表を作成
+↓
+⑧ 第1表の方向性を踏まえて第2表を作成
+↓
+⑨ 第2表の目標・サービス内容と整合する第3表を作成
+↓
+⑩ 全体の整合性を確認
+
+各段階の分析結果を次の段階に必ず反映し、後の項目を独立して作成しないでください。
+
+【情報分析の視点】
+
+以下の項目について、入力された情報を総合的に分析してください。
+
+・健康状態
+・疾患、既往歴、治療状況
+・疼痛、麻痺、拘縮等
+・身体機能
+・ADL
+・IADL
+・認知機能
+・意思決定能力
+・コミュニケーション
+・社会との関わり
+・排泄
+・口腔
+・食事、栄養、嚥下
+・介護力
+・家族状況
+・住環境
+・転倒等の生活リスク
+・本人が現在できていること
+・工夫や支援によってできる可能性があること
+・介助が必要なこと
+・本人が望む生活
+・家族が望む生活
+・現在の生活を妨げている要因
+
+本人のできないことだけに着目せず、現在できていること、残存能力、本人なりの工夫を必ず確認し、必要以上の介助を設定しないでください。
+
+【情報が不足している場合のルール】
+
+入力情報にない事実を勝手に作らないでください。
+
+「記載なし」「情報なし」「不明」などを最終的なケアプランの文章に入れないでください。
+
+ただし、複数の入力情報から合理的に関連づけられる生活上の課題や支援の必要性については、ケアマネジャーとして総合的に判断して整理してください。
+
+本人の具体的な発言が記載されている場合は、それを最優先してください。
+
+本人の具体的な発言がない場合は、確認されている生活状況、心身の状態、家族の意向等を根拠として、無理のない範囲で「本人の意向案」として文章化してください。
+
+【ニーズの作成ルール】
+
+ニーズは6～8項目作成してください。
+
+ニーズの数と、長期目標・短期目標の数は必ず一致させてください。
+
+ニーズは、利用者本人や家族の気持ちが伝わる話し言葉で作成してください。
+
+例えば、
+
+「痛みを軽くして歩けるようになりたいです」
+「これからも自宅で暮らしたいです」
+「できることは自分で続けたいです」
+「家族に手伝ってもらいながら暮らしたいです」
+
+など、生活者の視点で表現してください。
+
+「入浴したい」
+「歩きたい」
+「排泄したい」
+「服薬したい」
+「リハビリをしたい」
+
+など、単純な行動名・サービス名・介助内容をそのままニーズにしないでください。
+
+一つのニーズの中に、関連する複数の課題や支援内容をまとめることを認めます。
+
+明確に異なる生活課題でない限り、課題を細かく分割しすぎないでください。
+
+【ニーズを考える順序】
+
+本人が望む生活
+↓
+現在の生活状況
+↓
+その生活を妨げている課題
+↓
+課題が生じている背景・原因
+↓
+複数の要因を関連づける
+↓
+一つの生活課題として整理
+↓
+本人・家族の気持ちを反映したニーズにする
+
+サービスを先に考えて、そのサービスに合わせてニーズを作成することは禁止します。
+
+【ニーズの表示形式】
+
+ケアプラン作成に入る前に、分析結果から抽出したニーズを実際に作成して表示してください。
+
+【抽出したニーズ】
+
+分析結果をもとに、優先順位の高い順に6～8項目のニーズを実際に作成して記載してください。
+
+各ニーズは、本人・家族の気持ちを反映した話し言葉で記載し、その下に背景となる生活課題を記載してください。
+
+1．「実際に作成したニーズ」
+　→ 背景となる生活課題：実際に分析した生活課題
+
+2．「実際に作成したニーズ」
+　→ 背景となる生活課題：実際に分析した生活課題
+
+3．「実際に作成したニーズ」
+　→ 背景となる生活課題：実際に分析した生活課題
+
+必要な項目数に応じて6～8項目としてください。
+
+※「〇〇したいです」などの入力用ひな形は表示せず、利用者情報を分析して実際のニーズを作成してください。
+
+ニーズの優先順位は、生命・健康・安全への影響、在宅生活継続への影響、本人の自立、生活の質、社会参加、家族の介護負担等を総合的に判断して決定してください。
+
+【ケアプラン第1表】
+
+●利用者の意向
+
+本人の具体的な発言がある場合は、その内容を優先してください。
+
+具体的な発言がない場合は、確認されている生活状況、心身の状態、本人の生活歴等から、本人の立場に立って自然な「意向案」を作成してください。
+
+本人が実際に話しているような、わかりやすい話し言葉で記載してください。
+
+●家族の意向
+
+家族の具体的な発言や希望がある場合は、それを優先してください。
+
+家族の介護力、負担、生活状況等も踏まえて記載してください。
+
+●課題分析の結果
+
+利用者の全体像を踏まえ、現在の生活上の課題をまとめてください。
+
+疾患だけではなく、身体機能、認知機能、ADL・IADL、本人の残存能力、生活環境、家族の介護力、生活上のリスク等を総合的に記載してください。
+
+250字以内としてください。
+
+●総合的援助方針
+
+本人の尊厳、自立、本人らしい生活を尊重しながら、必要な医療・介護・家族支援・福祉用具・環境調整等を総合的に考えてください。
+
+「～してまいります」
+「～を一緒に支えていきます」
+「～できるよう支えていきます」
+
+など、温かみのある表現を使用してください。
+
+300字以内としてください。
+
+※第1表には長期目標・短期目標を記載しないでください。
+
+【ケアプラン第2表】
+
+第2表は、抽出した6～8項目のニーズを基礎として作成してください。
+
+身体機能、歩行、入浴、排泄、口腔、服薬、リハビリ等を、そのままニーズにしないでください。
+
+「本人が望む生活」
+↓
+「現在の生活」
+↓
+「生活を妨げている要因」
+↓
+「背景・原因」
+↓
+「関連する複数の要因を一つの生活課題として整理」
+↓
+「ニーズ」
+↓
+「長期目標」
+↓
+「短期目標」
+↓
+「必要な支援」
+↓
+「必要な専門職・サービスの選別」
+↓
+「具体的なサービス内容」
+
+という順番で作成してください。
+
+【長期目標】
+
+長期目標は、おおむね1年後に実現を目指す「生活の状態」としてください。
+
+サービス利用、リハビリ、介助そのものを長期目標にしないでください。
+
+実際の生活場面がイメージできるようにしてください。
+
+例：
+
+「清潔を保ち、気持ちよく日々を過ごせる」
+「転倒や再骨折を防ぎ、自宅内を安全に移動して暮らせる」
+「できる動作を活かし、必要な介助を受けながら自分らしく暮らせる」
+
+おおむね30文字程度を目安としますが、意味が明確になる場合は多少超えても構いません。
+
+「安全に暮らす」「身体機能を維持する」だけの抽象的な目標は避けてください。
+
+【短期目標】
+
+短期目標は、おおむね6か月後に期待できる具体的な生活上の変化としてください。
+
+長期目標につながる内容にしてください。
+
+サービスを利用すること自体を短期目標にしないでください。
+
+現在できていること、残存能力を活かし、現実的に達成可能な目標にしてください。
+
+おおむね30文字程度を目安としますが、意味が明確になる場合は多少超えても構いません。
+
+「何を」「どのように」できるようになるのかがわかる表現にしてください。
+
+【専門職・サービスの検討ルール】
+
+各ニーズ・生活課題について、必要な支援を幅広く検討してください。
+
+介護保険サービスだけに限定せず、必要に応じて専門職、福祉用具、住宅環境、家族支援、医療との連携等を総合的に検討してください。
+
+検討対象には、例えば以下を含みます。
+
+・ケアマネジャー
+・理学療法士
+・作業療法士
+・言語聴覚士
+・看護師
+・准看護師
+・医師
+・歯科医師
+・薬剤師
+・歯科衛生士
+・管理栄養士・栄養士
+・福祉用具専門相談員
+・訪問介護員（ホームヘルパー）
+・通所介護（デイサービス）
+・通所リハ（デイケア）
+・訪問リハ
+・訪問看護
+・訪問介護
+・居宅療養管理指導
+・福祉用具貸与
+・特定福祉用具販売
+・住宅改修
+・施設職員・介護職員
+・生活相談員
+・機能訓練指導員
+・権利擁護に関係する支援
+・地域包括支援センター等
+・家族
+・その他、介護保険制度・高齢者支援に関係する専門職・機関
+
+ただし、上記をすべて入れるのではありません。
+
+利用者の心身の状態、生活課題、本人の意向、生活環境、家族の介護力、医療的状況等を分析し、実際に必要性・適切性が高い専門職・サービスだけを選択してください。
+
+「専門職をたくさん入れること」を目的にしないでください。
+
+重要なのは「誰を入れるか」ではなく、
+
+「その専門職の専門性が、どの生活課題に対して、なぜ必要なのか」
+
+を明確にすることです。
+
+例えば、
+
+歩行・立位・バランス・移乗等の課題
+→ リハビリ職の専門的評価・訓練・生活場面への助言
+
+疼痛・健康状態の変化・服薬・褥瘡・栄養・嚥下等
+→ 看護職による健康状態の確認・医療との連携
+
+治療方針・医学的判断
+→ 医師
+
+多剤服用・服薬管理・副作用等
+→ 薬剤師
+
+口腔衛生・義歯・口腔機能・食事や嚥下
+→ 歯科医師・歯科衛生士
+
+低栄養・体重減少・食事内容
+→ 管理栄養士・栄養士
+
+歩行・移乗・排泄・入浴・ベッド上動作等で福祉用具が有効
+→ 福祉用具専門相談員
+
+身体介護・生活援助等
+→ 訪問介護員
+
+入浴、機能訓練、食事、交流、社会参加等
+→ 通所介護
+
+専門的なリハビリ
+→ 通所リハ・訪問リハ
+
+健康管理・医療的ケア・療養支援
+→ 訪問看護
+
+権利侵害、意思決定支援、金銭管理、虐待、成年後見等
+→ 権利擁護関係機関・地域包括支援センター等
+
+施設入所者の場合
+→ 施設職員、介護職員、看護職員、機能訓練指導員、生活相談員等
+
+を必要に応じて検討してください。
+
+上記はあくまで検討の考え方であり、自動的にサービスを追加するものではありません。
+
+複数の専門職・サービスが一つの生活課題に関わる場合は、それぞれの役割が重複しないように整理してください。
+
+【サービス内容の作成ルール】
+
+サービス内容は、
+
+「何をするのか」
+「なぜ必要なのか」
+「どのように行うのか」
+「どの生活場面で行うのか」
+「誰が行うのか」
+
+が具体的にわかるようにしてください。
+
+例えば訪問介護であれば、
+
+本人ができることは本人が行い、本人だけでは難しい部分について必要な介助を行う。
+
+通所介護であれば、
+
+本人の生活課題に応じて、入浴、機能訓練、食事、交流等を行う。
+
+訪問リハであれば、
+
+身体機能、立位、移乗、歩行等を評価し、実際の生活場面で必要な動作の練習や環境調整への助言を行う。
+
+訪問看護であれば、
+
+健康状態、疼痛、服薬、食事、嚥下等を確認し、状態変化があれば医療機関や関係職種と共有する。
+
+福祉用具であれば、
+
+本人の身体状況と生活場面に応じて、移動、移乗、排泄、日常生活動作を安全に行うための福祉用具を検討する。
+
+住宅改修であれば、
+
+手すり設置や段差解消等、現在できている動作を活かしながら安全に生活できる環境を整える。
+
+家族支援であれば、
+
+本人のできることを尊重し、必要な場面のみ支援するとともに、家族の介護負担が過度にならないようにする。
+
+など、具体的に記載してください。
+
+サービスを増やすこと自体を目標にしないでください。
+
+その支援が現在の生活課題の解決につながるのか、本人の自立を妨げないのか、家族の負担が過度にならないのかを総合的に判断してください。
+
+必要性を判断できる根拠が入力情報にない場合は、無理にサービスを追加しないでください。
+
+【ケアプラン第2表の基本的な考え方】
+
+本人が望む生活
+↓
+生活上の課題
+↓
+ニーズ
+↓
+長期目標
+↓
+短期目標
+↓
+必要な支援の検討
+↓
+必要な専門職・サービスの選別
+↓
+具体的なサービス内容
+
+この順番を必ず守ってください。
+
+「歩行 → 歩けるようになる → リハビリ」
+
+のように単純につなげるのではなく、
+
+本人が望む生活
+↓
+移動に関する生活上の課題
+↓
+「安全に必要な場所へ移動して暮らしたい」
+↓
+「自宅内を安全に移動して暮らせる」
+↓
+「歩行器等を活用し、必要な場所まで安全に移動できる」
+↓
+必要に応じて訪問リハ、通所リハ、福祉用具、家族支援、環境調整等
+
+というように、生活全体から考えてください。
+
+【ICFの視点】
+
+第2表・第3表では、ICFの考え方を取り入れてください。
+
+・心身機能・身体構造
+・活動
+・参加
+・環境因子
+・個人因子
+
+を総合的に捉えてください。
+
+ただし、分類名をそのまま記載する必要はありません。
+
+身体機能だけを改善するのではなく、その改善・維持によって「実際の生活がどう変わるのか」「社会参加や本人らしい生活につながるのか」まで考えてください。
+
+【ケアプラン第3表】
+
+第3表は、第2表のニーズ、目標、サービス内容と整合する形で週間サービス計画を作成してください。
+
+第2表に記載したサービスだけを第3表に反映してください。
+
+利用者の生活リズム、家族の都合、医療機関への受診、通所サービス等を考慮して配置してください。
+
+必要に応じて、サービスの頻度、時間、内容等を具体的に記載してください。
+
+以下の形式で作成してください。
+
+| 曜日午前午後夜間 |   |   |   |
+| -------- | - | - | - |
+| 月        |   |   |   |
+| 火        |   |   |   |
+| 水        |   |   |   |
+| 木        |   |   |   |
+| 金        |   |   |   |
+| 土        |   |   |   |
+| 日        |   |   |   |
+
+第3表には、第2表と関連しないサービスを追加しないでください。
+
+週間予定を見ることで、「本人がどのような生活をしていて、そのためにどの支援が必要なのか」がわかるようにしてください。
+
+【家族支援の考え方】
+
+家族がいるからといって、家族がすべての介助を担う前提にしないでください。
+
+家族の健康状態、就労、生活状況、介護力、介護負担等を考慮してください。
+
+本人のできることを活かしながら、必要な部分について家族・専門職・サービスを組み合わせて支援してください。
+
+家族の負担が過度にならないようにしてください。
+
+【ニーズ・目標・サービスの整合性】
+
+各ニーズについて、
+
+ニーズ
+↓
+長期目標
+↓
+短期目標
+↓
+必要な専門職・サービス
+↓
+具体的なサービス内容
+
+が一貫してつながっていることを確認してください。
+
+「誰を入れるか」から考えるのではなく、「生活課題を解決するために何が必要か」から考えてください。
+
+【優先順位】
+
+原則として、
+
+①生命・健康・安全
+②在宅生活の継続
+③本人の自立・残存能力
+④本人らしさ・社会参加・生活の質
+⑤家族の介護負担
+
+を基本とします。
+
+ただし、利用者の状況によって優先順位は柔軟に判断してください。
+
+本人の希望を無視して、身体機能だけを優先しないでください。
+
+【最終確認】
+
+作成したケアプランについて、以下をすべて確認してください。
+
+① ニーズが本人の望む生活につながっているか
+② 単純な「入浴」「歩行」「排泄」等がニーズになっていないか
+③ 課題を細かく分けすぎていないか
+④ 長期目標が1年後の生活状態になっているか
+⑤ 短期目標が6か月後の具体的な生活変化になっているか
+⑥ 目標がサービス利用そのものになっていないか
+⑦ 目標が具体的にイメージできるか
+⑧ 本人の残存能力を活かしているか
+⑨ サービス内容が目標につながっているか
+⑩ 必要な支援を幅広く検討したうえで、必要なものだけを選択しているか
+⑪ 必要な専門職・サービスが適切に選択されているか
+⑫ 選択した専門職・サービスについて、その役割が明確になっているか
+⑬ 形式的・自動的に専門職やサービスを追加していないか
+⑭ サービスを増やすこと自体が目的になっていないか
+⑮ 第1表と第2表の方向性が一致しているか
+⑯ 第2表と第3表のサービス・頻度が一致しているか
+⑰ 家族の介護負担が過度になっていないか
+⑱ 本人の尊厳と意思を尊重しているか
+⑲ ICFの視点から生活・活動・参加まで考慮しているか
+⑳ 入力情報にない事実を作っていないか
+㉑ サービスから逆算してニーズや目標を作っていないか
+㉒ ニーズから必要な専門職・サービスを検討する流れになっているか
+
+矛盾がある場合は、最終出力前に修正してください。
+
+【最終出力形式】
+
+以下の順番で出力してください。
+
+【抽出したニーズ】
+
+分析結果をもとに、優先順位の高い順に6～8項目のニーズを実際に作成して記載してください。
+
+各ニーズは、本人・家族の気持ちを反映した話し言葉で記載し、その下に背景となる生活課題を記載してください。
+
+※「〇〇したいです」などの入力用ひな形は表示せず、利用者情報を分析して実際のニーズを作成してください。
+
+【ケアプラン第1表】
+
+●利用者の意向
+
+〇〇
+
+●家族の意向
+
+〇〇
+
+●課題分析の結果
+
+〇〇
+
+※250字以内
+
+●総合的援助方針
+
+〇〇
+
+※300字以内
+
+【ケアプラン第2表】
+
+| 優先順位生活全般の課題（ニーズ）長期目標短期目標サービス内容 |   |   |   |   |
+| ------------------------------ | - | - | - | - |
+| 1                              |   |   |   |   |
+| 2                              |   |   |   |   |
+| 3                              |   |   |   |   |
+| 4                              |   |   |   |   |
+| 5                              |   |   |   |   |
+| 6                              |   |   |   |   |
+| 7                              |   |   |   |   |
+| 8                              |   |   |   |   |
+
+※必要な項目数に応じて6～8項目としてください。
+
+サービス内容は、選択した専門職・サービスについて、誰が、何のために、どのような支援を行うのか具体的に記載してください。
+
+【ケアプラン第3表】
+
+第2表のニーズ・目標・サービス内容と整合する形で週間サービス計画を作成してください。
+
+| 曜日午前午後夜間 |   |   |   |
+| -------- | - | - | - |
+| 月        |   |   |   |
+| 火        |   |   |   |
+| 水        |   |   |   |
+| 木        |   |   |   |
+| 金        |   |   |   |
+| 土        |   |   |   |
+| 日        |   |   |   |
+
+必要に応じて、サービスの頻度、時間、内容等を具体的に記載してください。
+
+【重要】
+
+第1表には長期目標・短期目標を記載しないでください。
+
+第2表では、生活全般の解決すべき課題からニーズを作成し、その後に長期目標・短期目標を設定してください。
+
+そのうえで、必要な介護保険サービス、専門職、福祉用具、住宅環境、家族支援、医療等を幅広く検討してください。
+
+専門職・サービスの候補は幅広く検討しますが、利用者に必要性があるものだけを選択してください。
+
+「誰を入れるか」ではなく、「その専門性がどの生活課題に必要なのか」を重視してください。
+
+サービスを入れること自体を目的にしないでください。
+
+第3表は第2表と必ず整合させてください。
+
+最終的に、
+
+「本人がどう暮らしたいのか」
+「何がその生活を妨げているのか」
+「何を目指すのか」
+「そのためにどのような支援が必要なのか」
+「どの専門職・サービスが必要なのか」
+「その支援を誰がどのように行うのか」
+
+が明確にわかるケアプランを作成してください。`
+    },
+    preventive: {
+      name: '介護予防プラン（案）',
+      prompt: PREVENTIVE_CARE_PLAN_PROMPT
+    },
+    issue: {
+      name: '課題整理総括表（案）',
+      prompt: `下記にあるのはケアマネジャーとして課題整理総括表を作成するための条件です。
+
+書類の項目の構成としては「自立した日常生活の阻害要因（心身の状態、環境等）」「状況の事実」「現在」「要因」「改善/維持の可能性」「備考」「見通し」「生活全般の解決すべき課題（ニーズ）」がある。
+
+「自立した日常生活の阻害要因（心身の状態、環境等）」は６つ課題抽出可能。下記の事例から心身の状態や生活環境等、自立した日常生活を阻害しているだろう要因を３～６つ挙げてください。
+
+「状況の事実」は、
+（移動（室内移動・屋外移動の二つに分類））
+（食事（食事内容・食事摂取・調理の３つに分類））
+（排泄（排尿・排便の二つに分類））
+（口腔（口腔衛生・口腔ケアの二つに分類））
+（服薬）
+（入浴）
+（更衣）
+（掃除）
+（洗濯）
+（整理・物品の管理）
+（金銭管理）
+（買い物）
+（コミュニケーション能力）
+（認知）
+（社会との関り）
+（褥瘡・皮膚の問題）
+（行動・心理症状、BPSD）
+（介護力、家族関係含む）
+（居住環境）
+に分かれており、それぞれに項目の「現在」の状況（自立、見守り、一部介助、全介助）または（支障なし、支障あり）が記載できるようになっている。
+
+「現在」は、
+移動（室内移動・屋外移動の二つに分類）は室内移動、屋外移動ともに（自立、見守り、一部介助、全介助）で選択。
+
+食事内容は（支障なし、支障あり）で選択。
+食事摂取と調理は（自立、見守り、一部介助、全介助）で選択。
+
+口腔衛生は（支障なし、支障あり）で選択。
+口腔ケアは（自立、見守り、一部介助、全介助）で選択。
+
+（服薬）（入浴）（更衣）（掃除）（洗濯）（整理・物品の管理）（金銭管理）（買い物）は（自立、見守り、一部介助、全介助）で選択。
+
+（コミュニケーション能力）（認知）（社会との関り）（褥瘡・皮膚の問題）（行動・心理症状、BPSD）（介護力、家族関係含む）（居住環境）は（支障なし、支障あり）で選択する。
+
+「要因」については、「状況の事実」の項目ごとに「現在」が自立、または支障なしだった場合を除き、全て「自立した日常生活の阻害要因（心身の状態、環境等）」で抽出した課題の中から当てはまる要因を全て記載する。
+
+要因は、最初に抽出した「自立した日常生活の阻害要因」に①～⑥の番号を付け、その番号を使用して各「状況の事実」と関連する要因を記載すること。
+
+「現在」が自立、または支障なしの場合は、原則として「要因」は「―」または「なし」とすること。
+
+「改善/維持の可能性」については、その状況について状態が改善する可能性があれば「改善」、現在の状態を維持することが適当であれば「維持」、今後悪化する可能性があれば「悪化」と記載すること。
+
+「備考」は、それぞれの「状況の事実」ごとに、現在の具体的な状況、本人ができていること、できないこと、必要な支援内容、支援者、頻度、生活上の注意点等を具体的に記載すること。
+
+抽象的な表現だけで終わらせず、可能な限り「誰が・どこで・何を・どのように支援しているか」が分かるように記載すること。
+
+「見通し」については、「要因」および「改善/維持の可能性」を踏まえ、要因を解決するための援助内容と、それが提供されることによって見込まれる事後の状況や目標を記載すること。
+
+「見通し」を記載する上での条件として、上記情報から導き出した情報・分析結果をもとに、ケアプランを作成するための根拠として、「〇〇をすれば改善、向上、維持する可能性がある」等、前向きな計画作成につながる内容を３～４つ程度にまとめて記載すること。
+
+「見通し」では、単に課題を再記載するのではなく、
+「現在の状態」
+→「阻害している要因」
+→「必要な援助」
+→「援助によって期待できる変化」
+が分かるように記載すること。
+
+「見通し」にて導き出した結果をもとに、「生活全般の解決すべき課題（ニーズ）」を「〇〇したい」「〇〇の必要性がある」等、ケアプランに記載するニーズ・課題として、利用者や家族の気持ち、ケアマネジャーとしての判断を踏まえ、そのまま転記できる文章として３～５つ記載すること。
+
+ニーズは、単なるサービス内容ではなく、「本人がどのような生活をしたいのか」「何を維持・改善したいのか」が分かる表現とすること。
+
+---
+
+# 【最重要】出力形式・表示方法に関する指示
+
+分析結果は、以下の順番・構成で出力すること。
+
+## ① 自立した日常生活の阻害要因（心身の状態、環境等）
+
+最初に、自立した日常生活を阻害している要因を３～６個抽出すること。
+
+それぞれに必ず①～⑥の番号を付けること。
+
+例：
+
+① 〇〇による身体機能低下・転倒リスク
+② 〇〇によるADL動作の制限
+③ 〇〇による認知・判断能力の低下
+④ 〇〇による健康・皮膚上の問題
+⑤ 〇〇による排泄上の問題
+⑥ 〇〇による活動量・社会参加の低下
+
+---
+
+## ② 状況の事実
+
+「状況の事実」は、必ず以下の５列を横並びにした表形式で表示すること。
+
+**「状況の事実」｜「現在」｜「要因」｜「改善／維持の可能性」｜「備考（状況・支援内容等）」**
+
+必ず１つの状況の事実につき１行を使用すること。
+
+以下の形式を厳守すること。
+
+| 状況の事実現在要因改善／維持の可能性備考（状況・支援内容等） |      |     |    |                 |
+| ------------------------------ | ---- | --- | -- | --------------- |
+| 移動：室内移動                        | 見守り  | ①   | 維持 | 具体的な現在の状況、支援内容等 |
+| 移動：屋外移動                        | 一部介助 | ①   | 維持 | 具体的な現在の状況、支援内容等 |
+| 食事：食事内容                        | 支障なし | ―   | 維持 | 具体的な現在の状況等      |
+| 食事：食事摂取                        | 自立   | ―   | 維持 | 具体的な現在の状況等      |
+| 食事：調理                          | 全介助  | ①②③ | 維持 | 具体的な現在の状況、支援内容等 |
+
+### 表の作成ルール
+
+「状況の事実」は必ず次の順番で並べること。
+
+1. 移動：室内移動
+2. 移動：屋外移動
+3. 食事：食事内容
+4. 食事：食事摂取
+5. 食事：調理
+6. 排泄：排尿
+7. 排泄：排便
+8. 口腔：口腔衛生
+9. 口腔：口腔ケア
+10. 服薬
+11. 入浴
+12. 更衣
+13. 掃除
+14. 洗濯
+15. 整理・物品の管理
+16. 金銭管理
+17. 買い物
+18. コミュニケーション能力
+19. 認知
+20. 社会との関り
+21. 褥瘡・皮膚の問題
+22. 行動・心理症状（BPSD）
+23. 介護力・家族関係
+24. 居住環境
+
+この順番を変更しないこと。
+
+---
+
+## ③ 「現在」の選択ルール
+
+各項目の「現在」は、必ず指定された選択肢の中から判定すること。
+
+### 移動
+
+- 室内移動：自立／見守り／一部介助／全介助
+- 屋外移動：自立／見守り／一部介助／全介助
+
+### 食事
+
+- 食事内容：支障なし／支障あり
+- 食事摂取：自立／見守り／一部介助／全介助
+- 調理：自立／見守り／一部介助／全介助
+
+### 排泄
+
+- 排尿：自立／見守り／一部介助／全介助
+- 排便：自立／見守り／一部介助／全介助
+
+### 口腔
+
+- 口腔衛生：支障なし／支障あり
+- 口腔ケア：自立／見守り／一部介助／全介助
+
+### IADL等
+
+- 服薬
+- 入浴
+- 更衣
+- 掃除
+- 洗濯
+- 整理・物品の管理
+- 金銭管理
+- 買い物
+
+→ 自立／見守り／一部介助／全介助
+
+### その他
+
+- コミュニケーション能力
+- 認知
+- 社会との関り
+- 褥瘡・皮膚の問題
+- 行動・心理症状（BPSD）
+- 介護力・家族関係
+- 居住環境
+
+→ 支障なし／支障あり
+
+---
+
+## ④ 要因の記載ルール
+
+「現在」が「自立」または「支障なし」の場合は、原則として要因を記載しない。
+
+その場合は「―」とする。
+
+「現在」が「見守り」「一部介助」「全介助」または「支障あり」の場合は、①～⑥の阻害要因の中から、その状態に直接関係するものを全て選択して記載する。
+
+要因は、単に近いものを選ぶのではなく、その状態を生じさせている直接的・間接的な要因を分析して選択すること。
+
+ただし、明確な根拠がない要因は無理に関連付けないこと。
+
+---
+
+## ⑤ 改善／維持の可能性
+
+「改善」「維持」「悪化」のいずれかを必ず記載すること。
+
+医学的・身体的・認知的な状態だけで判断せず、
+
+- 本人の残存能力
+- 現在の支援内容
+- 支援を継続した場合の可能性
+- 環境調整
+- リハビリテーション
+- 医療的支援
+- 家族・施設等の支援
+- 本人の意欲
+
+等を総合的に分析して判断すること。
+
+---
+
+## ⑥ 備考の記載ルール
+
+備考には、単に「介助が必要」「見守りが必要」と記載するだけではなく、可能な限り具体的に記載すること。
+
+特に、
+
+- 本人が自分でできること
+- 本人が難しいこと
+- どの場面で支援が必要か
+- 誰が支援しているか
+- 支援の方法
+- 支援頻度
+- 事故・悪化等のリスク
+- 現在実施している対応
+
+を具体的に記載すること。
+
+「安心」「見守る」等の抽象的表現だけで終わらせず、具体的な支援方法が分かるようにすること。
+
+---
+
+## ⑦ 見通し
+
+状況の事実を全体的に分析した上で、３～４つ程度にまとめること。
+
+各見通しは、
+
+**阻害要因 → 必要な援助 → 期待される変化**
+
+の流れが分かる文章にすること。
+
+例えば、
+
+「〇〇を実施することで、〇〇のリスクを軽減し、現在可能な〇〇を継続できる可能性がある。」
+
+「本人が自力で行える〇〇を継続し、必要な部分のみ介助することで、残存能力を活用しながら〇〇を維持・向上できる可能性がある。」
+
+等のように、ケアプラン作成につながる前向きな表現とすること。
+
+---
+
+## ⑧ 生活全般の解決すべき課題（ニーズ）
+
+「見通し」から導き出される重要な課題を３～５個記載すること。
+
+ニーズは、そのまま居宅サービス計画書等に転記できる文章にすること。
+
+「〇〇したい。」
+「〇〇を維持したい。」
+「〇〇しながら生活したい。」
+「〇〇する必要がある。」
+
+等の表現を使用すること。
+
+サービスそのものをニーズにしないこと。
+
+例えば、
+
+×「デイサービスを利用したい。」
+
+ではなく、
+
+○「人との交流や日中の活動機会を増やし、意欲を持って生活したい。」
+
+のように、本人の生活上の目的・希望が分かる表現とすること。
+
+---
+
+# 【出力形式】
+
+作成した内容は、コードブロック、JSON、表形式にはせず、通常の文章として出力してください。
+
+# 【最終出力の順番】
+
+最終的な回答は、必ず以下の順番で出力すること。
+
+### ① 自立した日常生活の阻害要因（心身の状態、環境等）
+
+→ ３～６項目
+
+### ② 状況の事実・現在・要因・改善／維持の可能性・備考
+
+→ 24項目を１つの横並び表で表示
+
+### ③ 見通し
+
+→ ３～４項目
+
+### ④ 生活全般の解決すべき課題（ニーズ）
+
+→ ３～５項目
+
+上記以外の余計な項目は追加しないこと。
+
+また、情報に記載されていない事項を推測して追加しないこと。
+
+本人の状態について根拠がない場合は、「不明」「情報なし」等とし、勝手に補完しないこと。
+
+最終的な分析は、ケアマネジャーがアセスメントおよびケアプランを作成するための基礎資料として使用できる具体性と整合性を持たせること。【課題整理総括表（案）】
+
+■ 自立した日常生活の阻害要因（心身の状態、環境等）
+
+1. 両変形性膝関節症、腰部脊柱狭窄症、下肢筋力低下、左眼失明による歩行不自由・体幹不安定・転倒リスク
+2. 腰痛および関節可動域制限（両膝屈曲80度）による身体動作障害（洗身・整髪・更衣・爪切り等）
+3. 認知機能低下（短期記憶障害・日課/季節理解力低下・理解力低下による会話の不成立）
+4. 帯状疱疹による左半身の疼痛および既往歴（左足首軽度褥瘡）に伴う皮膚トラブルリスク
+5. 頻回な尿失禁の発生
+6. 日常生活の意欲低下および活動量減少（閉じこもり傾向）
+
+■ 状況の事実
+
+【移動（室内移動）】
+
+・現在：見守り
+
+・要因：1. 両変形性膝関節症、腰部脊柱管狭窄症、下肢筋力低下、左眼失明による歩行不自由・体幹不安定・転倒リスク
+
+・改善/維持の可能性：維持
+
+・備考：歩行器を使用し室内・居室外移動を行っている。足元が不安定でふらつきがあり、勢いよく座る等の動作がみられるため、転倒危険性が高い。居室トイレへは自力移動（8回/日）するが、ホールや入浴移動時は職員の付き添い見守り（3～4回/日）を実施している。
+
+【移動（屋外移動）】
+
+・現在：一部介助
+
+・要因：1. 両変形性膝関節症、腰部脊柱管狭窄症、下肢筋力低下、左眼失明による歩行不自由・体幹不安定・転倒リスク
+
+・改善/維持の可能性：維持
+
+・備考：屋外移動は月1回未満。1～2か月に1回程度、娘の付き添いで整形外科等を受診している。
+
+【食事（食事内容）】
+
+・現在：支障なし
+
+・要因：なし
+
+・改善/維持の可能性：維持
+
+・備考：施設食が提供されており、栄養状態は良好である。
+
+【食事（食事摂取）】
+
+・現在：自立
+
+・要因：なし
+
+・改善/維持の可能性：維持
+
+・備考：食事は自分で摂取できている。嚥下にも問題なし。
+
+【食事（調理）】
+
+・現在：全介助
+
+・要因：1. 両変形性膝関節症、腰部脊柱管狭窄症、下肢筋力低下、左眼失明による歩行不自由・体幹不安定・転倒リスク / 2. 腰痛および関節可動域制限（両膝屈曲80度）による身体動作障害 / 3. 認知機能低下
+
+・改善/維持の可能性：維持
+
+・備考：施設食が提供されているため、調理動作は実施していない。
+
+【排泄（排尿）】
+
+・現在：一部介助
+
+・要因：1. 両変形性膝関節症、腰部脊柱管狭窄症、下肢筋力低下、左眼失明による歩行不自由・体幹不安定・転倒リスク / 5. 頻回な尿失禁の発生
+
+・改善/維持の可能性：維持
+
+・備考：トイレ移動・排泄動作自体は自力で行っている（リハパン使用なし）が、尿失禁が多く見られるため、移動時の安全確認および衛生管理・着替え等の支援を要する。
+
+【排泄（排便）】
+
+・現在：自立
+
+・要因：なし
+
+・改善/維持の可能性：維持
+
+・備考：2日に1回程度、トイレにて自力で排泄動作を行っている。便秘に対しセンノシドの処方あり。
+
+【口腔（口腔衛生）】
+
+・現在：支障なし
+
+・要因：なし
+
+・改善/維持の可能性：維持
+
+・備考：総義歯を使用。洗面台にて自分で義歯洗浄、うがいを実施している。
+
+【口腔（口腔ケア）】
+
+・現在：自立
+
+・要因：なし
+
+・改善/維持の可能性：維持
+
+・備考：自分で義歯の清掃とうがいを行えている。
+
+【服薬】
+
+・現在：一部介助
+
+・要因：3. 認知機能低下
+
+・改善/維持の可能性：維持
+
+・備考：内服薬は1日1回。看護師が管理し、手渡すことで自分で服用できている（飲み忘れなし）。
+
+【入浴】
+
+・現在：一部介助
+
+・要因：1. 両変形性膝関節症、腰部脊柱管狭窄症、下肢筋力低下、左眼失明による歩行不自由・体幹不安定・転倒リスク / 2. 腰痛および関節可動域制限（両膝屈曲80度）による身体動作障害 / 4. 帯状疱疹による左半身の疼痛および既往歴に伴う皮膚トラブルリスク
+
+・改善/維持の可能性：維持
+
+・備考：週3回実施。洗身時、身体の前面は自分で洗えるが、腰痛・関節可動域制限により背中や足先に手が届かないため職員が洗身を実施。整髪は全介助。左半身帯状疱疹の疼痛や皮膚状態の配慮が必要。
+
+【更衣】
+
+・現在：一部介助
+
+・要因：2. 腰痛および関節可動域制限（両膝屈曲80度）による身体動作障害
+
+・改善/維持の可能性：維持
+
+・備考：脱衣は自力可能。着衣時、上衣は背中に手が届きにくいため職員がたくれを整え、ズボンは本人が足を通した後に職員が引き上げる介助を行っている。爪切りは筋力・視力低下により全介助。
+
+【掃除】
+
+・現在：全介助
+
+・要因：1. 両変形性膝関節症、腰部脊柱管狭窄症、下肢筋力低下、左眼失明による歩行不自由・体幹不安定・転倒リスク / 2. 腰痛および関節可動域制限（両膝屈曲80度）による身体動作障害
+
+・改善/維持の可能性：維持
+
+・備考：施設に入所中であり、掃除は施設側が実施している。
+
+【洗濯】
+
+・現在：全介助
+
+・要因：1. 両変形性膝関節症、腰部脊柱管狭窄症、下肢筋力低下、左眼失明による歩行不自由・体幹不安定・転倒リスク / 2. 腰痛および関節可動域制限（両膝屈曲80度）による身体動作障害
+
+・改善/維持の可能性：維持
+
+・備考：施設に入所中であり、洗濯は施設側が実施している。
+
+【整理・物品の管理】
+
+・現在：一部介助
+
+・要因：3. 認知機能低下
+
+・改善/維持の可能性：維持
+
+・備考：日用品の準備等は施設や娘が行っている。
+
+【金銭管理】
+
+・現在：一部介助
+
+・要因：3. 認知機能低下
+
+・改善/維持の可能性：維持
+
+・備考：全体的な金銭管理や預貯金の出し入れは娘が実施。本人は少額を所持し、日常的な収支把握・管理は可能。
+
+【買い物】
+
+・現在：全介助
+
+・要因：1. 両変形性膝関節症、腰部脊柱管狭窄症、下肢筋力低下、左眼失明による歩行不自由・体幹不安定・転倒リスク / 3. 認知機能低下
+
+・改善/維持の可能性：維持
+
+・備考：食材は施設で一括購入し、日用品は施設や娘が調達している。
+
+【コミュニケーション能力】
+
+・現在：支障あり
+
+・要因：1. 両変形性膝関節症、腰部脊柱管狭窄症、下肢筋力低下、左眼失明による歩行不自由・体幹不安定・転倒リスク / 3. 認知機能低下
+
+・改善/維持の可能性：維持
+
+・備考：左眼はほぼ失明状態。聴力低下があり普通声では聞き返しがあるが、大きめの声で話すと理解できる。意思伝達は可能。
+
+【認知】
+
+・現在：支障あり
+
+・要因：3. 認知機能低下
+
+・改善/維持の可能性：維持
+
+・備考：人の名前や聞いたことを忘れやすく、日課や季節の理解が困難である。日常生活の意思決定はできるが、契約やサービス等特別な事項の決定は困難なため娘が行う。
+
+【社会との関り】
+
+・現在：支障あり
+
+・要因：1. 両変形性膝関節症、腰部脊柱管狭窄症、下肢筋力低下、左眼失明による歩行不自由・体幹不安定・転倒リスク / 6. 日常生活の意欲低下および活動量減少（閉じこもり傾向）
+
+・改善/維持の可能性：改善
+
+・備考：日頃はベッドで横になって過ごすことが多く、日々の活動への参加に消極的である。妻（要介護3）と同室で生活している。
+
+【褥瘡・皮膚の問題】
+
+・現在：支障あり
+
+・要因：4. 帯状疱疹による左半身の疼痛および既往歴（左足首軽度褥瘡）に伴う皮膚トラブルリスク
+
+・改善/維持の可能性：改善
+
+・備考：2026年4月の左足首軽度褥瘡は改善。6月下旬より左半身全体に帯状疱疹が発生し、投薬治療・経過観察中である。
+
+【行動・心理症状（BPSD）】
+
+・現在：支障あり
+
+・要因：3. 認知機能低下
+
+・改善/維持の可能性：維持
+
+・備考：被害妄想等は見られないが、理解力低下に伴い質問と関係のない回答をすることや会話が噛み合わない状況が週2回程度発生している。
+
+【介護力（家族関係含む）】
+
+・現在：支障あり
+
+・要因：3. 認知機能低下
+
+・改善/維持の可能性：維持
+
+・備考：同室の妻は要介護3・認知症のため介助不能。施設職員が日常介護を担い、長女がキーパーソンとして金銭管理や受診付き添い等の後方支援を行っている。
+
+【居住環境】
+
+・現在：支障あり
+
+・要因：1. 両変形性膝関節症、腰部脊柱管狭窄症、下肢筋力低下、左眼失明による歩行不自由・体幹不安定・転倒リスク
+
+・改善/維持の可能性：維持
+
+・備考：有料老人ホームに入所中。室内歩行や立ち上がり動作時のふらつき、勢いよく座り込む動作等があり、転倒危険性が高い。
+
+■ 見通し
+
+1. 歩行器の適切な使用と動線の確保、ならびに移乗・移動時の見守り・付き添い支援を徹底することで、ふらつきによる転倒・骨折事故を防ぎ、安全に室内移動やトイレ利用を継続できる可能性がある。
+2. 着衣や洗身動作において本人が自力で行える範囲（脱衣や前身の洗身等）を活かしつつ、手の届かない部位への身体介助を実施することで、関節可動域や残留肢体機能の低下を防ぎ、身体機能およびADL動作を維持・向上できる可能性がある。
+3. 定期的な訪問診療や看護師による健康管理のもと、帯状疱疹に伴う疼痛緩和と皮膚観察、尿失禁への適切な清潔ケアを実施することで、褥瘡等の皮膚トラブルの再発を防ぎ、安楽な生活状態を維持できる可能性がある。
+4. 本人の聴力や視覚、認知状態に合わせた丁寧な声かけ（正面から大きめの声で伝える）を行い、離床機会や妻・他者との交流を促すことで、不安を軽減し、低下している生活意欲や社会参加意識を向上させられる可能性がある。
+
+■ 生活全般の解決すべき課題（ニーズ）
+
+1. 歩行補助具を活用し、見守りのもとで転倒することなく安全に移動や排泄を行いたい。
+2. 痛みに配慮しながら、職員の適切な助力を得て洗身や更衣をスムーズに行い、清潔で快適な生活を送りたい。
+3. 医療管理と適切な観察のもとで帯状疱疹の痛みを和らげ、皮膚トラブルや尿失禁による不快感を改善したい。
+4. 自身のペースに合わせた声かけや関わりを通じて、安心して意欲的に日々の生活や他者との交流に取り組みたい。
+`
+    }
+  };
+
+  // ===== 最終書類用プロンプトを事前整理用プロンプトから完全分離 =====
+  // ここでは上記 PLAN_DOCUMENT_PROMPTS の内容をそのまま参照します。
+  // プロンプト本文そのものは変更・加工・連結しません。
+  // ===== 最終書類プロンプトの単一登録簿 =====
+  // 書類種別 → 正式な作成用プロンプト、の対応をここだけで管理します。
+  // プロンプト本文はユーザー指定内容を変更・加工せず、そのまま参照します。
+  const FINAL_DOCUMENT_PROMPTS = Object.freeze({
+    care: Object.freeze(PLAN_DOCUMENT_PROMPTS.care),
+    preventive: Object.freeze(PLAN_DOCUMENT_PROMPTS.preventive),
+    issue: Object.freeze(PLAN_DOCUMENT_PROMPTS.issue)
+  });
+  const FINAL_DOCUMENT_TYPES = Object.freeze(['care','preventive','issue']);
+
+  // ===== 最終書類選択・結合処理 =====
+  // 最終工程では「選択種別」だけを状態として保持し、プロンプト本体は必ず登録簿から再取得します。
+  // これにより、選択ボタンと別書類のプロンプトが混ざる経路をなくします。
+  const finalDocumentState = {
+    selectedType: null,
+    confirmedOrganizedInfo: ''
+  };
+
+  function getFinalDocument(type){
+    if(!FINAL_DOCUMENT_TYPES.includes(type)) return null;
+    const item = FINAL_DOCUMENT_PROMPTS[type];
+    if(!item || typeof item.name !== 'string' || !item.name.trim() ||
+       typeof item.prompt !== 'string' || !item.prompt.trim()) return null;
+    return item;
+  }
+
+  function updateFinalSelectionUI(){
+    document.querySelectorAll('.document-choice-button').forEach(button=>{
+      button.classList.toggle('selected', button.dataset.documentType === finalDocumentState.selectedType);
+    });
+    const status=document.getElementById('selectedDocumentStatus');
+    const btn=document.getElementById('preventiveFinalCopyButton');
+    if(!status || !btn) return;
+    const item=getFinalDocument(finalDocumentState.selectedType);
+    const input=document.getElementById('preventiveOrganizedInput');
+    const currentOrganized=input ? cleanAIResult(input.value) : '';
+    const confirmed=!!item && !!currentOrganized && currentOrganized===finalDocumentState.confirmedOrganizedInfo;
+    if(item){
+      status.textContent=confirmed
+        ? '✓ 現在選択中：「'+item.name+'」｜確認済み情報あり'
+        : '✓ 現在選択中：「'+item.name+'」｜まず整理情報を確認・保存してください';
+      btn.disabled=!confirmed;
+      btn.textContent=confirmed
+        ? '📋 '+item.name+'作成用データ（最終）をコピーする'
+        : '📋 整理情報を確認・保存するとコピーできます';
+    }else{
+      status.textContent='';
+      btn.disabled=true;
+      btn.textContent='📋 選択した書類のAI用データ（最終）をコピーする';
+    }
+  }
+
+  window.selectFinalDocument=function(type){
+    const item=getFinalDocument(type);
+    const status=document.getElementById('selectedDocumentStatus');
+    if(!item){
+      if(status){
+        status.className='status alert';
+        status.textContent='⚠️ 選択した書類の作成用プロンプトを確認できません。';
+      }
+      finalDocumentState.selectedType=null;
+      updateFinalSelectionUI();
+      return false;
+    }
+    finalDocumentState.selectedType=type;
+    updateFinalSelectionUI();
+    if(status) status.className='status success';
+    return true;
+  };
+
+  window.copySelectedFinalData=async function(){
+    const input=$('preventiveOrganizedInput');
+    const status=$('preventiveFinalStatus');
+    const btn=$('preventiveFinalCopyButton');
+    if(!input||!status||!btn)return;
+
+    // 重要：コピー時に selectedItem は使わず、選択種別から必ず登録簿を再取得します。
+    const selectedType=finalDocumentState.selectedType;
+    const item=getFinalDocument(selectedType);
+    if(!item){
+      status.className='status alert';
+      status.textContent='⚠️ 先に作成する書類を選択してください。';
+      return;
+    }
+
+    const organized=cleanAIResult(input.value);
+    if(!organized){
+      status.className='status alert';
+      status.textContent='⚠️ 先に整理情報を貼り付け、確認してください。';
+      return;
+    }
+    if(finalDocumentState.confirmedOrganizedInfo !== organized){
+      status.className='status alert';
+      status.textContent='⚠️ 整理情報を修正した場合は、もう一度「確認・保存」を行ってください。';
+      return;
+    }
+
+    // 選択書類とプロンプトの対応をコピー直前にも再検証します。
+    const registeredItem=getFinalDocument(selectedType);
+    if(!registeredItem || registeredItem !== item || registeredItem.name !== item.name){
+      status.className='status alert';
+      status.textContent='⚠️ 書類選択情報を再確認してください。';
+      return;
+    }
+
+    // 最終工程では、事前整理用プロンプトを絶対に使用せず、
+    // 選択された書類種別に対応する正式な作成用プロンプトだけを登録簿から取得します。
+    const finalPrompt=registeredItem.prompt;
+    if(!finalPrompt || finalPrompt !== item.prompt){
+      status.className='status alert';
+      status.textContent='⚠️ 最終作成用プロンプトの選択確認に失敗しました。コピーを中止しました。';
+      return;
+    }
+
+    // 最終工程では、事前整理用プロンプトそのものを参照していないことを確認します。
+    // 事前整理用プロンプトは PREVENTIVE_PRE_PROMPT_BASE / PREVENTIVE_PRE_PROMPT に限定され、
+    // 最終3書類は FINAL_DOCUMENT_PROMPTS からのみ取得します。
+    if(finalPrompt === PREVENTIVE_PRE_PROMPT_BASE || finalPrompt === PREVENTIVE_PRE_PROMPT){
+      status.className='status alert';
+      status.textContent='⚠️ 事前整理用プロンプトとの混同を検出したため、コピーを中止しました。';
+      return;
+    }
+
+    // 事前整理用プロンプトの特徴的な文言が最終データへ混入していないかを確認します。
+    const prePromptContaminationMarkers=[
+      'アセスメントの前に、情報をまとめますが、下記の各項目に沿って情報を細かく分析して',
+      '【出力後の案内】',
+      'このコードブロック（AIが整理した情報）をコピーしてください。',
+      '「④ AIが整理した情報をこのアプリに貼り付けてください。」'
+    ];
+    if(prePromptContaminationMarkers.some(marker=>finalPrompt.includes(marker))){
+      status.className='status alert';
+      status.textContent='⚠️ 事前整理用プロンプトが最終作成用プロンプトとして登録されています。コピーを中止しました。';
+      return;
+    }
+
+    const finalText =
+`【${item.name}作成支援：AI処理用】
+
+【重要】
+以下の「ケアマネジャー確認済み情報」を最優先の事実情報として使用してください。
+確認済み情報に記載されていない内容を推測・補完しないでください。
+
+【ケアマネジャー確認済み情報】
+${organized}
+
+【${item.name}作成用プロンプト】
+${finalPrompt}`;
+
+    // 「整理情報」と「選択した正式な作成用プロンプト」の両方が実際に結合されたことを確認してからコピーします。
+    if(!finalText.includes(organized) || !finalText.includes(finalPrompt)){
+      status.className='status alert';
+      status.textContent='⚠️ 結合確認に失敗しました。コピーを中止しました。';
+      return;
+    }
+
+    const copied=await copyTextToClipboard(finalText);
+    status.className=copied?'status success':'status';
+    status.textContent=copied
+      ?'✓ 「'+item.name+'」用の確認済み情報＋作成用プロンプトを一つにまとめてコピーしました。そのままAIへ貼り付けてください。'
+      :'コピーできませんでした。ブラウザのコピー権限を確認してください。';
+    if(copied){
+      btn.classList.add('final-copy-button-copied');
+      btn.textContent='✓ '+item.name+'作成用データを作成しました。そのままAIへ貼り付けてください。';
+      setTimeout(()=>{
+        btn.classList.remove('final-copy-button-copied');
+        updateFinalSelectionUI();
+      },1800);
+    }
+  };
+
+  // 3種類すべての登録状態を起動時に検証します。
+  function validateFinalDocumentRegistry(){
+    const types=FINAL_DOCUMENT_TYPES;
+    const prePromptMarkers=[
+      'アセスメントの前に、情報をまとめますが、下記の各項目に沿って情報を細かく分析して',
+      '【出力後の案内】',
+      'このコードブロック（AIが整理した情報）をコピーしてください。',
+      '「④ AIが整理した情報をこのアプリに貼り付けてください。」'
+    ];
+    const result={};
+    types.forEach(type=>{
+      const item=getFinalDocument(type);
+      result[type]=!!item && item.prompt !== PREVENTIVE_PRE_PROMPT_BASE && item.prompt !== PREVENTIVE_PRE_PROMPT && !prePromptMarkers.some(marker=>item.prompt.includes(marker));
+    });
+    return result.care && result.preventive && result.issue;
+  }
+
+  window.getFinalDocumentValidation=function(){
+    return {
+      care: !!getFinalDocument('care'),
+      preventive: !!getFinalDocument('preventive'),
+      issue: !!getFinalDocument('issue')
+    };
+  };
+
+  // 既存の確認処理を置き換えず、確認成功時だけ最終状態へ保存するための監視。
+  const organizedInputForFinal = $('preventiveOrganizedInput');
+  if(organizedInputForFinal){
+    organizedInputForFinal.addEventListener('input',()=>{
+      finalDocumentState.confirmedOrganizedInfo='';
+      const finalStatus=document.getElementById('preventiveFinalStatus');
+      if(finalStatus){
+        finalStatus.className='status';
+        finalStatus.textContent='';
+      }
+      updateFinalSelectionUI();
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    const input=$('preventiveFileInput'),zone=$('preventiveDropZone');if(!input||!zone)return;
+    input.addEventListener('change',function(){addPreventiveFiles(this.files);this.value='';});
+    zone.addEventListener('click',()=>input.click());
+    zone.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();input.click();}});
+    zone.addEventListener('dragover',event=>{event.preventDefault();zone.classList.add('dragover');});
+    zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));
+    zone.addEventListener('drop',event=>{event.preventDefault();zone.classList.remove('dragover');addPreventiveFiles(event.dataTransfer?.files);});
+    updateLoadButton();renderFileList();
+  });
+})();
+
+})();
+</script>
+<script id="help-slide-panel-restore-script">
+document.addEventListener('DOMContentLoaded', function(){
+  const pairs = [
+    ['privacyHelpToggle','privacyHelpPanel'],
+    ['aiPreorganizeHelpToggle','aiPreorganizeHelpPanel']
+  ];
+  pairs.forEach(function(ids){
+    const toggle=document.getElementById(ids[0]);
+    const panel=document.getElementById(ids[1]);
+    if(!toggle || !panel) return;
+    toggle.addEventListener('click', function(){
+      const open=panel.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  });
+});
+</script>
+</body>
+</html>
+
+<div id="boVisualEditorOverlay" aria-hidden="true">
+  <div class="bo-editor-window">
+    <div class="bo-editor-head">
+      <div>
+        <div class="bo-editor-head-title">🖥️ HTMLビジュアル編集</div>
+        <div class="bo-editor-head-help">左側のHTMLを変更すると、右側の画面がすぐに更新されます。</div>
+      </div>
+      <div class="bo-editor-head-actions">
+        <button type="button" onclick="boRefreshVisualPreview()">↻ プレビュー更新</button>
+        <button type="button" onclick="boDownloadEditedHtml()">💾 編集したHTMLを保存</button>
+        <button type="button" onclick="boCloseVisualHtmlEditor()">✕ 閉じる</button>
+      </div>
+    </div>
+
+    <div class="bo-editor-main">
+      <section class="bo-editor-pane">
+        <div class="bo-editor-pane-title">① HTMLを編集</div>
+        <textarea id="boHtmlSource" spellcheck="false"></textarea>
+      </section>
+
+      <section class="bo-editor-pane">
+        <div class="bo-editor-pane-title">② 画面を確認</div>
+        <iframe id="boHtmlPreview" title="HTMLプレビュー" sandbox="allow-scripts allow-forms allow-modals"></iframe>
+      </section>
+    </div>
+
+    <div class="bo-editor-foot">
+      HTMLを直接編集できます。右側は実際のHTMLをブラウザで表示した状態です。
+      <span id="boEditorStatus" class="bo-editor-status">編集中</span>
+    </div>
+  </div>
+</div>
+
+
+<script id="blueocean-visual-html-editor-script">
+(function(){
+  "use strict";
+
+  const openBtn = document.getElementById("boVisualEditorOpen");
+  const overlay = document.getElementById("boVisualEditorOverlay");
+  const source = document.getElementById("boHtmlSource");
+  const preview = document.getElementById("boHtmlPreview");
+  const status = document.getElementById("boEditorStatus");
+
+  let previewTimer = null;
+
+  function currentHtml(){
+    return source ? source.value : "";
+  }
+
+  function updatePreview(){
+    if(!preview || !source) return;
+    preview.srcdoc = currentHtml();
+    if(status) status.textContent = "プレビュー更新済み";
+  }
+
+  window.boOpenVisualHtmlEditor = function(){
+    if(!overlay || !source) return;
+
+    /*
+      現在の画面そのものを編集対象として読み込みます。
+      ビジュアルエディタ関連のオーバーレイは、編集対象から除外します。
+    */
+    const clone = document.documentElement.cloneNode(true);
+    clone.querySelectorAll("#boVisualEditorOverlay,#boVisualEditorOpen,#blueocean-visual-html-editor,#blueocean-visual-html-editor-script")
+      .forEach(el => el.remove());
+
+    source.value = "<!doctype html>\n" + clone.outerHTML;
+    overlay.classList.add("bo-editor-open");
+    overlay.setAttribute("aria-hidden","false");
+    document.body.style.overflow = "hidden";
+    updatePreview();
+  };
+
+  window.boCloseVisualHtmlEditor = function(){
+    if(!overlay) return;
+    overlay.classList.remove("bo-editor-open");
+    overlay.setAttribute("aria-hidden","true");
+    document.body.style.overflow = "";
+  };
+
+  window.boRefreshVisualPreview = function(){
+    updatePreview();
+  };
+
+  window.boDownloadEditedHtml = function(){
+    const html = currentHtml();
+    if(!html.trim()) return;
+
+    const blob = new Blob([html], {type:"text/html;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "BlueOcean_ビジュアル編集版.html";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    if(status) status.textContent = "HTMLを保存しました";
+  };
+
+  if(source){
+    source.addEventListener("input", function(){
+      clearTimeout(previewTimer);
+      previewTimer = setTimeout(updatePreview, 350);
+      if(status) status.textContent = "入力中…";
+    });
+
+    source.addEventListener("keydown", function(e){
+      if(e.key === "Tab"){
+        e.preventDefault();
+        const start = this.selectionStart;
+        const end = this.selectionEnd;
+        this.value = this.value.slice(0,start) + "  " + this.value.slice(end);
+        this.selectionStart = this.selectionEnd = start + 2;
+        this.dispatchEvent(new Event("input"));
+      }
+    });
+  }
+
+  if(overlay){
+    overlay.addEventListener("click", function(e){
+      if(e.target === overlay) window.boCloseVisualHtmlEditor();
+    });
+  }
+
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && overlay && overlay.classList.contains("bo-editor-open")){
+      window.boCloseVisualHtmlEditor();
+    }
+  });
+})();
+
+  /*
+   * AI起動設定
+   * ・サイトを新しいタブで開くだけ
+   * ・文章の自動送信／自動貼り付けは行わない
+   * ・1回目／2回目で共通利用
+   */
+  const AI_SITES=Object.freeze({
+    chatgpt:'https://chatgpt.com/',
+    gemini:'https://gemini.google.com/',
+    claude:'https://claude.ai/',
+  });
+
+  window.openAI=function(ai){
+    const url=AI_SITES[ai]||AI_SITES.chatgpt;
+    window.open(url,'_blank','noopener,noreferrer');
+  };
+
+</script>
+
+</body>
+</html>
