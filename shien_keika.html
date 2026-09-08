@@ -566,6 +566,18 @@ textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!impo
   color:#fff !important;
 }
 </style>
+<style id="ai-launch-buttons">
+.ai-launch-area{display:none;margin:12px 0 4px;padding:14px 12px;border:2px solid #9bc7ee;border-radius:12px;background:#f7fbff;text-align:center}
+.ai-launch-area.is-visible{display:block}
+.ai-launch-title{margin:0 0 5px;color:#155a91;font-size:15px;font-weight:800}
+.ai-launch-note{margin:0 0 10px;color:#526b7a;font-size:13px;line-height:1.6}
+.ai-launch-buttons{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.ai-launch-button{min-width:150px;margin:2px;padding:11px 16px;border-radius:10px;font-weight:800;font-size:14px;border:2px solid #138ee0;background:#fff;color:#0875c9}
+.ai-launch-button:hover{background:#eef7ff;border-color:#0875c9}
+.ai-launch-search{margin-top:9px;font-size:12px;color:#6b7280}
+.ai-launch-search a{color:#0875c9;font-weight:700;text-decoration:underline;cursor:pointer}
+@media(max-width:600px){.ai-launch-buttons{flex-direction:column}.ai-launch-button{width:100%;margin:3px 0}}
+</style>
 </head>
 
 <body>
@@ -760,6 +772,23 @@ class="status"
 >
 まだコピーされていません。
 </div>
+
+<div id="aiLaunchArea" class="ai-launch-area">
+  <p class="ai-launch-note">下のボタンから使用するAIを開いて、コピーした内容を貼り付けてください。</p>
+  <div class="ai-launch-buttons">
+    <button type="button" class="ai-launch-button" onclick="openAI('chatgpt')">🤖 ChatGPTを開く</button>
+    <button type="button" class="ai-launch-button" onclick="openAI('gemini')">✨ Geminiを開く</button>
+    <button type="button" class="ai-launch-button" onclick="openAI('claude')">🟣 Claudeを開く</button>
+  </div>
+  <div class="ai-launch-search">
+    開けない場合はこちらから検索してください：
+    <a href="https://www.google.com/search?q=ChatGPT" target="_blank" rel="noopener noreferrer">ChatGPT</a> ／
+    <a href="https://www.google.com/search?q=Google+Gemini" target="_blank" rel="noopener noreferrer">Gemini</a> ／
+    <a href="https://www.google.com/search?q=Claude+AI" target="_blank" rel="noopener noreferrer">Claude</a>
+  </div>
+</div>
+
+
 
 
 </section>
@@ -1308,7 +1337,7 @@ function isCustomSupportPattern(pattern){
 removeDefaultCustomSupportPromptSample();
 
 const SUPPORT_PATTERN_KEY = "bo_support_pattern";
-let supportPattern = localStorage.getItem(SUPPORT_PATTERN_KEY) || "A";
+let supportPattern = localStorage.getItem(SUPPORT_PATTERN_KEY) || "";
 const SUPPORT_OUTPUT_MODE_KEY = "bo_support_output_modes";
 const SUPPORT_OUTPUT_MODES = ["normal","withoutCategory","contentOnly"];
 let supportOutputModes = {A:"normal", B:"normal", C:"normal"};
@@ -1330,11 +1359,13 @@ function setSupportPattern(pattern){
   }
   if(["A","B","C"].includes(pattern) || isCustomSupportPattern(pattern)){
     supportPattern = pattern;
+    supportOutputMode = supportOutputModes[supportPattern] || "normal";
+    localStorage.setItem(SUPPORT_PATTERN_KEY, supportPattern);
   }else{
-    supportPattern = "A";
+    supportPattern = "";
+    supportOutputMode = "normal";
+    localStorage.removeItem(SUPPORT_PATTERN_KEY);
   }
-  supportOutputMode = supportOutputModes[supportPattern] || "normal";
-  localStorage.setItem(SUPPORT_PATTERN_KEY, supportPattern);
   updatePatternUI();
 }
 
@@ -1773,13 +1804,56 @@ ${additionalInput || "なし"}
 【独自プロンプトの使用ルール】
 上記の独自プロンプトに記載された作成ルール・出力形式を最優先してください。
 支援経過A・B・Cの固有ルールは自動追加・適用しないでください。
-入力されていない事実は推測・補完・創作して追加しないでください。`;
+
+【事実情報の使用範囲・絶対ルール】
+支援経過に記載する事実・状態・発言・行動・対応・結果は、今回この画面で「選択」された項目、または「音声入力・手入力」によって実際に入力された情報だけを根拠とすること。
+AI自身の一般知識、経験則、常識、典型例、過去の会話、想像、推測、補完、創作によって、入力されていない事実を一切追加しないこと。
+選択された項目は、記録の対象・分類を示す情報として使用してよいが、その項目名だけから具体的な状態、行動、発言、支援内容、結果等を推測して作らないこと。
+定型文は文章の表現・構成を整えるための参考情報として使用し、定型文に含まれる一般的・例示的な内容を、今回実際に起きた事実として追加しないこと。
+今回の音声入力・手入力に記載されていない内容は、たとえ自然な文章として必要に思えても追加せず、情報がない場合はその部分を記載しないこと。
+曖昧な情報を具体化したり、主語・日時・場所・症状・原因・経過・支援者の対応・本人や家族の意向・結果等を勝手に補ったりしないこと。
+「～と考えられる」「～と思われる」「～の可能性がある」等の表現であっても、入力されていない内容を推測して記載しないこと。`;
 
     copyText(customFinalText.trim(), copyButton, "コピーしました！それではお好きなAIへ貼り付けてください！");
     return;
   }
 
   supportOutputMode = supportOutputModes[supportPattern] || "normal";
+
+  const isContentOnly = supportOutputMode === "contentOnly";
+
+  /*
+     「内容のみを表示」では、選択項目そのものをAIへの参照情報としても
+     「選択された項目」という見出しで渡さない。
+     これにより、Bパターンの通常ルールにある「区分」出力指示が
+     AI側で再適用されることを防ぎ、内容本文だけを作成させる。
+  */
+  const contentOnlyReference = isContentOnly
+    ? `【内容作成に使用する定型文】
+${templates || "なし"}
+
+【内容作成に使用する今回だけの項目】
+${temporaryCategories.length ? temporaryCategories.join("\n") : "なし"}`
+    : `【選択された項目】
+${selectedCategories || "なし"}
+
+【選択された項目の定型文】
+${templates || "なし"}
+
+【今回だけ追加された項目（定型文なし）】
+${temporaryCategories.length ? temporaryCategories.join("\n") : "なし"}`;
+
+  const evidenceRule = `
+【最重要：事実情報の使用範囲】
+この支援経過で「事実」として記載してよい情報源は、①画面上で今回選択された項目、②今回の音声・手入力による追加情報、の2つだけです。
+AI自身の知識・経験・一般論・常識・典型例・過去の会話・外部情報を使って、今回入力されていない事実を補わないでください。
+選択された項目は、何について記録するかを示す情報としてのみ使用し、項目名から具体的な状態・行動・発言・支援・結果を推測しないでください。
+定型文は文章の構成や表現を整えるための参考情報であり、定型文に書かれている一般的な内容・例示・想定を、今回の利用者の事実として扱わないでください。
+音声・手入力にない内容は、文章を自然にする目的でも追加しないでください。情報がない部分は無理に埋めず、省略してください。
+日時・場所・人物・症状・状態・原因・行動・発言・支援内容・判断・調整結果・今後の予定など、入力されていない具体的情報を推測して記載しないでください。
+「おそらく」「～と考えられる」「～と思われる」「～の可能性がある」などの推測表現によって、入力されていない内容を記載することも禁止します。
+入力情報を整理・文章化することは許可しますが、意味・事実関係を増やしたり変更したりしないでください。
+`;
 
   const finalText = `あなたは経験豊富な介護支援専門員です。
 以下のプロンプトを一字一句変更せず、そのまま最優先の作成ルールとして使用してください。
@@ -1790,11 +1864,9 @@ ${pattern === "B" ? "支援経過Bパターン" : pattern === "C" ? "支援経�
 【選択パターンのプロンプト（原文そのまま）】
 ${selectedPrompt}
 
+${evidenceRule}
 【AI出力形式】
-${supportOutputMode === "normal" ? "標準" : supportOutputMode === "contentOnly" ? "" : "区分以外を表示"}
-
-【選択された項目】
-${selectedCategories || "なし"}
+${supportOutputMode === "normal" ? "標準" : supportOutputMode === "contentOnly" ? "内容のみを表示" : "区分以外を表示"}
 
 【AI出力形式の絶対ルール】
 「AI出力形式」が「標準」の場合は、選択された支援経過パターンのプロンプトに定められた通常の出力形式で出力すること。追加の出力形式による変更は行わないこと。
@@ -1802,21 +1874,21 @@ ${selectedCategories || "なし"}
 支援経過Aでは「内容」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」を出力し、Aパターンの内容内に定められた「【項目名】」の見出しはAパターンのルールどおり残すこと。
 支援経過Bでは「内容」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」の3項目を、この順番でそれぞれ1回だけ出力すること。
 支援経過Cでは「内容」のみを出力すること。
-特に支援経過Cパターンで「AI出力形式」が「」の場合は、「内容」に相当する本文だけを出力し、「区分」を一切出力しないこと。Cパターンの通常出力形式に記載された「区分」のルールよりも、この内容のみの出力指定を最優先すること。
-「AI出力形式」が「」の場合は、支援経過A・B・Cのいずれであっても「内容」に相当する部分だけを出力し、「区分」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」は出力しないこと。
-特に支援経過Bパターンで「AI出力形式」が「」の場合は、「内容」に含めるべき情報だけを出力し、「区分」「関係機関・介護支援専門員の判断」「利用者・家族の考え方」に該当する情報・文章・見出しを一切出力しないこと。Bパターンの通常出力形式に記載されたこれら3項目のルールよりも、この内容のみの出力指定を最優先すること。
-【最重要：Bパターン・内容のみ】「選択された項目」「今回だけ追加された項目」はAIが内容を作成するための参照情報であり、出力本文には項目名・区分名を一切再掲しないこと。選択された項目名、区分名、項目見出し、箇条書き、項目名を【】で囲んだ見出し、項目名に続く説明を、内容本文の中に出力してはならないこと。定型文を使用する場合も、定型文本文中に含まれる項目名・区分名・見出しは出力せず、支援内容として必要な本文だけを記載すること。出力は内容そのものだけとし、区分名や項目名を説明・列挙・再掲する文章も作成しないこと。
-「」の場合は「内容」という見出しも出力しないこと。
 
-【選択された項目】
-${templates || "なし"}
+【最重要：内容のみを表示】
+「AI出力形式」が「内容のみを表示」の場合、この指定を最優先ルールとして扱うこと。
+A・B・Cのいずれのパターンでも、完成した「内容」に相当する本文だけを出力すること。
+「区分」「内容」という見出し、「関係機関・介護支援専門員の判断」「利用者・家族の考え方」その他の分類・見出しは一切出力しないこと。
+選択された項目名・区分名・項目見出し・箇条書き・項目名を【】で囲んだ見出し・項目名に続く説明を、完成した本文に再掲しないこと。
+選択された項目や今回だけ追加された項目は、内容を作成するための内部的な参照情報としてのみ使用し、項目名・区分名そのものを出力しないこと。
+定型文を使用する場合も、定型文本文中に含まれる項目名・区分名・見出しは出力せず、支援内容として必要な本文だけを記載すること。
+「内容のみを表示」の場合は、Bパターンの通常ルールにある「区分」の出力指示を適用してはならない。
+出力は完成した内容本文だけとし、前置き・説明・項目名の列挙・分類名の付加も行わないこと。
 
-【今回だけ追加された項目（定型文なし）】
-${temporaryCategories.length ? temporaryCategories.join("\n") : "なし"}
+${contentOnlyReference}
 
 【今回だけ追加された項目の処理方法】
-上記の「今回だけ追加された項目」は定型文を記載しないこと。
-「AI出力形式」が「」の場合は、今回だけ追加された項目を区分欄にも出力せず、内容作成のための参照情報としてのみ扱うこと。内容欄には項目名を見出しとして記載しないこと。
+「AI出力形式」が「内容のみを表示」の場合、今回だけ追加された項目は内容作成のための参照情報としてのみ扱い、区分欄・見出し・項目名として出力しないこと。
 「AI出力形式」が「標準」の場合は、「今回だけ追加された項目」は区分欄に項目名のみを記載し、内容欄には項目名を見出しとして記載しないこと。
 今回の音声・手入力による追加情報から、その区分に該当する事実を判断し、Bパターンの各項目の記載ルールに従って適切な欄に記載すること。
 「その他」などの文字は項目名に付けないこと。
@@ -1839,6 +1911,10 @@ Cパターンの「AI出力形式」が「標準」の場合は、「区分」�
 入力されていない事実を推測して追加しないこと。
 選択された項目に対応する定型文がある場合は、選択順を維持して反映すること。
 支援経過A・B・Cそれぞれの選択パターンの記載方法を厳密に守り、他パターンの出力形式を混在させないこと。
+
+【事実情報についての最終確認】
+出力する各文について、「その内容は今回選択された項目または今回の音声・手入力のどこに根拠があるか」を確認すること。根拠がない内容は出力しないこと。
+文章を完成させるために不足している情報があっても、AIが勝手に補完せず、その情報を記載しないこと。
 
 `;
 
@@ -1925,6 +2001,9 @@ copyButton.classList.add(
 "copied"
 );
 
+const aiLaunchArea = document.getElementById("aiLaunchArea");
+if(aiLaunchArea) aiLaunchArea.classList.add("is-visible");
+
 
 /*
    コピー完了メッセージを表示
@@ -1966,6 +2045,11 @@ block:"nearest"
 
 
 
+function openAI(type){
+  const urls={chatgpt:"https://chatgpt.com/",gemini:"https://gemini.google.com/",claude:"https://claude.ai/"};
+  if(urls[type]) window.open(urls[type], "_blank", "noopener,noreferrer");
+}
+
 function startNewSupportRecord(){
   summaryMode = false;
   bulletSummaryMode = false;
@@ -1993,6 +2077,8 @@ function startNewSupportRecord(){
 
   const newCaseArea = document.getElementById("newCaseArea");
   if(newCaseArea) newCaseArea.style.display = "none";
+  const aiLaunchArea = document.getElementById("aiLaunchArea");
+  if(aiLaunchArea) aiLaunchArea.classList.remove("is-visible");
 
   window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -2090,6 +2176,12 @@ function renderEditArea(){
     const title=document.createElement("div");
     title.className="edit-title";
     title.textContent=displayName;
+    if(Object.prototype.hasOwnProperty.call(T,original)){
+      const badge=document.createElement("span");
+      badge.className="standard-badge";
+      badge.textContent="🏢 標準";
+      title.appendChild(badge);
+    }
 
     const preview=document.createElement("div");
     preview.className="edit-preview";
@@ -2228,6 +2320,16 @@ updatePatternUI();
     card.appendChild(title);
     card.appendChild(preview);
     card.appendChild(edit);
+    if(Object.prototype.hasOwnProperty.call(T,original)){
+      const restore=document.createElement("button");
+      restore.type="button";
+      restore.className="edit-btn standard-restore-btn";
+      restore.textContent="↩ 標準に戻す";
+      restore.onclick=function(){
+        if(typeof boRestoreCategory==='function')boRestoreCategory(original);
+      };
+      card.appendChild(restore);
+    }
     card.appendChild(del);
 
     root.appendChild(card);
@@ -2527,7 +2629,7 @@ if(addTemporaryCategoryButton){
 function goHome(){
 
 window.location.href =
-"https://blueocean2014.github.io/BlueOcean-Portal/";
+"https://blueocean2014.github.io/BlueOcean-Support/";
 
 }
 </script>
@@ -2574,19 +2676,25 @@ window.location.href =
         </p>
 
         <div style="margin-top:22px;padding-top:18px;border-top:1px solid #e5e7eb;">
-          <h3 style="margin:0 0 10px;color:#334155;font-size:18px;;color:#d00000!important">～管理者からのお願い～</h3>
-          <h4 style="margin:0 0 8px;color:#475569;font-size:16px;;color:#d00000!important">設定に関する注意点</h4>
+          <h3 style="margin:0 0 10px;color:#334155;font-size:18px;">設定でできること</h3>
           <p>
-            このアプリでは、「項目」や「定型文」を、管理者側で追加・編集・削除することも可能です。
+            この設定画面では、「項目」や「定型文」を、ご自身の業務や使い方に合わせて自由に追加・編集・削除できます。
           </p>
           <p style="margin-top:12px;">
-            ただし、このアプリは、<strong>ご利用いただく皆様が、それぞれの業務や使い方に合わせて、必要な項目や定型文を自由に追加・編集・削除し、ご自身にとって使いやすい環境を作っていくこと</strong>を基本的な考え方としています。
+            標準として登録されている項目には<strong>「🏢 標準」</strong>が表示されます。必要に応じて内容を変更したり、削除したりすることができ、<strong>「↩ 標準に戻す」</strong>を使えば、標準の内容に戻すこともできます。
           </p>
           <p style="margin-top:12px;">
-            そのため、制度改正や業務内容の変更等があった場合でも、<strong>管理者が一律に皆様の設定内容を変更するのではなく、必要に応じて各自で設定を変更していただく運用を基本としています。</strong>
+            また、ご自身で必要な項目や定型文を追加したり、支援経過のプロンプトを追加したりすることもできます。業務内容や記録の方法に合わせて、使いやすいように設定してください。
           </p>
           <p style="margin-top:12px;">
-            ご自身の業務に合わせて、使いやすいように設定を調整しながらご利用ください。
+            設定を変更した内容は、<strong>現在ご使用の端末のブラウザ内に保存されます。</strong>そのため、パソコンやスマートフォンなど複数の端末でご利用になる場合は、端末ごとに設定が必要です。
+          </p>
+          <p style="margin-top:12px;">
+            ※ある端末で行った設定変更が、別の端末へ自動的に反映されるものではありません。
+          </p>
+          <p style="margin-top:12px;">
+          </p>
+          <p style="margin-top:12px;">
           </p>
         </div>
       </div>
@@ -2597,10 +2705,22 @@ window.location.href =
           ② 必要に応じて出力方法を選択します。通常は「標準」のままで使用できます。<br>
           ③ 支援経過に必要な情報を入力します。<br>
           ④ 「AI処理用にコピー」を押して、AI処理用の文章をコピーします。<br>
-          ⑤ 新しく作成するときは「新しい支援経過を作成」を使用します。
+          ⑤ 新しく作成するときは「新しい支援経過を作成」を使用します。<br>
+          ⑥ 設定画面では、項目・定型文・支援経過のプロンプトを、ご自身の使いやすいように追加・編集・削除できます。
         </div>
       </div>
       <div id="settingsEditorHost" class="settings-real-editor"></div>
+
+<div class="admin-standard-box" id="adminStandardBox">
+  <h3>🚀 標準設定・正式版HTML</h3>
+  <div id="adminStandardStatus" class="admin-standard-status">まだ標準設定は確定されていません。</div>
+  <div class="admin-standard-actions">
+    <button type="button" class="admin-standard-save" onclick="boSaveStandard()">💾 標準設定として確定</button>
+    <button type="button" class="admin-standard-reset" onclick="boResetStandard()">↩ 現在の標準設定に戻す</button>
+    <button type="button" class="admin-release" onclick="boCreateOfficialHTML()">📦 正式版HTMLを作成</button>
+  </div>
+</div>
+
       <button class="settings-return" type="button" onclick="scrollSettingsToTop()">▲ 設定画面のトップに戻る</button>
       <button class="settings-return" type="button" onclick="closeAppSettings()" style="background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%)!important;color:#fff!important;border-color:#0875c9!important;">メイン画面に戻る</button>
     </div>
@@ -2758,7 +2878,38 @@ function showUsageGuide(){
 }
 </style>
 
-</body>
+<script id="blueocean-admin-standard-settings-script">
+(function(){
+  const STANDARD_KEY='bo_admin_standard_snapshot_v1';
+  function getObj(key,fallback){try{const v=JSON.parse(localStorage.getItem(key)||'null');return v===null?fallback:v}catch(e){return fallback;}}
+  function saveObj(key,value){localStorage.setItem(key,JSON.stringify(value));}
+  function collectSnapshot(){return {version:1,customCategories:getObj('bo_custom_categories',{}),deletedCategories:getObj('bo_deleted_categories',[]),personalTemplates:getObj('bo_personal_templates',{}),renames:getObj('bo_category_renames',{}),customSupportPrompts:getObj('bo_custom_support_prompts',[]),supportPattern:localStorage.getItem('bo_support_pattern')||'A',supportOutputModes:getObj('bo_support_output_modes',{A:'normal',B:'normal',C:'normal'})};}
+  function loadSnapshot(){return getObj(STANDARD_KEY,null);}
+  function refresh(){if(typeof renderEditArea==='function')renderEditArea();if(typeof renderCustomSupportPromptEditor==='function')renderCustomSupportPromptEditor();if(typeof renderCustomSupportPromptPatterns==='function')renderCustomSupportPromptPatterns();if(typeof renderCategories==='function')renderCategories();if(typeof updatePatternUI==='function')updatePatternUI();if(typeof update==='function')update();renderAdminStatus();}
+  function renderAdminStatus(){const el=document.getElementById('adminStandardStatus');if(!el)return;const snap=loadSnapshot();el.className=snap?'admin-standard-status ok':'admin-standard-status';el.textContent=snap?'✅ 標準設定は確定されています。現在の設定を標準として保存済みです。編集・更新は何度でもできます。':'まだ標準設定は確定されていません。';}
+  function saveStandard(){if(!confirm('現在の設定を「標準設定」として保存しますか？\n保存後も編集できます。'))return;saveObj(STANDARD_KEY,collectSnapshot());renderAdminStatus();alert('現在の設定を標準設定として保存しました。\nこの後も編集できます。');}
+  function resetStandard(){const s=loadSnapshot();if(!s){alert('まだ標準設定が確定されていません。');return;}if(!confirm('現在の設定を、確定済みの標準設定に戻しますか？'))return;saveObj('bo_custom_categories',s.customCategories||{});saveObj('bo_deleted_categories',s.deletedCategories||[]);saveObj('bo_personal_templates',s.personalTemplates||{});saveObj('bo_category_renames',s.renames||{});saveObj('bo_custom_support_prompts',s.customSupportPrompts||[]);localStorage.setItem('bo_support_pattern',s.supportPattern||'A');saveObj('bo_support_output_modes',s.supportOutputModes||{A:'normal',B:'normal',C:'normal'});refresh();alert('確定済みの標準設定に戻しました。');}
+  function restoreCategory(original){const s=loadSnapshot();if(!s){alert('まだ標準設定が確定されていません。');return;}const r=getObj('bo_category_renames',{}),p=getObj('bo_personal_templates',{}),d=getObj('bo_deleted_categories',[]),sr=s.renames||{},sp=s.personalTemplates||{},sd=s.deletedCategories||[];r[original]=sr[original]||original;if(Object.prototype.hasOwnProperty.call(sp,original))p[original]=sp[original];else delete p[original];const i=d.indexOf(original);if(sd.includes(original)){if(i<0)d.push(original);}else if(i>=0)d.splice(i,1);saveObj('bo_category_renames',r);saveObj('bo_personal_templates',p);saveObj('bo_deleted_categories',d);refresh();}
+  function buildReleaseHTML(){
+    const s=loadSnapshot();
+    if(!s){
+      alert('まだ標準設定が確定されていません。\nまず「標準設定として確定」を押してください。');
+      return;
+    }
+    const clone=document.documentElement.cloneNode(true);
+    ['appSettingsOverlay','editAreaPlaceholder','editArea'].forEach(id=>{const e=clone.querySelector('#'+id);if(e)e.remove();});
+    const adminStyle=clone.querySelector('#blueocean-admin-standard-settings');if(adminStyle)adminStyle.remove();
+    const adminScript=clone.querySelector('#blueocean-admin-standard-settings-script');if(adminScript)adminScript.remove();
+    const seed=clone.ownerDocument.createElement('script');seed.id='blueocean-release-seed';seed.textContent="(function(){const s="+JSON.stringify(s).replace(/</g,'\\u003c')+";localStorage.setItem('bo_custom_categories',JSON.stringify(s.customCategories||{}));localStorage.setItem('bo_deleted_categories',JSON.stringify(s.deletedCategories||[]));localStorage.setItem('bo_personal_templates',JSON.stringify(s.personalTemplates||{}));localStorage.setItem('bo_category_renames',JSON.stringify(s.renames||{}));localStorage.setItem('bo_custom_support_prompts',JSON.stringify(s.customSupportPrompts||[]));localStorage.setItem('bo_support_pattern',s.supportPattern||'A');localStorage.setItem('bo_support_output_modes',JSON.stringify(s.supportOutputModes||{A:'normal',B:'normal',C:'normal'}));})();";
+    clone.querySelector('head').appendChild(seed);
+    const meta=clone.ownerDocument.createElement('meta');meta.name='blueocean-release';meta.content='正式版';clone.querySelector('head').appendChild(meta);
+    const out='<!doctype html>\n'+clone.outerHTML;
+    const blob=new Blob([out],{type:'text/html;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='BlueOcean_support_progress_official.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  }
+  window.boSaveStandard=saveStandard;window.boResetStandard=resetStandard;window.boRestoreCategory=restoreCategory;window.boCreateOfficialHTML=buildReleaseHTML;
+  setTimeout(renderAdminStatus,0);
+})();
+</script>
 
 <style id="memo-final-color-fix">
 /* 音声・手入力欄：支援経過選択ボタンと同じ薄い青・同系統の枠 */
@@ -2985,4 +3136,216 @@ header{
   justify-content:flex-start !important;
 }
 </style>
+
+<style id="blueocean-redesign-prototype-02">
+:root{--blue:#138ee0;--blue-dark:#0875c9;--blue-pale:#f4faff;--green:#3b9b68;--yellow:#f5e6a8;--text:#24445c}
+body{background:#f3f9fd !important}
+header{background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9) !important;padding:22px 20px !important}
+.header-inner{max-width:1180px !important}
+header h1{font-size:27px !important}.header-description{font-size:14px !important}
+main{max-width:1180px !important;padding:20px !important}
+.card{border:1px solid #c5dff1 !important;border-radius:18px !important;box-shadow:0 5px 18px rgba(25,118,210,.07) !important;padding:20px !important}
+#patternArea{background:linear-gradient(180deg,#fff,#f8fcff) !important}
+#patternArea>h2{font-size:22px !important}
+.pattern-grid{grid-template-columns:repeat(3,1fr) !important;gap:12px !important}
+.pattern-option{border:2px solid #9bc7ee !important;border-radius:16px !important;min-height:205px !important;padding:14px !important}
+.pattern-option:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(25,118,210,.13) !important}
+.pattern-option:has(input:checked),.pattern-option.pattern-selected{background:#e8f4ff !important;border-color:#138ee0 !important}
+.pattern-title-force{height:62px !important;min-height:62px !important;border-radius:12px !important;font-size:1.08rem !important;background:#fff !important;color:#0875c9 !important}
+.pattern-option:has(input:checked) .pattern-title-force{background:linear-gradient(135deg,#70dcfa,#138ee0,#0875c9) !important;color:#fff !important}
+.pattern-output-wrap{margin-top:9px !important;padding-top:9px !important}.pattern-output-options{justify-content:center !important}
+.summary-mode-buttons{margin-top:14px !important}
+#cats{grid-template-columns:repeat(4,1fr) !important;gap:8px !important}
+#cats label{border:1px solid #a8cfe9 !important;border-radius:10px !important;background:#fff !important;padding:10px !important;min-height:46px !important}
+#cats label:has(input:checked){border:2px solid #138ee0 !important;background:#e8f4ff !important;color:#0875c9 !important}
+#temporaryCategoryArea{border:1px dashed #9bc7ee !important;border-radius:12px !important}
+#memo{min-height:230px !important;border:2px solid #9bc7ee !important;border-radius:14px !important;background:#f4faff !important}
+.copy-button{display:block !important;margin:15px auto !important;min-width:400px !important;border-radius:12px !important;background:linear-gradient(135deg,#70dcfa,#138ee0,#0875c9) !important}
+.usage-card{border-color:#d8c875 !important;background:#fffdf3 !important}.usage-flow{display:grid !important;grid-template-columns:repeat(5,1fr) !important;gap:7px !important}.usage-step{background:#fff9d9 !important;border:1px solid #eadf9f !important;border-radius:10px !important;text-align:center !important}
+.top-nav-buttons{justify-content:center !important}
+@media(max-width:850px){.pattern-grid,#cats,.usage-flow{grid-template-columns:1fr 1fr !important}}
+@media(max-width:600px){.pattern-grid,#cats,.usage-flow{grid-template-columns:1fr !important}.copy-button{width:100% !important;min-width:0 !important}}
+</style>
+
+
+<style id="blueocean-dashboard-final-polish">
+/* =====================================================
+   Design ② 最終候補：ダッシュボード型
+   ※HTML・JavaScript・A/B/Cプロンプト・設定値は変更しない
+   ※この追加部分は見た目だけを調整
+===================================================== */
+main{max-width:1180px!important;padding:18px 20px 36px!important}
+/* 上部の「使い方」導線 */
+main > div:first-child{text-align:right!important;margin:0 0 12px!important}
+.usage-open-button{border-radius:999px!important;padding:10px 18px!important;font-weight:800!important;box-shadow:0 3px 10px rgba(25,118,210,.10)!important}
+/* セクション見出し */
+.card h2{display:flex;align-items:center;gap:9px;font-size:20px!important;margin-bottom:12px!important}
+.card h2::before{content:"";width:5px;height:25px;border-radius:5px;background:linear-gradient(180deg,#70dcfa,#0875c9);display:inline-block;flex:none}
+/* 支援経過選択を主役に */
+#patternArea{padding:24px!important;margin-top:8px!important}
+#patternArea .description{max-width:900px;margin-bottom:16px}
+.pattern-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}
+.pattern-option{min-height:225px!important;padding:16px!important;border:2px solid #b9d8ee!important;border-radius:18px!important;box-shadow:0 3px 12px rgba(25,118,210,.05)!important;transition:transform .18s,box-shadow .18s,border-color .18s!important}
+.pattern-option:hover{transform:translateY(-4px)!important;box-shadow:0 12px 28px rgba(25,118,210,.14)!important;border-color:#5ba6db!important}
+.pattern-option:has(input:checked),.pattern-option.pattern-selected{border-color:#138ee0!important;box-shadow:0 10px 28px rgba(25,118,210,.16)!important}
+.pattern-title-force{width:100%!important;justify-content:center!important;text-align:center!important;font-size:1.08rem!important;border-radius:14px!important}
+.pattern-output-wrap{border-top:1px solid #dbeaf5!important;margin-top:14px!important;padding-top:12px!important}
+.pattern-output-title{font-weight:800!important;color:#5d7282!important}
+.pattern-output-options{gap:7px!important;flex-wrap:wrap!important}
+.pattern-output-option{padding:8px 11px!important;border-radius:999px!important}
+/* 項目・入力・コピーの階層を明確化 */
+#cats{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important}
+#cats label{min-height:52px!important;padding:10px 12px!important}
+#cats label:hover{transform:translateY(-1px)}
+#temporaryCategoryArea{margin-top:16px!important;padding:16px!important;background:#fbfdff!important}
+textarea#memo{min-height:250px!important;font-size:16px!important;line-height:1.8!important}
+.copy-button{min-width:420px!important;min-height:58px!important;font-size:19px!important;letter-spacing:.2px!important}
+/* 説明エリアは既存の黄色を維持しつつ読みやすく */
+.usage-card{border-radius:18px!important;box-shadow:0 4px 14px rgba(107,91,0,.07)!important}
+.usage-flow{gap:9px!important}
+.usage-step{min-height:72px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:10px!important;line-height:1.55!important}
+.usage-note{border-radius:12px!important}
+/* 下部ナビ */
+.top-nav-buttons{margin-top:18px!important;padding-top:4px!important}
+/* パソコンで「入力」と「コピー」を横並びにして一覧性を上げる */
+@media(min-width:901px){
+  main > section.card:nth-of-type(3){
+    display:grid!important;grid-template-columns:1fr 1fr!important;column-gap:24px!important;align-items:start!important;
+  }
+  main > section.card:nth-of-type(3) h2,
+  main > section.card:nth-of-type(3) .description{grid-column:1/-1}
+  main > section.card:nth-of-type(3) textarea{grid-column:1}
+  main > section.card:nth-of-type(4){text-align:center!important}
+  main > section.card:nth-of-type(4) h2,
+  main > section.card:nth-of-type(4) .description{max-width:760px;margin-left:auto!important;margin-right:auto!important}
+}
+@media(max-width:900px){
+  .pattern-grid{grid-template-columns:1fr!important}
+  #cats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:600px){
+  main{padding:10px 10px 28px!important}
+  .card,#patternArea{padding:16px!important}
+  #cats{grid-template-columns:1fr!important}
+  .copy-button{width:100%!important;min-width:0!important}
+  .top-nav-buttons{flex-wrap:wrap!important}
+  .top-nav-buttons button{margin:4px!important}
+}
+</style>
+
+<style id="final-user-request-usage-original-wide-memo">
+/* =====================================================
+   最終調整
+   ・使い方の説明：原本の表示・配色・縦並びへ復元
+   ・音声・手入力：入力欄をカード幅いっぱいにして横長化
+   ・A/B/CのHTML・JavaScript・プロンプト・設定内容は変更しない
+===================================================== */
+.usage-card{
+  margin-top:12px!important;
+  border:2px solid #d8c875!important;
+  border-radius:14px!important;
+  background:#fffdf3!important;
+  box-shadow:0 5px 14px rgba(107,91,0,.07)!important;
+  padding:20px 24px!important;
+}
+.usage-card h2{
+  font-size:18px!important;
+  margin:0 0 14px!important;
+  color:var(--blue)!important;
+  text-align:center!important;
+}
+.usage-flow{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:0!important;
+}
+.usage-step{
+  position:relative!important;
+  min-height:0!important;
+  display:block!important;
+  padding:10px 8px 10px 12px!important;
+  font-size:14px!important;
+  line-height:1.6!important;
+  color:var(--text)!important;
+  text-align:left!important;
+  background:transparent!important;
+  border:0!important;
+  border-bottom:1px dashed #e2d99f!important;
+  border-radius:0!important;
+}
+.usage-step:last-child{border-bottom:0!important}
+.usage-note{
+  margin-top:16px!important;
+  padding:14px!important;
+  border:2px solid #d8c875!important;
+  border-radius:10px!important;
+  background:#fff9d9!important;
+  color:#6b5b00!important;
+  font-size:14px!important;
+  line-height:1.7!important;
+}
+/* 「音声・手入力」カードは入力欄を右側まで完全に広げる */
+textarea#memo{
+  display:block!important;
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  box-sizing:border-box!important;
+  min-height:260px!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+/* 先のダッシュボード用2カラム指定を解除し、入力欄をカード全幅に戻す */
+@media(min-width:901px){
+  main > section.card:nth-of-type(3){
+    display:block!important;
+    grid-template-columns:none!important;
+    column-gap:normal!important;
+  }
+  main > section.card:nth-of-type(3) h2,
+  main > section.card:nth-of-type(3) .description,
+  main > section.card:nth-of-type(3) textarea{
+    grid-column:auto!important;
+  }
+}
+@media(max-width:640px){
+  .usage-card{padding:17px 16px!important}
+  .usage-card h2{font-size:18px!important}
+  .usage-step{font-size:13px!important;padding:9px 6px 9px 8px!important}
+  .usage-step span{font-size:12px!important}
+  textarea#memo{min-height:230px!important}
+}
+</style>
+
+
+
+<style id="design-slide-down">
+/* 試作①：A/B/Cカードの下からスライド展開 */
+.pattern-option{position:relative;overflow:visible!important;transition:transform .2s ease,box-shadow .2s ease;}
+.pattern-option .pattern-output-wrap{display:block!important;max-height:0;opacity:0;overflow:hidden;transform:translateY(-12px);margin:0!important;padding:0!important;border:0!important;transition:max-height .35s ease,opacity .25s ease,transform .35s ease,padding .35s ease,margin .35s ease;}
+.pattern-option.pattern-selected .pattern-output-wrap{max-height:180px;opacity:1;transform:translateY(0);margin-top:12px!important;padding:10px 0 2px!important;border-top:1px dashed #b9d5ec!important;}
+.pattern-option .pattern-output-options{gap:7px;}
+.pattern-option .pattern-output-option{flex:1;min-width:0;}
+</style>
+<script id="output-reveal-controller">
+(function(){
+  function bind(){
+    document.querySelectorAll('.pattern-option[role="button"]').forEach(function(card){
+      if(card.dataset.revealBound==='1') return;
+      card.dataset.revealBound='1';
+      card.addEventListener('click', function(e){
+        if(e.target.closest('.pattern-output-option')) return;
+        var was=card.classList.contains('pattern-selected');
+        setTimeout(function(){
+          if(was && card.classList.contains('pattern-selected')) card.classList.remove('pattern-selected');
+        }, 20);
+      }, true);
+    });
+  }
+  bind();
+  new MutationObserver(bind).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+
+</body>
 </html>
