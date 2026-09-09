@@ -1006,9 +1006,9 @@ h1.bo-white-title{
       <div class="bo-simple-title">AIで事前整理する</div>
       <div class="bo-simple-one"><strong>もう一度ファイルを選ぶ必要はありません。</strong><br>使うAIを押すと「事前整理の指示＋チェック済み資料」が自動で1つにまとまり、コピーされます。</div>
       <div class="bo-ai-three">
-        <button type="button" class="bo-ai-btn bo-chat" onclick="simplePreorganizeWithAI('chatgpt')" disabled>🤖 ChatGPTで整理</button>
-        <button type="button" class="bo-ai-btn bo-gem" onclick="simplePreorganizeWithAI('gemini')" disabled>✨ Geminiで整理</button>
-        <button type="button" class="bo-ai-btn bo-claude" onclick="simplePreorganizeWithAI('claude')" disabled>🟣 Claudeで整理</button>
+        <a href="https://chatgpt.com/" target="_blank" rel="noopener" class="bo-ai-btn bo-chat" onclick="return simplePreorganizeLink(event,'chatgpt')" aria-disabled="true" style="pointer-events:none;text-decoration:none;display:block;text-align:center;box-sizing:border-box">🤖 ChatGPTで整理</a>
+        <a href="https://gemini.google.com/" target="_blank" rel="noopener" class="bo-ai-btn bo-gem" onclick="return simplePreorganizeLink(event,'gemini')" aria-disabled="true" style="pointer-events:none;text-decoration:none;display:block;text-align:center;box-sizing:border-box">✨ Geminiで整理</a>
+        <a href="https://claude.ai/" target="_blank" rel="noopener" class="bo-ai-btn bo-claude" onclick="return simplePreorganizeLink(event,'claude')" aria-disabled="true" style="pointer-events:none;text-decoration:none;display:block;text-align:center;box-sizing:border-box">🟣 Claudeで整理</a>
       </div>
       <div id="simpleAIStatus" class="bo-simple-status">個人情報チェックが終わると選べます。</div>
       <div class="bo-paste-callout">AIが開いたら <strong>Ctrl＋V</strong> → <strong>送信</strong> だけです。</div>
@@ -1039,9 +1039,9 @@ h1.bo-white-title{
         <button type="button" class="bo-doc-btn" data-simple-doc="issue" onclick="simpleSelectDocument('issue')">課題整理総括表（案）</button>
       </div>
       <div class="bo-ai-three bo-final-ai">
-        <button type="button" class="bo-ai-btn bo-chat" onclick="simpleFinalWithAI('chatgpt')">🤖 ChatGPTで作る</button>
-        <button type="button" class="bo-ai-btn bo-gem" onclick="simpleFinalWithAI('gemini')">✨ Geminiで作る</button>
-        <button type="button" class="bo-ai-btn bo-claude" onclick="simpleFinalWithAI('claude')">🟣 Claudeで作る</button>
+        <a href="https://chatgpt.com/" target="_blank" rel="noopener" class="bo-ai-btn bo-chat" onclick="return simpleFinalLink(event,'chatgpt')" style="text-decoration:none;display:block;text-align:center;box-sizing:border-box">🤖 ChatGPTで作る</a>
+        <a href="https://gemini.google.com/" target="_blank" rel="noopener" class="bo-ai-btn bo-gem" onclick="return simpleFinalLink(event,'gemini')" style="text-decoration:none;display:block;text-align:center;box-sizing:border-box">✨ Geminiで作る</a>
+        <a href="https://claude.ai/" target="_blank" rel="noopener" class="bo-ai-btn bo-claude" onclick="return simpleFinalLink(event,'claude')" style="text-decoration:none;display:block;text-align:center;box-sizing:border-box">🟣 Claudeで作る</a>
       </div>
       <div id="simpleFinalStatus" class="bo-simple-status">先に作りたい書類を選んでください。</div>
       <div class="bo-paste-callout">AIが開いたら、ここでも <strong>Ctrl＋V → 送信</strong> だけです。</div>
@@ -3637,8 +3637,8 @@ document.addEventListener('DOMContentLoaded', function(){
   const qs=id=>document.getElementById(id);
   const setStep=(n,state)=>{const el=qs('simpleStep'+n);if(!el)return;el.classList.remove('is-current','is-ready','is-done');if(state)el.classList.add(state);};
   const setStatus=(id,text,kind)=>{const el=qs(id);if(!el)return;el.textContent=text;el.className='bo-simple-status'+(kind?' '+kind:'');};
-  const enablePreAI=enabled=>document.querySelectorAll('#simpleStep3 .bo-ai-btn').forEach(b=>b.disabled=!enabled);
-  const enableFinalAI=()=>document.querySelectorAll('#simpleStep5 .bo-final-ai .bo-ai-btn').forEach(b=>{b.disabled=false;b.removeAttribute('disabled');});
+  const enablePreAI=enabled=>document.querySelectorAll('#simpleStep3 .bo-ai-btn').forEach(b=>{b.disabled=!enabled;b.setAttribute('aria-disabled',enabled?'false':'true');b.style.pointerEvents=enabled?'auto':'none';b.style.opacity=enabled?'':'0.4';});
+  const enableFinalAI=()=>document.querySelectorAll('#simpleStep5 .bo-final-ai .bo-ai-btn').forEach(b=>{b.disabled=false;b.removeAttribute('disabled');b.setAttribute('aria-disabled','false');b.style.pointerEvents='auto';});
 
   window.simpleChooseFiles=function(){const input=qs('preventiveFileInput');if(input)input.click();};
 
@@ -3807,6 +3807,41 @@ document.addEventListener('DOMContentLoaded', function(){
     return '';
   }
 
+  // 通常の target="_blank" リンクでAIを開く。window.openは使わない。
+  window.simplePreorganizeLink=function(event,ai){
+    const st=document.getElementById('simpleAIStatus');
+    const promptBox=document.getElementById('preventivePromptBox');
+    if(!promptBox || promptBox.style.display==='none'){
+      if(st){st.className='bo-simple-status bad';st.textContent='⚠️ 先に個人情報チェックを完了してください。';}
+      return false;
+    }
+    const mode=window.boPreDeliveryMode||'text';
+    (async function(){
+      let copied=false;
+      if(mode==='file'){
+        copied=await copyPromptOnly();
+        if(st){
+          st.className='bo-simple-status '+(copied?'ok':'bad');
+          st.innerHTML=copied
+            ? '✓ 事前整理プロンプトをコピーしました。<strong>別タブで開いたAIに、個人情報除去済みの元ファイルを添付 → Ctrl＋V → 送信</strong>してください。'
+            : '⚠️ コピーできませんでした。';
+        }
+      }else{
+        copied=await window.copyPreventivePrePrompt();
+        if(st){
+          st.className='bo-simple-status '+(copied?'ok':'bad');
+          st.textContent=copied?'✓ 指示と読み取り済み資料をまとめてコピーしました。別タブで開いたAIで Ctrl＋V → 送信してください。':'⚠️ コピーできませんでした。';
+        }
+      }
+      if(copied){
+        const s3=document.getElementById('simpleStep3'),s4=document.getElementById('simpleStep4');
+        if(s3){s3.classList.remove('is-current');s3.classList.add('is-done');}
+        if(s4){s4.classList.add('is-current');}
+      }
+    })();
+    return true;
+  };
+
   // 後から定義して既存の簡易版関数だけを上書き。
   window.simplePreorganizeWithAI = async function(ai){
     const st=document.getElementById('simpleAIStatus');
@@ -3815,6 +3850,19 @@ document.addEventListener('DOMContentLoaded', function(){
       if(st){st.className='bo-simple-status bad';st.textContent='⚠️ 先に個人情報チェックを完了してください。';}
       return;
     }
+
+    const url=aiUrl(ai);
+    if(!url){
+      if(st){st.className='bo-simple-status bad';st.textContent='⚠️ AIの種類を確認できませんでした。';}
+      return;
+    }
+
+    // 元のアプリを残すため、ユーザー操作直後にAI用の別タブを確保する。
+    const aiWindow=window.open('about:blank','_blank');
+    if(aiWindow){
+      try{aiWindow.opener=null;}catch(e){}
+    }
+
     const mode=window.boPreDeliveryMode||'text';
     let copied=false;
     if(mode==='file'){
@@ -3822,21 +3870,31 @@ document.addEventListener('DOMContentLoaded', function(){
       if(st){
         st.className='bo-simple-status '+(copied?'ok':'bad');
         st.innerHTML=copied
-          ? '✓ 事前整理プロンプトをコピーしました。<strong>AIで、個人情報除去済みの元ファイルを添付 → Ctrl＋V → 送信</strong>してください。'
+          ? '✓ 事前整理プロンプトをコピーしました。<strong>別タブで開いたAIに、個人情報除去済みの元ファイルを添付 → Ctrl＋V → 送信</strong>してください。'
           : '⚠️ コピーできませんでした。';
       }
     }else{
       copied=await window.copyPreventivePrePrompt();
       if(st){
         st.className='bo-simple-status '+(copied?'ok':'bad');
-        st.textContent=copied?'✓ 指示と読み取り済み資料をまとめてコピーしました。AIで Ctrl＋V → 送信してください。':'⚠️ コピーできませんでした。';
+        st.textContent=copied?'✓ 指示と読み取り済み資料をまとめてコピーしました。別タブで開いたAIで Ctrl＋V → 送信してください。':'⚠️ コピーできませんでした。';
       }
     }
-    if(copied){
-      const s3=document.getElementById('simpleStep3'),s4=document.getElementById('simpleStep4');
-      if(s3){s3.classList.remove('is-current');s3.classList.add('is-done');}
-      if(s4){s4.classList.add('is-current');}
-      const url=aiUrl(ai); if(url) location.href=url;
+
+    if(!copied){
+      if(aiWindow && !aiWindow.closed) aiWindow.close();
+      return;
+    }
+
+    const s3=document.getElementById('simpleStep3'),s4=document.getElementById('simpleStep4');
+    if(s3){s3.classList.remove('is-current');s3.classList.add('is-done');}
+    if(s4){s4.classList.add('is-current');}
+
+    if(aiWindow && !aiWindow.closed){
+      aiWindow.location.href=url;
+    }else if(st){
+      st.className='bo-simple-status bad';
+      st.textContent='✓ コピーは完了しましたが、AIの別タブがブラウザにブロックされました。ポップアップを許可して、もう一度AIボタンを押してください。';
     }
   };
 
@@ -3906,6 +3964,46 @@ document.addEventListener('DOMContentLoaded', function(){
     return true;
   };
 
+  // 最終AIも通常の target="_blank" リンクで開く。ポップアップ制限を受けない構造。
+  window.simpleFinalLink=function(event,ai){
+    keepFinalAIButtonsClickable();
+    const finalAiUrls={chatgpt:'https://chatgpt.com/',gemini:'https://gemini.google.com/',claude:'https://claude.ai/'};
+    if(!finalAiUrls[ai]){
+      setStatus('⚠️ AIの種類を確認できませんでした。','bad');
+      return false;
+    }
+    if(!selectedFinalDocument){
+      const selected=document.querySelector('#simpleStep5 .bo-doc-btn.selected');
+      if(selected && selected.dataset.simpleDoc) selectedFinalDocument=selected.dataset.simpleDoc;
+    }
+    if(!selectedFinalDocument){
+      setStatus('⚠️ 先に作りたい書類を選んでください。','bad');
+      return false;
+    }
+    if(!syncConfirmedInfo()){
+      setStatus('⚠️ 先にSTEP4でAIの整理結果を貼り付け、「内容を確認して次へ」を押してください。','bad');
+      return false;
+    }
+    if(typeof window.selectFinalDocument==='function') window.selectFinalDocument(selectedFinalDocument);
+    if(typeof window.copySelectedFinalData!=='function'){
+      setStatus('⚠️ AI用データを準備できませんでした。','bad');
+      return false;
+    }
+    (async function(){
+      const copied=await window.copySelectedFinalData();
+      const finalStatus=q('preventiveFinalStatus');
+      const success=(copied===true) || !!(finalStatus && finalStatus.classList.contains('success'));
+      if(!success){
+        setStatus(finalStatus && finalStatus.textContent ? finalStatus.textContent : '⚠️ コピーできませんでした。','bad');
+        return;
+      }
+      setStatus('✓ 確認済み情報＋正式な作成プロンプトをまとめてコピーしました。別タブで開いたAIで Ctrl＋V → 送信してください。','ok');
+      const step5=q('simpleStep5');
+      if(step5){step5.classList.remove('is-current');step5.classList.add('is-done');}
+    })();
+    return true;
+  };
+
   window.simpleFinalWithAI=async function(ai){
     keepFinalAIButtonsClickable();
     const finalAiUrls={chatgpt:'https://chatgpt.com/',gemini:'https://gemini.google.com/',claude:'https://claude.ai/'};
@@ -3955,8 +4053,9 @@ document.addEventListener('DOMContentLoaded', function(){
     if(aiWindow && !aiWindow.closed){
       aiWindow.location.href=finalAiUrl;
     }else{
-      // 新しい画面がブロックされた場合は、現在の画面でAIへ移動する。
-      location.href=finalAiUrl;
+      // 元のアプリを残すことを優先し、現在の画面ではAIへ移動しない。
+      setStatus('✓ コピーは完了しましたが、AIの別タブがブラウザにブロックされました。ポップアップを許可して、もう一度AIボタンを押してください。','bad');
+      return false;
     }
     return true;
   };
