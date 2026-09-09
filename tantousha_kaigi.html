@@ -444,6 +444,54 @@ h1.bo-white-title{
 #meetingPatternStatus{color:#075e6b !important;}
 </style>
 
+
+<style id="ai-launch-buttons-style">
+.ai-launch-box{
+  margin-top:12px;
+  padding:14px;
+  background:#f4faff;
+  border:1px solid #b9d9f5;
+  border-radius:12px;
+}
+.ai-launch-title{
+  font-weight:700;
+  color:#0875c9;
+  margin-bottom:8px;
+}
+.ai-launch-note{
+  font-size:13px;
+  line-height:1.6;
+  color:#52676d;
+  margin-bottom:8px;
+}
+.ai-launch-buttons{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.ai-launch-buttons button{
+  flex:1 1 180px;
+  margin:0;
+  font-weight:700;
+}
+.ai-chatgpt-button{
+  background:#222 !important;
+  color:#fff !important;
+}
+.ai-gemini-button{
+  background:#4285f4 !important;
+  color:#fff !important;
+}
+.ai-claude-button{
+  background:#d97757 !important;
+  color:#fff !important;
+}
+@media(max-width:600px){
+  .ai-launch-buttons{display:block}
+  .ai-launch-buttons button{width:100%;margin:4px 0}
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -498,6 +546,19 @@ h1.bo-white-title{
 </p>
 
 <button id="copyButton" class="copy-button ai-copy-green-button" onclick="copyAI()">📋 AI処理用にコピー</button>
+
+<div id="aiLaunchBox" class="ai-launch-box">
+  <div class="ai-launch-title">コピーした内容を、使いたいAIで開いて貼り付けます</div>
+  <div class="ai-launch-note">
+    下のボタンはAIのサイトを開くだけです。コピーした文章は自動では送信されませんので、開いたAIの画面にご自身で貼り付けてください。
+  </div>
+  <div class="ai-launch-buttons">
+    <button type="button" class="ai-chatgpt-button" onclick="openAI('chatgpt')">🤖 ChatGPTを開く</button>
+    <button type="button" class="ai-gemini-button" onclick="openAI('gemini')">✨ Geminiを開く</button>
+    <button type="button" class="ai-claude-button" onclick="openAI('claude')">🟣 Claudeを開く</button>
+  </div>
+</div>
+
 <div id="cs" class="status">まだコピーされていません。</div>
 
 <div id="homeArea">
@@ -744,6 +805,17 @@ window.showMainView = function(){
 window.goHome = function(){
   location.href = 'https://blueocean2014.github.io/BlueOcean-Portal/';
 };
+
+
+  window.openAI = function(ai){
+    const AI_SITES = {
+      chatgpt: 'https://chatgpt.com/',
+      gemini: 'https://gemini.google.com/',
+      claude: 'https://claude.ai/'
+    };
+    const url = AI_SITES[ai];
+    if(url) window.open(url, '_blank', 'noopener,noreferrer');
+  };
 
 window.copyAI = async function(){
   const button = document.getElementById("copyButton");
