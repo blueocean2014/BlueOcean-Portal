@@ -5,6 +5,89 @@
 <!-- BlueOcean Firebase Authentication Guard -->
 <style id="blueocean-auth-guard-style">
 html.blueocean-auth-checking body { visibility: hidden !important; }
+
+/* v8: compact settings button */
+.settings-open-button{
+  width:auto !important;
+  min-width:0 !important;
+  max-width:none !important;
+  padding:8px 14px !important;
+  font-size:14px !important;
+  line-height:1.25 !important;
+  border-radius:9px !important;
+  display:inline-block !important;
+}
+
+
+/* v8: give the start card more breathing room */
+.launch-card{
+  padding:34px 34px !important;
+  margin:30px auto 36px !important;
+  min-height:180px;
+}
+.launch-card h2{
+  margin-bottom:18px !important;
+}
+.launch-card p{
+  line-height:1.9 !important;
+  margin:12px 0 20px !important;
+}
+.launch-card .primary{
+  margin-top:12px !important;
+  padding:16px 26px !important;
+}
+
+
+/* v8: improve readability of the important privacy / care-manager notice */
+.important-notice-card{
+  padding:30px 32px !important;
+  line-height:1.9 !important;
+}
+.important-notice-card p,
+.important-notice-card div{
+  line-height:1.9;
+}
+
+
+/* v9: visible file-reading progress */
+.bo-load-progress-wrap{
+  margin-top:16px;
+  padding:16px 18px;
+  border:1px solid #cfe2ea;
+  border-radius:12px;
+  background:#f8fbfd;
+}
+.bo-load-progress-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  margin-bottom:10px;
+  font-size:15px;
+}
+.bo-load-progress-head strong{
+  font-size:20px;
+  white-space:nowrap;
+}
+.bo-load-progress-track{
+  width:100%;
+  height:16px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#e5ecef;
+}
+.bo-load-progress-bar{
+  height:100%;
+  border-radius:999px;
+  background:currentColor;
+  transition:width .25s ease;
+}
+.bo-load-progress-detail{
+  margin-top:9px;
+  font-size:13px;
+  line-height:1.6;
+}
+
 </style>
 <script>
 document.documentElement.classList.add("blueocean-auth-checking");
@@ -22,6 +105,12 @@ document.documentElement.classList.add("blueocean-auth-checking");
     appId: "1:1081837805765:web:9251c3c3a7e9f82ba190ac",
     measurementId: "G-9PBLJES7ME"
   };
+
+  const isBlueOceanProduction = /(^|\.)blueocean2014\.github\.io$/i.test(location.hostname);
+  if (!isBlueOceanProduction) {
+    document.documentElement.classList.remove("blueocean-auth-checking");
+    return;
+  }
 
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
@@ -44,7 +133,7 @@ document.documentElement.classList.add("blueocean-auth-checking");
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ケアプラン（案）、介護予防プラン（案）、課題整理総括表（案）作成支援アプリ（BlueOcean）</title>
+<title>（BlueOcean）</title>
 <style>
 body{margin:0;background:#f4fbff;color:#185477;font-family:-apple-system,BlinkMacSystemFont,"Yu Gothic","Meiryo",sans-serif}
 .care-manager-message{
@@ -772,139 +861,6 @@ h1.bo-white-title{
 </style>
 
 
-<style id="blueocean-visual-html-editor">
-/* ===== HTMLを画面を見ながら編集する機能 ===== */
-#boVisualEditorOpen{
-  display:block;
-  margin:18px auto;
-  padding:14px 22px;
-  border:2px solid #075fa8;
-  border-radius:12px;
-  background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9);
-  color:#fff;
-  font-size:16px;
-  font-weight:800;
-  cursor:pointer;
-  box-shadow:0 3px 9px rgba(0,80,140,.16);
-}
-#boVisualEditorOverlay{
-  position:fixed;
-  inset:0;
-  z-index:99999;
-  display:none;
-  background:rgba(15,35,50,.72);
-  padding:18px;
-  box-sizing:border-box;
-}
-#boVisualEditorOverlay.bo-editor-open{display:block}
-.bo-editor-window{
-  width:100%;
-  height:100%;
-  max-width:1500px;
-  margin:0 auto;
-  background:#f4faff;
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 15px 50px rgba(0,0,0,.3);
-  display:flex;
-  flex-direction:column;
-}
-.bo-editor-head{
-  flex:none;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  padding:12px 16px;
-  background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9);
-  color:#fff;
-}
-.bo-editor-head-title{font-size:18px;font-weight:900}
-.bo-editor-head-help{font-size:12px;opacity:.95}
-.bo-editor-head-actions{display:flex;gap:6px;flex-wrap:wrap}
-.bo-editor-head-actions button{
-  margin:0;
-  padding:8px 12px;
-  border-radius:9px;
-  background:#fff;
-  color:#075fa8;
-  font-size:13px;
-  font-weight:800;
-}
-.bo-editor-main{
-  min-height:0;
-  flex:1;
-  display:grid;
-  grid-template-columns:minmax(360px,1fr) minmax(420px,1.15fr);
-  gap:10px;
-  padding:10px;
-}
-.bo-editor-pane{
-  min-width:0;
-  min-height:0;
-  background:#fff;
-  border:2px solid #b9d9f5;
-  border-radius:12px;
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-}
-.bo-editor-pane-title{
-  flex:none;
-  padding:9px 12px;
-  background:#eef7ff;
-  color:#075fa8;
-  font-weight:900;
-  border-bottom:1px solid #cfe3f7;
-}
-#boHtmlSource{
-  flex:1;
-  width:100%;
-  min-height:0;
-  resize:none;
-  box-sizing:border-box;
-  border:0;
-  outline:0;
-  padding:14px;
-  font-family:Consolas,"Courier New",monospace;
-  font-size:13px;
-  line-height:1.55;
-  color:#18384a;
-  tab-size:2;
-}
-#boHtmlPreview{
-  flex:1;
-  width:100%;
-  min-height:0;
-  border:0;
-  background:#fff;
-}
-.bo-editor-foot{
-  flex:none;
-  padding:8px 12px;
-  border-top:1px solid #cfe3f7;
-  background:#fff;
-  color:#536b78;
-  font-size:12px;
-  line-height:1.5;
-}
-.bo-editor-status{
-  display:inline-block;
-  margin-left:8px;
-  padding:3px 8px;
-  border-radius:7px;
-  background:#edf9f0;
-  color:#17652e;
-  font-weight:800;
-}
-@media(max-width:850px){
-  #boVisualEditorOverlay{padding:8px}
-  .bo-editor-main{grid-template-columns:1fr;grid-template-rows:45% 55%}
-  .bo-editor-head-help{display:none}
-}
-</style>
-
-
 <style id="help-slide-panel-restore">
 .privacy-help-toggle{display:block;margin:8px 0 10px;padding:8px 14px;border:1px solid #198754;border-radius:8px;background:#fff;color:#198754;font-weight:700;cursor:pointer}
 .privacy-help-toggle:hover{background:#f0fff4}
@@ -942,8 +898,8 @@ h1.bo-white-title{
 <body>
 <header>
 <h1 class="bo-white-title">
-  <span class="app-title-main">ケアマネが自ら育てる業務支援アプリ</span>
-  <span class="app-title-sub">ケアプラン（案）・介護予防プラン（案）・課題整理総括表（案）作成支援</span>
+  <span class="app-title-main">ブルーオーシャンのアプリ</span>
+<span class="app-title-sub">ケアプラン（案）・介護予防プラン（案）・課題整理総括表（案）作成支援</span>
 </h1>
 <div class="header-inner">
   <div></div>
@@ -963,17 +919,20 @@ h1.bo-white-title{
 </div>
 
 <section class="card preventive-launch-card">
-<h2>ケアプラン（案）、介護予防プラン（案）、課題整理総括表（案）作成支援アプリ</h2>
+<h2></h2>
 <div class="preventive-flow-explanation" style="margin:14px 0;padding:14px 16px;background:#f8fbfd;border:1px solid #cfe5ec;border-radius:12px;line-height:1.8;">このアプリは、まずプラン作成に必要な資料を読み込み、個人情報の可能性がある記載を確認します。<br>その後、AIに資料を事前整理させ、整理結果をこのアプリに貼り付けていただきます。<br>ケアマネジャーご自身で整理内容を確認・修正したうえで、確認済み情報を保存します。<br><strong>最後に、作成したい書類のプロンプトを選択し、確認済み情報と一つにまとめてAIへ渡します。</strong></div>
 <p class="description">PDF・Excel・Wordなど、パソコンに保存している資料をこの画面で読み込み、内容を確認してからプラン作成の工程へ進めます。</p>
 
-<details class="privacy-important-box">
+<details class="privacy-important-box important-notice-card">
   <summary class="privacy-summary">⚠️このアプリで最も大切にしていること【個人情報を守るための仕組み】とケアマネジャーの皆さんへの大切なお願い　始める前に必ずご一読ください</summary>
   <div class="privacy-important-body">
-  <div>このアプリの大きな特徴は、資料をAIに渡す前に、<strong>個人情報が残ったままにならないよう、個人を直接特定できる情報をしっかりとチェックし、排除・匿名化するための確認工程を設けていること</strong>です。
-  <div style="margin-top:10px;">本アプリから資料をAIへ直接送信する仕組みではありません。まずアプリ内で資料を確認し、個人を特定できる情報が含まれていない状態に加工・確認したうえで、ケアマネジャーご自身が使用するAIへ資料を渡していただきます。</div>
-  <div style="margin-top:10px;"><strong>つまり、このアプリは「個人情報を含んだ資料をそのままAIに渡す」のではなく、「個人を特定できない形に整理した基礎資料を、AIによる事前整理に利用できる状態にする」ことを大切にしています。</strong></div>
-  <div style="margin-top:10px;">ただし、自動チェックだけですべての個人情報を完全に検出できるわけではありません。最終的には、必ずケアマネジャーご自身で資料全体を確認し、個人を特定できる情報が残っていないことを確認してからAIへ渡してください。</div>
+  <div>このアプリの大きな特徴のひとつは、資料をAIに渡す前に、<strong>個人を直接特定できる情報が残っていないかを確認するための工程を設けていること</strong>です。</div>
+  <div style="margin-top:10px;">本アプリから、個人情報を含んだ資料をそのままAIへ直接送信する仕組みではありません。</div>
+  <div style="margin-top:10px;">まず、皆さまご自身で資料を確認し、氏名や住所、電話番号など、個人を特定できる情報を取り除いた状態に整理していただきます。そのうえで、整理した資料をこのアプリでもう一度チェックし、個人情報が残っていないかを確認します。</div>
+  <div style="margin-top:10px;"><strong>つまり、「個人情報を含んだ資料をそのままAIに渡す」のではなく、「ご自身で個人を特定できない形に整理する」→「アプリでもう一度チェックする」→「最終的にご自身で確認する」という複数の確認工程を経てから、AIによる事前整理に活用する仕組みです。</strong></div>
+  <div style="margin-top:10px;">どれだけ注意していても、削除忘れや見落としなど、うっかりミスが起こる可能性はあります。だからこそ、AIを利用する前にもう一段階確認する仕組みを設けることで、利用者さまの大切な個人情報を守るとともに、アプリを利用されるケアマネジャーの皆さま自身を守ることにもつながります。</div>
+  <div style="margin-top:10px;">ただし、アプリによる自動チェックだけで、すべての個人情報を完全に検出できることを保証するものではありません。<strong>最終的には必ずケアマネジャーご自身で資料全体を確認し、個人を特定できる情報が残っていないことを確認したうえで、ご自身が使用するAIへ資料を渡してください。</strong></div>
+  <div style="margin-top:10px;">この確認工程は、AIを安全に活用するための大切な安全対策のひとつです。利用者さまの個人情報と、AIを利用する皆さま自身の双方を守るための重要な機能として、ご理解いただければ幸いです。</div>
 
   <hr style="border:0;border-top:2px solid #e6c77a;margin:18px 0;">
   <div style="font-weight:800;font-size:18px;color:#9a6500;margin-bottom:10px;">ケアマネジャーの皆さんへの大切なお願い</div>
@@ -1002,6 +961,93 @@ h1.bo-white-title{
 
 <div id="mainView">
 <section id="preventivePlanArea" class="card preventive-area" style="display:none;">
+<div id="boSimpleWorkflow" class="bo-simple-workflow">
+  <div class="bo-simple-head">
+    <div class="bo-simple-kicker">上から順番に進むだけです</div>
+    <h2>プラン作成支援</h2>
+    <div class="bo-simple-sub">説明を読まなくても進めます。分からないときだけ「？」を開いてください。</div>
+  </div>
+
+  <div class="bo-simple-step is-current" id="simpleStep1">
+    <div class="bo-simple-num">1</div>
+    <div class="bo-simple-body">
+      <div class="bo-simple-title">資料を入れる</div>
+      <div class="bo-simple-one">最初に1回だけ、資料を選びます。</div>
+      <button type="button" class="bo-big-action" onclick="simpleChooseFiles()">📂 資料を選ぶ</button>
+      <div id="simpleFileStatus" class="bo-simple-status">まだ資料を選んでいません。</div>
+      <div id="simpleLoadProgressWrap" class="bo-load-progress-wrap" style="display:none;" aria-live="polite">
+        <div class="bo-load-progress-head">
+          <span id="simpleLoadProgressLabel">資料を読み取っています…</span>
+          <strong id="simpleLoadProgressPercent">0%</strong>
+        </div>
+        <div class="bo-load-progress-track">
+          <div id="simpleLoadProgressBar" class="bo-load-progress-bar" style="width:0%;"></div>
+        </div>
+        <div id="simpleLoadProgressDetail" class="bo-load-progress-detail">準備中です…</div>
+      </div>
+      <details class="bo-help"><summary>？ 資料の選び方</summary><div>PDF・Excel・Word・TXT・CSV・画像を選べます。複数選択もできます。資料を選ぶと、このアプリが自動で内容を読み取ります。</div></details>
+    </div>
+  </div>
+
+  <div class="bo-simple-step" id="simpleStep2">
+    <div class="bo-simple-num">2</div>
+    <div class="bo-simple-body">
+      <div class="bo-simple-title">個人情報を確認する</div>
+      <div class="bo-simple-one">読み取った資料に、個人を特定する情報が残っていないか確認します。</div>
+      <button type="button" class="bo-big-action" id="simplePrivacyButton" onclick="simplePrivacyCheck()" disabled>🔒 個人情報をチェックする</button>
+      <div id="simplePrivacyStatus" class="bo-simple-status">資料の読み込みが終わると押せます。</div>
+      <details class="bo-help"><summary>？ なぜ確認するの？</summary><div>氏名・住所・電話番号などが残ったままAIへ渡らないようにするためです。自動チェックだけで完全ではないため、最終的にはケアマネジャー自身でも内容を確認してください。</div></details>
+    </div>
+  </div>
+
+  <div class="bo-simple-step" id="simpleStep3">
+    <div class="bo-simple-num">3</div>
+    <div class="bo-simple-body">
+      <div class="bo-simple-title">AIで事前整理する</div>
+      <div class="bo-simple-one"><strong>もう一度ファイルを選ぶ必要はありません。</strong><br>使うAIを押すと「事前整理の指示＋チェック済み資料」が自動で1つにまとまり、コピーされます。</div>
+      <div class="bo-ai-three">
+        <button type="button" class="bo-ai-btn bo-chat" onclick="simplePreorganizeWithAI('chatgpt')" disabled>🤖 ChatGPTで整理</button>
+        <button type="button" class="bo-ai-btn bo-gem" onclick="simplePreorganizeWithAI('gemini')" disabled>✨ Geminiで整理</button>
+        <button type="button" class="bo-ai-btn bo-claude" onclick="simplePreorganizeWithAI('claude')" disabled>🟣 Claudeで整理</button>
+      </div>
+      <div id="simpleAIStatus" class="bo-simple-status">個人情報チェックが終わると選べます。</div>
+      <div class="bo-paste-callout">AIが開いたら <strong>Ctrl＋V</strong> → <strong>送信</strong> だけです。</div>
+      <details class="bo-help"><summary>？ Ctrl＋V が分からない</summary><div>AIの入力欄を一度クリックして、キーボードの「Ctrl」を押しながら「V」を押します。コピーした指示と資料がまとめて貼り付きます。資料をデスクトップからもう一度探す必要はありません。</div></details>
+    </div>
+  </div>
+
+  <div class="bo-simple-step" id="simpleStep4">
+    <div class="bo-simple-num">4</div>
+    <div class="bo-simple-body">
+      <div class="bo-simple-title">AIの整理結果を戻して、自分で確認する</div>
+      <div class="bo-simple-one">AIの回答をコピーして、この欄に貼り付けます。間違い・不足があればここで直してください。</div>
+      <textarea id="simpleOrganizedInput" class="bo-simple-textarea" placeholder="ここにAIが整理した情報を貼り付けてください。"></textarea>
+      <button type="button" class="bo-big-action" onclick="simpleConfirmOrganized()">✓ 内容を確認して次へ</button>
+      <div id="simpleOrganizedStatus" class="bo-simple-status">ここで確認・修正した内容が、ケアマネジャー確認済み情報になります。</div>
+      <details class="bo-help"><summary>？ AIからどうやって戻すの？</summary><div>AIの整理結果をコピーし、ブラウザ上部の「BlueOcean」のタブに戻ります。この入力欄をクリックして Ctrl＋V で貼り付けます。</div></details>
+    </div>
+  </div>
+
+  <div class="bo-simple-step" id="simpleStep5">
+    <div class="bo-simple-num">5</div>
+    <div class="bo-simple-body">
+      <div class="bo-simple-title">作りたい書類を選ぶ</div>
+      <div class="bo-simple-one">書類を選んで、使うAIを押すだけです。確認済み情報と正式なプロンプトをアプリが自動で1つにまとめます。</div>
+      <div class="bo-doc-three">
+        <button type="button" class="bo-doc-btn" data-simple-doc="care" onclick="simpleSelectDocument('care')">ケアプラン（案）</button>
+        <button type="button" class="bo-doc-btn" data-simple-doc="preventive" onclick="simpleSelectDocument('preventive')">介護予防プラン（案）</button>
+        <button type="button" class="bo-doc-btn" data-simple-doc="issue" onclick="simpleSelectDocument('issue')">課題整理総括表（案）</button>
+      </div>
+      <div class="bo-ai-three bo-final-ai">
+        <button type="button" class="bo-ai-btn bo-chat" onclick="simpleFinalWithAI('chatgpt')">🤖 ChatGPTで作る</button>
+        <button type="button" class="bo-ai-btn bo-gem" onclick="simpleFinalWithAI('gemini')">✨ Geminiで作る</button>
+        <button type="button" class="bo-ai-btn bo-claude" onclick="simpleFinalWithAI('claude')">🟣 Claudeで作る</button>
+      </div>
+      <div id="simpleFinalStatus" class="bo-simple-status">先に作りたい書類を選んでください。</div>
+      <div class="bo-paste-callout">AIが開いたら、ここでも <strong>Ctrl＋V → 送信</strong> だけです。</div>
+    </div>
+  </div>
+</div>
 <h2>プラン作成支援：資料の確認</h2>
 <div class="privacy-warning">このアプリでは、PDF・Excel・Wordなどの資料をAIに渡す前に、本人を直接特定できる可能性が高い情報が残っていないかを自動チェックします。疾患名や発症年など、プラン作成に必要な情報を一律に除外するものではありません。</div>
 <div class="setting-box">
@@ -1054,7 +1100,7 @@ h1.bo-white-title{
 </div>
 <div class="ai-paste-note">⚠️ <strong>重要：</strong>資料だけをAIに送るのではありません。<strong>「資料」＋「こちらでコピーした指示書（プロンプト）」</strong>の2つをAIに渡してください。</div>
 </div>
-<button type="button" id="preventivePrePromptCopyButton" class="preventive-launch-button" onclick="copyPreventivePrePrompt()">📋このボタンを押すと、あなたのAIに貼り付ける用のプロンプトをコピーできます</button>
+<button type="button" id="preventivePrePromptCopyButton" class="preventive-launch-button" onclick="copyPreventivePrePrompt()">📋 事前整理の指示＋資料をまとめてコピー</button>
 <button type="button" id="aiFirstStageToggle" class="ai-first-stage-toggle" onclick="toggleFirstStageGuide()">【第一段階】あなたのAIに「指示書」と「資料」を渡します。※ここが一番重要　説明を見るにはここをクリック！</button>
 <div id="aiFirstStageGuide" class="ai-first-stage-guide">
   <div class="ai-flow-stage">
@@ -1077,7 +1123,7 @@ h1.bo-white-title{
     <button type="button" class="ai-gemini-button" onclick="openAI('gemini')">✨ Geminiを開く</button>
     <button type="button" class="ai-claude-button" onclick="openAI('claude')">🟣 Claudeを開く</button>
   </div>
-  <div class="ai-launch-help-v2">コピーした「指示書」を開いたAIへ貼り付け、個人情報チェックを通過した資料も同じAIへ添付してください。</div>
+  <div class="ai-launch-help-v2">もう一度ファイルを選ぶ必要はありません。コピー済みの内容をAIへ貼り付けてください。</div>
   <div class="ai-return-tip">↩ AIでの整理が終わったら、ブラウザ上部にある<strong>「BlueOcean」のタブをクリック</strong>すると、このアプリへすぐ戻れます。</div>
 </div>
 
@@ -1199,20 +1245,14 @@ h1.bo-white-title{
 </div>
 </section>
 
-<div style="text-align:center;margin:28px 0 10px;">
-<button class="settings-orange-target settings-open-button" type="button" onclick="showSettingsView()">⚙ 設定　プラン作成支援について</button>
-<button type="button" class="home-button" onclick="scrollToTop()">▲トップに戻る</button>
-<button type="button" class="home-button" onclick="goHome()">⌂ トップ画面へ戻る</button>
+<div style="text-align:center;margin:40px 0 18px;">
+<button class="settings-orange-target settings-open-button" type="button" onclick="showSettingsView()" style="margin-bottom:28px;">⚙ 設定　プラン作成支援について</button>
+<div style="height:10px;"></div>
+<button type="button" class="home-button" onclick="scrollToTop()" style="margin:0 10px 18px;">▲トップに戻る</button>
+<button type="button" class="home-button" onclick="goHome()" style="margin:0 10px 18px;">⌂ トップ画面へ戻る</button>
 </div>
 
-<div class="privacy-warning-box" style="margin:18px 0;padding:18px 20px;border:2px solid #d32f2f;background:#fff5f5;border-radius:12px;line-height:1.8;text-align:left;">
-<div style="font-size:1.12em;font-weight:800;color:#b71c1c;margin-bottom:10px;">⚠️ 重要：個人情報について</div>
-<div style="margin-bottom:12px;">氏名、住所、電話番号、被保険者番号、医療機関名、主治医名その他個人を特定できる情報は、できるだけ入力しないでください。可能な場合は「利用者A」など匿名化した表記を使用してください。読み込んだ資料は、この機能ではサーバーへ送信せず、ブラウザ内で処理する設計です。</div>
-<div style="font-weight:800;color:#b71c1c;">個人情報の記載されている書類については、AIに添付して分析してはいけません。</div>
-<div style="font-weight:800;color:#b71c1c;">個人情報の流出を防ぐため、必ずご自身で書類の内容を確認する習慣をつけてください。</div>
-<div style="margin-top:8px;">※このアプリの自動チェックは100％確実ではありません。最終確認は必ずご自身で行ってください。</div>
-</div>
-<section class="card usage-card">
+<section class="card usage-card" style="display:none;">
 <h2>プラン作成支援アプリの使い方</h2>
 <div class="usage-flow">
   <div class="usage-step"><strong>① プラン作成に必要な資料を選択する</strong><br><span>アセスメントシート、認定情報など、対象利用者の状態を把握するために必要な資料を複数選択します。選択しただけでは解析されず、「📥 読み込み開始」を押してから中身を読み込みます。</span></div>
@@ -1231,15 +1271,6 @@ h1.bo-white-title{
 <div class="bo-footer-brand-subtitle">Next Stage Care Innovation</div>
 </div>
 </div>
-
-
-<!-- HTMLを画面を見ながら編集する入口 -->
-<div style="text-align:center;margin:18px 0 8px;">
-  <button id="boVisualEditorOpen" type="button" onclick="boOpenVisualHtmlEditor()">
-    🖥️ HTMLを画面を見ながら編集する
-  </button>
-</div>
-
 </main>
 
 <script>
@@ -1251,7 +1282,10 @@ window.scrollToTop = function(){
 
 window.showUsageGuide = function(){
   const usage = document.querySelector(".usage-card");
-  if(usage) usage.scrollIntoView({behavior:"smooth", block:"start"});
+  if(!usage) return;
+  const isHidden = getComputedStyle(usage).display === "none";
+  usage.style.display = isHidden ? "block" : "none";
+  if(isHidden) usage.scrollIntoView({behavior:"smooth", block:"start"});
 };
 
 window.showSettingsView = function(){
@@ -1334,9 +1368,37 @@ window.goHome = function(){
         +'</div><button type="button" class="file-remove" onclick="removePreventiveFile('+index+')">削除</button></div>';
     }).join('');
   }
+  function updateSimpleLoadProgress(percent,label,detail,show=true){
+    const wrap=$('simpleLoadProgressWrap');
+    const bar=$('simpleLoadProgressBar');
+    const pct=$('simpleLoadProgressPercent');
+    const lab=$('simpleLoadProgressLabel');
+    const det=$('simpleLoadProgressDetail');
+    const safe=Math.max(0,Math.min(100,Math.round(Number(percent)||0)));
+    if(wrap)wrap.style.display=show?'block':'none';
+    if(bar)bar.style.width=safe+'%';
+    if(pct)pct.textContent=safe+'%';
+    if(lab)lab.textContent=label||'資料を読み取っています…';
+    if(det)det.textContent=detail||'';
+  }
+
   function updateProgress(index,total,file,message){
     const item=preventiveFiles[index];
     if(item){item.loading=true;item.progress=message;}
+    const base=(index/Math.max(total,1))*100;
+    const perFile=100/Math.max(total,1);
+    let within=0.18;
+    const msg=String(message||'');
+    const pageMatch=msg.match(/(\d+)\s*\/\s*(\d+)\s*ページ/);
+    if(pageMatch && Number(pageMatch[2])>0){
+      within=Math.min(0.95,Number(pageMatch[1])/Number(pageMatch[2]));
+    }else if(/OCR|文字認識/.test(msg)){
+      within=0.62;
+    }else if(/抽出|解析|読み込み/.test(msg)){
+      within=0.38;
+    }
+    const overall=Math.min(98,base+(perFile*within));
+    updateSimpleLoadProgress(overall,'資料を読み取っています…',(index+1)+' / '+total+'件　'+file.name+'　'+msg,true);
     setStatus('⏳ '+(index+1)+'/'+total+'件目を読み込み中…\n'+file.name+'\n'+message);
     renderFileList();
   }
@@ -1469,6 +1531,7 @@ window.goHome = function(){
 
   window.loadPreventiveFiles=async function(){
     if(!preventiveFiles.length){setStatus('⚠️ 先に資料を選択してください。','alert');return;}
+    updateSimpleLoadProgress(0,'資料を読み取っています…','読み込みを開始します。',true);
     preventiveFiles.forEach(item=>{item.loaded=false;item.loading=false;item.error=null;item.text='';item.progress='';item.detail='';item.charCount=0;});
     $('preventivePromptBox').style.display='none';
     const btn=$('preventiveLoadButton');if(btn){btn.dataset.busy='1';btn.style.opacity='.7';btn.style.cursor='wait';}updateLoadButton();renderFileList();
@@ -1492,10 +1555,17 @@ window.goHome = function(){
       const totalChars=preventiveFiles.reduce((sum,item)=>sum+item.charCount,0);
       setStatus('✓ 読み込み成功\n'+success+'件すべての資料の中身を取得しました。\n合計取得文字数：'+totalChars.toLocaleString()+'文字\n次に「🔎 読み込んだ資料に個人情報が入っていないかチェックする」に進んでください。','success');
       setFileStatus('✓ '+success+'件すべての資料を正常に読み込みました。各資料の取得文字数を確認してください。','success');
+      updateSimpleLoadProgress(100,'読み込み完了','すべての資料を読み取りました。',true);
     }else{
       setStatus('⚠️ 読み込み失敗\n成功：'+success+'件　失敗：'+failed+'件\n\n'+errors.join('\n')+'\n\n失敗した資料があるため、個人情報チェックには進めません。','alert');
+      updateSimpleLoadProgress(0,'読み込みに失敗しました','読み込めなかった資料があります。',true);
       setFileStatus('⚠️ 一部または全部の資料を正常に読み込めませんでした。','alert');
     }
+  };
+
+
+  window.arePreventiveFilesReady=function(){
+    return preventiveFiles.length>0 && preventiveFiles.every(item=>item.loaded && String(item.text||'').trim());
   };
 
   window.checkPreventivePrivacy=function(){
@@ -1586,7 +1656,7 @@ window.goHome = function(){
     +'\n\nただし、自動チェックは100％確実ではありません。AIへ渡す前に、必ずケアマネジャー自身で資料全体を確認してください。';
   if(promptBox){promptBox.style.display='block';promptBox.classList.add('ready-next');}
   if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button ready';checkBtn.textContent='✓ 個人情報チェック完了 → 次の工程へ';}
-  if(nextNote){nextNote.innerHTML='✓ <strong>個人情報チェックを通過しました。次の工程へ進めます。</strong><br>③「AIに資料を事前整理してもらう」へ進み、📋このボタンを押すと、あなたのAIに貼り付ける用のプロンプトをコピーできます を押してください。';nextNote.classList.add('show');}
+  if(nextNote){nextNote.innerHTML='✓ <strong>個人情報チェックを通過しました。次の工程へ進めます。</strong><br>③「AIに資料を事前整理してもらう」へ進み、📋 事前整理の指示＋資料をまとめてコピー を押してください。';nextNote.classList.add('show');}
 };
 const PREVENTIVE_PRE_PROMPT_BASE = `あなたは優秀なケアマネジャーです。 以下の条件を踏まえたケアプラン作成に必要なアセスメントをします。アセスメントの前に、情報をまとめますが、下記の各項目に沿って情報を細かく分析して 作成しコードブロックで出力させてください。
 
@@ -1984,32 +2054,32 @@ const PREVENTIVE_PRE_PROMPT = PREVENTIVE_PRE_PROMPT_BASE;
 
   window.copyPreventivePrePrompt=async function(){
     const btn=$('preventivePrePromptCopyButton'),status=$('preventivePrePromptStatus');
-    const copiedMessage='✓ 資料が個人情報チェックを通過したため、プロンプトをコピーしました！';
+    const readyFiles=preventiveFiles.filter(item=>item.loaded && String(item.text||'').trim());
+    if(!readyFiles.length){
+      if(status){status.style.display='block';status.className='status alert';status.textContent='⚠️ 先に資料を読み込み、個人情報チェックを完了してください。';}
+      return false;
+    }
+    const promptBox=$('preventivePromptBox');
+    if(!promptBox || promptBox.style.display==='none'){
+      if(status){status.style.display='block';status.className='status alert';status.textContent='⚠️ 個人情報チェックを通過してから進んでください。';}
+      return false;
+    }
+    const sourceText=readyFiles.map((item,index)=>
+      `\n\n【資料${index+1}：${item.file.name}】\n${String(item.text||'').trim()}`
+    ).join('');
+    const combinedText = PREVENTIVE_PRE_PROMPT +
+      `\n\n【以下は個人情報チェック済みの資料内容です】` + sourceText;
+    const copiedMessage='✓ 事前整理の指示＋資料をまとめてコピーしました';
     const setCopiedState=()=>{
-      if(btn){
-        btn.classList.add('prompt-copy-button','copied');
-        btn.textContent=copiedMessage;
-      }
+      if(btn){btn.classList.add('prompt-copy-button','copied');btn.textContent=copiedMessage;}
       const preLaunchBox=document.getElementById('preAiLaunchBox');
       if(preLaunchBox) preLaunchBox.style.display='block';
-      const firstToggle=document.getElementById('aiFirstStageToggle');
-      const firstGuide=document.getElementById('aiFirstStageGuide');
-      if(firstToggle) firstToggle.style.display='block';
-      if(firstGuide) firstGuide.style.display='none';
-      if(status){
-        status.className='status ai-review-status';
-        status.innerHTML='';
-        status.style.display='none';
-      }
+      if(status){status.className='status success';status.style.display='block';status.textContent='✓ もう一度ファイルを選ぶ必要はありません。AIを開いて Ctrl＋V で貼り付けてください。';}
     };
-    const copied=await copyTextToClipboard(PREVENTIVE_PRE_PROMPT);
-    if(copied){
-      setCopiedState();
-    }else if(status){
-      status.style.display='block';
-      status.className='status';
-      status.textContent='コピーできませんでした。ブラウザのコピー権限を確認してください。';
-    }
+    const copied=await copyTextToClipboard(combinedText);
+    if(copied){setCopiedState();return true;}
+    if(status){status.style.display='block';status.className='status';status.textContent='コピーできませんでした。ブラウザのコピー権限を確認してください。';}
+    return false;
   };
 
   window.confirmPreventiveOrganizedInfo=function(){
@@ -3385,6 +3455,7 @@ const PREVENTIVE_PRE_PROMPT = PREVENTIVE_PRE_PROMPT_BASE;
     // 最終工程では、事前整理用プロンプトを絶対に使用せず、
     // 選択された書類種別に対応する正式な作成用プロンプトだけを登録簿から取得します。
     const finalPrompt=registeredItem.prompt;
+    const displayInstruction=(window.BO_FINAL_DISPLAY_INSTRUCTIONS && window.BO_FINAL_DISPLAY_INSTRUCTIONS[selectedType]) || '';
     if(!finalPrompt || finalPrompt !== item.prompt){
       status.className='status alert';
       status.textContent='⚠️ 最終作成用プロンプトの選択確認に失敗しました。コピーを中止しました。';
@@ -3424,7 +3495,7 @@ const PREVENTIVE_PRE_PROMPT = PREVENTIVE_PRE_PROMPT_BASE;
 ${organized}
 
 【${item.name}作成用プロンプト】
-${finalPrompt}`;
+${finalPrompt}${displayInstruction ? `\n\n${displayInstruction}` : ''}`;
 
     // 「整理情報」と「選択した正式な作成用プロンプト」の両方が実際に結合されたことを確認してからコピーします。
     if(!finalText.includes(organized) || !finalText.includes(finalPrompt)){
@@ -3446,6 +3517,7 @@ ${finalPrompt}`;
         updateFinalSelectionUI();
       },1800);
     }
+    return copied;
   };
 
   // 3種類すべての登録状態を起動時に検証します。
@@ -3518,161 +3590,366 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 </script>
-</body>
-</html>
 
-<div id="boVisualEditorOverlay" aria-hidden="true">
-  <div class="bo-editor-window">
-    <div class="bo-editor-head">
-      <div>
-        <div class="bo-editor-head-title">🖥️ HTMLビジュアル編集</div>
-        <div class="bo-editor-head-help">左側のHTMLを変更すると、右側の画面がすぐに更新されます。</div>
-      </div>
-      <div class="bo-editor-head-actions">
-        <button type="button" onclick="boRefreshVisualPreview()">↻ プレビュー更新</button>
-        <button type="button" onclick="boDownloadEditedHtml()">💾 編集したHTMLを保存</button>
-        <button type="button" onclick="boCloseVisualHtmlEditor()">✕ 閉じる</button>
-      </div>
-    </div>
-
-    <div class="bo-editor-main">
-      <section class="bo-editor-pane">
-        <div class="bo-editor-pane-title">① HTMLを編集</div>
-        <textarea id="boHtmlSource" spellcheck="false"></textarea>
-      </section>
-
-      <section class="bo-editor-pane">
-        <div class="bo-editor-pane-title">② 画面を確認</div>
-        <iframe id="boHtmlPreview" title="HTMLプレビュー" sandbox="allow-scripts allow-forms allow-modals"></iframe>
-      </section>
-    </div>
-
-    <div class="bo-editor-foot">
-      HTMLを直接編集できます。右側は実際のHTMLをブラウザで表示した状態です。
-      <span id="boEditorStatus" class="bo-editor-status">編集中</span>
-    </div>
-  </div>
-</div>
-
-
-<script id="blueocean-visual-html-editor-script">
+<style id="blueocean-super-simple-mode">
+#preventivePlanArea > h2,#preventivePlanArea > .privacy-warning,#preventivePlanArea > .setting-box,#preventivePlanArea > .preventive-actions{display:none!important}
+.preventive-launch-card .preventive-flow-explanation,.preventive-launch-card > p.description{display:none!important}
+.preventive-launch-card{max-width:760px;margin:18px auto!important;text-align:center;padding:24px!important}
+.preventive-launch-card h2{font-size:22px!important;margin-bottom:14px!important}
+.preventive-launch-card:before{content:"資料を1回選んだら、あとは上から順番に進むだけです。";display:block;font-size:16px;font-weight:800;color:#245c80;margin:0 auto 16px;line-height:1.7}
+.preventive-launch-card .privacy-important-box{text-align:left;margin-top:16px}
+.bo-simple-workflow{max-width:760px;margin:0 auto;padding:2px 0 10px}
+.bo-simple-head{text-align:center;padding:8px 6px 18px}
+.bo-simple-kicker{display:inline-block;padding:6px 12px;border-radius:999px;background:#eaf5ff;color:#0875c9;font-weight:900;font-size:13px}
+.bo-simple-head h2{font-size:27px!important;margin:10px 0 6px!important}
+.bo-simple-sub{font-size:14px;color:#536b78;line-height:1.7}
+.bo-simple-step{display:grid;grid-template-columns:48px 1fr;gap:12px;margin:12px 0;padding:18px;border:2px solid #d7e8f7;border-radius:18px;background:#fff;opacity:.62;transition:.2s}
+.bo-simple-step.is-current,.bo-simple-step.is-ready,.bo-simple-step.is-done{opacity:1}
+.bo-simple-step.is-current{border-color:#138ee0;box-shadow:0 4px 16px rgba(19,142,224,.13)}
+.bo-simple-step.is-done{border-color:#7bc58e;background:#fbfffc}
+.bo-simple-num{width:42px;height:42px;border-radius:50%;background:#dcebf7;color:#47728f;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:900}
+.bo-simple-step.is-current .bo-simple-num{background:linear-gradient(135deg,#70dcfa,#138ee0,#0875c9);color:#fff}
+.bo-simple-step.is-done .bo-simple-num{background:#198754;color:#fff}
+.bo-simple-title{font-size:21px;font-weight:900;color:#075fa8;margin-bottom:5px}
+.bo-simple-one{font-size:15px;line-height:1.75;color:#334f5d;margin-bottom:11px}
+.bo-big-action{display:block;width:100%;margin:8px 0!important;padding:16px!important;font-size:18px!important;font-weight:900!important;background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9)!important;color:#fff!important}
+.bo-big-action:disabled,.bo-ai-btn:disabled{opacity:.4!important;cursor:not-allowed!important;transform:none!important}
+.bo-simple-status{margin-top:8px;padding:10px 12px;border-radius:10px;background:#f4f8fb;color:#42606f;font-size:14px;line-height:1.65;font-weight:700}
+.bo-simple-status.ok{background:#edf9f0;color:#17652e;border:1px solid #8bc79d}
+.bo-simple-status.warn{background:#fff6e5;color:#7a5200;border:1px solid #e6c16a}
+.bo-simple-status.bad{background:#fff1f1;color:#8b2626;border:1px solid #e29a9a}
+.bo-help{margin-top:9px;border-top:1px solid #e3edf5;padding-top:8px;color:#536b78;font-size:13px;line-height:1.7}
+.bo-help summary{cursor:pointer;color:#0875c9;font-weight:800;list-style:none}
+.bo-help summary::-webkit-details-marker{display:none}.bo-help[open] summary{margin-bottom:7px}
+.bo-ai-three,.bo-doc-three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.bo-ai-btn,.bo-doc-btn{width:100%;margin:0!important;padding:14px 8px!important;font-size:15px!important;font-weight:900!important;border-radius:12px!important}
+.bo-chat{background:#111!important;color:#fff!important}.bo-gem{background:#4285f4!important;color:#fff!important}.bo-claude{background:#6d4aff!important;color:#fff!important}
+.bo-doc-btn{background:#fff!important;color:#0875c9!important;border:2px solid #8bd4ee!important}
+.bo-doc-btn.selected{background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9)!important;color:#fff!important;border-color:#138ee0!important}
+.bo-paste-callout{margin-top:10px;padding:11px 13px;background:#fff8df;border:1px solid #e6cf78;border-radius:10px;color:#665500;font-size:15px;line-height:1.7;text-align:center}
+.bo-simple-textarea{min-height:320px!important;border:2px solid #8bd4ee!important;background:#fff!important}
+@media(max-width:620px){.bo-simple-step{grid-template-columns:38px 1fr;padding:14px 11px;gap:8px}.bo-simple-num{width:34px;height:34px;font-size:17px}.bo-simple-title{font-size:18px}.bo-ai-three,.bo-doc-three{grid-template-columns:1fr}.bo-simple-head h2{font-size:23px!important}}
+</style>
+<script id="blueocean-super-simple-script">
 (function(){
-  "use strict";
+  let simplePrivacyPassed=false;
+  let simpleSelectedDoc=null;
+  const qs=id=>document.getElementById(id);
+  const setStep=(n,state)=>{const el=qs('simpleStep'+n);if(!el)return;el.classList.remove('is-current','is-ready','is-done');if(state)el.classList.add(state);};
+  const setStatus=(id,text,kind)=>{const el=qs(id);if(!el)return;el.textContent=text;el.className='bo-simple-status'+(kind?' '+kind:'');};
+  const enablePreAI=enabled=>document.querySelectorAll('#simpleStep3 .bo-ai-btn').forEach(b=>b.disabled=!enabled);
+  const enableFinalAI=()=>document.querySelectorAll('#simpleStep5 .bo-final-ai .bo-ai-btn').forEach(b=>{b.disabled=false;b.removeAttribute('disabled');});
 
-  const openBtn = document.getElementById("boVisualEditorOpen");
-  const overlay = document.getElementById("boVisualEditorOverlay");
-  const source = document.getElementById("boHtmlSource");
-  const preview = document.getElementById("boHtmlPreview");
-  const status = document.getElementById("boEditorStatus");
+  window.simpleChooseFiles=function(){const input=qs('preventiveFileInput');if(input)input.click();};
 
-  let previewTimer = null;
-
-  function currentHtml(){
-    return source ? source.value : "";
-  }
-
-  function updatePreview(){
-    if(!preview || !source) return;
-    preview.srcdoc = currentHtml();
-    if(status) status.textContent = "プレビュー更新済み";
-  }
-
-  window.boOpenVisualHtmlEditor = function(){
-    if(!overlay || !source) return;
-
-    /*
-      現在の画面そのものを編集対象として読み込みます。
-      ビジュアルエディタ関連のオーバーレイは、編集対象から除外します。
-    */
-    const clone = document.documentElement.cloneNode(true);
-    clone.querySelectorAll("#boVisualEditorOverlay,#boVisualEditorOpen,#blueocean-visual-html-editor,#blueocean-visual-html-editor-script")
-      .forEach(el => el.remove());
-
-    source.value = "<!doctype html>\n" + clone.outerHTML;
-    overlay.classList.add("bo-editor-open");
-    overlay.setAttribute("aria-hidden","false");
-    document.body.style.overflow = "hidden";
-    updatePreview();
-  };
-
-  window.boCloseVisualHtmlEditor = function(){
-    if(!overlay) return;
-    overlay.classList.remove("bo-editor-open");
-    overlay.setAttribute("aria-hidden","true");
-    document.body.style.overflow = "";
-  };
-
-  window.boRefreshVisualPreview = function(){
-    updatePreview();
-  };
-
-  window.boDownloadEditedHtml = function(){
-    const html = currentHtml();
-    if(!html.trim()) return;
-
-    const blob = new Blob([html], {type:"text/html;charset=utf-8"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "BlueOcean_ビジュアル編集版.html";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-
-    if(status) status.textContent = "HTMLを保存しました";
-  };
-
-  if(source){
-    source.addEventListener("input", function(){
-      clearTimeout(previewTimer);
-      previewTimer = setTimeout(updatePreview, 350);
-      if(status) status.textContent = "入力中…";
-    });
-
-    source.addEventListener("keydown", function(e){
-      if(e.key === "Tab"){
-        e.preventDefault();
-        const start = this.selectionStart;
-        const end = this.selectionEnd;
-        this.value = this.value.slice(0,start) + "  " + this.value.slice(end);
-        this.selectionStart = this.selectionEnd = start + 2;
-        this.dispatchEvent(new Event("input"));
-      }
-    });
-  }
-
-  if(overlay){
-    overlay.addEventListener("click", function(e){
-      if(e.target === overlay) window.boCloseVisualHtmlEditor();
-    });
-  }
-
-  document.addEventListener("keydown", function(e){
-    if(e.key === "Escape" && overlay && overlay.classList.contains("bo-editor-open")){
-      window.boCloseVisualHtmlEditor();
+  document.addEventListener('DOMContentLoaded',function(){
+    const originalAdd=window.addPreventiveFiles;
+    if(typeof originalAdd==='function'){
+      window.addPreventiveFiles=function(fileList){
+        originalAdd(fileList);
+        simplePrivacyPassed=false;enablePreAI(false);enableFinalAI(false);
+        setStatus('simpleFileStatus','資料を読み取っています…','warn');
+        setStep(1,'is-current');setStep(2,null);setStep(3,null);
+        setTimeout(async function(){
+          try{
+            await window.loadPreventiveFiles();
+            const ok=(typeof window.arePreventiveFilesReady==='function')
+              ? window.arePreventiveFilesReady()
+              : !!(qs('preventiveLoadStatus') && qs('preventiveLoadStatus').classList.contains('success'));
+            if(ok){
+              setStatus('simpleFileStatus','✓ 資料の読み込みが終わりました。次へ進めます。','ok');
+              const pbar=qs('simpleLoadProgressBar'), ppct=qs('simpleLoadProgressPercent'),
+                    plab=qs('simpleLoadProgressLabel'), pdet=qs('simpleLoadProgressDetail');
+              if(pbar)pbar.style.width='100%';
+              if(ppct)ppct.textContent='100%';
+              if(plab)plab.textContent='読み込み完了';
+              if(pdet)pdet.textContent='すべての資料を読み取りました。';
+              setStep(1,'is-done');setStep(2,'is-current');
+              const b=qs('simplePrivacyButton');if(b){b.disabled=false;b.removeAttribute('disabled');}
+            }else{
+              setStatus('simpleFileStatus','⚠️ 読み込みに失敗した資料があります。「？」の説明を確認してください。','bad');
+            }
+          }catch(e){setStatus('simpleFileStatus','⚠️ 資料を読み込めませんでした。','bad');}
+        },60);
+      };
     }
   });
-})();
 
-  /*
-   * AI起動設定
-   * ・サイトを新しいタブで開くだけ
-   * ・文章の自動送信／自動貼り付けは行わない
-   * ・1回目／2回目で共通利用
-   */
-  const AI_SITES=Object.freeze({
-    chatgpt:'https://chatgpt.com/',
-    gemini:'https://gemini.google.com/',
-    claude:'https://claude.ai/',
-  });
-
-  window.openAI=function(ai){
-    const url=AI_SITES[ai]||AI_SITES.chatgpt;
-    window.open(url,'_blank','noopener,noreferrer');
+  window.simplePrivacyCheck=function(){
+    window.checkPreventivePrivacy();
+    const result=qs('preventivePrivacyResult');
+    const promptBox=qs('preventivePromptBox');
+    const passed=!!(promptBox && promptBox.style.display==='block' && result && !result.classList.contains('alert'));
+    simplePrivacyPassed=passed;
+    if(passed){
+      const advisory=result.classList.contains('warn');
+      setStatus('simplePrivacyStatus',advisory?'✓ 強い警告はありません。表示された「確認推奨」だけ確認して次へ進んでください。':'✓ 個人情報チェックを通過しました。','ok');
+      setStep(2,'is-done');setStep(3,'is-current');enablePreAI(true);
+      qs('simpleStep3').scrollIntoView({behavior:'smooth',block:'center'});
+    }else{
+      setStatus('simplePrivacyStatus','🔴 個人情報の可能性が高い記載があります。元資料を匿名化して、資料を選び直してください。','bad');
+      enablePreAI(false);
+    }
   };
 
+  window.simplePreorganizeWithAI=async function(ai){
+    if(!simplePrivacyPassed){setStatus('simpleAIStatus','⚠️ 先に個人情報チェックを完了してください。','bad');return;}
+    const copied=await window.copyPreventivePrePrompt();
+    if(!copied){setStatus('simpleAIStatus','⚠️ コピーできませんでした。','bad');return;}
+    setStatus('simpleAIStatus','✓ 指示と資料をまとめてコピーしました。開いたAIで Ctrl＋V → 送信してください。','ok');
+    setStep(3,'is-done');setStep(4,'is-current');
+    window.openAI(ai);
+  };
+
+  window.simpleConfirmOrganized=function(){
+    const simple=qs('simpleOrganizedInput'),hidden=qs('preventiveOrganizedInput');
+    if(!simple || !simple.value.trim()){setStatus('simpleOrganizedStatus','⚠️ AIの整理結果を貼り付けてください。','bad');return;}
+    hidden.value=simple.value;
+    window.confirmPreventiveOrganizedInfo();
+    const st=qs('preventiveOrganizedStatus');
+    if(st && st.classList.contains('success')){
+      simple.value=hidden.value;
+      setStatus('simpleOrganizedStatus','✓ 確認済み情報として保存しました。必要な修正を行った内容が使われます。','ok');
+      setStep(4,'is-done');setStep(5,'is-current');
+      qs('simpleStep5').scrollIntoView({behavior:'smooth',block:'center'});
+    }else setStatus('simpleOrganizedStatus','⚠️ 内容を確認してください。','bad');
+  };
+
+  
+
+  
+})();
 </script>
+
+
+<style id="bo-v2-delivery-choice-style">
+.bo-delivery-choice{margin:14px 0;padding:14px;border:2px solid #b9d9f5;border-radius:14px;background:#f8fcff}
+.bo-delivery-title{font-weight:900;color:#075fa8;margin-bottom:9px;font-size:16px}
+.bo-delivery-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.bo-delivery-option{display:block;padding:12px;border:2px solid #cfe3f7;border-radius:12px;background:#fff;cursor:pointer;line-height:1.55}
+.bo-delivery-option:has(input:checked){border-color:#138ee0;background:#eef8ff;box-shadow:0 0 0 2px rgba(19,142,224,.08)}
+.bo-delivery-option input{width:19px;height:19px;vertical-align:middle;margin-right:6px;accent-color:#138ee0}
+.bo-delivery-option strong{color:#075fa8}
+.bo-delivery-option small{display:block;margin:5px 0 0 27px;color:#4d6673;line-height:1.55}
+.bo-delivery-warning{margin-top:10px;padding:10px 12px;border-left:4px solid #e6a21a;border-radius:8px;background:#fff8e8;color:#6f5100;font-size:13px;line-height:1.65}
+@media(max-width:650px){.bo-delivery-grid{grid-template-columns:1fr}}
+</style>
+<script id="bo-v2-final-format-and-delivery-choice">
+(function(){
+  'use strict';
+
+  // ===== 重要 =====
+  // PREVENTIVE_PRE_PROMPT / PLAN_DOCUMENT_PROMPTS / FINAL_DOCUMENT_PROMPTS の本文は変更しません。
+  // 下記は「AIへ渡す方法」と「最終回答の表示形式」だけを外側から追加指定する処理です。
+
+  const FINAL_DISPLAY_INSTRUCTIONS = window.BO_FINAL_DISPLAY_INSTRUCTIONS = Object.freeze({
+    care: `【表示形式に関する追加指示（最優先）】
+上記のケアプラン（案）作成用プロンプト本文は、内容・分析ルール・項目・文章を一切変更せず、そのまま使用してください。
+指定されている表示形式・項目・列・並び順は一切変更せず、そのまま使用してください。
+ただし、最終回答ではコードブロック（\`\`\`）を一切使用しないでください。本文・表・見出し・各項目の全部または一部をコードブロックで囲むことも禁止します。画面上に通常の表示として、そのまま見やすく表示してください。`,
+    preventive: `【表示形式に関する追加指示（最優先）】
+上記の介護予防プラン（案）作成用プロンプト本文は、内容・分析ルール・項目・文章を一切変更せず、そのまま使用してください。
+指定されている表示形式・項目・列・並び順は一切変更せず、そのまま使用してください。
+ただし、最終回答ではコードブロック（\`\`\`）を一切使用しないでください。本文・表・見出し・各項目の全部または一部をコードブロックで囲むことも禁止します。画面上に通常の表示として、そのまま見やすく表示してください。`,
+    issue: `【表示形式に関する追加指示（最優先）】
+上記の課題整理総括表（案）作成用プロンプト本文は、内容・分析ルール・項目・文章を一切変更せず、そのまま使用してください。
+指定されている表示形式・項目・列・並び順は一切変更せず、そのまま使用してください。
+ただし、最終回答ではコードブロック（\`\`\`）を一切使用しないでください。本文・表・見出し・各項目の全部または一部をコードブロックで囲むことも禁止します。画面上に通常の表示として、そのまま見やすく表示してください。`
+  });
+
+  window.boPreDeliveryMode = 'text';
+
+  function insertDeliveryChoice(){
+    const step3=document.getElementById('simpleStep3');
+    if(!step3 || document.getElementById('boDeliveryChoice')) return;
+    const one=step3.querySelector('.bo-simple-one');
+    if(!one) return;
+    one.innerHTML='<strong>資料の渡し方を選べます。</strong><br>迷ったら「かんたん（おすすめ）」のままで大丈夫です。';
+    const box=document.createElement('div');
+    box.id='boDeliveryChoice';
+    box.className='bo-delivery-choice';
+    box.innerHTML=`
+      <div class="bo-delivery-title">資料をAIへどう渡しますか？</div>
+      <div class="bo-delivery-grid">
+        <label class="bo-delivery-option">
+          <input type="radio" name="boDeliveryMode" value="text" checked>
+          <strong>かんたん（おすすめ）</strong>
+          <small>最初に読み取った文字＋事前整理プロンプトを1回でコピー。ファイルを選び直しません。そのままAIに貼り付けてください。</small>
+        </label>
+        <label class="bo-delivery-option">
+          <input type="radio" name="boDeliveryMode" value="file">
+          <strong>表・画像を重視</strong>
+          <small>事前整理プロンプトだけをコピーし、AI側で元ファイルをもう一度添付します。</small>
+        </label>
+      </div>
+      <div class="bo-delivery-warning">「表・画像を重視」は、複雑な表・帳票・画像・スキャン資料向けです。AIへ添付する元ファイルに個人情報が残っていないことを、必ずご自身でも確認してください。</div>`;
+    one.insertAdjacentElement('afterend',box);
+    box.querySelectorAll('input[name="boDeliveryMode"]').forEach(r=>r.addEventListener('change',function(){
+      window.boPreDeliveryMode=this.value;
+      const st=document.getElementById('simpleAIStatus');
+      if(st && !st.classList.contains('ok')){
+        st.textContent=this.value==='text' ? '個人情報チェックが終わると選べます。' : '個人情報チェック後、AI側で元ファイルをもう一度添付する方式です。';
+      }
+    }));
+  }
+
+  async function copyPromptOnly(){
+    const promptBox=document.getElementById('preventivePromptBox');
+    if(!promptBox || promptBox.style.display==='none') return false;
+    if(typeof copyTextToClipboard!=='function') return false;
+    return await copyTextToClipboard(PREVENTIVE_PRE_PROMPT);
+  }
+
+  function aiUrl(ai){
+    if(ai==='chatgpt') return 'https://chatgpt.com/';
+    if(ai==='gemini') return 'https://gemini.google.com/';
+    if(ai==='claude') return 'https://claude.ai/';
+    return '';
+  }
+
+  // 後から定義して既存の簡易版関数だけを上書き。
+  window.simplePreorganizeWithAI = async function(ai){
+    const st=document.getElementById('simpleAIStatus');
+    const promptBox=document.getElementById('preventivePromptBox');
+    if(!promptBox || promptBox.style.display==='none'){
+      if(st){st.className='bo-simple-status bad';st.textContent='⚠️ 先に個人情報チェックを完了してください。';}
+      return;
+    }
+    const mode=window.boPreDeliveryMode||'text';
+    let copied=false;
+    if(mode==='file'){
+      copied=await copyPromptOnly();
+      if(st){
+        st.className='bo-simple-status '+(copied?'ok':'bad');
+        st.innerHTML=copied
+          ? '✓ 事前整理プロンプトをコピーしました。<strong>AIで、個人情報除去済みの元ファイルを添付 → Ctrl＋V → 送信</strong>してください。'
+          : '⚠️ コピーできませんでした。';
+      }
+    }else{
+      copied=await window.copyPreventivePrePrompt();
+      if(st){
+        st.className='bo-simple-status '+(copied?'ok':'bad');
+        st.textContent=copied?'✓ 指示と読み取り済み資料をまとめてコピーしました。AIで Ctrl＋V → 送信してください。':'⚠️ コピーできませんでした。';
+      }
+    }
+    if(copied){
+      const s3=document.getElementById('simpleStep3'),s4=document.getElementById('simpleStep4');
+      if(s3){s3.classList.remove('is-current');s3.classList.add('is-done');}
+      if(s4){s4.classList.add('is-current');}
+      const url=aiUrl(ai); if(url) window.open(url,'_blank','noopener');
+    }
+  };
+
+  // 最終書類は「正式プロンプト本文」を変更せず、最後に表示形式だけ追加してコピーします。
+  
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',insertDeliveryChoice);
+  else insertDeliveryChoice();
+})();
+</script>
+
+
+
+<script id="blueocean-step5-canonical">
+(function(){
+  'use strict';
+  let selectedFinalDocument = null;
+
+  function q(id){ return document.getElementById(id); }
+  function setStatus(message, kind){
+    const el=q('simpleFinalStatus');
+    if(!el) return;
+    el.textContent=message;
+    el.className='bo-simple-status'+(kind?' '+kind:'');
+  }
+  function keepFinalAIButtonsClickable(){
+    document.querySelectorAll('#simpleStep5 .bo-final-ai .bo-ai-btn').forEach(function(btn){
+      btn.disabled=false;
+      btn.removeAttribute('disabled');
+      btn.style.pointerEvents='auto';
+      btn.style.cursor='pointer';
+      btn.style.visibility='visible';
+      btn.style.display='';
+    });
+  }
+  function syncConfirmedInfo(){
+    const simple=q('simpleOrganizedInput');
+    const hidden=q('preventiveOrganizedInput');
+    if(!simple || !hidden) return false;
+    if(!simple.value.trim()) return false;
+    hidden.value=simple.value;
+    if(typeof window.confirmPreventiveOrganizedInfo==='function'){
+      window.confirmPreventiveOrganizedInfo();
+    }
+    return true;
+  }
+
+  window.simpleSelectDocument=function(type){
+    keepFinalAIButtonsClickable();
+    const names={care:'ケアプラン（案）',preventive:'介護予防プラン（案）',issue:'課題整理総括表（案）'};
+    if(!names[type]){
+      selectedFinalDocument=null;
+      setStatus('⚠️ 書類を選択できませんでした。','bad');
+      return false;
+    }
+    syncConfirmedInfo();
+    if(typeof window.selectFinalDocument!=='function' || !window.selectFinalDocument(type)){
+      selectedFinalDocument=null;
+      setStatus('⚠️ 書類を選択できませんでした。','bad');
+      return false;
+    }
+    selectedFinalDocument=type;
+    document.querySelectorAll('#simpleStep5 [data-simple-doc]').forEach(function(btn){
+      btn.classList.toggle('selected',btn.dataset.simpleDoc===type);
+    });
+    setStatus('✓ '+names[type]+'を選びました。使うAIを押してください。','ok');
+    return true;
+  };
+
+  window.simpleFinalWithAI=async function(ai){
+    keepFinalAIButtonsClickable();
+    if(!selectedFinalDocument){
+      const selected=document.querySelector('#simpleStep5 .bo-doc-btn.selected');
+      if(selected && selected.dataset.simpleDoc) selectedFinalDocument=selected.dataset.simpleDoc;
+    }
+    if(!selectedFinalDocument){
+      setStatus('⚠️ 先に作りたい書類を選んでください。','bad');
+      return false;
+    }
+    if(!syncConfirmedInfo()){
+      setStatus('⚠️ 先にSTEP4でAIの整理結果を貼り付け、「内容を確認して次へ」を押してください。','bad');
+      return false;
+    }
+    if(typeof window.selectFinalDocument==='function'){
+      window.selectFinalDocument(selectedFinalDocument);
+    }
+    if(typeof window.copySelectedFinalData!=='function'){
+      setStatus('⚠️ AI用データを準備できませんでした。','bad');
+      return false;
+    }
+    const copied=await window.copySelectedFinalData();
+    const finalStatus=q('preventiveFinalStatus');
+    const success=(copied===true) || !!(finalStatus && finalStatus.classList.contains('success'));
+    if(!success){
+      setStatus(finalStatus && finalStatus.textContent ? finalStatus.textContent : '⚠️ コピーできませんでした。','bad');
+      return false;
+    }
+    setStatus('✓ 確認済み情報＋正式な作成プロンプトをまとめてコピーしました。AIで Ctrl＋V → 送信してください。','ok');
+    const step5=q('simpleStep5');
+    if(step5){step5.classList.remove('is-current');step5.classList.add('is-done');}
+    if(typeof window.openAI==='function') window.openAI(ai);
+    return true;
+  };
+
+  function init(){ keepFinalAIButtonsClickable(); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
+  else init();
+})();
+</script>
+<style id="blueocean-step5-canonical-style">
+#simpleStep5 .bo-final-ai{display:grid!important;visibility:visible!important;opacity:1!important}
+#simpleStep5 .bo-final-ai .bo-ai-btn{visibility:visible!important;pointer-events:auto!important;cursor:pointer!important}
+</style>
 
 </body>
 </html>
