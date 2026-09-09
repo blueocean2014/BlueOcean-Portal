@@ -6,6 +6,44 @@
 
 <title>支援経過作成支援アプリ</title>
 
+<!-- ===== Firebase Authentication：社内スタッフ認証 ===== -->
+<style id="firebase-auth-guard-style">
+  html{visibility:hidden;background:#f4faff;}
+</style>
+<script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-auth-compat.js"></script>
+<script id="firebase-auth-guard">
+(function(){
+  "use strict";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDE1HdjCGEDqj2zNlihvLCKfq1HH-o7lZY",
+    authDomain: "blueoceanstaff-app.firebaseapp.com",
+    projectId: "blueoceanstaff-app",
+    storageBucket: "blueoceanstaff-app.firebasestorage.app",
+    messagingSenderId: "1081837805765",
+    appId: "1:1081837805765:web:9251c3c3a7e9f82ba190ac",
+    measurementId: "G-9PBLJES7ME"
+  };
+
+  if(!firebase.apps.length){
+    firebase.initializeApp(firebaseConfig);
+  }
+
+  const auth = firebase.auth();
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
+
+  auth.onAuthStateChanged(function(user){
+    if(user){
+      document.documentElement.style.visibility = "visible";
+    }else{
+      window.location.replace("https://blueocean2014.github.io/BlueOcean-Portal/");
+    }
+  });
+})();
+</script>
+<!-- ===== /Firebase Authentication ===== -->
+
 <style>
 /* =====================================================
    BlueOcean Design System
