@@ -2569,8 +2569,9 @@ async function checkPassword(){
       });
 
     if(error){
+      console.error("Supabase login error:", error);
       errorMsg.innerText =
-        "メールアドレスまたはパスワードが違います";
+        "Supabaseエラー：" + (error.message || "原因を確認できませんでした");
       return;
     }
 
