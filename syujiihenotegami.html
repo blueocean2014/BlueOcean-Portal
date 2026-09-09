@@ -315,6 +315,37 @@ body.settings-view-active #promptLibraryArea .settings-page-head .primary{
 }
 </style>
 
+
+<style id="input-first-layout">
+.top-action-row{max-width:1180px;margin:12px auto 4px;display:flex;justify-content:flex-end;align-items:center}
+.top-action-row .usage-button{width:auto!important;margin:0!important}
+#mainView{display:block!important}
+#mainView>.card,#mainView>div{width:100%;grid-column:auto!important}
+.memo-first-card textarea{min-height:280px}
+.doctor-options-launch{background:#fff;border:2px dashed #9fc7eb;border-radius:16px;padding:16px 18px;margin:12px 0;text-align:center}
+.doctor-options-button{width:100%;background:#fff!important;color:#0875c9!important;border:2px solid #138ee0!important;font-weight:800;font-size:16px}
+.doctor-options-button.open{background:#eef7ff!important}
+.doctor-options-help{font-size:13px;color:#52676d;margin:8px 0 0;line-height:1.6}
+.doctor-options-area{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+.doctor-options-area .card{margin:0}
+.usage-guide-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.usage-guide-head h2{margin:0}
+.usage-close-button{background:#fff!important;color:#765900!important;border:1px solid #e2bf36!important;padding:7px 11px!important;font-size:13px!important}
+@media(max-width:850px){.doctor-options-area{grid-template-columns:1fr}.top-action-row{padding:0 12px}}
+</style>
+
+<style id="ai-launcher-style">
+.ai-launcher{display:none;margin-top:14px;padding:16px;border:2px solid #b9d9f5;border-radius:14px;background:#f8fcff}
+.ai-launcher.show{display:block}
+.ai-launcher-title{font-weight:800;color:var(--bo-deep);font-size:16px;margin-bottom:6px;text-align:center}
+.ai-launcher-help{font-size:13px;line-height:1.6;color:#52676d;text-align:center;margin-bottom:10px}
+.ai-launcher-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.ai-open-button{width:100%;margin:0!important;font-weight:800;font-size:16px;padding:13px 12px!important}
+.ai-chatgpt{background:#10a37f!important}
+.ai-gemini{background:linear-gradient(135deg,#4285f4,#8e44ad)!important}
+.ai-claude{background:#8f5b3f!important}
+@media(max-width:700px){.ai-launcher-grid{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <header>
@@ -328,86 +359,100 @@ body.settings-view-active #promptLibraryArea .settings-page-head .primary{
 </header>
 
 <main>
-  <div class="main-only" style="text-align:center;margin:14px 0 18px;">
+  <div class="main-only top-action-row">
     <button class="usage-button" type="button" onclick="showUsageGuide()">📖 使い方の説明はこちら</button>
   </div>
 
   <div id="mainView" class="main-only">
 
-    <section class="card">
-      <h2>① 何について連絡しますか？</h2>
-      <p class="description">今回の連絡・情報提供の目的に近いものを選択してください。複数選択できます。</p>
-      <div class="selection-box">
-        <div class="step-title">STEP 1　何について連絡しますか？</div>
-        <div class="choice-grid">
-          <div class="choice"><input id="s1_1" type="checkbox" value="介護保険新規利用"><label for="s1_1">介護保険新規利用</label></div>
-          <div class="choice"><input id="s1_2" type="checkbox" value="介護保険 更新"><label for="s1_2">介護保険 更新</label></div>
-          <div class="choice"><input id="s1_3" type="checkbox" value="介護保険 区分変更"><label for="s1_3">介護保険 区分変更</label></div>
-          <div class="choice"><input id="s1_4" type="checkbox" value="状態変化"><label for="s1_4">状態変化</label></div>
-          <div class="choice"><input id="s1_5" type="checkbox" value="情報提供"><label for="s1_5">情報提供</label></div>
-          <div class="choice"><input id="s1_19" type="checkbox" value="サービス担当者会議"><label for="s1_19">サービス担当者会議</label></div>
-          <div class="choice"><input id="s1_6" type="checkbox" value="入院"><label for="s1_6">入院</label></div>
-          <div class="choice"><input id="s1_7" type="checkbox" value="退院・退所"><label for="s1_7">退院・退所</label></div>
-          <div class="choice"><input id="s1_8" type="checkbox" value="サービス変更・導入"><label for="s1_8">サービス変更・導入</label></div>
-          <div class="choice"><input id="s1_9" type="checkbox" value="医療系サービス"><label for="s1_9">医療系サービス</label></div>
-          <div class="choice"><input id="s1_10" type="checkbox" value="訪問看護"><label for="s1_10">訪問看護</label></div>
-          <div class="choice"><input id="s1_16" type="checkbox" value="訪問リハビリ"><label for="s1_16">訪問リハビリ</label></div>
-          <div class="choice"><input id="s1_13" type="checkbox" value="訪問マッサージ"><label for="s1_13">訪問マッサージ</label></div>
-          <div class="choice"><input id="s1_11" type="checkbox" value="医療連携"><label for="s1_11">医療連携</label></div>
-          <div class="choice"><input id="s1_14" type="checkbox" value="ケアプラン"><label for="s1_14">ケアプラン</label></div>
-          <div class="choice"><input id="s1_15" type="checkbox" value="情報提供書"><label for="s1_15">情報提供書</label></div>
-          <div class="choice"><input id="s1_17" type="checkbox" value="福祉用具の導入"><label for="s1_17">福祉用具の導入</label></div>
-          <div class="choice"><input id="s1_18" type="checkbox" value="福祉用具貸与の例外給付"><label for="s1_18">福祉用具貸与の例外給付</label></div>
-          <div class="choice"><input id="s1_20" type="checkbox" value="現状報告"><label for="s1_20">現状報告</label></div>
-          <div class="choice"><input id="s1_21" type="checkbox" value="利用者・家族の気持ち、考え方"><label for="s1_21">利用者・家族の気持ち、考え方</label></div>
-          <div class="choice"><input id="s1_22" type="checkbox" value="今後の対応について"><label for="s1_22">今後の対応について</label></div>
-        </div>
-        <div id="step1Summary" class="selected-summary">選択なし</div>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>② 何について相談・依頼しますか？</h2>
-      <p class="description">今回、主治医から意見・助言・書類作成等をお願いしたい内容を選択してください。複数選択できます。</p>
-      <div class="selection-box">
-        <div class="step-title">STEP 2　何について相談・依頼しますか？</div>
-        <div class="choice-grid">
-          <div class="choice"><input id="s2_12" type="checkbox" value="医学的な所見"><label for="s2_12">医学的な所見</label></div>
-          <div class="choice"><input id="s2_1" type="checkbox" value="医学的な意見や留意点"><label for="s2_1">医学的な意見や留意点</label></div>
-          <div class="choice"><input id="s2_20" type="checkbox" value="今後の生活についての助言"><label for="s2_20">今後の生活についての助言</label></div>
-          <div class="choice"><input id="s2_21" type="checkbox" value="今後のサービス利用についての助言"><label for="s2_21">今後のサービス利用についての助言</label></div>
-          <div class="choice"><input id="s2_22" type="checkbox" value="サービス利用に関しての注意点"><label for="s2_22">サービス利用に関しての注意点</label></div>
-          <div class="choice"><input id="s2_4" type="checkbox" value="相談したい"><label for="s2_4">相談したい</label></div>
-          <div class="choice"><input id="s2_8" type="checkbox" value="主治医意見書作成の為の情報提供"><label for="s2_8">主治医意見書作成の為の情報提供</label></div>
-          <div class="choice"><input id="s2_7" type="checkbox" value="主治医意見書作成依頼"><label for="s2_7">主治医意見書作成依頼</label></div>
-          <div class="choice"><input id="s2_6" type="checkbox" value="訪問看護指示書作成依頼"><label for="s2_6">訪問看護指示書作成依頼</label></div>
-          <div class="choice"><input id="s2_10" type="checkbox" value="指示書の作成依頼"><label for="s2_10">指示書の作成依頼</label></div>
-          <div class="choice"><input id="s2_11" type="checkbox" value="ご査収ください"><label for="s2_11">ご査収ください</label></div>
-          <div class="choice"><input id="s2_19" type="checkbox" value="お薬の処方の検討依頼"><label for="s2_19">お薬の処方の検討依頼</label></div>
-          <div class="choice"><input id="s2_13" type="checkbox" value="ご案内"><label for="s2_13">ご案内</label></div>
-          <div class="choice"><input id="s2_14" type="checkbox" value="照会"><label for="s2_14">照会</label></div>
-          <div class="choice"><input id="s2_15" type="checkbox" value="利用希望がある"><label for="s2_15">利用希望がある</label></div>
-          <div class="choice"><input id="s2_17" type="checkbox" value="お知らせ"><label for="s2_17">お知らせ</label></div>
-          <div class="choice"><input id="s2_18" type="checkbox" value="ご検討頂きたい"><label for="s2_18">ご検討頂きたい</label></div>
-        </div>
-        <div id="step2Summary" class="selected-summary">選択なし</div>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>③ 今回伝えたい情報</h2>
-      <p class="description">利用者の現在の状態、最近の変化、生活状況、本人・家族の意向、ケアマネジャーとして考えていることなどを、思いついた順番のまま入力してください。
-
-💡 慣れた方は、上の①「何について連絡しますか？」・②「何について相談・依頼しますか？」を選択しなくても大丈夫です。今回、先生に伝えたいこと・相談したいこと・お願いしたいことを、この欄にまとめて自由に入力してください。AIが内容を整理して手紙を作成します。</p>
+    <section class="card memo-first-card">
+      <h2>① 今回伝えたい情報</h2>
+      <p class="description">利用者の現在の状態、最近の変化、生活状況、本人・家族の意向、ケアマネジャーとして考えていることなどを、思いついた順番のまま入力してください。<br><br>💡 この欄だけの入力でも大丈夫です。今回、先生に伝えたいこと・相談したいこと・お願いしたいことを自由に入力してください。AIが内容を整理して手紙を作成します。</p>
       <p style="font-size:13px;line-height:1.6;margin:10px 0 8px;"><strong>🎤 音声入力</strong>　Windowsでは「Windowsキー＋H」で音声入力できます。<br><strong>⌨️ 手入力</strong>　話し言葉のまま入力しても、AIが整理します。</p>
       <textarea id="memo" placeholder="例：最近〇〇が増えている。本人は～と言っている。家族は～と話している。今後は～を考えているので先生の意見を聞きたい。"></textarea>
     </section>
 
-    <section class="card">
+    <div class="doctor-options-launch">
+      <button id="doctorOptionsButton" class="doctor-options-button" type="button" onclick="toggleDoctorOptions()">＋ 医師に伝えたい内容をボタンで選択する方はこちらから</button>
+      <p class="doctor-options-help">必要な方だけ開いてください。連絡の目的や、主治医へ相談・依頼したい内容を選択できます。</p>
+    </div>
+
+    <div id="doctorOptionsArea" class="doctor-options-area" style="display:none;">
+      <section class="card">
+        <h2>② 何について連絡しますか？</h2>
+        <p class="description">今回の連絡・情報提供の目的に近いものを選択してください。複数選択できます。</p>
+        <div class="selection-box">
+          <div class="step-title">何について連絡しますか？</div>
+          <div class="choice-grid">
+            <div class="choice"><input id="s1_1" type="checkbox" value="介護保険新規利用"><label for="s1_1">介護保険新規利用</label></div>
+            <div class="choice"><input id="s1_2" type="checkbox" value="介護保険 更新"><label for="s1_2">介護保険 更新</label></div>
+            <div class="choice"><input id="s1_3" type="checkbox" value="介護保険 区分変更"><label for="s1_3">介護保険 区分変更</label></div>
+            <div class="choice"><input id="s1_4" type="checkbox" value="状態変化"><label for="s1_4">状態変化</label></div>
+            <div class="choice"><input id="s1_5" type="checkbox" value="情報提供"><label for="s1_5">情報提供</label></div>
+            <div class="choice"><input id="s1_19" type="checkbox" value="サービス担当者会議"><label for="s1_19">サービス担当者会議</label></div>
+            <div class="choice"><input id="s1_6" type="checkbox" value="入院"><label for="s1_6">入院</label></div>
+            <div class="choice"><input id="s1_7" type="checkbox" value="退院・退所"><label for="s1_7">退院・退所</label></div>
+            <div class="choice"><input id="s1_8" type="checkbox" value="サービス変更・導入"><label for="s1_8">サービス変更・導入</label></div>
+            <div class="choice"><input id="s1_9" type="checkbox" value="医療系サービス"><label for="s1_9">医療系サービス</label></div>
+            <div class="choice"><input id="s1_10" type="checkbox" value="訪問看護"><label for="s1_10">訪問看護</label></div>
+            <div class="choice"><input id="s1_16" type="checkbox" value="訪問リハビリ"><label for="s1_16">訪問リハビリ</label></div>
+            <div class="choice"><input id="s1_13" type="checkbox" value="訪問マッサージ"><label for="s1_13">訪問マッサージ</label></div>
+            <div class="choice"><input id="s1_11" type="checkbox" value="医療連携"><label for="s1_11">医療連携</label></div>
+            <div class="choice"><input id="s1_14" type="checkbox" value="ケアプラン"><label for="s1_14">ケアプラン</label></div>
+            <div class="choice"><input id="s1_15" type="checkbox" value="情報提供書"><label for="s1_15">情報提供書</label></div>
+            <div class="choice"><input id="s1_17" type="checkbox" value="福祉用具の導入"><label for="s1_17">福祉用具の導入</label></div>
+            <div class="choice"><input id="s1_18" type="checkbox" value="福祉用具貸与の例外給付"><label for="s1_18">福祉用具貸与の例外給付</label></div>
+            <div class="choice"><input id="s1_20" type="checkbox" value="現状報告"><label for="s1_20">現状報告</label></div>
+            <div class="choice"><input id="s1_21" type="checkbox" value="利用者・家族の気持ち、考え方"><label for="s1_21">利用者・家族の気持ち、考え方</label></div>
+            <div class="choice"><input id="s1_22" type="checkbox" value="今後の対応について"><label for="s1_22">今後の対応について</label></div>
+          </div>
+          <div id="step1Summary" class="selected-summary">選択なし</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>③ 何について相談・依頼しますか？</h2>
+        <p class="description">今回、主治医から意見・助言・書類作成等をお願いしたい内容を選択してください。複数選択できます。</p>
+        <div class="selection-box">
+          <div class="step-title">何について相談・依頼しますか？</div>
+          <div class="choice-grid">
+            <div class="choice"><input id="s2_12" type="checkbox" value="医学的な所見"><label for="s2_12">医学的な所見</label></div>
+            <div class="choice"><input id="s2_1" type="checkbox" value="医学的な意見や留意点"><label for="s2_1">医学的な意見や留意点</label></div>
+            <div class="choice"><input id="s2_20" type="checkbox" value="今後の生活についての助言"><label for="s2_20">今後の生活についての助言</label></div>
+            <div class="choice"><input id="s2_21" type="checkbox" value="今後のサービス利用についての助言"><label for="s2_21">今後のサービス利用についての助言</label></div>
+            <div class="choice"><input id="s2_22" type="checkbox" value="サービス利用に関しての注意点"><label for="s2_22">サービス利用に関しての注意点</label></div>
+            <div class="choice"><input id="s2_4" type="checkbox" value="相談したい"><label for="s2_4">相談したい</label></div>
+            <div class="choice"><input id="s2_8" type="checkbox" value="主治医意見書作成の為の情報提供"><label for="s2_8">主治医意見書作成の為の情報提供</label></div>
+            <div class="choice"><input id="s2_7" type="checkbox" value="主治医意見書作成依頼"><label for="s2_7">主治医意見書作成依頼</label></div>
+            <div class="choice"><input id="s2_6" type="checkbox" value="訪問看護指示書作成依頼"><label for="s2_6">訪問看護指示書作成依頼</label></div>
+            <div class="choice"><input id="s2_10" type="checkbox" value="指示書の作成依頼"><label for="s2_10">指示書の作成依頼</label></div>
+            <div class="choice"><input id="s2_11" type="checkbox" value="ご査収ください"><label for="s2_11">ご査収ください</label></div>
+            <div class="choice"><input id="s2_19" type="checkbox" value="お薬の処方の検討依頼"><label for="s2_19">お薬の処方の検討依頼</label></div>
+            <div class="choice"><input id="s2_13" type="checkbox" value="ご案内"><label for="s2_13">ご案内</label></div>
+            <div class="choice"><input id="s2_14" type="checkbox" value="照会"><label for="s2_14">照会</label></div>
+            <div class="choice"><input id="s2_15" type="checkbox" value="利用希望がある"><label for="s2_15">利用希望がある</label></div>
+            <div class="choice"><input id="s2_17" type="checkbox" value="お知らせ"><label for="s2_17">お知らせ</label></div>
+            <div class="choice"><input id="s2_18" type="checkbox" value="ご検討頂きたい"><label for="s2_18">ご検討頂きたい</label></div>
+          </div>
+          <div id="step2Summary" class="selected-summary">選択なし</div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card copy-card">
       <h2>④ AI処理用にコピー</h2>
-      <p class="description">選択したSTEP 1・STEP 2、今回の入力内容、主治医連絡用プロンプトをまとめてコピーします。コピー後、そのままChatGPT・Gemini・Claudeなどのお好きなAIへ貼り付けてください。</p>
+      <p class="description">今回入力した情報と、必要に応じて選択した連絡目的・相談内容、主治医連絡用プロンプトをまとめてコピーします。コピー後、そのままChatGPT・Gemini・Claudeなどのお好きなAIへ貼り付けてください。</p>
       <button id="copyButton" class="copy-button primary" onclick="copyAI()">📋 AI処理用にコピー</button>
       <div id="copyStatus" class="status">まだコピーされていません。</div>
+      <div id="aiLauncher" class="ai-launcher">
+        <div class="ai-launcher-title">🤖 コピーしました。そのまま使うAIを開いてください。</div>
+        <div class="ai-launcher-help">コピーした内容はクリップボードに入っています。使いたいAIを開き、入力欄に貼り付けて送信してください。</div>
+        <div class="ai-launcher-grid">
+          <button class="ai-open-button ai-chatgpt" type="button" onclick="openAI('chatgpt')">🤖 ChatGPTで作る</button>
+          <button class="ai-open-button ai-gemini" type="button" onclick="openAI('gemini')">✨ Geminiで作る</button>
+          <button class="ai-open-button ai-claude" type="button" onclick="openAI('claude')">🟣 Claudeで作る</button>
+        </div>
+      </div>
     </section>
 
     <div style="text-align:center;margin:28px 0 10px;">
@@ -418,13 +463,16 @@ body.settings-view-active #promptLibraryArea .settings-page-head .primary{
 
   </div>
 
-  <section class="card usage-card main-only" id="usageCard">
-    <h2>使い方の説明</h2>
-    <div class="usage-step"><strong>① STEP 1を選択</strong><br>今回、なぜ主治医へ連絡するのかを選択します。</div>
-    <div class="usage-step"><strong>② STEP 2を選択</strong><br>主治医に何について相談・依頼したいのかを選択します。</div>
-    <div class="usage-step"><strong>③ 音声・手入力</strong><br>利用者の状況や本人・家族の意向、ケアマネジャーの考えなどを、思いついたまま入力します。</div>
-    <div class="usage-step"><strong>④ AI処理用にコピー</strong><br>選択内容と入力情報が一つにまとまり、AIへそのまま貼り付けられます。</div>
-    <div class="usage-note"><strong>🌱 ポイント</strong><br>最初からきれいな文章を書く必要はありません。事実や本人・家族の発言などを入力しておけば、AIが「目的→現状→評価・課題→今後の支援→主治医への相談・依頼」という自然な流れに整理します。</div>
+  <section class="card usage-card main-only" id="usageCard" style="display:none;">
+    <div class="usage-guide-head">
+      <h2>使い方の説明</h2>
+      <button class="usage-close-button" type="button" onclick="showUsageGuide()">✕ 閉じる</button>
+    </div>
+    <div class="usage-step"><strong>① 今回伝えたい情報を入力</strong><br>利用者の状況や本人・家族の意向、ケアマネジャーの考えなどを、思いついたまま入力します。この入力だけでもAIで手紙を作成できます。</div>
+    <div class="usage-step"><strong>② 必要な場合のみ、連絡内容を選択</strong><br>「医師に伝えたい内容をボタンで選択する方はこちらから」を押すと、「何について連絡しますか？」と「何について相談・依頼しますか？」が表示されます。</div>
+    <div class="usage-step"><strong>③ 連絡目的・相談内容を選択</strong><br>主治医への連絡目的や、相談・依頼したい内容に近いボタンを必要な分だけ選択します。選択しなくても構いません。</div>
+    <div class="usage-step"><strong>④ AI処理用にコピー</strong><br>入力情報と選択内容が一つにまとまります。コピー後にChatGPT・Gemini・Claudeのボタンが表示されるので、使いたいAIを開いてそのまま貼り付けてください。</div>
+    <div class="usage-note"><strong>🌱 ポイント</strong><br>最初からきれいな文章を書く必要はありません。事実や本人・家族の発言などを入力しておけば、AIが自然な主治医への連絡文に整理します。</div>
   </section>
 
   <section class="card edit-area view-hidden" id="promptLibraryArea">
@@ -1107,6 +1155,20 @@ ${memo}
 
 ${memoInstruction}`;
 }
+function showAILauncher(){
+  const launcher=document.getElementById("aiLauncher");
+  if(launcher){launcher.classList.add("show");}
+}
+function openAI(service){
+  const urls={
+    chatgpt:"https://chatgpt.com/",
+    gemini:"https://gemini.google.com/app",
+    claude:"https://claude.ai/new"
+  };
+  const url=urls[service];
+  if(url) window.open(url,"_blank","noopener,noreferrer");
+}
+
 async function copyAI(){
   const text=buildAIText(), btn=document.getElementById("copyButton"), st=document.getElementById("copyStatus");
   try{
@@ -1114,6 +1176,7 @@ async function copyAI(){
     btn.textContent="コピーしました！そのままAIに貼り付けてください。";
     btn.classList.add("copied");
     st.className="status success";st.textContent="✓ STEP 1・STEP 2・入力内容・プロンプトをまとめてコピーしました。";
+    showAILauncher();
     setTimeout(()=>{btn.textContent="📋 AI処理用にコピー";btn.classList.remove("copied")},3000);
   }catch(e){
     const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.left="-9999px";
@@ -1125,6 +1188,7 @@ async function copyAI(){
       setTimeout(()=>{btn.textContent="📋 AI処理用にコピー";btn.classList.remove("copied")},3000);
     }
     st.className=ok?"status success":"status";st.textContent=ok?"✓ AI処理用の内容をコピーしました。":"コピーできませんでした。ブラウザの権限を確認してください。";
+    if(ok)showAILauncher();
   }
 }
 function toggleSettingsHelp(){
@@ -1150,7 +1214,22 @@ function showMainView(){
   if(main)main.classList.remove("view-hidden");
   window.scrollTo({top:0,behavior:"smooth"});
 }
-function showUsageGuide(){document.getElementById("usageCard").scrollIntoView({behavior:"smooth",block:"start"})}
+function showUsageGuide(){
+  const card=document.getElementById("usageCard");
+  if(!card)return;
+  const willOpen=card.style.display==="none" || getComputedStyle(card).display==="none";
+  card.style.display=willOpen?"block":"none";
+  if(willOpen)card.scrollIntoView({behavior:"smooth",block:"start"});
+}
+function toggleDoctorOptions(){
+  const area=document.getElementById("doctorOptionsArea");
+  const btn=document.getElementById("doctorOptionsButton");
+  if(!area||!btn)return;
+  const willOpen=area.style.display==="none" || getComputedStyle(area).display==="none";
+  area.style.display=willOpen?"grid":"none";
+  btn.classList.toggle("open",willOpen);
+  btn.textContent=willOpen?"－ 医師に伝えたい内容の選択を閉じる":"＋ 医師に伝えたい内容をボタンで選択する方はこちらから";
+}
 function scrollToTop(){window.scrollTo({top:0,behavior:"smooth"})}
 function goHome(){location.href="index.html"}
 function saveSelectedPrompt(){
