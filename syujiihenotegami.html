@@ -1,0 +1,1196 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>主治医連絡・情報提供文作成支援アプリ（BlueOcean）</title>
+<style>
+:root{
+  --bo-light:#70dcfa;--bo-sky:#28bcef;--bo-blue:#138ee0;--bo-deep:#0875c9;
+  --text:#185477;--pale:#f4faff;--border:#9fc7eb;--yellow:#fff7d6;--yellow-border:#e6c94c;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pale);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Yu Gothic","Meiryo",sans-serif}
+header{background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep));color:#fff;padding:18px 16px;box-shadow:0 2px 8px rgba(25,118,210,.18)}
+.header-inner{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:28px}
+header h1{margin:0;line-height:1.25}
+.app-title-main{display:block;font-size:27px}
+.app-title-sub{display:block;font-size:24px;margin-top:6px}
+.header-description{flex:1;max-width:430px;font-size:15px;line-height:1.7;text-align:left}
+main{max-width:900px;margin:auto;padding:12px}
+.card{background:#fff;padding:16px;margin:12px 0;border-radius:18px;border:2px solid #b9d9f5;box-shadow:0 3px 12px rgba(25,118,210,.08)}
+h2{font-size:18px;margin:0 0 13px;color:var(--bo-deep)}
+.description{font-size:14px;line-height:1.7;color:#44575c;background:#fff;border:1px solid #cfe3f7;border-radius:12px;padding:10px 12px}
+textarea{width:100%;border:2px solid var(--border);border-radius:14px;padding:12px;font-size:16px;line-height:1.7;min-height:220px;resize:vertical;outline:none;background:#fff}
+textarea:focus{border-color:var(--bo-blue);box-shadow:0 0 0 3px rgba(25,118,210,.12)}
+button{border:0;border-radius:12px;color:#fff;padding:12px 16px;font-size:15px;margin:4px 2px;cursor:pointer;transition:.15s}
+button:hover{opacity:.92;transform:translateY(-1px)}
+.primary{background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep))}
+.copy-button{font-weight:bold;font-size:18px;padding:14px 18px;width:100%}.copy-button.copied{background:#22a447!important;border-color:#18853a!important;color:#fff}
+.status{background:#f4faff;border:1px solid #cfe3f7;color:#24545d;padding:10px;border-radius:12px;font-size:13px;margin-top:8px;white-space:pre-wrap}
+.status.success{border-color:#b9d9f5;color:var(--bo-deep);font-weight:bold}
+.selection-box{margin-top:12px;padding:14px;border:2px solid #9fc7eb;border-radius:14px;background:linear-gradient(180deg,#f2fbfd 0%,#eaf7fb 100%)}
+.step-title{font-weight:700;color:var(--bo-deep);font-size:17px;margin:0 0 10px}
+.step-help{font-size:13px;color:#52676d;margin:0 0 10px;line-height:1.6}
+.choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;pointer-events:none}
+.choice label{display:block;background:#fff;border:2px solid #9fc7eb;border-radius:12px;padding:12px 10px;text-align:center;font-weight:700;font-size:14px;color:#245c80;cursor:pointer;min-height:48px;display:flex;align-items:center;justify-content:center}
+.choice input:checked+label{background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue));border-color:var(--bo-blue);color:#fff;box-shadow:0 0 0 2px rgba(25,118,210,.10)}
+.selected-summary{margin-top:10px;padding:10px;border-radius:10px;background:#fff;border:1px solid #cfe3f7;font-size:13px;line-height:1.7}
+.edit-area{margin-top:28px}
+.prompt-editor{min-height:620px;font-size:14px}
+.edit-actions{display:flex;gap:6px;flex-wrap:wrap}
+.usage-button{background:linear-gradient(135deg,#fff7b2,#f8d85a)!important;border:2px solid #e2bf36!important;color:#765900!important;font-weight:bold}
+.settings-button{background:#f39c12!important;border:1px solid #e67e22!important;width:100%;font-weight:bold;font-size:16px}
+.custom-item-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px dashed #b9d9f5}
+.custom-item-row:last-child{border-bottom:0}
+.custom-item-name{font-weight:600;line-height:1.5}
+.custom-delete{background:#e85d5d!important;padding:7px 10px!important;font-size:12px!important;margin:0!important}
+.restore-button{background:var(--bo-blue)}
+.delete-button{background:var(--bo-deep)}
+.nav-buttons{text-align:center;margin:28px 0 10px}
+.nav-buttons button{width:auto;min-width:0;padding:8px 16px}
+.usage-card{background:#fffdf3;border:2px solid #9fc7eb;border-radius:18px;padding:20px 24px}
+.usage-step{padding:10px 8px;border-bottom:1px dashed #b9d9f5;line-height:1.7}
+.usage-step:last-child{border-bottom:0}
+.usage-note{margin-top:12px;padding:12px;background:var(--yellow);border:1px solid var(--yellow-border);border-radius:10px;line-height:1.7}
+.bo-footer-brand{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px auto 26px;padding:16px 0 4px;border-top:1px solid #b9d9f5;max-width:720px}
+.bo-footer-brand img{width:58px;height:58px;object-fit:contain}
+.bo-footer-brand-title{font-size:17px;font-weight:bold}.bo-footer-brand-subtitle{font-size:12px}
+.view-hidden{display:none!important}
+body.settings-view-active main>.main-only{display:none!important}
+body.settings-view-active #promptLibraryArea{display:block!important}
+@media(max-width:700px){.choice-grid{grid-template-columns:repeat(2,1fr)}.header-inner{display:block}.header-description{margin-top:12px;max-width:none}.app-title-main{font-size:23px}.app-title-sub{font-size:20px}}
+@media(max-width:430px){.choice-grid{grid-template-columns:1fr}}
+</style>
+
+<style id="blueocean-variant-01-wide-2col">
+/* Version 01：ワイド2カラム型／機能・設定・HTML/JSは変更せず表示レイアウトのみ変更 */
+main{max-width:1180px!important;padding:18px 20px!important}
+.header-inner{max-width:1180px!important}
+.card{border-radius:16px!important;padding:18px 20px!important}
+#mainView{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:16px!important;align-items:start!important}
+#mainView>.card:nth-of-type(3),#mainView>.card:nth-of-type(4),#mainView>div[style*="text-align:center"]{grid-column:1 / -1}
+.choice-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.selection-box{border-radius:12px!important}
+@media(max-width:850px){#mainView{grid-template-columns:1fr!important}#mainView>.card,#mainView>div[style*="text-align:center"]{grid-column:1}}
+@media(max-width:700px){main{padding:12px!important}}
+</style>
+
+
+<style id="blueocean-wide-settings-fix">
+/* =========================================================
+   Version 01：ワイド2カラム型
+   設定画面の表示を独立ビューとして安定化
+   機能・プロンプト内容・保存方式は変更しない
+========================================================= */
+body.settings-view-active main{
+  max-width:1180px!important;
+}
+body.settings-view-active main>.main-only,
+body.settings-view-active #mainView,
+body.settings-view-active #usageCard{
+  display:none!important;
+}
+body.settings-view-active #promptLibraryArea{
+  display:block!important;
+  width:100%!important;
+  max-width:1180px!important;
+  margin:0 auto!important;
+}
+body.settings-view-active #promptLibraryArea .settings-page-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+body.settings-view-active #promptLibraryArea .settings-page-head .primary{
+  width:auto!important;
+  margin:0!important;
+}
+.settings-intro-box{
+  background:#fff;
+  border:2px solid #d8c875;
+  border-radius:14px;
+  padding:18px 20px;
+  margin:12px 0 18px;
+  line-height:1.8;
+  color:#475569;
+}
+.settings-intro-box h3{
+  margin:0 0 10px;
+  color:#334155;
+  font-size:18px;
+}
+.settings-help-panel{
+  background:#fffdf3;
+  border:2px solid #d8c875;
+  border-radius:14px;
+  margin:0 0 18px;
+  overflow:hidden;
+}
+.settings-help-toggle{
+  width:100%!important;
+  border:0!important;
+  background:#fffdf3!important;
+  color:#6b5b00!important;
+  text-align:left!important;
+  padding:15px 18px!important;
+  margin:0!important;
+  border-radius:0!important;
+  font-weight:700!important;
+}
+.settings-help-content{
+  display:none;
+  padding:0 18px 18px;
+  color:#475569;
+  line-height:1.8;
+}
+.settings-help-content.open{display:block}
+.prompt-status-line{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.standard-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:#eef7ff;
+  color:#0875c9;
+  border:1px solid #9bc7ee;
+  border-radius:999px;
+  padding:4px 9px;
+  font-size:12px;
+  font-weight:800;
+}
+.settings-action-row{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-top:10px;
+}
+.settings-action-row button{
+  width:auto!important;
+  margin:0!important;
+}
+.standard-restore{
+  background:#eef7ff!important;
+  color:#0875c9!important;
+  border:1px solid #9bc7ee!important;
+  font-weight:700;
+}
+.settings-delete{
+  background:#e85d5d!important;
+  color:#fff!important;
+  border:1px solid #d94c4c!important;
+}
+.settings-section-label{
+  font-size:13px;
+  font-weight:700;
+  color:#587077;
+  margin:0 0 8px;
+}
+.custom-setting-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:9px 0;
+  border-bottom:1px dashed #b9d9f5;
+}
+.custom-setting-row:last-child{border-bottom:0}
+.custom-setting-main{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+}
+.custom-setting-name{font-weight:600;line-height:1.5}
+@media(max-width:700px){
+  body.settings-view-active #promptLibraryArea{
+    padding:0!important;
+  }
+  .settings-action-row button{
+    flex:1 1 auto;
+  }
+}
+</style>
+
+
+<style id="settings-item-management">
+.item-settings-card{margin-top:12px;padding:14px;border:2px solid #9fc7eb;border-radius:14px;background:#fff}
+.item-settings-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.item-settings-head .step-title{margin:0}
+.item-settings-list{display:grid;gap:8px}
+.item-setting-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed #b9d9f5}
+.item-setting-row:last-child{border-bottom:0}
+.item-setting-name{font-weight:700;line-height:1.5;word-break:break-word}
+.item-setting-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.item-setting-actions button{margin:0!important;padding:7px 9px!important;font-size:12px!important}
+.item-edit-input{width:100%;padding:9px 10px;border:2px solid #9fc7eb;border-radius:10px;font-size:14px}
+.item-save-button{background:#2f8f5b!important;color:#fff!important}
+.item-standard-badge{display:inline-flex;align-items:center;background:#eef7ff;color:#0875c9;border:1px solid #9bc7ee;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:800;margin-right:7px}
+.item-custom-badge{display:inline-flex;align-items:center;background:#effaf3;color:#2f7f52;border:1px solid #a9d7bc;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:800;margin-right:7px}
+.item-deleted{opacity:.58}
+@media(max-width:700px){
+  .item-setting-row{grid-template-columns:1fr}
+  .item-setting-actions{justify-content:flex-start}
+}
+.prompt-list-manager{display:grid;gap:8px;margin-top:12px}
+.prompt-setting-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed #b9d9f5}
+.prompt-setting-row:last-child{border-bottom:0}
+.prompt-setting-main{min-width:0}
+.prompt-setting-name{font-weight:700;line-height:1.5;word-break:break-word}
+.prompt-setting-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.prompt-setting-actions button{margin:0!important;padding:7px 9px!important;font-size:12px!important}
+.prompt-edit-panel{margin-top:8px;padding:12px;border:1px solid #9fc7eb;border-radius:10px;background:#f8fcff}
+.prompt-edit-name{width:100%;padding:9px 10px;border:2px solid #9fc7eb;border-radius:10px;font-size:14px;margin-bottom:8px}
+.prompt-edit-text{width:100%;min-height:360px;padding:10px;border:2px solid #9fc7eb;border-radius:10px;font-size:14px;line-height:1.7;resize:vertical}
+.prompt-custom-badge{display:inline-flex;align-items:center;background:#effaf3;color:#2f7f52;border:1px solid #a9d7bc;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:800;margin-right:7px}
+.prompt-use-badge{display:inline-flex;align-items:center;background:#eef7ff;color:#0875c9;border:1px solid #9bc7ee;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:800;margin-left:7px}
+@media(max-width:700px){
+  .prompt-setting-row{grid-template-columns:1fr}
+  .prompt-setting-actions{justify-content:flex-start}
+}
+</style>
+
+
+<style id="gyoumusien-style">
+.item-settings-card{margin-top:12px;padding:14px;border:2px solid #9fc7eb;border-radius:14px;background:#fff}
+.item-settings-list{display:grid;gap:8px}
+.item-setting-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed #b9d9f5}
+.item-setting-row:last-child{border-bottom:0}
+.item-setting-main{min-width:0}
+.item-setting-name{font-weight:700;line-height:1.5;word-break:break-word}
+.item-setting-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.item-setting-actions button{margin:0!important;padding:7px 9px!important;font-size:12px!important}
+.item-edit-input{width:100%;padding:9px 10px;border:2px solid #9fc7eb;border-radius:10px;font-size:14px}
+.item-save-button{background:#2f8f5b!important;color:#fff!important}
+.item-standard-badge{display:inline-flex;align-items:center;background:#eef7ff;color:#0875c9;border:1px solid #9bc7ee;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:800;margin-right:7px}
+.item-custom-badge{display:inline-flex;align-items:center;background:#effaf3;color:#2f7f52;border:1px solid #a9d7bc;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:800;margin-right:7px}
+.item-deleted{opacity:.58}
+@media(max-width:700px){
+  .item-setting-row{grid-template-columns:1fr}
+  .item-setting-actions{justify-content:flex-start}
+}
+</style>
+
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div>
+      <h1><span class="app-title-main">ケアマネが自ら育てる業務支援アプリ</span>
+      <span class="app-title-sub">主治医連絡・情報提供文作成支援</span></h1>
+    </div>
+    <div class="header-description">ケアマネから主治医へ伝えたい内容を選択し、音声・手入力した情報をAIで自然な手紙に整理するアプリです。</div>
+  </div>
+</header>
+
+<main>
+  <div class="main-only" style="text-align:center;margin:14px 0 18px;">
+    <button class="usage-button" type="button" onclick="showUsageGuide()">📖 使い方の説明はこちら</button>
+  </div>
+
+  <div id="mainView" class="main-only">
+
+    <section class="card">
+      <h2>① 何について連絡しますか？</h2>
+      <p class="description">今回の連絡・情報提供の目的に近いものを選択してください。複数選択できます。</p>
+      <div class="selection-box">
+        <div class="step-title">STEP 1　何について連絡しますか？</div>
+        <div class="choice-grid">
+          <div class="choice"><input id="s1_1" type="checkbox" value="介護保険新規利用"><label for="s1_1">介護保険新規利用</label></div>
+          <div class="choice"><input id="s1_2" type="checkbox" value="介護保険 更新"><label for="s1_2">介護保険 更新</label></div>
+          <div class="choice"><input id="s1_3" type="checkbox" value="介護保険 区分変更"><label for="s1_3">介護保険 区分変更</label></div>
+          <div class="choice"><input id="s1_4" type="checkbox" value="状態変化"><label for="s1_4">状態変化</label></div>
+          <div class="choice"><input id="s1_5" type="checkbox" value="情報提供"><label for="s1_5">情報提供</label></div>
+          <div class="choice"><input id="s1_19" type="checkbox" value="サービス担当者会議"><label for="s1_19">サービス担当者会議</label></div>
+          <div class="choice"><input id="s1_6" type="checkbox" value="入院"><label for="s1_6">入院</label></div>
+          <div class="choice"><input id="s1_7" type="checkbox" value="退院・退所"><label for="s1_7">退院・退所</label></div>
+          <div class="choice"><input id="s1_8" type="checkbox" value="サービス変更・導入"><label for="s1_8">サービス変更・導入</label></div>
+          <div class="choice"><input id="s1_9" type="checkbox" value="医療系サービス"><label for="s1_9">医療系サービス</label></div>
+          <div class="choice"><input id="s1_10" type="checkbox" value="訪問看護"><label for="s1_10">訪問看護</label></div>
+          <div class="choice"><input id="s1_16" type="checkbox" value="訪問リハビリ"><label for="s1_16">訪問リハビリ</label></div>
+          <div class="choice"><input id="s1_13" type="checkbox" value="訪問マッサージ"><label for="s1_13">訪問マッサージ</label></div>
+          <div class="choice"><input id="s1_11" type="checkbox" value="医療連携"><label for="s1_11">医療連携</label></div>
+          <div class="choice"><input id="s1_14" type="checkbox" value="ケアプラン"><label for="s1_14">ケアプラン</label></div>
+          <div class="choice"><input id="s1_15" type="checkbox" value="情報提供書"><label for="s1_15">情報提供書</label></div>
+          <div class="choice"><input id="s1_17" type="checkbox" value="福祉用具の導入"><label for="s1_17">福祉用具の導入</label></div>
+          <div class="choice"><input id="s1_18" type="checkbox" value="福祉用具貸与の例外給付"><label for="s1_18">福祉用具貸与の例外給付</label></div>
+          <div class="choice"><input id="s1_20" type="checkbox" value="現状報告"><label for="s1_20">現状報告</label></div>
+          <div class="choice"><input id="s1_21" type="checkbox" value="利用者・家族の気持ち、考え方"><label for="s1_21">利用者・家族の気持ち、考え方</label></div>
+          <div class="choice"><input id="s1_22" type="checkbox" value="今後の対応について"><label for="s1_22">今後の対応について</label></div>
+        </div>
+        <div id="step1Summary" class="selected-summary">選択なし</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>② 何について相談・依頼しますか？</h2>
+      <p class="description">今回、主治医から意見・助言・書類作成等をお願いしたい内容を選択してください。複数選択できます。</p>
+      <div class="selection-box">
+        <div class="step-title">STEP 2　何について相談・依頼しますか？</div>
+        <div class="choice-grid">
+          <div class="choice"><input id="s2_12" type="checkbox" value="医学的な所見"><label for="s2_12">医学的な所見</label></div>
+          <div class="choice"><input id="s2_1" type="checkbox" value="医学的な意見や留意点"><label for="s2_1">医学的な意見や留意点</label></div>
+          <div class="choice"><input id="s2_20" type="checkbox" value="今後の生活についての助言"><label for="s2_20">今後の生活についての助言</label></div>
+          <div class="choice"><input id="s2_21" type="checkbox" value="今後のサービス利用についての助言"><label for="s2_21">今後のサービス利用についての助言</label></div>
+          <div class="choice"><input id="s2_22" type="checkbox" value="サービス利用に関しての注意点"><label for="s2_22">サービス利用に関しての注意点</label></div>
+          <div class="choice"><input id="s2_4" type="checkbox" value="相談したい"><label for="s2_4">相談したい</label></div>
+          <div class="choice"><input id="s2_8" type="checkbox" value="主治医意見書作成の為の情報提供"><label for="s2_8">主治医意見書作成の為の情報提供</label></div>
+          <div class="choice"><input id="s2_7" type="checkbox" value="主治医意見書作成依頼"><label for="s2_7">主治医意見書作成依頼</label></div>
+          <div class="choice"><input id="s2_6" type="checkbox" value="訪問看護指示書作成依頼"><label for="s2_6">訪問看護指示書作成依頼</label></div>
+          <div class="choice"><input id="s2_10" type="checkbox" value="指示書の作成依頼"><label for="s2_10">指示書の作成依頼</label></div>
+          <div class="choice"><input id="s2_11" type="checkbox" value="ご査収ください"><label for="s2_11">ご査収ください</label></div>
+          <div class="choice"><input id="s2_19" type="checkbox" value="お薬の処方の検討依頼"><label for="s2_19">お薬の処方の検討依頼</label></div>
+          <div class="choice"><input id="s2_13" type="checkbox" value="ご案内"><label for="s2_13">ご案内</label></div>
+          <div class="choice"><input id="s2_14" type="checkbox" value="照会"><label for="s2_14">照会</label></div>
+          <div class="choice"><input id="s2_15" type="checkbox" value="利用希望がある"><label for="s2_15">利用希望がある</label></div>
+          <div class="choice"><input id="s2_17" type="checkbox" value="お知らせ"><label for="s2_17">お知らせ</label></div>
+          <div class="choice"><input id="s2_18" type="checkbox" value="ご検討頂きたい"><label for="s2_18">ご検討頂きたい</label></div>
+        </div>
+        <div id="step2Summary" class="selected-summary">選択なし</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>③ 今回伝えたい情報</h2>
+      <p class="description">利用者の現在の状態、最近の変化、生活状況、本人・家族の意向、ケアマネジャーとして考えていることなどを、思いついた順番のまま入力してください。
+
+💡 慣れた方は、上の①「何について連絡しますか？」・②「何について相談・依頼しますか？」を選択しなくても大丈夫です。今回、先生に伝えたいこと・相談したいこと・お願いしたいことを、この欄にまとめて自由に入力してください。AIが内容を整理して手紙を作成します。</p>
+      <p style="font-size:13px;line-height:1.6;margin:10px 0 8px;"><strong>🎤 音声入力</strong>　Windowsでは「Windowsキー＋H」で音声入力できます。<br><strong>⌨️ 手入力</strong>　話し言葉のまま入力しても、AIが整理します。</p>
+      <textarea id="memo" placeholder="例：最近〇〇が増えている。本人は～と言っている。家族は～と話している。今後は～を考えているので先生の意見を聞きたい。"></textarea>
+    </section>
+
+    <section class="card">
+      <h2>④ AI処理用にコピー</h2>
+      <p class="description">選択したSTEP 1・STEP 2、今回の入力内容、主治医連絡用プロンプトをまとめてコピーします。コピー後、そのままChatGPT・Gemini・Claudeなどのお好きなAIへ貼り付けてください。</p>
+      <button id="copyButton" class="copy-button primary" onclick="copyAI()">📋 AI処理用にコピー</button>
+      <div id="copyStatus" class="status">まだコピーされていません。</div>
+    </section>
+
+    <div style="text-align:center;margin:28px 0 10px;">
+      <button class="primary" type="button" onclick="scrollToTop()">▲トップに戻る</button>
+      <button class="primary" type="button" onclick="goHome()">⌂ トップ画面へ戻る</button>
+      <button class="settings-button" type="button" onclick="showSettingsView()">⚙ 設定　主治医連絡用プロンプトの編集・追加はこちら</button>
+    </div>
+
+  </div>
+
+  <section class="card usage-card main-only" id="usageCard">
+    <h2>使い方の説明</h2>
+    <div class="usage-step"><strong>① STEP 1を選択</strong><br>今回、なぜ主治医へ連絡するのかを選択します。</div>
+    <div class="usage-step"><strong>② STEP 2を選択</strong><br>主治医に何について相談・依頼したいのかを選択します。</div>
+    <div class="usage-step"><strong>③ 音声・手入力</strong><br>利用者の状況や本人・家族の意向、ケアマネジャーの考えなどを、思いついたまま入力します。</div>
+    <div class="usage-step"><strong>④ AI処理用にコピー</strong><br>選択内容と入力情報が一つにまとまり、AIへそのまま貼り付けられます。</div>
+    <div class="usage-note"><strong>🌱 ポイント</strong><br>最初からきれいな文章を書く必要はありません。事実や本人・家族の発言などを入力しておけば、AIが「目的→現状→評価・課題→今後の支援→主治医への相談・依頼」という自然な流れに整理します。</div>
+  </section>
+
+  <section class="card edit-area view-hidden" id="promptLibraryArea">
+  <div class="settings-page-head">
+    <h2 style="margin:0;">⚙ 設定　主治医連絡・情報提供文プロンプト</h2>
+    <button class="primary" type="button" onclick="showMainView()">← メイン画面に戻る</button>
+  </div>
+
+  <div class="settings-intro-box">
+    <h3>設定について</h3>
+    <p style="margin:0 0 10px;">
+      ここでは、この端末で使用する「プロンプト」や「連絡目的・相談内容の追加項目」を、
+      ご自身の使いやすいように確認・編集・追加・削除できます。
+    </p>
+    <p style="margin:0 0 10px;">
+      変更した内容は<strong>現在ご使用の端末のブラウザ内に保存されます。</strong>
+      パソコンやスマートフォンなど複数の端末でご利用になる場合は、端末ごとに設定が必要です。
+    </p>
+    <p style="margin:0;">
+      標準として登録されているプロンプトには<strong>「🏢 標準」</strong>が表示されます。
+      標準プロンプトを変更した場合は<strong>「↩ 標準に戻す」</strong>で元の標準内容へ戻せます。
+      ご自身で追加したプロンプトには<strong>「🗑 削除」</strong>を使用できます。
+    </p>
+  </div>
+
+  <div class="settings-help-panel">
+    <button class="settings-help-toggle" type="button" onclick="toggleSettingsHelp()">
+      📖 設定の使い方を確認する
+    </button>
+    <div id="settingsHelpContent" class="settings-help-content">
+      <p><strong>① 現在使用するプロンプト</strong><br>
+      AIに文章を作成させる際に使用するプロンプトを選択します。通常は「🏢 標準」のプロンプトをそのまま使用できます。</p>
+      <p><strong>② プロンプトを確認・編集</strong><br>
+      選択したプロンプトの名前や本文を確認・編集できます。「💾 このプロンプトを保存」で保存してください。</p>
+      <p><strong>③ 🏢 標準</strong><br>
+      標準として登録されているプロンプトを示します。標準プロンプトは削除できません。</p>
+      <p><strong>④ ↩ 標準に戻す</strong><br>
+      標準プロンプトの内容に戻します。編集した内容を元の標準内容へ戻したいときに使用してください。</p>
+      <p><strong>⑤ 🗑 削除</strong><br>
+      ご自身で追加したプロンプトを削除できます。標準プロンプトには表示されません。</p>
+      <p><strong>⑥ STEP 1・STEP 2の項目管理</strong><br>
+      標準項目の一覧を確認し、「✏ 編集」で名前を変更、「🗑 削除」で非表示にできます。削除した標準項目は「↩ 標準に戻す」で元の標準状態に戻せます。自分で追加した項目も編集・削除できます。</p>
+      <p style="margin-bottom:0;"><strong>⑦ 新しいプロンプトを追加</strong><br>
+      新しい用途のプロンプトを作成して保存できます。追加したプロンプトは「自分で追加」として管理されます。</p>
+    </div>
+  </div>
+
+  <div class="selection-box">
+    <div class="step-title">現在使用するプロンプト</div>
+    <select id="promptSelector" style="width:100%;padding:12px;border:2px solid #9fc7eb;border-radius:12px;font-size:15px;background:#fff;"></select>
+    <div id="activePromptName" class="status success">現在使用中</div>
+  </div>
+
+  <div class="selection-box">
+    <div class="step-title">プロンプトを確認・編集</div>
+    <p class="step-help">プロンプトごとに「✏ 編集」を押して編集できます。編集すると、その行だけが入力欄に切り替わります。「💾 保存」で確定し、「キャンセル」で元の表示に戻せます。</p>
+    <div id="promptTypeBadge" class="prompt-status-line"></div>
+    <div id="promptListManager" class="prompt-list-manager"></div>
+    <div id="promptStatus" class="status">現在使用しているプロンプトを一覧で確認できます。</div>
+  </div>
+
+  <div class="item-settings-card">
+    <div class="item-settings-head">
+      <div class="step-title">① 「何のために連絡しますか？」の項目</div>
+    </div>
+    <p class="step-help">標準項目を確認・編集・削除できます。標準項目を削除しても「↩ 標準に戻す」で元に戻せます。自分で追加した項目も編集・削除できます。</p>
+    <div id="step1SettingsList" class="item-settings-list"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+      <input id="newStep1Item" type="text" placeholder="新しい連絡目的を入力" style="flex:1;min-width:220px;padding:12px;border:2px solid #9fc7eb;border-radius:12px;font-size:14px;">
+      <button class="primary" type="button" onclick="addStep1Item()">＋ 項目を追加</button>
+    </div>
+  </div>
+  <div class="item-settings-card">
+    <div class="item-settings-head">
+      <div class="step-title">② 「何について相談・依頼しますか？」の項目</div>
+    </div>
+    <p class="step-help">標準項目を確認・編集・削除できます。標準項目を削除しても「↩ 標準に戻す」で元に戻せます。自分で追加した項目も編集・削除できます。</p>
+    <div id="step2SettingsList" class="item-settings-list"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+      <input id="newStep2Item" type="text" placeholder="新しい相談・依頼内容を入力" style="flex:1;min-width:220px;padding:12px;border:2px solid #9fc7eb;border-radius:12px;font-size:14px;">
+      <button class="primary" type="button" onclick="addStep2Item()">＋ 項目を追加</button>
+    </div>
+  </div>
+  <div class="selection-box">
+    <div class="step-title">新しいプロンプトを追加</div>
+    <button class="primary" type="button" id="showAddButton" onclick="showAddForm()">＋ 新しいプロンプトを作る</button>
+    <div id="addForm" style="display:none;margin-top:14px;">
+      <input id="newPromptName" type="text" placeholder="例：区分変更時の主治医連絡用" style="width:100%;padding:12px;border:2px solid #9fc7eb;border-radius:12px;margin-bottom:10px;font-size:14px;">
+      <textarea id="newPromptText" class="prompt-editor" style="min-height:420px;" placeholder="ここに新しいプロンプトを入力してください。"></textarea>
+      <div class="settings-action-row">
+        <button class="primary" type="button" onclick="addPrompt()">＋ この内容を新しいプロンプトとして保存</button>
+        <button class="standard-restore" type="button" onclick="cancelAddForm()">キャンセル</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="primary" type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲ 設定画面のトップに戻る</button>
+    <button class="primary" type="button" onclick="showMainView()">← メイン画面に戻る</button>
+  </div>
+</section>
+
+  <div class="bo-footer-brand">
+    <img src="https://blueocean2014.github.io/BlueOcean-Portal/BlueOceanimage.png" alt="BlueOcean ロゴ">
+    <div>
+      <div class="bo-footer-brand-title">BLUE OCEAN PROMPT SYSTEM</div>
+      <div class="bo-footer-brand-subtitle">Next Stage Care Innovation</div>
+    </div>
+  </div>
+</main>
+
+<script>
+const DEFAULT_PROMPT_TEXT = `【AI処理用プロンプト：主治医連絡票・主治医意見書情報提供】
+
+あなたは経験豊富な介護支援専門員（ケアマネジャー）です。
+
+以下に入力された利用者の情報をもとに、主治医へ日頃の状況を情報提供するとともに、今後の医療・介護保険サービスの利用について助言やご指導をいただくための「主治医への連絡票・情報提供文」を作成してください。
+
+単なる情報の羅列ではなく、主治医が「なぜ今回この連絡が来たのか」「利用者に現在どのような変化や課題があるのか」「ケアマネジャーがどのように評価しているのか」「今後どのような支援を考えているのか」「主治医に何をお願いしたいのか」を自然に理解できる文章構成にしてください。
+
+【基本方針】
+・入力された情報のみを使用してください。
+・入力されていない事実、診断名、症状、生活状況等を推測して追加しないでください。
+・医学的な判断や診断をケアマネジャーが行ったような表現は避けてください。
+・利用者の状態については、具体的な事実をもとに整理してください。
+・ケアマネジャーとしての評価、課題、リスク、今後の支援の方向性を簡潔に示してください。
+・主治医に対して一方的に支援内容を決める表現ではなく、医学的な評価や助言をいただく姿勢で記載してください。
+・文章は丁寧で礼儀正しい「です・ます調」としてください。
+・箇条書きにはせず、主治医への手紙として自然な文章にしてください。
+・同じ内容を重複して記載しないでください。
+・専門職として適切な表現を使用しつつ、主治医が短時間で内容を把握できる簡潔な文章にしてください。
+
+【手紙の構成】
+必ず以下の順番で文章を構成してください。
+
+① 挨拶・担当者の名乗り
+「いつも◯◯様の診療にご尽力いただき、誠にありがとうございます。◯◯様を担当しております⬜︎⬜︎と申します。日頃よりお世話になっております。」
+
+② 今回連絡した目的
+最初に、今回主治医へ情報提供・相談する目的を簡潔に記載してください。入力された情報と、STEP 1で選択された目的を踏まえて整理してください。
+
+③ 最近の利用者の状態・具体的な変化
+入力された情報から、今回の相談に関係する内容を優先して整理してください。単に「状態が悪化しています」などと抽象的に記載せず、具体的な事実を記載してください。
+
+④ ケアマネジャーとしての評価・課題・リスク
+③の情報を踏まえ、ケアマネジャーとして課題やリスク、生活継続上必要と考えることを簡潔に整理してください。医学的な診断や治療判断は行わないでください。
+
+⑤ 今後の支援の方向性
+現在の状況や課題を踏まえ、今後ケアマネジャーとして考えている支援・サービス調整を記載してください。入力された情報に基づいて記載してください。
+
+⑥ 主治医への相談・依頼
+STEP 2で選択された相談・依頼内容と入力情報を踏まえ、主治医にお願いしたい事項を自然につなげてください。依頼だけを唐突に提示せず、「情報共有」→「ケアマネジャーの考え」→「主治医への相談・依頼」の流れにしてください。
+
+⑦ 結び
+最後には必ず以下をそのまま記載してください。
+「ご多忙の中大変恐れ入りますが、今後の医療や介護保険サービスの利用にあたり、ご指導をいただけますと幸いです。
+
+何卒よろしくお願い申し上げます。」
+
+【文章量】
+「利用者の現状と課題、ケアマネジャーの所見」に相当する部分は500字以内を目安としてください。ただし、手紙全体として必要な情報が不足しないようにしてください。
+
+【重要】
+・STEP 1・STEP 2の選択内容は、入力された情報を整理するための補助情報として使用してください。
+・選択されていない目的や依頼内容を推測して追加しないでください。
+・入力情報が少ない場合は無理に文章を膨らませず、確認できる情報だけで簡潔に作成してください。
+・完成した主治医への手紙本文のみを出力してください。
+・作成意図、解説、注意事項、タイトル、箇条書き等は出力しないでください。`;
+
+const STEP1_CUSTOM_KEY="bo_doctor_letter_step1_custom_v1";
+const STEP2_CUSTOM_KEY="bo_doctor_letter_step2_custom_v1";
+let customStep1Items=[];
+let customStep2Items=[];
+
+function loadCustomItems(){
+  try{
+    const a=JSON.parse(localStorage.getItem(STEP1_CUSTOM_KEY)||"[]");
+    const b=JSON.parse(localStorage.getItem(STEP2_CUSTOM_KEY)||"[]");
+    customStep1Items=Array.isArray(a)?a:[];
+    customStep2Items=Array.isArray(b)?b:[];
+  }catch(e){customStep1Items=[];customStep2Items=[]}
+}
+function saveCustomItems(){
+  localStorage.setItem(STEP1_CUSTOM_KEY,JSON.stringify(customStep1Items));
+  localStorage.setItem(STEP2_CUSTOM_KEY,JSON.stringify(customStep2Items));
+}
+function escapeHtml(str){
+  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function addChoiceToStep(prefix,item){
+  const basePrefix=prefix.startsWith("s1_")?"s1_":"s2_";
+  const grid=document.querySelector('input[id^="'+basePrefix+'"]').closest(".choice-grid");
+  const id=prefix+item.id;
+  const wrap=document.createElement("div");
+  wrap.className="choice";
+  wrap.dataset.customId=item.id;
+  wrap.innerHTML='<input id="'+id+'" type="checkbox" value="'+escapeHtml(item.name)+'"><label for="'+id+'">'+escapeHtml(item.name)+'</label>';
+  grid.appendChild(wrap);
+  wrap.querySelector("input").addEventListener("change",updateSummaries);
+}
+function renderCustomChoices(){
+  document.querySelectorAll('.choice[data-custom-id]').forEach(x=>x.remove());
+  customStep1Items.forEach(item=>addChoiceToStep("s1_custom_",item));
+  customStep2Items.forEach(item=>addChoiceToStep("s2_custom_",item));
+  renderCustomItemLists();
+  updateSummaries();
+}
+function renderCustomItemLists(){
+  const render=(items,id,type)=>{
+    const el=document.getElementById(id);
+    if(!items.length){el.textContent="追加項目はありません。";return}
+    el.innerHTML=items.map(item=>'<div class="custom-item-row"><span class="custom-item-name">'+escapeHtml(item.name)+'</span><button class="custom-delete" type="button" onclick="deleteCustomItem(\''+type+'\',\''+item.id+'\')">削除</button></div>').join("");
+  };
+  render(customStep1Items,"customStep1List","step1");
+  render(customStep2Items,"customStep2List","step2");
+}
+function addStep1Item(){
+  const input=document.getElementById("newStep1Item"),name=input.value.trim();
+  if(!name)return;
+  if([...document.querySelectorAll('input[id^="s1_"]')].some(x=>x.value===name)){alert("同じ項目がすでにあります。");return}
+  customStep1Items.push({id:Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,7),name});
+  saveCustomItems();input.value="";renderCustomChoices();renderItemSettings();
+}
+function addStep2Item(){
+  const input=document.getElementById("newStep2Item"),name=input.value.trim();
+  if(!name)return;
+  if([...document.querySelectorAll('input[id^="s2_"]')].some(x=>x.value===name)){alert("同じ項目がすでにあります。");return}
+  customStep2Items.push({id:Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,7),name});
+  saveCustomItems();input.value="";renderCustomChoices();renderItemSettings();
+}
+function deleteCustomItem(type,id){
+  if(!confirm("この追加項目を削除しますか？"))return;
+  if(type==="step1")customStep1Items=customStep1Items.filter(x=>x.id!==id);
+  if(type==="step2")customStep2Items=customStep2Items.filter(x=>x.id!==id);
+  saveCustomItems();renderCustomChoices();renderItemSettings();
+}
+
+const LIBRARY_KEY="bo_doctor_letter_prompt_library_v1";
+const ACTIVE_KEY="bo_doctor_letter_active_prompt_v1";
+let promptLibrary=[];
+let activePromptId="default";
+
+
+const ITEM_SETTINGS_KEY="bo_doctor_letter_item_settings_v1";
+let itemSettings={step1:{},step2:{}};
+
+function loadItemSettings(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(ITEM_SETTINGS_KEY)||"null");
+    if(saved&&saved.step1&&saved.step2)itemSettings=saved;
+  }catch(e){}
+}
+function saveItemSettings(){
+  localStorage.setItem(ITEM_SETTINGS_KEY,JSON.stringify(itemSettings));
+}
+function standardChoiceItems(type){
+  const prefix=type==="step1"?"s1_":"s2_";
+  return [...document.querySelectorAll('input[id^="'+prefix+'"]')]
+    .filter(x=>!x.closest('.choice')?.dataset.customId)
+    .map(x=>({id:x.id,name:x.value}));
+}
+function itemState(type,id){
+  if(!itemSettings[type])itemSettings[type]={};
+  return itemSettings[type][id]||{name:null,deleted:false};
+}
+function currentItemName(type,id,original){
+  const s=itemState(type,id);
+  return s.name!==null?s.name:original;
+}
+function applyItemSettingsToMain(){
+  ["step1","step2"].forEach(type=>{
+    const prefix=type==="step1"?"s1_":"s2_";
+    standardChoiceItems(type).forEach(item=>{
+      const input=document.getElementById(item.id);
+      const wrap=input?.closest(".choice");
+      if(!input||!wrap)return;
+      const state=itemState(type,item.id);
+      const name=currentItemName(type,item.id,item.name);
+      input.value=name;
+      const label=wrap.querySelector("label");
+      if(label)label.textContent=name;
+      wrap.style.display=state.deleted?"none":"";
+    });
+  });
+}
+function renderItemSettings(){
+  loadItemSettings();
+  const render=(type,listId)=>{
+    const list=document.getElementById(listId);
+    if(!list)return;
+    const standards=standardChoiceItems(type);
+    const customs=type==="step1"?customStep1Items:customStep2Items;
+    let out="";
+    standards.forEach(item=>{
+      const state=itemState(type,item.id);
+      const name=currentItemName(type,item.id,item.name);
+      out+=`<div class="item-setting-row ${state.deleted?"item-deleted":""}" data-setting-row="${type}:${item.id}">
+        <div class="item-setting-main"><div><span class="item-standard-badge">🏢 標準</span><span class="item-setting-name">${escapeHtml(name)}</span></div>
+        ${state.deleted?'<div style="font-size:12px;color:#b45309;margin-top:4px;">現在は非表示です</div>':''}</div>
+        <div class="item-setting-actions">
+          <button type="button" class="primary js-edit-standard">✏ 編集</button>
+          <button type="button" class="standard-restore js-restore-standard">↩ 標準に戻す</button>
+          <button type="button" class="settings-delete js-delete-standard">${state.deleted?"表示":"🗑 削除"}</button>
+        </div></div>`;
+    });
+    customs.forEach(item=>{
+      out+=`<div class="item-setting-row" data-setting-row="${type}:custom:${item.id}">
+        <div class="item-setting-main"><div><span class="item-custom-badge">自分で追加</span><span class="item-setting-name">${escapeHtml(item.name)}</span></div></div>
+        <div class="item-setting-actions">
+          <button type="button" class="primary js-edit-custom">✏ 編集</button>
+          <button type="button" class="settings-delete js-delete-custom">🗑 削除</button>
+        </div></div>`;
+    });
+    list.innerHTML=out||'<div class="selected-summary">項目はありません。</div>';
+
+    // gyoumusienと同じ「押した行だけを編集モードへ切替」を、inline onclickではなく確実なイベントで実行
+    standards.forEach(item=>{
+      const row=list.querySelector(`[data-setting-row="${type}:${item.id}"]`);
+      if(!row)return;
+      row.querySelector('.js-edit-standard')?.addEventListener('click',()=>editStandardItem(type,item.id));
+      row.querySelector('.js-restore-standard')?.addEventListener('click',()=>restoreStandardItem(type,item.id));
+      row.querySelector('.js-delete-standard')?.addEventListener('click',()=>deleteStandardItem(type,item.id));
+    });
+    customs.forEach(item=>{
+      const row=list.querySelector(`[data-setting-row="${type}:custom:${item.id}"]`);
+      if(!row)return;
+      row.querySelector('.js-edit-custom')?.addEventListener('click',()=>editCustomItem(type,item.id));
+      row.querySelector('.js-delete-custom')?.addEventListener('click',()=>deleteCustomItem(type,item.id));
+    });
+  };
+  render("step1","step1SettingsList");
+  render("step2","step2SettingsList");
+}
+
+function editStandardItem(type,id){
+  const row=document.querySelector(`[data-setting-row="${type}:${id}"]`);
+  if(!row)return;
+
+  const input=document.getElementById(id);
+  const current=currentItemName(type,id,input ? input.value : "");
+
+  row.querySelector(".item-setting-main").innerHTML=
+    `<input class="item-edit-input" id="editStandard_${type}_${id}" value="${escapeHtml(current)}">`;
+
+  row.querySelector(".item-setting-actions").innerHTML=
+    `<button class="item-save-button" type="button" onclick="saveStandardItem('${type}','${id}')">💾 保存</button>
+     <button class="standard-restore" type="button" onclick="renderItemSettings()">キャンセル</button>`;
+
+  const edit=document.getElementById(`editStandard_${type}_${id}`);
+  if(edit){
+    edit.focus();
+    edit.select();
+  }
+}
+
+function saveStandardItem(type,id){
+  const el=document.getElementById(`editStandard_${type}_${id}`);
+  const name=el?el.value.trim():"";
+
+  if(!name){
+    alert("項目名を入力してください。");
+    return;
+  }
+
+  const prefix=type==="step1"?"s1_":"s2_";
+  const duplicate=[...document.querySelectorAll('input[id^="'+prefix+'"]')]
+    .filter(x=>x.id!==id)
+    .some(x=>x.value.trim()===name);
+
+  if(duplicate){
+    alert("同じ項目がすでにあります。");
+    return;
+  }
+
+  if(!itemSettings[type])itemSettings[type]={};
+
+  const oldState=itemState(type,id);
+
+  itemSettings[type][id]={
+    name:name,
+    deleted:oldState.deleted
+  };
+
+  saveItemSettings();
+  applyItemSettingsToMain();
+  renderItemSettings();
+}
+
+function restoreStandardItem(type,id){
+  if(!confirm("この標準項目を標準の状態に戻しますか？"))return;
+
+  if(itemSettings[type])delete itemSettings[type][id];
+
+  saveItemSettings();
+  applyItemSettingsToMain();
+  renderItemSettings();
+}
+
+function deleteStandardItem(type,id){
+  const state=itemState(type,id);
+
+  if(state.deleted){
+    restoreStandardItem(type,id);
+    return;
+  }
+
+  if(!confirm("この標準項目を非表示にしますか？\n「↩ 標準に戻す」でいつでも元に戻せます。"))return;
+
+  const input=document.getElementById(id);
+
+  if(!itemSettings[type])itemSettings[type]={};
+
+  itemSettings[type][id]={
+    name:state.name!==null?state.name:(input?input.value:null),
+    deleted:true
+  };
+
+  saveItemSettings();
+  applyItemSettingsToMain();
+  renderItemSettings();
+}
+
+function editCustomItem(type,id){
+  const arr=type==="step1"?customStep1Items:customStep2Items;
+  const item=arr.find(x=>x.id===id);
+  if(!item)return;
+
+  const row=document.querySelector(`[data-setting-row="${type}:custom:${id}"]`);
+  if(!row)return;
+
+  row.querySelector(".item-setting-main").innerHTML=
+    `<input class="item-edit-input" id="editCustom_${type}_${id}" value="${escapeHtml(item.name)}">`;
+
+  row.querySelector(".item-setting-actions").innerHTML=
+    `<button class="item-save-button" type="button" onclick="saveCustomItem('${type}','${id}')">💾 保存</button>
+     <button class="standard-restore" type="button" onclick="renderItemSettings()">キャンセル</button>`;
+
+  const edit=document.getElementById(`editCustom_${type}_${id}`);
+  if(edit){
+    edit.focus();
+    edit.select();
+  }
+}
+
+function saveCustomItem(type,id){
+  const el=document.getElementById(`editCustom_${type}_${id}`);
+  const name=el?el.value.trim():"";
+
+  if(!name){
+    alert("項目名を入力してください。");
+    return;
+  }
+
+  const arr=type==="step1"?customStep1Items:customStep2Items;
+  const prefix=type==="step1"?"s1_":"s2_";
+
+  const duplicate=[...document.querySelectorAll('input[id^="'+prefix+'"]')]
+    .filter(x=>x.id!==prefix+"custom_"+id)
+    .some(x=>x.value.trim()===name);
+
+  if(duplicate){
+    alert("同じ項目がすでにあります。");
+    return;
+  }
+
+  const item=arr.find(x=>x.id===id);
+  if(!item)return;
+
+  item.name=name;
+  saveCustomItems();
+  renderCustomChoices();
+  renderItemSettings();
+}
+
+
+function loadPrompts(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(LIBRARY_KEY)||"null");
+    if(Array.isArray(saved)&&saved.length) promptLibrary=saved;
+  }catch(e){}
+  if(!promptLibrary.length){
+    promptLibrary=[{id:"default",name:"医師への手紙作成プロンプト",text:DEFAULT_PROMPT_TEXT,builtin:true}];
+  }
+  activePromptId=localStorage.getItem(ACTIVE_KEY)||"default";
+  if(!promptLibrary.some(p=>p.id===activePromptId)) activePromptId="default";
+  savePrompts();
+}
+function savePrompts(){
+  localStorage.setItem(LIBRARY_KEY,JSON.stringify(promptLibrary));
+  localStorage.setItem(ACTIVE_KEY,activePromptId);
+}
+function activePrompt(){return promptLibrary.find(p=>p.id===activePromptId)||promptLibrary[0]}
+function renderPromptManager(){
+  const sel=document.getElementById("promptSelector");
+
+  if(sel){
+    sel.innerHTML="";
+    promptLibrary.forEach(item=>{
+      const o=document.createElement("option");
+      o.value=item.id;
+      o.textContent=item.name+(item.builtin?"（標準）":"（自分で追加）");
+      o.selected=item.id===activePromptId;
+      sel.appendChild(o);
+    });
+  }
+
+  const p=activePrompt();
+
+  const active=document.getElementById("activePromptName");
+  if(active)active.textContent="現在使用中：「"+p.name+"」";
+
+  const badge=document.getElementById("promptTypeBadge");
+  if(badge){
+    badge.innerHTML=p.builtin
+      ? '<span class="item-standard-badge">🏢 標準</span>'
+      : '<span class="item-custom-badge">自分で追加</span>';
+  }
+
+  const list=document.getElementById("promptListManager");
+
+  if(!list){
+    return;
+  }
+
+  let out="";
+
+  promptLibrary.forEach(item=>{
+    out+=`<div class="item-setting-row" data-prompt-row="${item.id}">
+      <div class="item-setting-main">
+        <div>
+          <span class="${item.builtin?'item-standard-badge':'item-custom-badge'}">${item.builtin?'🏢 標準':'自分で追加'}</span>
+          <span class="item-setting-name">${escapeHtml(item.name)}</span>
+        </div>
+      </div>
+      <div class="item-setting-actions">
+        <button class="primary" type="button" onclick="editPromptInline('${item.id}')">✏ 編集</button>
+        ${item.builtin
+          ? `<button class="standard-restore" type="button" onclick="restorePromptInline('${item.id}')">↩ 標準に戻す</button>`
+          : `<button class="settings-delete" type="button" onclick="deletePromptInline('${item.id}')">🗑 削除</button>`}
+      </div>
+    </div>`;
+  });
+
+  list.innerHTML=out||'<div class="selected-summary">プロンプトはありません。</div>';
+}
+
+function editPromptInline(id){
+  const p=promptLibrary.find(x=>x.id===id);
+  if(!p)return;
+
+  const row=document.querySelector(`[data-prompt-row="${id}"]`);
+  if(!row)return;
+
+  row.querySelector(".item-setting-main").innerHTML=
+    `<div class="prompt-edit-panel" style="width:100%;">
+      <div style="font-weight:bold;margin-bottom:6px;">プロンプト名</div>
+      <input class="item-edit-input" id="editPromptName_${id}" value="${escapeHtml(p.name)}">
+      <div style="font-weight:bold;margin:10px 0 6px;">プロンプト本文（全文）</div>
+      <textarea id="editPromptText_${id}" class="prompt-editor" style="min-height:360px;width:100%;">${escapeHtml(p.text)}</textarea>
+    </div>`;
+
+  row.querySelector(".item-setting-actions").innerHTML=
+    `<button class="item-save-button" type="button" onclick="savePromptInline('${id}')">💾 保存</button>
+     <button class="standard-restore" type="button" onclick="renderPromptManager()">キャンセル</button>`;
+
+  const edit=document.getElementById(`editPromptName_${id}`);
+  if(edit){
+    edit.focus();
+    edit.select();
+  }
+}
+
+function savePromptInline(id){
+  const p=promptLibrary.find(x=>x.id===id);
+  if(!p)return;
+
+  const nameEl=document.getElementById(`editPromptName_${id}`);
+  const textEl=document.getElementById(`editPromptText_${id}`);
+
+  const name=nameEl?nameEl.value.trim():"";
+  const text=textEl?textEl.value:"";
+
+  if(!name||!text.trim()){
+    alert("プロンプト名と本文を入力してください。");
+    return;
+  }
+
+  if(promptLibrary.some(x=>x.id!==id&&x.name===name)){
+    alert("同じ名前のプロンプトがあります。");
+    return;
+  }
+
+  p.name=name;
+  p.text=text;
+
+  savePrompts();
+  renderPromptManager();
+
+  const status=document.getElementById("promptStatus");
+  if(status)status.textContent="✓ 「"+name+"」を保存しました。";
+}
+
+function restorePromptInline(id){
+  const p=promptLibrary.find(x=>x.id===id);
+  if(!p||!p.builtin)return;
+
+  if(!confirm("「"+p.name+"」を標準の状態に戻しますか？"))return;
+
+  p.name="標準プロンプト";
+  p.text=DEFAULT_PROMPT_TEXT;
+
+  savePrompts();
+  renderPromptManager();
+
+  const status=document.getElementById("promptStatus");
+  if(status)status.textContent="✓ 標準プロンプトを標準の内容に戻しました。";
+}
+
+function deletePromptInline(id){
+  const p=promptLibrary.find(x=>x.id===id);
+  if(!p||p.builtin)return;
+
+  if(!confirm("「"+p.name+"」を削除しますか？"))return;
+
+  promptLibrary=promptLibrary.filter(x=>x.id!==id);
+
+  if(activePromptId===id){
+    activePromptId="default";
+  }
+
+  savePrompts();
+  renderPromptManager();
+
+  const status=document.getElementById("promptStatus");
+  if(status)status.textContent="✓ プロンプトを削除しました。";
+}
+
+/* 旧関数との互換性を維持 */
+function saveSelectedPrompt(){
+  const p=activePrompt();
+  if(p)savePromptInline(p.id);
+}
+function restoreSelectedPrompt(){
+  const p=activePrompt();
+  if(p)restorePromptInline(p.id);
+}
+function deleteSelectedPrompt(){
+  const p=activePrompt();
+  if(p)deletePromptInline(p.id);
+}
+
+function getChecked(prefix){
+  return [...document.querySelectorAll('input[id^="'+prefix+'"]:checked')].map(x=>x.value);
+}
+function updateSummaries(){
+  const a=getChecked("s1_"), b=getChecked("s2_");
+  document.getElementById("step1Summary").textContent=a.length?"選択中： "+a.join(" ／ "):"選択なし";
+  document.getElementById("step2Summary").textContent=b.length?"選択中： "+b.join(" ／ "):"選択なし";
+}
+function buildAIText(){
+  const purposes=getChecked("s1_");
+  const requests=getChecked("s2_");
+  const memo=document.getElementById("memo").value.trim();
+  const memoInstruction = memo
+    ? "【STEP 3は入力あり】STEP 3の内容を、入力された情報として使用してください。"
+    : "【STEP 3は空欄】STEP 3が空欄でも作成を中止せず、STEP 1・STEP 2の選択内容やその他の入力情報だけを使用して作成してください。空欄から事実を推測・創作してはいけません。STEP 1・STEP 2も空欄の場合は、未入力の事実を補わず、挨拶・名乗り・結びを基本とした最小限の主治医への手紙本文を作成してください。";
+  return `【主治医連絡・情報提供文作成：AI処理用】
+
+【AI処理用プロンプト】
+${activePrompt().text}
+
+【STEP 1　今回の連絡目的】
+${purposes.length?purposes.join("、"):"選択なし"}
+
+【STEP 2　主治医への相談・依頼内容】
+${requests.length?requests.join("、"):"選択なし"}
+
+【STEP 3　今回伝えたい情報】
+${memo}
+
+${memoInstruction}`;
+}
+async function copyAI(){
+  const text=buildAIText(), btn=document.getElementById("copyButton"), st=document.getElementById("copyStatus");
+  try{
+    await navigator.clipboard.writeText(text);
+    btn.textContent="コピーしました！そのままAIに貼り付けてください。";
+    btn.classList.add("copied");
+    st.className="status success";st.textContent="✓ STEP 1・STEP 2・入力内容・プロンプトをまとめてコピーしました。";
+    setTimeout(()=>{btn.textContent="📋 AI処理用にコピー";btn.classList.remove("copied")},3000);
+  }catch(e){
+    const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.left="-9999px";
+    document.body.appendChild(ta);ta.select();
+    const ok=document.execCommand("copy");document.body.removeChild(ta);
+    if(ok){
+      btn.textContent="コピーしました！そのままAIに貼り付けてください。";
+      btn.classList.add("copied");
+      setTimeout(()=>{btn.textContent="📋 AI処理用にコピー";btn.classList.remove("copied")},3000);
+    }
+    st.className=ok?"status success":"status";st.textContent=ok?"✓ AI処理用の内容をコピーしました。":"コピーできませんでした。ブラウザの権限を確認してください。";
+  }
+}
+function toggleSettingsHelp(){
+  const el=document.getElementById("settingsHelpContent");
+  if(el)el.classList.toggle("open");
+}
+function showSettingsView(){
+  loadItemSettings();
+  document.body.classList.add("settings-view-active");
+  const area=document.getElementById("promptLibraryArea");
+  if(area)area.classList.remove("view-hidden");
+  const main=document.getElementById("mainView");
+  if(main)main.classList.add("view-hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+  renderPromptManager();
+}
+function showMainView(){
+  applyItemSettingsToMain();
+  document.body.classList.remove("settings-view-active");
+  const area=document.getElementById("promptLibraryArea");
+  if(area)area.classList.add("view-hidden");
+  const main=document.getElementById("mainView");
+  if(main)main.classList.remove("view-hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function showUsageGuide(){document.getElementById("usageCard").scrollIntoView({behavior:"smooth",block:"start"})}
+function scrollToTop(){window.scrollTo({top:0,behavior:"smooth"})}
+function goHome(){location.href="index.html"}
+function saveSelectedPrompt(){
+  const p=activePrompt(),name=document.getElementById("selectedPromptName").value.trim(),text=document.getElementById("selectedPromptText").value;
+  if(!name||!text.trim()){alert("プロンプト名と本文を入力してください。");return}
+  if(promptLibrary.some(x=>x.id!==p.id&&x.name===name)){alert("同じ名前のプロンプトがあります。");return}
+  p.name=name;p.text=text;savePrompts();renderPromptManager();
+  document.getElementById("promptStatus").textContent="✓ 保存しました。";
+}
+function restoreSelectedPrompt(){
+  const p=activePrompt();
+  if(!confirm("標準プロンプトの内容に戻しますか？"))return;
+  p.text=DEFAULT_PROMPT_TEXT;savePrompts();renderPromptManager();
+  document.getElementById("promptStatus").textContent="✓ 標準プロンプトの内容に戻しました。";
+}
+function deleteSelectedPrompt(){
+  const p=activePrompt();
+  if(p.builtin)return;
+  if(!confirm("「"+p.name+"」を削除しますか？"))return;
+  promptLibrary=promptLibrary.filter(x=>x.id!==p.id);activePromptId="default";savePrompts();renderPromptManager();
+}
+function showAddForm(){document.getElementById("addForm").style.display="block";document.getElementById("showAddButton").style.display="none";document.getElementById("newPromptName").focus()}
+function cancelAddForm(){document.getElementById("addForm").style.display="none";document.getElementById("showAddButton").style.display="inline-block";document.getElementById("newPromptName").value="";document.getElementById("newPromptText").value=""}
+function addPrompt(){
+  const name=document.getElementById("newPromptName").value.trim(),text=document.getElementById("newPromptText").value;
+  if(!name||!text.trim()){alert("プロンプト名と本文を入力してください。");return}
+  if(promptLibrary.some(x=>x.name===name)){alert("同じ名前のプロンプトがあります。");return}
+  const id="custom_"+Date.now().toString(36);
+  promptLibrary.push({id,name,text,builtin:false});activePromptId=id;savePrompts();cancelAddForm();renderPromptManager();
+  document.getElementById("promptStatus").textContent="✓ 新しいプロンプトを追加しました。";
+}
+document.addEventListener("DOMContentLoaded",()=>{
+  loadPrompts();
+  loadCustomItems();
+  loadItemSettings();
+  applyItemSettingsToMain();
+  renderPromptManager();
+  renderItemSettings();
+  renderCustomChoices();
+  document.querySelectorAll('.choice input').forEach(x=>x.addEventListener("change",updateSummaries));
+  document.getElementById("promptSelector").addEventListener("change",function(){activePromptId=this.value;savePrompts();renderPromptManager()});
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  /*
+   * 初回起動時は必ずメイン画面を表示。
+   * 設定画面は「設定」ボタンから開く既存動作を維持。
+   */
+  try{
+    const settingCandidates = [
+      "settingsScreen","settingsPanel","settingsArea","settingsModal",
+      "settingsView","settingsPage"
+    ];
+    settingCandidates.forEach(function(id){
+      const el=document.getElementById(id);
+      if(el) el.style.display="none";
+    });
+
+    const mainCandidates = [
+      "mainScreen","mainApp","appMain","main-content","main"
+    ];
+    mainCandidates.forEach(function(id){
+      const el=document.getElementById(id);
+      if(el) el.style.display="";
+    });
+  }catch(e){}
+});
+</script>
+
+</body>
+</html>
+<style>
+#selectedPromptName,#selectedPromptText{display:none!important}
+</style>
