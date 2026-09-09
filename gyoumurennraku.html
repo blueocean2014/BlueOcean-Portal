@@ -290,6 +290,17 @@ button:hover{opacity:.92;
 .bo-footer-brand-title{font-size:17px;
   font-weight:bold}
 .bo-footer-brand-subtitle{font-size:12px}
+
+.ai-launch-area{display:none;margin-top:14px;padding:14px;border:2px solid #9fc7eb;border-radius:14px;background:#f7fbff;text-align:center}
+.ai-launch-title{font-weight:800;color:var(--bo-deep);font-size:16px;margin-bottom:10px}
+.ai-launch-help{font-size:13px;color:#52676d;line-height:1.6;margin:0 0 10px}
+.ai-launch-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.ai-launch-button{display:block;width:100%;border:0;border-radius:12px;padding:13px 10px;font-size:15px;font-weight:800;color:#fff;box-shadow:0 2px 6px rgba(25,118,210,.12);cursor:pointer}
+.ai-launch-button:hover{opacity:.92;transform:translateY(-1px)}
+.ai-chatgpt{background:#10a37f}
+.ai-gemini{background:#4b6ee8}
+.ai-claude{background:#c56f45}
+@media(max-width:600px){.ai-launch-buttons{grid-template-columns:1fr}}
 .view-hidden{display:none!important}
 body.settings-view-active main>.main-only{display:none!important}
 body.settings-view-active #promptLibraryArea{display:block!important;
@@ -627,9 +638,9 @@ body.settings-view-active #promptLibraryArea{display:block!important;
         <div class="step-title">STEP 3 何のために連絡しますか？</div>
         <label for="purposeMemo" style="font-weight:bold;font-size:14px;">🎤 音声・手入力</label>
         <textarea id="purposeMemo" placeholder="連絡する目的を、思いついたまま入力してください。音声入力でも手入力でも大丈夫です。" style="min-height:110px;margin-top:6px;"></textarea>
-        <button class="usage-button" type="button" onclick="togglePurposeChoices(this)" style="width:100%;margin:4px 0 8px;">▼ 選択肢から選ぶ</button>
+        <button class="usage-button" type="button" onclick="togglePurposeChoices(this)" style="width:100%;margin:4px 0 8px;"><span>▼ 選択肢から選ぶ</span><br><span style="font-size:12px;font-weight:600;">（どう書いて良いか分からない方はこちらから選択してください）</span></button>
         <div id="purposeChoicesArea" style="display: none;">
-          <p class="step-help">選択機能が必要な方はこちらから選択してください。複数選択できます。</p>
+          <p class="step-help">どう書いて良いか分からない方はこちらから選択してください。複数選択できます。</p>
         <div class="choice-grid" id="step1Grid">
 <div class="choice"><input id="s1_1" type="checkbox" value="情報共有"><label for="s1_1">📣 情報共有</label></div>
 <div class="choice"><input id="s1_2" type="checkbox" value="会議・日程の案内"><label for="s1_2">🗓️ 会議・日程の案内</label></div>
@@ -642,7 +653,7 @@ body.settings-view-active #promptLibraryArea{display:block!important;
         </div>
       </div>
     </section>
-  <section class="card">
+  <section class="card" id="step4Card" style="display:none;">
       <h2>④ 具体的に何についてですか？</h2>
       <p class="description">STEP 3で選んだ目的について、具体的な内容を選択します。主治医・医師の場合は「連絡する理由」→「お願い・確認事項」→「作成をお願いする書類」の順に表示されます。</p>
       <div class="selection-box">
@@ -655,7 +666,7 @@ body.settings-view-active #promptLibraryArea{display:block!important;
 
 
 
-    <section class="card" id="step5Card">
+    <section class="card" id="step5Card" style="display:none;">
       <h2>⑤ 📌 相手に何をしてほしいですか？</h2>
       <p class="description">STEP 4で選んだ内容について、相手にお願いしたいことを選択します。書類送付・手続きの場合は、STEP 4で「送付・添付・手続き」の方法を選び、ここで書類と相手にしてほしいことを組み合わせます。主治医・医療機関への連絡・相談はSTEP 4の専用項目で選択します。</p>
 
@@ -696,7 +707,7 @@ body.settings-view-active #promptLibraryArea{display:block!important;
         </div>
       </div>
     </section>
-    <section class="card">
+    <section class="card" id="step6Card" style="display:none;">
       <h2>⑥ 🎤 今回伝えたいこと</h2>
       <p class="description"><strong>伝えたいことを、そのまま入力してください。</strong><br>短いメモでも、話し言葉でも大丈夫です。相手への感謝やねぎらい、配慮、お願いしたいことなども、そのまま入力してください。AIが内容を整理して、伝達方法に合った自然な連絡文にします。<br><br><strong>🌱 慣れてきた方は、こちらに伝えたい内容をすべて記載してもらえれば、AIが内容を分析し、必要な情報を整理して連絡文を作成します。</strong></p>
       <p style="font-size:13px;line-height:1.6;margin:12px 0 8px;"><strong>🎤 音声・手入力</strong><br>音声で話して入力しても、キーボードで入力しても大丈夫です。思いついたまま、話し言葉・メモ書きのまま入力してください。Windowsでは「Windowsキー＋H」で音声入力できます。</p>
@@ -708,6 +719,14 @@ body.settings-view-active #promptLibraryArea{display:block!important;
       <h2>⑦ AI処理用にコピー</h2>
       <p class="description">これまでのアプリと同じ形式で、選択した内容・伝達方法・入力内容・現在使用中のAI処理用プロンプトを一つにまとめてコピーします。コピー後、そのままChatGPT・Gemini・Claudeなどへ貼り付けてください。</p>
       <button id="copyButton" class="copy-button primary" onclick="copyAI()">📋 AI処理用にコピー</button>
+      <div id="aiLaunchArea" class="ai-launch-area">
+        <div class="ai-launch-title">🤖 使うAIを選んでください</div>
+        <div class="ai-launch-buttons">
+          <button type="button" class="ai-launch-button ai-chatgpt" onclick="window.location.href='https://chatgpt.com/'">🤖 ChatGPTで作る</button>
+          <button type="button" class="ai-launch-button ai-gemini" onclick="window.location.href='https://gemini.google.com/app'">✨ Geminiで作る</button>
+          <button type="button" class="ai-launch-button ai-claude" onclick="window.location.href='https://claude.ai/new'">🟣 Claudeで作る</button>
+        </div>
+      </div>
       <button id="newMessageButton" class="copy-button primary" type="button" onclick="createNewMessage()" style="display:none;margin-top:10px;">➕ 新しいメッセージを作る</button>
     </section>
 
@@ -2425,10 +2444,24 @@ function showUsageGuide() {
 
 function togglePurposeChoices(btn) {
   const area = document.getElementById("purposeChoicesArea");
+  const step4 = document.getElementById("step4Card");
+  const step5 = document.getElementById("step5Card");
+  const step6 = document.getElementById("step6Card");
   if (!area) return;
-  const isHidden = area.style.display === "none";
-  area.style.display = isHidden ? "block" : "none";
-  if (btn) btn.textContent = isHidden ? "▲ 選択肢を閉じる" : "▼ 選択肢から選ぶ";
+
+  const isHidden = area.style.display === "none" || getComputedStyle(area).display === "none";
+  const displayValue = isHidden ? "block" : "none";
+
+  area.style.display = displayValue;
+  if (step4) step4.style.display = displayValue;
+  if (step5) step5.style.display = displayValue;
+  if (step6) step6.style.display = displayValue;
+
+  if (btn) {
+    btn.innerHTML = isHidden
+      ? '<span>▲ 選択肢を閉じる</span>'
+      : '<span>▼ 選択肢から選ぶ</span><br><span style="font-size:12px;font-weight:600;">（どう書いて良いか分からない方はこちらから選択してください）</span>';
+  }
 }
 
 function updateMethodFormatUI(){
@@ -2627,19 +2660,55 @@ function copyAI() {
 ■ 今回伝えたいこと（自由入力/音声入力）：
 ${memo}`;
 
-  navigator.clipboard.writeText(fullText).then(() => {
+  function showCopiedState() {
     const btn = document.getElementById("copyButton");
-    btn.classList.add("copied");
-    btn.textContent = "✓ コピーしました！AIに貼り付けてください";
+    if (btn) {
+      btn.classList.add("copied");
+      btn.textContent = "🤖 使うAIを選んでください";
+    }
     const newBtn = document.getElementById("newMessageButton");
-    if (newBtn) newBtn.style.display = "inline-block";
+    if (newBtn) newBtn.style.display = "block";
+    const aiLaunchArea = document.getElementById("aiLaunchArea");
+    if (aiLaunchArea) {
+      aiLaunchArea.style.display = "block";
+      aiLaunchArea.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
     setTimeout(() => {
-      btn.classList.remove("copied");
-      btn.textContent = "📋 AI処理用にコピー";
+      if (btn) {
+        btn.classList.remove("copied");
+        btn.textContent = "📋 AI処理用にコピー";
+      }
     }, 3000);
-  }).catch(err => {
-    alert("コピーに失敗しました。手動で選択してコピーしてください。");
-  });
+  }
+
+  function fallbackCopy(text) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    ta.style.top = "0";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  // HTTPS/GitHub PagesではClipboard APIを優先し、ローカルHTML等では従来方式へ自動フォールバック。
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(fullText)
+      .then(showCopiedState)
+      .catch(() => {
+        if (fallbackCopy(fullText)) showCopiedState();
+        else alert("コピーできませんでした。ブラウザのクリップボード許可をご確認ください。");
+      });
+  } else {
+    if (fallbackCopy(fullText)) showCopiedState();
+    else alert("コピーできませんでした。ブラウザのクリップボード許可をご確認ください。");
+  }
 }
 
 function createNewMessage() {
@@ -2652,6 +2721,14 @@ function createNewMessage() {
   if (flowArea) flowArea.style.display = "none";
   const purposeMemoEl = document.getElementById("purposeMemo");
   if (purposeMemoEl) purposeMemoEl.value = "";
+  const purposeChoicesArea = document.getElementById("purposeChoicesArea");
+  if (purposeChoicesArea) purposeChoicesArea.style.display = "none";
+  ["step4Card", "step5Card", "step6Card"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
+  });
+  const purposeToggleButton = document.querySelector('button[onclick="togglePurposeChoices(this)"]');
+  if (purposeToggleButton) purposeToggleButton.innerHTML = '<span>▼ 選択肢から選ぶ</span><br><span style="font-size:12px;font-weight:600;">（どう書いて良いか分からない方はこちらから選択してください）</span>';
   const letterTitleEl = document.getElementById("letterTitle");
   if (letterTitleEl) letterTitleEl.value = "";
   renderStep2();
@@ -2659,6 +2736,8 @@ function createNewMessage() {
   updateSummaries();
   const newBtn = document.getElementById("newMessageButton");
   if (newBtn) newBtn.style.display = "none";
+  const aiLaunchArea = document.getElementById("aiLaunchArea");
+  if (aiLaunchArea) aiLaunchArea.style.display = "none";
   const copyBtn = document.getElementById("copyButton");
   if (copyBtn) { copyBtn.classList.remove("copied"); copyBtn.textContent = "📋 AI処理用にコピー"; }
   window.scrollTo({ top: 0, behavior: "smooth" });
