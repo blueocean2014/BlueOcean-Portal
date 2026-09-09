@@ -3836,7 +3836,7 @@ document.addEventListener('DOMContentLoaded', function(){
       const s3=document.getElementById('simpleStep3'),s4=document.getElementById('simpleStep4');
       if(s3){s3.classList.remove('is-current');s3.classList.add('is-done');}
       if(s4){s4.classList.add('is-current');}
-      const url=aiUrl(ai); if(url) window.open(url,'_blank','noopener');
+      const url=aiUrl(ai); if(url) location.href=url;
     }
   };
 
@@ -3937,7 +3937,9 @@ document.addEventListener('DOMContentLoaded', function(){
     setStatus('✓ 確認済み情報＋正式な作成プロンプトをまとめてコピーしました。AIで Ctrl＋V → 送信してください。','ok');
     const step5=q('simpleStep5');
     if(step5){step5.classList.remove('is-current');step5.classList.add('is-done');}
-    if(typeof window.openAI==='function') window.openAI(ai);
+    const finalAiUrls={chatgpt:'https://chatgpt.com/',gemini:'https://gemini.google.com/',claude:'https://claude.ai/'};
+    const finalAiUrl=finalAiUrls[ai]||'';
+    if(finalAiUrl) location.href=finalAiUrl;
     return true;
   };
 
