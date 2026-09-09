@@ -255,7 +255,8 @@ textarea{
   padding:40px 0 20px 0;
 }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-auth-compat.js"></script>
 </head>
 
 <body>
@@ -2523,18 +2524,20 @@ JSONコードブロックのみ出力すること。
 <div id="toast" class="toast">コピーしました</div>
 
 <script>
-/* ===== Supabase 認証設定 =====
-   ※ SUPABASE_PUBLISHABLE_KEY に
-      Supabaseで取得した「Publishable key」を貼り付けてください。
-   ※ Secret key / service_role key は絶対に貼り付けないでください。
-*/
-const SUPABASE_URL = "https://ujtqnzngmaqpkkewevtwy.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_oFzcEx9zY_zQV9lK4tuWAg_XAZnKYX_";
+/* ===== Firebase 認証設定 ===== */
+const firebaseConfig = {
+  apiKey: "AIzaSyDE1HdjCGEDqj2zNlihvLCKfq1HH-o7lZY",
+  authDomain: "blueoceanstaff-app.firebaseapp.com",
+  projectId: "blueoceanstaff-app",
+  storageBucket: "blueoceanstaff-app.firebasestorage.app",
+  messagingSenderId: "1081837805765",
+  appId: "1:1081837805765:web:9251c3c3a7e9f82ba190ac",
+  measurementId: "G-9PBLJES7ME"
+};
 
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+firebase.initializeApp(firebaseConfig);
+const firebaseAuth = firebase.auth();
+firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
 
 /* ===== ログイン後の表示 ===== */
 function showPortal(){
@@ -2548,12 +2551,13 @@ function showPortal(){
   }, 800);
 }
 
-/* ===== Supabaseでスタッフログイン ===== */
+/* ===== Firebaseでスタッフログイン ===== */
 async function checkPassword(){
   const email = document.getElementById("emailInput").value.trim();
   const password = document.getElementById("passwordInput").value;
   const errorMsg = document.getElementById("errorMsg");
 
+  errorMsg.style.color = "#ff8080";
   errorMsg.innerText = "";
 
   if(!email || !password){
@@ -2562,30 +2566,18 @@ async function checkPassword(){
   }
 
   try{
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
-
-    if(error){
-      console.error("Supabase login error:", error);
-      errorMsg.innerText =
-        "Supabaseエラー：" + (error.message || "原因を確認できませんでした");
-      return;
-    }
-
-    if(data && data.session){
-      showPortal();
-    }else{
-      errorMsg.innerText =
-        "ログイン状態を確認できませんでした";
-    }
-
+    await firebaseAuth.signInWithEmailAndPassword(email, password);
+    showPortal();
   }catch(error){
-    console.error(error);
-    errorMsg.innerText =
-      "ログイン処理でエラーが発生しました";
+    console.error("Firebase login error:", error);
+    if(error.code === "auth/invalid-credential" ||
+       error.code === "auth/user-not-found" ||
+       error.code === "auth/wrong-password" ||
+       error.code === "auth/invalid-email"){
+      errorMsg.innerText = "メールアドレスまたはパスワードが違います";
+    }else{
+      errorMsg.innerText = "Firebaseエラー：" + (error.message || "ログインできませんでした");
+    }
   }
 }
 
@@ -2594,6 +2586,7 @@ async function sendPasswordReset(){
   const email = document.getElementById("emailInput").value.trim();
   const errorMsg = document.getElementById("errorMsg");
 
+  errorMsg.style.color = "#ff8080";
   errorMsg.innerText = "";
 
   if(!email){
@@ -2602,114 +2595,37 @@ async function sendPasswordReset(){
   }
 
   try{
-    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin + window.location.pathname
-    });
-
-    if(error){
-      console.error(error);
-      errorMsg.innerText = "再設定メールを送信できませんでした";
-      return;
-    }
-
+    await firebaseAuth.sendPasswordResetEmail(email);
     errorMsg.style.color = "#bfffe9";
-    errorMsg.innerText = "パスワード再設定メールを送信しました。メール内のリンクを開いてください";
+    errorMsg.innerText = "パスワード再設定メールを送信しました。メール内の案内に従って変更してください";
   }catch(error){
-    console.error(error);
+    console.error("Firebase password reset error:", error);
     errorMsg.style.color = "#ff8080";
-    errorMsg.innerText = "再設定処理でエラーが発生しました";
+    errorMsg.innerText = "再設定メールを送信できませんでした";
   }
 }
 
-/* ===== パスワード再設定画面を表示 ===== */
+/* 旧Supabase用の画面内パスワード変更機能は使用しません */
 function showPasswordReset(){
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("passwordResetScreen").style.display = "flex";
+  document.getElementById("passwordResetScreen").style.display = "none";
+  document.getElementById("loginScreen").style.display = "flex";
 }
 
-/* ===== 新しいパスワードを保存 ===== */
 async function updatePassword(){
-  const newPassword = document.getElementById("newPasswordInput").value;
-  const confirmPassword = document.getElementById("newPasswordConfirmInput").value;
   const message = document.getElementById("resetErrorMsg");
-
   message.style.color = "#ff8080";
-  message.innerText = "";
-
-  if(!newPassword || !confirmPassword){
-    message.innerText = "新しいパスワードを2か所入力してください";
-    return;
-  }
-
-  if(newPassword !== confirmPassword){
-    message.innerText = "2つのパスワードが一致していません";
-    return;
-  }
-
-  if(newPassword.length < 6){
-    message.innerText = "パスワードは6文字以上にしてください";
-    return;
-  }
-
-  try{
-    const { error } = await supabaseClient.auth.updateUser({
-      password: newPassword
-    });
-
-    if(error){
-      console.error(error);
-      message.innerText = "パスワードを変更できませんでした";
-      return;
-    }
-
-    message.style.color = "#bfffe9";
-    message.innerText = "パスワードを変更しました。ログイン画面に戻ります";
-
-    await supabaseClient.auth.signOut();
-
-    setTimeout(()=>{
-      history.replaceState(null, "", window.location.pathname + window.location.search);
-      document.getElementById("passwordResetScreen").style.display = "none";
-      document.getElementById("loginScreen").style.display = "flex";
-      document.getElementById("passwordInput").value = "";
-      document.getElementById("newPasswordInput").value = "";
-      document.getElementById("newPasswordConfirmInput").value = "";
-      document.getElementById("resetErrorMsg").innerText = "";
-      document.getElementById("errorMsg").style.color = "#ff8080";
-    }, 1200);
-  }catch(error){
-    console.error(error);
-    message.innerText = "パスワード変更処理でエラーが発生しました";
-  }
+  message.innerText = "Firebaseから届いた再設定メール内の案内に従って変更してください";
 }
 
 /* ===== ページを開いたときの認証状態確認 ===== */
-window.addEventListener("DOMContentLoaded", async ()=>{
-  try{
-    const isRecoveryLink = window.location.hash.includes("type=recovery");
-
-    if(isRecoveryLink){
-      showPasswordReset();
-      return;
-    }
-
-    const {
-      data: { session }
-    } = await supabaseClient.auth.getSession();
-
-    if(session){
+window.addEventListener("DOMContentLoaded", ()=>{
+  firebaseAuth.onAuthStateChanged((user)=>{
+    if(user){
       showPortal();
+    }else{
+      document.getElementById("loginScreen").style.display = "flex";
     }
-  }catch(error){
-    console.error(error);
-  }
-});
-
-/* Supabaseがパスワード再設定イベントを通知した場合にも対応 */
-supabaseClient.auth.onAuthStateChange((event)=>{
-  if(event === "PASSWORD_RECOVERY"){
-    showPasswordReset();
-  }
+  });
 });
 
 async function copyText(id, btn){
