@@ -314,7 +314,7 @@ textarea{
 <div class="content">
 
   <div class="card">
-    <h2>① 支援経過作成支援アプリ</h2>
+    <h2> 支援経過作成支援アプリ</h2>
     <p>
       音声入力または手入力した記録を整理し、
       支援経過記録の作成に使用します。
@@ -325,7 +325,7 @@ textarea{
   </div>
 
   <div class="card">
-  <h2>② サービス担当者会議要点作成支援アプリ</h2>
+  <h2> サービス担当者会議要点作成支援アプリ</h2>
   <p>
     音声入力または手入力した記録を整理し、
     サービス担当者会議要点の作成に使用します。
@@ -336,7 +336,7 @@ textarea{
 </div>
 
   <div class="card">
-  <h2>② ケアプラン等の（案）の作成支援アプリ</h2>
+  <h2> ケアプラン等の（案）の作成支援アプリ</h2>
   <p>
     貼付したファイルや情報を分析・整理し、
     ケアプラン等の（案）を作成します。
@@ -345,9 +345,31 @@ textarea{
     Webアプリを開く
   </button>
 </div>
+
+  <div class="card">
+  <h2> 主治医への手紙作成支援アプリ</h2>
+  <p>
+    音声入力または手入力した記録を整理し、
+    主治医への手紙を作成します。
+  </p>
+  <button onclick="location.href='syujiihenotegami.html'">
+    Webアプリを開く
+  </button>
+</div>
+
+  <div class="card">
+  <h2> 業務連絡用文章作成支援アプリ</h2>
+  <p>
+    音声入力または手入力した記録を整理し、
+    業務連絡用の文章を作成します。
+  </p>
+  <button onclick="location.href='gyoumurennraku.html'">
+    Webアプリを開く
+  </button>
+</div>
   
   <div class="card">
-    <h2>③ 支援経過プロンプト</h2>
+    <h2> 支援経過プロンプト</h2>
     <button class="copy-button" onclick="copyText('prompt3', this)">コピーする</button>
     <textarea id="prompt3">
 【①区分ルール】
@@ -446,7 +468,7 @@ textarea{
   </div>
 
   <div class="card">
-    <h2>④ サービス担当者会議プロンプト</h2>
+    <h2> サービス担当者会議プロンプト</h2>
     <button class="copy-button" onclick="copyText('prompt4', this)">コピーする</button>
     <textarea id="prompt4">
 情報が入力されていない項目は空欄とする。
@@ -546,7 +568,7 @@ textarea{
   </div>
 
   <div class="card">
-    <h2>⑥介護予防アセスメントプロンプト</h2>
+    <h2>介護予防アセスメントプロンプト</h2>
     <button class="copy-button" onclick="copyText('prompt6', this)">コピーする</button>
     <textarea id="prompt6">
 あなたは優秀なケアマネジャーです。 以下の条件を踏まえた介護予防サービス支援計画表を作ります。
@@ -592,7 +614,7 @@ textarea{
   </div>
 
   <div class="card">
-    <h2>⑧ 主治医への手紙プロンプト</h2>
+    <h2> 主治医への手紙プロンプト</h2>
     <button class="copy-button" onclick="copyText('prompt8', this)">コピーする</button>
     <textarea id="prompt8">
 あなたは優秀なケアマネジャーです。 【主治医にケアマネジャーと医師との連絡票】【主治医意見書のための情報提供シート 】 を作成、送付する。
@@ -610,7 +632,7 @@ textarea{
   </div>
 
   <div class="card">
-    <h2>⑨ ブルーオーシャン退院退所カンファレンス記録プロンプト</h2>
+    <h2>ブルーオーシャン退院退所カンファレンス記録プロンプト</h2>
     <button class="copy-button" onclick="copyText('prompt9', this)">コピーする</button>
     <textarea id="prompt9">
 あなたは優秀なケアマネジャーです。 以下の条件を踏まえた退院前カンファレンスシートを作成してください。
@@ -684,7 +706,7 @@ textarea{
   </div>
 
   <div class="card">
-    <h2>⑩ 菊池郡ケアマネ協会退院退所カンファレンス記録プロンプト</h2>
+    <h2> 菊池郡ケアマネ協会退院退所カンファレンス記録プロンプト</h2>
     <button class="copy-button" onclick="copyText('prompt10', this)">コピーする</button>
     <textarea id="prompt10">
 あなたは優秀なケアマネジャーです。 以下の条件を踏まえた退院・退所時カンファレンスの記録を作ります。
@@ -716,7 +738,7 @@ textarea{
   </div>
 
   <div class="card">
-    <h2>⑪ 課題整理総括表（標準）プロンプト</h2>
+    <h2> 課題整理総括表（標準）プロンプト</h2>
     <button class="copy-button" onclick="copyText('prompt11', this)">コピーする</button>
     <textarea id="prompt11">
 下記にあるのはケアマネジャーとして課題整理総括表を作成するための条件です。
@@ -874,7 +896,7 @@ textarea{
   </div>
 
   <div class="card">
-    <h2>⑬ アセスメントJSONコード生成プロンプト</h2>
+    <h2>アセスメントJSONコード生成プロンプト</h2>
     <button class="copy-button" onclick="copyText('prompt13', this)">コピーする</button>
     <textarea id="prompt13">
 あなたはJSON生成AIではない。
@@ -1334,7 +1356,7 @@ JSONキーはすべて出力する
   </div>
 
 <div class="card">
-<h2>⑭情報を事前に整理するためのプロンプト</h2>
+<h2>情報を事前に整理するためのプロンプト</h2>
 
 <button class="copy-button" onclick="copyText('prompt14', this)">コピーする</button>
 
@@ -1528,7 +1550,7 @@ JSONキーはすべて出力する
 </div>
 
 <div class="card">
-<h2>⑮課題整理総括表（熊本モデル）プロンプト </h2>
+<h2>課題整理総括表（熊本モデル）プロンプト </h2>
 
 <button class="copy-button" onclick="copyText('prompt15', this)">コピーする</button>
 
@@ -1763,7 +1785,7 @@ JSONコードブロックのみ出力すること。
 </div>
 
 <div class="card">
-<h2>⑯分割版アセスメントJSONコード生成プロンプト </h2>
+<h2>分割版アセスメントJSONコード生成プロンプト </h2>
 
 <button class="copy-button" onclick="copyText('prompt16', this)">コピーする</button>
 
@@ -2295,7 +2317,7 @@ JSONキーはすべて出力する
 </div>
 
 <div class="card">
-<h2>⑱ 分割JSONコード作成課題整理総括表（熊本モデル）プロンプト </h2>
+<h2> 分割JSONコード作成課題整理総括表（熊本モデル）プロンプト </h2>
 
 <button class="copy-button" onclick="copyText('prompt18', this)">コピーする</button>
 
