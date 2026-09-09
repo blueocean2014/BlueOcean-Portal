@@ -1,6 +1,47 @@
 <!doctype html>
 <html lang="ja">
 <head>
+
+<!-- BlueOcean Firebase Authentication Guard -->
+<style id="blueocean-auth-guard-style">
+html.blueocean-auth-checking body { visibility: hidden !important; }
+</style>
+<script>
+document.documentElement.classList.add("blueocean-auth-checking");
+</script>
+<script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-auth-compat.js"></script>
+<script>
+(function () {
+  const firebaseConfig = {
+    apiKey: "AIzaSyDE1HdjCGEDqj2zNlihvLCKfq1HH-o7lZY",
+    authDomain: "blueoceanstaff-app.firebaseapp.com",
+    projectId: "blueoceanstaff-app",
+    storageBucket: "blueoceanstaff-app.firebasestorage.app",
+    messagingSenderId: "1081837805765",
+    appId: "1:1081837805765:web:9251c3c3a7e9f82ba190ac",
+    measurementId: "G-9PBLJES7ME"
+  };
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+
+  firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function () {});
+
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      document.documentElement.classList.remove("blueocean-auth-checking");
+    } else {
+      window.location.replace("index.html");
+    }
+  }, function () {
+    window.location.replace("index.html");
+  });
+})();
+</script>
+<!-- /BlueOcean Firebase Authentication Guard -->
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ケアプラン（案）、介護予防プラン（案）、課題整理総括表（案）作成支援アプリ（BlueOcean）</title>
