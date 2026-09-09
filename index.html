@@ -128,6 +128,63 @@ body{
   cursor:pointer;
 }
 
+.forgot-password-button{
+  display:block;
+  margin:12px auto 0 !important;
+  padding:6px 10px !important;
+  background:transparent !important;
+  color:#d8efff !important;
+  font-size:12px;
+  text-decoration:underline;
+  border:none !important;
+  box-shadow:none !important;
+}
+.forgot-password-button:hover{
+  background:transparent !important;
+  transform:none !important;
+  opacity:1 !important;
+}
+
+/* ===== パスワード再設定画面 ===== */
+.password-reset-screen{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#0a1f33,#0f3d5e,#146c94);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:2200;
+}
+.password-reset-box{
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(10px);
+  padding:40px;
+  border-radius:15px;
+  text-align:center;
+  width:320px;
+}
+.password-reset-box input{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  margin-top:15px;
+}
+.password-reset-box button{
+  margin-top:15px;
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  background:#0072ff;
+  color:white;
+  cursor:pointer;
+}
+.password-reset-message{
+  margin-top:12px;
+  font-size:13px;
+  line-height:1.5;
+}
+
 /* ===== ヘッダー帯 ===== */
 .header{
   display:flex;
@@ -221,6 +278,18 @@ textarea{
     >
     <button onclick="checkPassword()">ログイン</button>
     <p id="errorMsg" style="color:#ff8080;"></p>
+    <button type="button" class="forgot-password-button" onclick="sendPasswordReset()">パスワードを忘れた場合</button>
+  </div>
+</div>
+
+<div class="password-reset-screen" id="passwordResetScreen">
+  <div class="password-reset-box">
+    <h2>🔑 パスワード再設定</h2>
+    <p>新しいパスワードを入力してください</p>
+    <input type="password" id="newPasswordInput" placeholder="新しいパスワード" autocomplete="new-password">
+    <input type="password" id="newPasswordConfirmInput" placeholder="新しいパスワード（確認）" autocomplete="new-password">
+    <button type="button" onclick="updatePassword()">パスワードを変更</button>
+    <p id="resetErrorMsg" class="password-reset-message" style="color:#ff8080;"></p>
   </div>
 </div>
 
@@ -2519,9 +2588,110 @@ async function checkPassword(){
   }
 }
 
-/* ===== ページを開いたとき、既にログイン済みならそのまま入る ===== */
+/* ===== パスワード再設定メールを送る ===== */
+async function sendPasswordReset(){
+  const email = document.getElementById("emailInput").value.trim();
+  const errorMsg = document.getElementById("errorMsg");
+
+  errorMsg.innerText = "";
+
+  if(!email){
+    errorMsg.innerText = "メールアドレスを入力してから押してください";
+    return;
+  }
+
+  try{
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + window.location.pathname
+    });
+
+    if(error){
+      console.error(error);
+      errorMsg.innerText = "再設定メールを送信できませんでした";
+      return;
+    }
+
+    errorMsg.style.color = "#bfffe9";
+    errorMsg.innerText = "パスワード再設定メールを送信しました。メール内のリンクを開いてください";
+  }catch(error){
+    console.error(error);
+    errorMsg.style.color = "#ff8080";
+    errorMsg.innerText = "再設定処理でエラーが発生しました";
+  }
+}
+
+/* ===== パスワード再設定画面を表示 ===== */
+function showPasswordReset(){
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("passwordResetScreen").style.display = "flex";
+}
+
+/* ===== 新しいパスワードを保存 ===== */
+async function updatePassword(){
+  const newPassword = document.getElementById("newPasswordInput").value;
+  const confirmPassword = document.getElementById("newPasswordConfirmInput").value;
+  const message = document.getElementById("resetErrorMsg");
+
+  message.style.color = "#ff8080";
+  message.innerText = "";
+
+  if(!newPassword || !confirmPassword){
+    message.innerText = "新しいパスワードを2か所入力してください";
+    return;
+  }
+
+  if(newPassword !== confirmPassword){
+    message.innerText = "2つのパスワードが一致していません";
+    return;
+  }
+
+  if(newPassword.length < 6){
+    message.innerText = "パスワードは6文字以上にしてください";
+    return;
+  }
+
+  try{
+    const { error } = await supabaseClient.auth.updateUser({
+      password: newPassword
+    });
+
+    if(error){
+      console.error(error);
+      message.innerText = "パスワードを変更できませんでした";
+      return;
+    }
+
+    message.style.color = "#bfffe9";
+    message.innerText = "パスワードを変更しました。ログイン画面に戻ります";
+
+    await supabaseClient.auth.signOut();
+
+    setTimeout(()=>{
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+      document.getElementById("passwordResetScreen").style.display = "none";
+      document.getElementById("loginScreen").style.display = "flex";
+      document.getElementById("passwordInput").value = "";
+      document.getElementById("newPasswordInput").value = "";
+      document.getElementById("newPasswordConfirmInput").value = "";
+      document.getElementById("resetErrorMsg").innerText = "";
+      document.getElementById("errorMsg").style.color = "#ff8080";
+    }, 1200);
+  }catch(error){
+    console.error(error);
+    message.innerText = "パスワード変更処理でエラーが発生しました";
+  }
+}
+
+/* ===== ページを開いたときの認証状態確認 ===== */
 window.addEventListener("DOMContentLoaded", async ()=>{
   try{
+    const isRecoveryLink = window.location.hash.includes("type=recovery");
+
+    if(isRecoveryLink){
+      showPasswordReset();
+      return;
+    }
+
     const {
       data: { session }
     } = await supabaseClient.auth.getSession();
@@ -2531,6 +2701,13 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     }
   }catch(error){
     console.error(error);
+  }
+});
+
+/* Supabaseがパスワード再設定イベントを通知した場合にも対応 */
+supabaseClient.auth.onAuthStateChange((event)=>{
+  if(event === "PASSWORD_RECOVERY"){
+    showPasswordReset();
   }
 });
 
