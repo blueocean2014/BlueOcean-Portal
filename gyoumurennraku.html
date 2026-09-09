@@ -1,0 +1,2800 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>関係機関への連絡・事務連絡作成支援アプリ（BlueOcean）</title>
+<style>
+:root{
+  --bo-light:#70dcfa;
+  --bo-sky:#28bcef;
+  --bo-blue:#138ee0;
+  --bo-deep:#0875c9;
+  --text:#185477;
+  --pale:#f4faff;
+  --border:#9fc7eb;
+  --yellow:#fff7d6;
+  --yellow-border:#e6c94c;
+}
+*{box-sizing:border-box}
+body{margin:0;
+  background:var(--pale);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Yu Gothic","Meiryo",sans-serif}
+header{background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep));
+  color:#fff;
+  padding:18px 16px;
+  box-shadow:0 2px 8px rgba(25,118,210,.18)}
+.header-inner{max-width:1120px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px}
+header h1{margin:0;
+  line-height:1.25}
+.app-title-main{display:block;
+  font-size:27px}
+.app-title-sub{display:block;
+  font-size:24px;
+  margin-top:6px}
+.header-description{flex:1;
+  max-width:430px;
+  font-size:15px;
+  line-height:1.7;
+  text-align:left}
+main{max-width:1200px;
+  margin:auto;
+  padding:12px}
+.card{background:#fff;
+  padding:16px;
+  margin:12px 0;
+  border-radius:18px;
+  border:2px solid #b9d9f5;
+  box-shadow:0 3px 12px rgba(25,118,210,.08)}
+h2{font-size:18px;
+  margin:0 0 13px;
+  color:var(--bo-deep)}
+.description{font-size:14px;
+  line-height:1.7;
+  color:#44575c;
+  background:#fff;
+  border:1px solid #cfe3f7;
+  border-radius:12px;
+  padding:10px 12px}
+textarea{width:100%;
+  border:2px solid var(--border);
+  border-radius:14px;
+  padding:12px;
+  font-size:16px;
+  line-height:1.7;
+  min-height:220px;
+  resize:vertical;
+  outline:none;
+  background:#fff}
+textarea:focus{border-color:var(--bo-blue);
+  box-shadow:0 0 0 3px rgba(25,118,210,.12)}
+button{border:0;
+  border-radius:12px;
+  color:#fff;
+  padding:12px 16px;
+  font-size:15px;
+  margin:4px 2px;
+  cursor:pointer;
+  transition:.15s}
+button:hover{opacity:.92;
+  transform:translateY(-1px)}
+.primary{background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep))}
+.copy-button{font-weight:bold;
+  font-size:18px;
+  padding:14px 18px;
+  width:100%}
+.copy-button.copied{background:#22a447!important;
+  border-color:#18853a!important;
+  color:#fff}
+.status{background:#f4faff;
+  border:1px solid #cfe3f7;
+  color:#24545d;
+  padding:10px;
+  border-radius:12px;
+  font-size:13px;
+  margin-top:8px;
+  white-space:pre-wrap}
+.status.success{border-color:#b9d9f5;
+  color:var(--bo-deep);
+  font-weight:bold}
+.selection-box{margin-top:12px;
+  padding:14px;
+  border:2px solid #9fc7eb;
+  border-radius:14px;
+  background:linear-gradient(180deg,#f2fbfd 0%,#eaf7fb 100%)}
+.step-title{font-weight:700;
+  color:var(--bo-deep);
+  font-size:17px;
+  margin:0 0 10px}
+.step-help{font-size:13px;
+  color:#52676d;
+  margin:0 0 10px;
+  line-height:1.6}
+.choice-grid{display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px}
+.choice{position:relative}
+.choice input{position:absolute;
+  opacity:0;
+  pointer-events:none}
+.choice label{display:block;
+  background:#fff;
+  border:2px solid #9fc7eb;
+  border-radius:12px;
+  padding:12px 10px;
+  text-align:center;
+  font-weight:700;
+  font-size:14px;
+  color:#245c80;
+  cursor:pointer;
+  min-height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center}
+.choice input:checked+label{background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue));
+  border-color:var(--bo-blue);
+  color:#fff;
+  box-shadow:0 0 0 2px rgba(25,118,210,.10)}
+/* 「このあと、どのように進みますか？」の2つの選択ボタンを目立たせる */
+#messageFlowArea .choice-grid{grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:12px;}
+#messageFlowArea .choice label{min-height:72px;
+  padding:18px 14px;
+  font-size:17px;
+  border-width:3px;
+  border-radius:14px;
+  box-shadow:0 3px 8px rgba(25,118,210,.10);}
+#messageFlowArea .choice label:hover{box-shadow:0 5px 12px rgba(25,118,210,.16);
+  transform:translateY(-1px);}
+#messageFlowArea .choice input:checked+label{box-shadow:0 0 0 3px rgba(25,118,210,.16),0 5px 12px rgba(25,118,210,.18);}
+@media(max-width:700px){#messageFlowArea .choice-grid{grid-template-columns:1fr;}
+}
+/* お手紙ボタンの枠をBlueOceanカラーに統一 */
+#s3_5+label{border-color:var(--bo-blue);}
+#s3_5:checked+label{border-color:var(--bo-blue) !important;}
+.method-format-box{background:#f7fbfe;
+  border:1px solid #9fc7eb;}
+.expression-box .request-choice{margin-top:2px;}
+.request-choice{position:relative;}
+.request-choice input{position:absolute;
+  opacity:0;
+  pointer-events:none;}
+.request-choice label{display:block;
+  background:#fff;
+  border:2px solid #d9a441;
+  border-radius:12px;
+  padding:12px 10px;
+  text-align:center;
+  font-weight:700;
+  font-size:14px;
+  color:#2e7d32;
+  cursor:pointer;
+  min-height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;}
+.request-choice input:checked+label{background:#fff4d6;
+  border-color:#d9a441;
+  color:#2e7d32;
+  box-shadow:0 0 0 2px rgba(217,164,65,.15);}
+.selected-summary{margin-top:10px;
+  padding:10px;
+  border-radius:10px;
+  background:#fff;
+  border:1px solid #cfe3f7;
+  font-size:13px;
+  line-height:1.7}
+.edit-area{margin-top:28px}
+.growth-category-manager-card{display:block!important;
+  visibility:visible!important;
+  opacity:1!important}
+.prompt-editor{min-height:620px;
+  font-size:14px}
+.edit-actions{display:flex;
+  gap:6px;
+  flex-wrap:wrap}
+.usage-button{background:linear-gradient(135deg,#fff7b2,#f8d85a)!important;
+  border:2px solid #e2bf36!important;
+  color:#2e7d32!important;
+  font-weight:bold}
+.settings-button{background:#f39c12!important;
+  border:1px solid #e67e22!important;
+  width:100%;
+  font-weight:bold;
+  font-size:16px}
+.custom-item-row{display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:8px 0;
+  border-bottom:1px dashed #b9d9f5}
+.custom-item-row:last-child{border-bottom:0}
+.custom-item-name{font-weight:600;
+  line-height:1.5}
+.custom-delete{background:#e85d5d!important;
+  padding:7px 10px!important;
+  font-size:12px!important;
+  margin:0!important}
+.restore-button{background:var(--bo-blue)}
+.delete-button{background:var(--bo-deep)}
+.nav-buttons{text-align:center;
+  margin:28px 0 10px}
+.nav-buttons button{width:auto;
+  min-width:0;
+  padding:8px 16px}
+.usage-card{background:#fffdf3;
+  border:2px solid #9fc7eb;
+  border-radius:18px;
+  padding:20px 24px}
+.usage-step{padding:10px 8px;
+  border-bottom:1px dashed #b9d9f5;
+  line-height:1.7}
+.usage-step:last-child{border-bottom:0}
+.usage-note{margin-top:12px;
+  padding:12px;
+  background:var(--yellow);
+  border:1px solid var(--yellow-border);
+  border-radius:10px;
+  line-height:1.7}
+.bo-footer-brand{display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin:10px auto 26px;
+  padding:16px 0 4px;
+  border-top:1px solid #b9d9f5;
+  max-width:720px}
+.bo-footer-brand img{width:58px;
+  height:58px;
+  object-fit:contain}
+.bo-footer-brand-title{font-size:17px;
+  font-weight:bold}
+.bo-footer-brand-subtitle{font-size:12px}
+.view-hidden{display:none!important}
+body.settings-view-active main>.main-only{display:none!important}
+body.settings-view-active #promptLibraryArea{display:block!important;
+  visibility:visible!important;
+  opacity:1!important}
+@media(max-width:700px){.choice-grid{grid-template-columns:repeat(2,1fr)}
+.header-inner{display:block}
+.header-description{margin-top:12px;
+  max-width:none}
+.app-title-main{font-size:23px}
+.app-title-sub{font-size:20px}
+}
+@media(max-width:430px){.choice-grid{grid-template-columns:1fr}
+}
+.editable-item-row{display:flex;
+  gap:8px;
+  align-items:center;
+  margin:6px 0}
+.editable-item-row input{flex:1;
+  padding:8px;
+  border:1px solid #ccd7da;
+  border-radius:8px}
+.custom-add-row{display:flex;
+  gap:8px;
+  margin-top:8px}
+.custom-add-row input{flex:1;
+  padding:8px;
+  border:1px solid #ccd7da;
+  border-radius:8px}
+.settings-note{font-size:13px;
+  color:#64777c}
+.editable-list{margin:8px 0}
+.editable-list-row{display:flex;
+  gap:8px;
+  align-items:center;
+  margin:7px 0}
+.editable-list-row input{flex:1;
+  min-width:0;
+  padding:10px;
+  border:1px solid #ccd7da;
+  border-radius:9px;
+  font-size:14px}
+.custom-add-row{display:flex;
+  gap:8px;
+  align-items:center;
+  margin-top:10px}
+.custom-add-row input{flex:1;
+  min-width:0;
+  padding:10px;
+  border:1px solid #ccd7da;
+  border-radius:9px;
+  font-size:14px}
+/* レイアウト案C：①②／③④を一つの大きなパネルとして見せる */
+.pair-row-unified{display:grid;
+  grid-template-columns:1fr;
+  gap:0;
+  align-items:stretch;
+  background:#fff;
+  border:1px solid #d8e8f3;
+  border-radius:16px;
+  box-shadow:0 5px 18px rgba(42,93,120,.08);
+  overflow:hidden;
+  margin:0 0 20px;}
+.pair-row-unified>.card{margin:0;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  height:100%;
+  box-sizing:border-box;
+  background:transparent;}
+.pair-row-unified>.card+ .card{border-left:0;
+  border-top:1px solid #d8e8f3;}
+.pair-row-unified>.card .selection-box{box-shadow:none;}
+@media(max-width:820px){.pair-row-unified{grid-template-columns:1fr;}
+.pair-row-unified>.card+.card{border-left:0;
+  border-top:1px solid #d8e8f3;}
+}
+</style>
+<style id="layout-c-wide-style">
+/* C案ワイド型：①②③④の一体パネルを横方向にゆったり表示 */
+.pair-row-unified{width:100%;}
+/* ①②は従来どおり横並び、③④は縦並び */
+.pair-row-top{grid-template-columns:1fr 1fr;}
+.pair-row-top>.card+.card{border-left:1px solid #d8e8f3;
+  border-top:0;}
+.pair-row-unified>.card{padding:20px;}
+.pair-row-unified .selection-box{padding:16px;}
+@media(max-width:820px){.pair-row-unified>.card{padding:16px;}
+}
+</style>
+<style id="user-settings-guide-style">
+/* =====================================================
+   利用者向け設定ガイド
+   支援経過アプリの設定画面と同じ「説明→項目」の考え方で追加
+===================================================== */
+.user-settings-guide{
+  margin:14px 0 18px;
+  border:2px solid #e6c94c;
+  border-radius:14px;
+  background:#fffdf3;
+  overflow:hidden;
+}
+.user-settings-guide summary{
+  list-style:none;
+  cursor:pointer;
+  padding:16px 20px;
+  font-size:16px;
+  font-weight:800;
+  color:var(--bo-deep);
+}
+.user-settings-guide summary::-webkit-details-marker{display:none}
+.user-settings-guide summary::before{
+  content:"📖 ";
+}
+.user-settings-guide summary::after{
+  content:" ▼";
+  float:right;
+  color:#8a6a00;
+}
+.user-settings-guide[open] summary::after{content:" ▲"}
+.user-settings-guide-content{
+  padding:0 20px 20px;
+  color:#475569;
+  line-height:1.8;
+  font-size:14px;
+  border-top:1px dashed #e2d99f;
+}
+.user-settings-guide-content h3{
+  margin:16px 0 7px;
+  color:var(--bo-deep);
+  font-size:16px;
+}
+.user-settings-guide-content p{margin:7px 0}
+.user-settings-guide-content ul{
+  margin:7px 0 10px;
+  padding-left:1.4em;
+}
+.user-settings-guide-note{
+  margin-top:14px;
+  padding:12px 14px;
+  border:1px solid #e6c94c;
+  border-radius:10px;
+  background:#fff7d6;
+  color:#2e7d32;
+}
+@media(max-width:700px){
+  .user-settings-guide summary{padding:14px 15px}
+.user-settings-guide-content{padding:0 15px 17px;
+  font-size:13px}
+}
+</style>
+
+<style id="growth-settings-style">
+.growth-category-buttons{display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:10px;
+  margin:12px 0}
+.growth-category-button{color:#245c80!important;
+  display:grid;
+  grid-template-columns:30px 1fr 18px;
+  gap:8px;
+  align-items:center;
+  text-align:left;
+  padding:12px;
+  border:1px solid #d5e0e3;
+  border-radius:10px;
+  background:#fff;
+  cursor:pointer}
+.growth-editor{margin-top:12px;
+  padding:14px;
+  border:1px solid #d5e0e3;
+  border-radius:10px;
+  background:#fbfcfc}
+.growth-row{display:grid;
+  grid-template-columns:90px minmax(150px,1fr) auto auto auto;
+  gap:7px;
+  align-items:center;
+  margin:7px 0}
+.growth-row input{min-width:0;
+  width:100%;
+  padding:8px;
+  border:1px solid #ccd7da;
+  border-radius:8px;
+  box-sizing:border-box}
+.growth-row button{color:#a33!important;
+  padding:7px 9px;
+  border:1px solid #d88;
+  border-radius:7px;
+  background:#fff;
+  cursor:pointer;
+  white-space:nowrap}
+.growth-note{font-size:12px;
+  line-height:1.6;
+  color:#64777c}
+.growth-hidden{margin-top:14px;
+  padding-top:10px;
+  border-top:1px dashed #ccd7da}
+.growth-hidden-row{display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin:5px 0;
+  padding:7px 9px;
+  border:1px dashed #ccd7da;
+  border-radius:8px}
+.growth-item-status{font-size:11px;
+  white-space:nowrap;
+  font-weight:bold;
+  padding:4px 6px;
+  border-radius:6px}
+.growth-item-status.is-custom{background:#fff4d6;
+  color:#7a5200;
+  border:1px solid #d9a441}
+.growth-item-status.is-standard{background:#eef7f0;
+  color:#356b45;
+  border:1px solid #a8c9b0}
+.growth-item-restore{padding:7px 9px;
+  border:1px solid #d9a441;
+  border-radius:7px;
+  background:#fff4d6;
+  color:#7a5200;
+  cursor:pointer;
+  white-space:nowrap}
+.growth-item-delete{padding:7px 9px;
+  border:1px solid #d88;
+  border-radius:7px;
+  background:#fff;
+  color:#a33;
+  cursor:pointer;
+  white-space:nowrap}
+@media (max-width: 760px){.pair-row-top{grid-template-columns:1fr;}
+.pair-row-top>.card+.card{border-left:0;
+  border-top:1px solid #d8e8f3;}
+}
+</style>
+</head>
+<body class="">
+<header>
+  <div class="header-inner">
+    <div>
+      <h1><span class="app-title-main">ケアマネが自ら育てる業務支援アプリ</span>
+      <span class="app-title-sub">関係機関への連絡・事務連絡作成支援</span></h1>
+    </div>
+    <div class="header-description">ケアマネが連絡の目的・内容・伝達方法を選択し、音声・手入力した情報をAIで自然な事務連絡に整理するアプリです。</div>
+  </div>
+</header>
+
+<main>
+  <div class="main-only" style="text-align:right;margin:14px 0 18px;">
+    <button class="usage-button" type="button" onclick="showUsageGuide()">📖 使い方の説明はこちら</button>
+  </div>
+
+  <div id="mainView" class="main-only">
+
+    <div class="pair-row pair-row-unified pair-row-top" data-layout-variant="C">
+  <section class="card">
+      <h2>① 誰に送りますか？</h2>
+      <p class="description">メッセージ・連絡を送る相手を選択してください。1つ選択できます。</p>
+      <div class="selection-box">
+        <div class="step-title">STEP 1 宛先</div>
+        <div class="choice-grid" id="recipientChoiceGrid"></div>
+        <div id="recipientSummary" class="selected-summary">選択なし</div>
+      </div>
+    </section>
+  <section class="card">
+      <h2>② どのように伝えますか？</h2>
+      <p class="description">伝達方法に合わせて、AIが文章の長さ・挨拶・依頼表現・結び方を自然に調整します。</p>
+      <div class="selection-box">
+        <div class="step-title">STEP 2 伝達方法</div>
+        <div class="choice-grid" id="methodChoiceGrid"></div>
+
+
+        <div id="methodFormatArea" style="display:none;margin-top:10px;">
+          <div class="selection-box method-format-box">
+            <div class="step-title" id="methodFormatTitle">形式を選択</div>
+            <p id="methodFormatDescription" style="font-size:12px;color:#64777c;margin:4px 0 9px;line-height:1.5;">必要な場合だけ選択してください。選択しない場合はAIが内容に合った形式を判断します。</p>
+            <div class="choice-grid" id="methodFormatChoices"></div>
+
+            <div id="letterTitleChoiceArea" style="display:none;margin-top:12px;">
+              <div style="font-weight:bold;font-size:14px;margin-bottom:6px;">表題</div>
+              <div style="font-size:12px;color:#64777c;margin:0 0 8px;line-height:1.5;">お手紙では、表題を付けるかどうかを形式とは別に選べます。</div>
+              <div class="choice-grid">
+                <div class="choice"><input id="letterTitleYes" name="letterTitleChoice" type="radio" value="あり" onchange="updateMethodFormatUI()"><label for="letterTitleYes">表題を付ける</label></div>
+                <div class="choice"><input id="letterTitleNo" name="letterTitleChoice" type="radio" value="なし" onchange="updateMethodFormatUI()"><label for="letterTitleNo">表題を付けない</label></div>
+              </div>
+            </div>
+
+            <div id="letterTitleInputArea" style="display:none;margin-top:10px;">
+              <label for="letterTitle" style="font-weight:bold;font-size:14px;display:block;">表題（音声・手入力）</label>
+              <div style="font-size:12px;color:#64777c;margin-top:4px;line-height:1.5;">※「表題を付ける」を選択して未入力の場合は、AIが入力・選択された内容だけを材料に表題を作成します。</div>
+              <input id="letterTitle" type="text" placeholder="表題を入力してください。未入力でも作成できます。" style="width:100%;padding:11px;border:2px solid #9fc7eb;border-radius:10px;font-size:14px;margin-top:6px;box-sizing:border-box;">
+            </div>
+
+            <div id="letterSeasonArea" style="display:none;margin-top:12px;">
+              <div style="font-weight:bold;font-size:14px;margin-bottom:6px;">季節の挨拶</div>
+              <div class="choice-grid">
+                <div class="choice"><input id="letterSeasonAI" name="letterSeason" type="radio" value="AIに任せる" checked onchange="updateMethodFormatUI()"><label for="letterSeasonAI">🤖 AIに任せる</label></div>
+                <div class="choice"><input id="letterSeasonYes" name="letterSeason" type="radio" value="あり" onchange="updateMethodFormatUI()"><label for="letterSeasonYes">季節の挨拶あり</label></div>
+                <div class="choice"><input id="letterSeasonNo" name="letterSeason" type="radio" value="なし" onchange="updateMethodFormatUI()"><label for="letterSeasonNo">季節の挨拶なし</label></div>
+              </div>
+            </div>
+
+            <div id="methodFormatSummary" class="selected-summary" style="margin-top:8px;">形式：AIに任せる</div>
+          </div>
+        </div>
+
+        <div class="selection-box expression-box" style="margin-top:10px;background:#fffdf7;border:1px solid #e4c875;">
+          <div class="step-title">🌿 文章の表現</div>
+          <div class="request-choice">
+            <input id="requestAssistChoice" type="checkbox" onchange="toggleRequestAssist()" aria-label="丁寧な表現に整える">
+            <label for="requestAssistChoice" id="requestButton">🌿 丁寧な表現に整える</label>
+            <div style="font-size:12px;color:#64777c;margin-top:4px;line-height:1.4;">（選択すると、内容を変えずに、より丁寧で柔らかな表現に整えます）</div>
+          </div>
+        </div>
+
+        <div id="messageFlowArea" class="selection-box" style="display:none;margin-top:10px;background:#f7fbff;border:1px solid #9fc7eb;">
+          <div class="step-title">このあと、どのように進みますか？</div>
+          <p style="font-size:12px;color:#64777c;margin:4px 0 9px;line-height:1.5;">入力方法に合わせて、どちらかを選択してください。</p>
+          <div class="choice-grid">
+            <div class="choice"><input id="flowDirect" name="messageFlow" type="radio" value="直接音声・手入力に進む" onchange="handleMessageFlow(this.value)"><label for="flowDirect">🎤 直接音声・手入力に進む</label></div>
+            <div class="choice"><input id="flowSelect" name="messageFlow" type="radio" value="選択しながら進む" onchange="handleMessageFlow(this.value)"><label for="flowSelect">☑️ 選択しながら進む</label></div>
+          </div>
+        </div>
+
+        <div id="step3Summary" class="selected-summary">選択なし</div>
+      </div>
+    </section>
+</div>
+
+<div class="pair-row pair-row-unified" data-layout-variant="C">
+  <section class="card">
+      <h2>③ 何のために連絡しますか？</h2>
+      <p class="description">「選択しながら進む」を選んだ場合は、③から順番に設定します。<br>「直接音声・手入力に進む」を選んだ場合は、⑥「🎤 今回伝えたいこと」へ進みます。</p>
+      <div class="selection-box">
+        <div class="step-title">STEP 3 何のために連絡しますか？</div>
+        <label for="purposeMemo" style="font-weight:bold;font-size:14px;">🎤 音声・手入力</label>
+        <textarea id="purposeMemo" placeholder="連絡する目的を、思いついたまま入力してください。音声入力でも手入力でも大丈夫です。" style="min-height:110px;margin-top:6px;"></textarea>
+        <button class="usage-button" type="button" onclick="togglePurposeChoices(this)" style="width:100%;margin:4px 0 8px;">▼ 選択肢から選ぶ</button>
+        <div id="purposeChoicesArea" style="display: none;">
+          <p class="step-help">選択機能が必要な方はこちらから選択してください。複数選択できます。</p>
+        <div class="choice-grid" id="step1Grid">
+<div class="choice"><input id="s1_1" type="checkbox" value="情報共有"><label for="s1_1">📣 情報共有</label></div>
+<div class="choice"><input id="s1_2" type="checkbox" value="会議・日程の案内"><label for="s1_2">🗓️ 会議・日程の案内</label></div>
+<div class="choice"><input id="s1_3" type="checkbox" value="連絡・調整"><label for="s1_3">🔄 連絡・調整</label></div>
+<div class="choice"><input id="s1_5" type="checkbox" value="主治医・医療機関への連絡・相談"><label for="s1_5">🏥 主治医・医療機関への連絡・相談</label></div>
+<div class="choice"><input id="s1_7" type="checkbox" value="書類送付・手続き"><label for="s1_7">📄 書類送付・手続き</label></div>
+<div class="choice"><input id="s1_8" type="checkbox" value="その他"><label for="s1_8">✏️ その他</label></div>
+</div>
+        <div id="step1Summary" class="selected-summary">選択なし</div>
+        </div>
+      </div>
+    </section>
+  <section class="card">
+      <h2>④ 具体的に何についてですか？</h2>
+      <p class="description">STEP 3で選んだ目的について、具体的な内容を選択します。主治医・医師の場合は「連絡する理由」→「お願い・確認事項」→「作成をお願いする書類」の順に表示されます。</p>
+      <div class="selection-box">
+        <div class="step-title">④ 具体的に何についてですか？</div>
+        <div id="dynamicStep2Grid" class="choice-grid"><div style="grid-column:1/-1;color:#64777c;font-size:13px;padding:8px 0;">※ STEP 3 を選択すると、対応する具体的内容の選択肢が表示されます。</div></div>
+        <div id="step2Summary" class="selected-summary">選択なし</div>
+      </div>
+    </section>
+</div>
+
+
+
+    <section class="card" id="step5Card">
+      <h2>⑤ 📌 相手に何をしてほしいですか？</h2>
+      <p class="description">STEP 4で選んだ内容について、相手にお願いしたいことを選択します。書類送付・手続きの場合は、STEP 4で「送付・添付・手続き」の方法を選び、ここで書類と相手にしてほしいことを組み合わせます。主治医・医療機関への連絡・相談はSTEP 4の専用項目で選択します。</p>
+
+      <div class="selection-box" id="documentActionArea" style="display:none;">
+        <div class="step-title">📎 どの書類ですか？</div>
+        <p class="step-help">STEP 3で「書類送付・手続き」を選んだ場合に表示します。STEP 4で選んだ方法に合わせて、対象となる書類を選択してください。複数選択できます。</p>
+        <div class="choice-grid">
+          <div class="choice"><input id="doc_01" name="coordinationDoc" type="checkbox" onchange="updateSummaries()" value="介護保険証"><label for="doc_01">📄 介護保険証</label></div>
+          <div class="choice"><input id="doc_02" name="coordinationDoc" type="checkbox" onchange="updateSummaries()" value="負担割合証"><label for="doc_02">📄 負担割合証</label></div>
+          <div class="choice"><input id="doc_03" name="coordinationDoc" type="checkbox" onchange="updateSummaries()" value="提供票"><label for="doc_03">📄 提供票</label></div>
+          <div class="choice"><input id="doc_04" name="coordinationDoc" type="checkbox" onchange="updateSummaries()" value="利用票"><label for="doc_04">📄 利用票</label></div>
+          <div class="choice"><input id="doc_05" name="coordinationDoc" type="checkbox" onchange="updateSummaries()" value="実績"><label for="doc_05">📄 実績</label></div>
+          <div class="choice"><input id="doc_06" name="coordinationDoc" type="checkbox" onchange="updateSummaries()" value="ケアプラン"><label for="doc_06">📄 ケアプラン</label></div>
+          <div class="choice"><input id="doc_07" name="coordinationDoc" type="checkbox" onchange="updateSummaries()" value="情報提供書"><label for="doc_07">📄 情報提供書</label></div>
+          <div class="choice"><input id="doc_08" name="coordinationDoc" type="checkbox" onchange="updateSummaries()" value="新規依頼時の情報提供書"><label for="doc_08">📄 新規依頼時の情報提供書</label></div>
+          <div class="choice"><input id="doc_09" name="coordinationDoc" type="checkbox" onchange="updateSummaries()" value="個別援助計画書"><label for="doc_09">📄 個別援助計画書</label></div>
+          <div class="choice"><input id="doc_10" name="coordinationDoc" type="checkbox" onchange="updateSummaries()" value="契約書類一式"><label for="doc_10">📃 契約書類一式</label></div>
+          <div class="choice"><input id="doc_11" name="coordinationDoc" type="checkbox" onchange="updateSummaries()" value="サービス利用状況の報告書"><label for="doc_11">📄 サービス利用状況の報告書</label></div>
+          <div class="choice"><input id="doc_12" name="coordinationDoc" type="checkbox" onchange="updateSummaries()" value="返信用封筒"><label for="doc_12">✉️ 返信用封筒</label></div>
+          <div class="choice"><input id="doc_13" name="coordinationDoc" type="checkbox" onchange="updateSummaries()" value="その他の書類"><label for="doc_13">📎 その他の書類</label></div>
+        </div>
+        <div id="coordinationDocSummary" class="selected-summary">選択なし</div>
+
+        <div class="selection-box" style="margin-top:10px;">
+          <div class="step-title">📌 相手に何をしてほしいですか？</div>
+          <p class="step-help">送付する書類について、相手にお願いしたいことを選択してください。</p>
+          <div class="choice-grid">
+            <div class="choice"><input id="docAction_01" name="coordinationDocAction" type="checkbox" onchange="updateSummaries()" value="書類を確認してもらう"><label for="docAction_01">👀 内容を確認してもらう</label></div>
+            <div class="choice"><input id="docAction_02" name="coordinationDocAction" type="checkbox" onchange="updateSummaries()" value="署名・捺印してもらう"><label for="docAction_02">✍️ 署名・捺印してもらう</label></div>
+            <div class="choice"><input id="docAction_03" name="coordinationDocAction" type="checkbox" onchange="updateSummaries()" value="記入・署名後に返送してもらう"><label for="docAction_03">📮 記入・署名後に返送してもらう</label></div>
+            <div class="choice"><input id="docAction_04" name="coordinationDocAction" type="checkbox" onchange="updateSummaries()" value="一部を返送してもらう"><label for="docAction_04">📮 一部を返送してもらう</label></div>
+            <div class="choice"><input id="docAction_05" name="coordinationDocAction" type="checkbox" onchange="updateSummaries()" value="書類を作成してもらう"><label for="docAction_05">📋 書類を作成してもらう</label></div>
+            <div class="choice"><input id="docAction_06" name="coordinationDocAction" type="checkbox" onchange="updateSummaries()" value="ご査収いただきたい"><label for="docAction_06">📦 ご査収いただきたい</label></div>
+            <div class="choice"><input id="docAction_07" name="coordinationDocAction" type="checkbox" onchange="updateSummaries()" value="ご返信いただきたい"><label for="docAction_07">💬 ご返信いただきたい</label></div>
+            <div class="choice"><input id="docAction_08" name="coordinationDocAction" type="checkbox" onchange="updateSummaries()" value="その他"><label for="docAction_08">➕ その他</label></div>
+          </div>
+          <div id="coordinationDocActionSummary" class="selected-summary">選択なし</div>
+        </div>
+      </div>
+    </section>
+    <section class="card">
+      <h2>⑥ 🎤 今回伝えたいこと</h2>
+      <p class="description"><strong>伝えたいことを、そのまま入力してください。</strong><br>短いメモでも、話し言葉でも大丈夫です。相手への感謝やねぎらい、配慮、お願いしたいことなども、そのまま入力してください。AIが内容を整理して、伝達方法に合った自然な連絡文にします。<br><br><strong>🌱 慣れてきた方は、こちらに伝えたい内容をすべて記載してもらえれば、AIが内容を分析し、必要な情報を整理して連絡文を作成します。</strong></p>
+      <p style="font-size:13px;line-height:1.6;margin:12px 0 8px;"><strong>🎤 音声・手入力</strong><br>音声で話して入力しても、キーボードで入力しても大丈夫です。思いついたまま、話し言葉・メモ書きのまま入力してください。Windowsでは「Windowsキー＋H」で音声入力できます。</p>
+      <textarea id="memo" placeholder="ここに伝えたいことを入力してください。話し言葉・メモ書きのままで大丈夫です。"></textarea>
+      <p style="font-size:13px;line-height:1.8;margin:10px 0 0;"><strong>例１：</strong>サービス担当者会議を令和〇〇年〇〇月〇〇日に開催するのでお知らせしたい。参加できない方は照会を送付するので意見を頂きたい。<br><strong>例２：（慣れてきた方へ）</strong>コメントや手紙に書きたい内容をとにかく簡単でいいので話しかけたり記載してください。AIが判断して記載します。</p>
+    </section>
+
+    <section class="card">
+      <h2>⑦ AI処理用にコピー</h2>
+      <p class="description">これまでのアプリと同じ形式で、選択した内容・伝達方法・入力内容・現在使用中のAI処理用プロンプトを一つにまとめてコピーします。コピー後、そのままChatGPT・Gemini・Claudeなどへ貼り付けてください。</p>
+      <button id="copyButton" class="copy-button primary" onclick="copyAI()">📋 AI処理用にコピー</button>
+      <button id="newMessageButton" class="copy-button primary" type="button" onclick="createNewMessage()" style="display:none;margin-top:10px;">➕ 新しいメッセージを作る</button>
+    </section>
+
+    <div style="text-align:center;margin:28px 0 10px;">
+      <button class="primary" type="button" onclick="scrollToTop()">▲トップに戻る</button>
+      <button class="primary" type="button" onclick="goHome()">⌂ トップ画面へ戻る</button>
+      <button id="settingsButton" class="settings-button" type="button" onclick="showSettingsView()">⚙ 設定 連絡項目・定型文・プロンプトの編集・追加はこちら</button>
+    </div>
+  </div>
+
+  <section class="card usage-card main-only" id="usageCard">
+    <h2>使い方の説明</h2>
+    <div class="usage-step"><strong>① 誰に送りますか？</strong><br>サービス事業所、主治医、医師、利用者、家族、利用者・家族、介護支援専門員、その他から、メッセージ・連絡を送る相手を選びます。</div>
+    <div class="usage-step"><strong>② どのように伝えますか？</strong><br>FAX・メール・メッセージ・コメント・文書・お手紙から選択します。選択すると、その後の進み方を「直接音声・手入力に進む」または「選択しながら進む」から選べます。さらに、その媒体に合った「形式」や「🌿 丁寧な表現に整える」を必要に応じて指定できます。</div>
+    <div class="usage-step"><strong>③ 何のために連絡しますか？</strong><br>情報共有、会議・日程の案内、連絡・調整、主治医・医療機関への連絡・相談、書類送付・手続き、その他から、今回の連絡の大きな目的を選びます。</div>
+    <div class="usage-step"><strong>④ 具体的に何についてですか？</strong><br>STEP 3で選んだ目的について具体的な内容を選びます。書類送付・手続きの場合は「書類を送付する・書類を添付する・書類の手続き」から方法を選び、⑤で書類と相手にしてほしいことを選択します。主治医・医師の場合は「連絡する理由」→「お願い・確認事項」→「作成をお願いする書類」の順に、必要な項目を複数選択できます。</div>
+    <div class="usage-step"><strong>⑤ 📌 相手に何をしてほしいですか？</strong><br>書類送付・手続きの場合は書類を選び、確認、署名・捺印、返送など、相手にしてほしいことを選びます。主治医・医師の場合は、STEP 4で「意見・助言」「確認」「書類作成依頼」などを選ぶため、⑤では別途選択しません。</div>
+        <div class="usage-step"><strong>⑥ 🎤 今回伝えたいこと</strong><br>きれいな文章にする必要はありません。思いついたことをそのまま入力してください。慣れてきた方は、こちらに伝えたい内容をすべて記載してもらえれば、AIが内容を分析し、必要な情報を整理して連絡文を作成します。</div>
+    <div class="usage-step"><strong>⑦ AI処理用にコピー</strong><br>これまでのアプリと同じように、必要な情報とプロンプトを一つにまとめてコピーします。</div>
+    <div class="usage-note"><strong>🌱 ポイント</strong><br>「情報提供書を送りますので、ご確認ください」「実績をいただけますか」「○○さんのサービスを週2回から週3回に変更したいです」など、伝えたいことをそのまま入力してください。AIが相手に失礼のない、温かみのある事務連絡に整えます。</div>
+  </section>
+
+  <div class="main-only" style="text-align:center;margin:18px 0 10px;">
+    <button class="restore-button" type="button" onclick="createReleaseHTML()">📦 正式版HTMLを作成</button>
+  </div>
+
+  <section class="card edit-area view-hidden" id="promptLibraryArea">
+    <h2>⚙ 設定 関係機関への連絡・事務連絡</h2>
+    <button class="primary" type="button" onclick="showMainView()">← メイン画面に戻る</button>
+    <div class="description" style="margin-top:12px;">標準の連絡項目・定型文・AI処理用プロンプトを自分で確認・編集・追加できます。変更内容はこの端末のブラウザに保存されます。</div>
+
+    <div class="user-settings-guide">
+  <details>
+    <summary>設定の使い方を確認する</summary>
+    <div class="user-settings-guide-content">
+      <h3>この設定画面でできること</h3>
+      <p>
+        この画面では、普段の業務で使う「宛先」「伝達方法」「連絡項目」「具体的な内容」、そしてAI処理用の「プロンプト」を、ご自身の使いやすいように確認・編集・追加できます。
+      </p>
+
+      <h3>① 標準設定について</h3>
+      <p>
+        「💾 標準設定として確定」を押すと、その時点の設定を標準として保存できます。
+        確定後も編集できますので、必要に応じて何度でも更新できます。
+      </p>
+      <p>
+        「↩ 現在の標準設定に戻す」を使うと、最後に標準として保存した状態へ戻すことができます。
+      </p>
+      <p>
+        設定が完成したら「📦 正式版HTMLを作成」を使用すると、現在の標準設定を組み込んだHTMLを作成できます。
+      </p>
+
+      <h3>② 現在使用するプロンプト</h3>
+      <p>
+        現在使用するAI処理用プロンプトを選択できます。標準プロンプトのほか、ご自身で追加したプロンプトも選択できます。
+      </p>
+      <p>
+        プロンプトを変更・編集した場合は、「💾 このプロンプトを保存」を押してください。
+        標準として確定したプロンプトへ戻したい場合は「↩ 標準プロンプトに戻す」を使用します。
+      </p>
+
+      <h3>③ STEP 3・4の項目を自分用に変更する</h3>
+      <p>
+        「標準カテゴリー項目のカスタマイズ」では、STEP 3のカテゴリー名と、STEP 4に表示される具体的な内容を変更できます。
+      </p>
+      <ul>
+        <li>カテゴリー名を変更する</li>
+        <li>具体的な項目の文章を変更する</li>
+        <li>新しい具体的な項目を追加する</li>
+        <li>不要な項目を削除する</li>
+        <li>変更した項目を標準に戻す</li>
+        <li>カテゴリー全体を標準に戻す</li>
+      </ul>
+      <p>
+        すべてのカテゴリー・項目は「🏢 標準」「↩ 標準に戻す」「🗑 削除」で統一して表示されます。
+      </p>
+
+      <h3>④ STEP 3に新しいカテゴリーを追加する</h3>
+      <p>
+        既存のカテゴリーとは別に、ご自身の業務でよく使う新しいカテゴリーを追加できます。
+        追加したカテゴリーはSTEP 3に表示され、設定画面でSTEP 4の具体的な内容も追加できます。
+      </p>
+
+      <h3>⑤ 新しいプロンプトを作る</h3>
+
+      <p>
+        ご自身で作成したAI処理用プロンプトを、新しいプロンプトとして追加できます。
+        追加したプロンプトは「現在使用するプロンプト」から選択して使用できます。
+      </p>
+
+      <div class="user-settings-guide-note">
+        <strong>🌱 設定するときのポイント</strong><br>
+        最初からすべてを変更する必要はありません。まずは標準設定のまま使ってみて、
+        「この項目はよく使う」「この言い方にしたい」「この連絡内容も選べるようにしたい」と感じた部分だけを変更・追加してください。
+        <br><br>
+        <strong>⚠ 設定内容について</strong><br>
+        変更した内容は、この端末のブラウザに保存されます。パソコンやスマートフォンなど別の端末には自動で反映されません。
+        複数の端末で使用する場合は、端末ごとに設定が必要です。
+      </div>
+    </div>
+  </details>
+</div>
+
+
+    <div class="selection-box" id="releaseSettingsBox" style="border:2px solid #e6c94c;background:#fffdf0;">
+      <div class="step-title">🚀 標準設定・正式版HTML</div>
+      <p class="step-help">開発中は何度でも標準設定を更新できます。「標準設定として確定」は現在の設定を標準として保存するだけで、編集をロックしません。完成した時点で「正式版HTMLを作成」を押すと、その標準設定を埋め込んだ管理者画面なしのHTMLを作成できます。</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <button class="primary" type="button" onclick="confirmStandardSettings()">💾 標準設定として確定</button>
+        <button class="restore-button" type="button" onclick="restoreAllToConfirmedStandard()">↩ 現在の標準設定に戻す</button>
+        <button class="restore-button" type="button" onclick="createReleaseHTML()">📦 正式版HTMLを作成</button>
+      </div>
+      <div id="standardSettingsStatus" class="status"></div>
+    </div>
+
+    <div class="selection-box">
+      <div class="step-title">現在使用するプロンプト</div>
+      <select id="promptSelector" style="width:100%;padding:12px;border:2px solid #9fc7eb;border-radius:12px;font-size:15px;background:#fff;"></select>
+      <div id="activePromptName" class="status success">現在使用中：お手紙用プロンプト</div>
+    </div>
+
+    <div class="selection-box">
+      <div class="step-title">プロンプトを確認・編集</div>
+      <label for="selectedPromptName" style="font-weight:bold;display:block;margin-bottom:6px;">プロンプト名</label>
+      <input id="selectedPromptName" type="text" style="width:100%;padding:12px;border:2px solid #9fc7eb;border-radius:12px;margin-bottom:10px;font-size:14px;">
+      <label for="selectedPromptText" style="font-weight:bold;display:block;margin-bottom:6px;">プロンプト本文（全文）</label>
+      <textarea id="selectedPromptText" class="prompt-editor"></textarea>
+      <div class="edit-actions">
+        <button class="primary" type="button" onclick="saveSelectedPrompt()">💾 このプロンプトを保存</button>
+        <button class="restore-button" type="button" onclick="restoreSelectedPrompt()">↩ 標準に戻す</button>
+        <button id="deletePromptButton" class="delete-button" type="button" onclick="deleteSelectedPrompt()">🗑 削除</button>
+      </div>
+      <div id="promptStatus" class="status">現在選択しているプロンプトを表示しています。</div>
+    </div>
+
+    <div class="selection-box">
+      <div class="step-title">① STEP 1 宛先をカスタマイズ</div>
+      <p class="step-help">メイン画面の「① 誰に送りますか？」に表示する宛先を編集・追加・削除できます。</p>
+      <div id="recipientSettingsManager"></div>
+    </div>
+
+    <div class="selection-box">
+      <div class="step-title">② STEP 2 伝達方法をカスタマイズ</div>
+      <p class="step-help">メイン画面の「② どのように伝えますか？」に表示する伝達方法を編集・追加・削除できます。</p>
+      <div id="methodSettingsManager"></div>
+    </div>
+
+    <div class="selection-box">
+      <div class="step-title">🌱 STEP 3 &amp; 4 標準カテゴリー項目のカスタマイズ（全カテゴリー対応）</div>
+      <p class="step-help">各カテゴリーの名称編集、STEP 4の標準項目の変更・追加・削除・標準復元が可能です。</p>
+      <div id="growthCategoryManager"></div>
+    </div>
+    
+    <div class="selection-box">
+      <div class="step-title">STEP 3「何のために連絡しますか？」に新しいカテゴリーを追加</div>
+      <p class="step-help">既存のカテゴリーは変更せず、新しいカテゴリーを追加できます。追加したカテゴリーはSTEP 3の新しいボタンとして表示され、STEP 4の具体的内容も個別に設定できます。</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <input id="newStep1Item" type="text" placeholder="例：退院後の情報共有" style="flex:1;min-width:220px;padding:12px;border:2px solid #9fc7eb;border-radius:12px;font-size:14px;">
+        <button class="primary" type="button" onclick="addStep1Item()">＋ 新しいカテゴリーを追加</button>
+      </div>
+    </div>
+
+    <div class="selection-box">
+      <div class="step-title">新しいプロンプトを追加</div>
+      <button class="primary" type="button" id="showAddButton" onclick="showAddForm()">＋ 新しいプロンプトを作る</button>
+      <div id="addForm" style="display:none;margin-top:14px;">
+        <input id="newPromptName" type="text" placeholder="例：自分用の事業所連絡プロンプト" style="width:100%;padding:12px;border:2px solid #9fc7eb;border-radius:12px;margin-bottom:10px;font-size:14px;">
+        <textarea id="newPromptText" class="prompt-editor" style="min-height:420px;" placeholder="ここに新しいプロンプトを入力してください。"></textarea>
+        <button class="primary" type="button" onclick="addPrompt()">＋ この内容を新しいプロンプトとして保存</button>
+        <button class="restore-button" type="button" onclick="cancelAddForm()">キャンセル</button>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="primary" type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲トップに戻る</button>
+      <button class="primary" type="button" onclick="goHome()">⌂ トップ画面へ戻る</button>
+    </div>
+  </section>
+
+  <div class="bo-footer-brand">
+    <img src="https://blueocean2014.github.io/BlueOcean-Portal/BlueOceanimage.png" alt="BlueOcean ロゴ">
+    <div>
+      <div class="bo-footer-brand-title">BLUE OCEAN PROMPT SYSTEM</div>
+      <div class="bo-footer-brand-subtitle">Next Stage Care Innovation</div>
+    </div>
+  </div>
+</main>
+
+<script>
+const BO_STANDARD_KEY = "bo_coordination_standard_snapshot_v1";
+const BO_RELEASE_MODE = false;
+
+
+const DEFAULT_PROMPT_TEXT = `【AI処理用プロンプト：関係機関への連絡・事務連絡作成】
+
+あなたは、実務経験が豊富で、関係機関との連携・調整を丁寧かつ円滑に行うことのできる、優秀な介護支援専門員です。
+
+ケアマネジャーが関係機関や介護サービス事業所等へ日常的に行っている連絡・依頼・確認・情報共有を想定し、入力された内容をもとに、相手に分かりやすく、失礼のない、自然で温かみのある連絡文を作成してください。
+
+単に入力された文章を敬語に変換するのではなく、介護支援専門員としての視点から、以下を整理したうえで文章を作成してください。
+
+・何を伝えるための連絡なのか
+・相手に何をお願い、依頼、確認したいのか
+・必要な情報は何か
+・入力された事情や背景をどこまで伝える必要があるか
+・相手への感謝、ねぎらい、配慮、お願いの気持ちが含まれているか
+・相手が読んだときに、次に何をすればよいのか分かる内容になっているか
+
+【最重要：文章の雰囲気】
+文章は、丁寧でありながら堅苦しすぎず、日頃から関わりのある関係機関に対して、ケアマネジャーが実際に送る自然な連絡文として作成してください。
+
+特に事業所等へ何かを依頼・お願いする場合は、相手の負担にも配慮した柔らかい表現を使用してください。命令的・一方的・冷たい印象にならないようにしてください。
+
+「○○でしょうか」「○○ですか」等の質問形式を機械的に繰り返さないでください。
+確認や依頼をする場合も、文章全体として相手に配慮した、温かみのある表現にしてください。
+
+例えば、
+「実績をください。」
+ではなく、
+「お手数をおかけしますが、実績をご送付いただけますと幸いです。」
+など、相手にお願いする立場として自然で柔らかな表現にしてください。
+
+ただし、毎回同じ表現を機械的に使用せず、連絡内容に応じて最も自然な表現を選んでください。
+
+【感謝・ねぎらい・配慮】
+入力された内容に、相手への感謝、ねぎらい、配慮、心配、お願い等の気持ちが含まれている場合は、その気持ちをできるだけ活かしてください。
+
+例えば、
+「いつも丁寧に対応してもらって助かっています」
+「いつも急なお願いですみません」
+「本人もとても喜んでいます」
+「家族も安心しています」
+などの内容が入力されている場合、それを単に削除して事務的な文章に変えないでください。
+
+必要に応じて、
+「いつもご対応いただきありがとうございます。」
+「いつも丁寧にご対応いただき助かっております。」
+「お忙しいところ恐れ入りますが、よろしくお願いいたします。」
+「お手数をおかけしますが、ご対応いただけますと幸いです。」
+などの表現を自然に使用してください。
+
+ただし、入力されていない感謝・感情・事情を勝手に作らないでください。
+
+【基本的な挨拶】
+関係機関・事業所等への日常的なメッセージやコメントでは、必要に応じて、
+「いつもお世話になりありがとうございます。」
+を基本的な挨拶として使用してください。
+
+ただし、すべての文章に機械的に付けるのではなく、伝達方法、相手との関係、文章の長さ、内容に応じて自然に判断してください。
+
+【基本の挨拶・感謝・ねぎらい・結び・お願いのユーザー指定】
+「AIに任せる」と記載されている項目、または指定されていない項目は、宛先・伝達方法・連絡目的・具体的内容・自由入力の内容から自然な表現をAIが判断してください。
+ユーザーが具体的な定型文を指定した項目は、その文言を優先して使用し、AIの判断で別の表現へ勝手に置き換えないでください。
+定型文を指定していない場合も、必要性がないと判断したときは無理に挨拶・感謝・結びを追加せず、文章全体として自然にしてください。
+
+【伝達方法による使い分け】
+
+① FAX
+・業務連絡として必要な情報を簡潔で分かりやすくまとめてください。
+・書類を送付する場合は、「○○を送付いたします」「○○をお送りしますので、ご確認・ご査収ください」等、内容に応じて自然に表現してください。
+・依頼や確認の場合は、相手への配慮が伝わる柔らかな依頼表現を使用してください。
+・FAXとして不必要に長い文章にはしないでください。
+
+② メール
+・必要に応じて件名を作成してください。
+・添付ファイルがある場合は、「添付いたします」「添付しております」等を自然に使用してください。
+・書類送付の場合は「ご査収ください」、確認をお願いする場合は「ご確認いただけますと幸いです」等、目的に合わせて使い分けてください。
+・依頼する場合は、用件だけでなく、必要に応じて感謝やねぎらいを添えてください。
+
+③ メッセージ・コメント
+・チャットやコメントとして、短く分かりやすく、自然な文章にしてください。
+・「関係者各位」「拝啓」「敬具」等の形式的な表現は使用しないでください。
+・必要に応じて「いつもお世話になりありがとうございます。」から自然に始めてください。
+・メールや正式文書のように堅苦しくしすぎないでください。
+・相手への感謝やねぎらいが必要な内容では、それを自然に文章へ反映してください。
+・依頼や確認の場合も、短いからといってぶっきらぼうな表現にしないでください。
+
+④ 文書
+・正式な連絡文として、必要に応じて挨拶→目的→具体的内容→依頼・確認→結びの順に整理してください。
+・書類送付、情報提供、サービス調整等の目的に応じて、適切な文体にしてください。
+・正式な文書であっても、相手への配慮が感じられる文章にしてください。
+
+【書類送付・添付の表現】
+ケアマネジャーが日常的に扱う書類には、以下のようなものがあります。
+
+・介護保険証
+・負担割合証
+・提供票
+・実績
+・ケアプラン
+・情報提供書
+・新規依頼時の情報提供書
+・個別援助計画書
+・その他の書類
+
+書類を送る場合は、伝達方法と状況に合わせて、
+「送付いたします」
+「お送りします」
+「添付いたします」
+「添付しております」
+などを自然に使い分けてください。
+
+「ご査収ください」は書類等を送る場面で必要な場合に使用してください。
+「ご確認ください」「ご確認いただけますと幸いです」は確認をお願いする場面で使用してください。
+
+同じ文章の中で似た表現を重複させすぎないでください。
+
+【よくあるケアマネジャーからの依頼・確認】
+事業所等への依頼では、相手に何かをしてもらうことを意識し、丁寧で柔らかな表現にしてください。
+
+例えば、
+・実績をください
+・個別援助計画書をください
+・サービス提供状況を教えてください
+・利用状況を確認したい
+・受け入れ可能か確認したい
+・空き状況を確認したい
+・サービス内容を確認したい
+・サービスの変更をお願いしたい
+・利用回数を変更したい
+・利用曜日を変更したい
+・利用時間を変更したい
+などがあります。
+
+これらを、そのまま命令形やぶっきらぼうな表現にせず、相手への配慮を込めて自然な依頼文にしてください。
+
+例：
+「実績をください」
+→「お手数をおかけしますが、実績をご送付いただけますと幸いです。」
+
+「個別援助計画書をください」
+→「お手数をおかけしますが、個別援助計画書をご準備いただけましたら、ご送付いただけますと幸いです。」
+
+「サービスを週3回に変更できるでしょうか」
+→「○○さんのサービスについて、週3回への変更をお願いできればと思っております。ご対応いただけますと幸いです。」
+
+ただし、例文をそのまま毎回使用するのではなく、入力内容に合わせて自然な文章にしてください。
+
+【利用者に関する情報共有】
+利用者の状態、生活状況、本人・家族の意向、サービス利用時の様子などを伝える場合は、単なる事実の羅列ではなく、相手が支援するうえで必要な情報が分かるよう整理してください。
+
+入力された本人や家族の気持ち、喜び、不安、心配などは、重要な情報として扱ってください。
+
+例えば、
+「○○さんのデイが週2回から週3回になりました。本人は喜んでいるけど家族はちょっと疲れないか心配しています。事業所にも一応伝えておきたいです。」
+と入力された場合、単に「週3回に変更となりました」とだけまとめず、本人の喜びや家族の心配も必要に応じて自然に反映してください。
+
+【事実の取り扱い】
+・入力された情報のみを使用してください。
+・入力されていない事実、日時、氏名、サービス内容、理由、感情、約束等を推測して追加しないでください。
+・STEP 3・STEP 4は内容を整理するための補助情報として使用してください。
+・選択されていない内容を勝手に追加しないでください。
+
+【文章の長さ】
+・相手が用件をすぐ理解できる長さにしてください。
+・短いメッセージでは簡潔に、正式な文書では必要な情報を整理して記載してください。
+・情報を削りすぎて意味が伝わらなくならないようにしてください。
+・冗長な定型文を付け足さないでください。
+
+【出力ルール】
+・完成した連絡文のみを出力してください。
+・作成意図、解説、注意事項、AIによる判断の説明等は出力しないでください。
+・メッセージ・コメントでは「関係者各位」「拝啓」「敬具」を使用しないでください。
+・相手への依頼・お願いでは、丁寧で柔らかく、温かみのある表現を優先してください。
+・入力された感謝やねぎらいの気持ちは、可能な限り自然に文章へ反映してください。`;
+
+const LETTER_PROMPT_ID = "letter";
+const LETTER_PROMPT_NAME = "お手紙用プロンプト";
+const LETTER_PROMPT_TEXT = `【AI処理用プロンプト：お手紙作成】
+
+あなたは、実務経験が豊富で、利用者・家族・主治医・医療機関・介護サービス事業所・関係機関等との連携を丁寧に行う介護支援専門員（ケアマネジャー）です。
+
+以下に入力された情報をもとに、「お手紙」として相手にそのまま渡したり送ったりできる、自然で丁寧な文章を作成してください。
+
+このプロンプトでは、①宛先・目的・具体的内容などをボタンで選択して入力する場合、②音声入力・手入力だけで自由に入力する場合、③ボタン選択と音声・手入力を組み合わせる場合、のすべてに対応してください。
+
+【最重要：事実を作らない】
+・入力された情報、選択された項目、入力された表題のみを材料として使用してください。
+・入力内容に書かれていない事実を、AIの想像、推測、一般的な介護・医療知識から補って記載しないでください。
+・入力されていない氏名、日時、場所、症状、診断名、生活状況、本人の意向、家族の意向、出来事、理由、予定、約束等を勝手に作らないでください。
+・入力されていない「感謝」「安心」「喜び」「心配」等の感情を勝手に追加しないでください。
+・入力内容に医学的判断が含まれていない場合、医学的な判断や診断を追加しないでください。
+・ケアマネジャーが医学的判断や専門的判断を行ったような表現を、入力内容にない状態で追加しないでください。
+・情報が不足している場合は、不足している情報を想像で埋めず、入力された情報だけで自然な手紙を作成してください。
+・文章を自然につなげたり、敬語に整えたりすることは行ってよいですが、事実そのものを変更・追加してはいけません。
+
+【入力方法について】
+ボタンで選択された情報、音声・手入力された情報の両方を材料として使用してください。
+選択項目が少ない場合でも、自由入力に具体的な内容が十分含まれていれば、自由入力を中心に文章を構成してください。
+ボタン選択がほとんどなく、自由入力だけの場合も、入力された内容から「誰に」「何を伝えるのか」「何を相談・お願いしたいのか」を整理し、自然なお手紙にしてください。
+反対に、自由入力が短い場合は、選択された宛先・目的・具体的内容・伝達方法などを活用してください。
+【重要：音声・手入力欄が空欄でも作成する】
+音声・手入力の欄（連絡目的の自由入力、今回伝えたいこと、表題など）が空欄であっても、それだけを理由に「情報が不足しているため作成できません」「入力してください」等と回答してはいけません。
+ボタンで選択された宛先、連絡目的、具体的内容、伝達方法、お手紙の形式、定型文など、入力・選択されている情報が一つでもある場合は、それらを材料として、作成可能な範囲で自然なお手紙を必ず作成してください。
+自由入力が空欄の場合は、空欄部分を無理に補完せず、選択されている情報だけで簡潔な文章にしてください。
+自由入力も選択項目もほぼ存在しない場合でも、宛先や形式など、実際に与えられている情報だけを使って、可能な限り短い自然な文面を作成してください。
+「空欄なので作成できません」「情報を入力してください」など、作成を拒否する説明は出力しないでください。
+選択されていない項目を勝手に補完しないでください。
+
+【ボタン選択と自由入力の優先順位】
+・基本的には、具体性の高い自由入力を最も重視してください。
+・ただし、ボタンで選択された目的・具体的内容・定型文が明確に指定されている場合は、それらも反映してください。
+・自由入力と選択内容が同じ内容を示している場合は、重複して記載せず、一つの自然な文章にまとめてください。
+・自由入力と選択内容が矛盾する場合は、具体的に記載されている自由入力の内容を優先し、矛盾する選択項目を無理に文章へ入れないでください。
+
+【お手紙の形式】
+今回の入力情報にある「お手紙の形式」に従って、文章の書式・冒頭・表題・結びを調整してください。
+
+① 標準的なビジネスレター型
+・一般的なケアマネジャーからの丁寧な手紙として作成してください。
+・必要に応じて自然な挨拶→目的→具体的内容→相談・依頼→感謝・ねぎらい→結びの順で整理してください。
+・原則として「拝啓」「敬具」は使用しません。
+・入力されていない表題は作成しません。
+
+② 表題付き・正式文書型
+・「表題を付ける」を基本とし、入力された表題があればその表題を冒頭に簡潔に表示してください。
+・表題が未入力の場合は、入力された内容だけを材料としてAIが自然な表題を自動作成し、冒頭に表示してください。
+・本文は、平素の挨拶→目的→具体的内容→相談・依頼→必要に応じた感謝・ねぎらい→結び、の流れを基本としてください。
+・原則として「拝啓」「敬具」は使用しません。
+・表題以外の情報を勝手に補完しないでください。
+
+③ 拝啓・敬具を使う正式な手紙型
+・正式な手紙の形式として、「拝啓」で始め、「敬具」で結んでください。
+・「拝啓」の後には、入力された内容に応じて自然な挨拶を使用してください。ただし、入力されていない季節や事情を想像して追加しないでください。
+・本文は、目的→具体的内容→相談・依頼→必要に応じた感謝・ねぎらい→結びの流れで整理してください。
+・「敬具」は文末に置いてください。
+・入力されていない表題は作成しません。
+
+【お手紙としての文章構成】
+入力内容に応じて、原則として次の流れで整理してください。
+① 必要に応じた自然な挨拶
+② 今回手紙を送る目的
+③ 利用者の状況・今回伝えたい具体的な内容
+④ 入力内容に含まれている課題や今後考えていること
+⑤ 相手への相談・依頼・協力をお願いしたい内容
+⑥ 必要に応じた感謝・ねぎらい
+⑦ 自然な結び
+ただし、入力内容や相手によって不要な項目は無理に入れないでください。
+
+【宛先による調整】
+主治医・医師の場合は、入力された日頃の状況や変化、生活上の課題を整理し、必要に応じて医学的な評価・助言・指導をお願いする手紙にしてください。ただし、入力されていない医学的内容は追加しないでください。
+サービス事業所の場合は、入力された利用者の状態や生活上の変化、支援上の課題を共有し、サービス提供時の確認・配慮や、今後の支援について相談・協力をお願いする手紙にしてください。
+家族の場合は、入力された利用者の状況や支援内容を分かりやすく伝え、入力されている家族の負担や気持ちにも配慮した表現にしてください。
+利用者本人の場合は、専門用語をできるだけ避け、本人が理解しやすい丁寧な文章にしてください。
+利用者・家族の場合は、本人にも家族にも内容が伝わるよう分かりやすくしてください。
+介護支援専門員・その他の関係者の場合は、相手の立場や役割に応じて、入力された情報共有・相談・依頼が自然に伝わる文章にしてください。
+
+【基本の挨拶・感謝・ねぎらい・結び】
+「基本の挨拶」「感謝・ねぎらい」「結び・お願い」は、原則としてAIに任せる設定です。
+「AIに任せる」と入力されている場合、または指定されていない場合は、宛先、手紙の内容、相手との関係、選択された手紙形式、文章の長さを踏まえて、AIが自然な表現を判断してください。
+ただし、入力されていない感情や事情を追加してはいけません。
+ユーザーが具体的な定型文を選択している場合は、その定型文を優先して文章へ反映してください。
+選択された定型文は、原則として意味や内容を勝手に変更せず、前後の接続だけを自然に整えてください。
+複数の定型文を選択している場合は、重複感が出ないよう自然につないでください。
+
+【文章表現】
+・丁寧で温かみのある「です・ます調」を基本としてください。
+・必要以上に堅苦しい文語調にはせず、相手との関係に合った自然な手紙にしてください。
+・依頼やお願いは一方的・命令的にならないよう配慮してください。
+・「～していただけますと幸いです」「～についてご相談できればと思います」等、内容に合った柔らかな表現を使用してください。
+・同じ内容や敬語表現を重複させないでください。
+・単なる箇条書きや情報の羅列ではなく、手紙として自然につながる文章にしてください。
+
+【出力】
+完成したお手紙本文のみを出力してください。
+作成意図、解説、分析、注意事項、AIによる判断の説明、箇条書きの解説は出力しないでください。
+音声・手入力欄が空欄であっても、選択された情報があれば必ず作成してください。
+「空欄なので作成できません」「入力が必要です」等の拒否・案内文は出力しないでください。
+選択された形式に必要な書式以外の情報を追加しないでください。
+
+【今回の入力情報】
+入力情報は、このプロンプトの後にシステム側から付与されます。そこに記載された内容だけを使用してください。`;
+
+const STEP1_CUSTOM_KEY="bo_coordination_step1_custom_v2";
+const CUSTOM_CATEGORY_KEY="bo_coordination_custom_categories_v1";
+const LIBRARY_KEY="bo_coordination_prompt_library_v2";
+const ACTIVE_KEY="bo_coordination_active_prompt_v2";
+const PHRASE_KEYS={greeting:"bo_coordination_phrase_greeting_v1",thanks:"bo_coordination_phrase_thanks_v1",closing:"bo_coordination_phrase_closing_v1"};
+const RECIPIENT_CONFIG_KEY="bo_coordination_recipient_config_v1";
+const METHOD_CONFIG_KEY="bo_coordination_method_config_v1";
+const DEFAULT_RECIPIENTS=[
+  {icon:"🏢",name:"サービス事業所"},{icon:"👨‍⚕️",name:"主治医"},{icon:"🩺",name:"医師"},
+  {icon:"👤",name:"利用者"},{icon:"👪",name:"家族"},{icon:"⚖️",name:"成年後見人"},
+  {icon:"👤👪",name:"利用者・家族"},{icon:"💼",name:"介護支援専門員"},{icon:"✏️",name:"その他"}
+];
+const DEFAULT_METHODS=[
+  {icon:"📠",name:"FAX"},{icon:"✉️",name:"メール"},{icon:"💬",name:"メッセージ・コメント"},
+  {icon:"📄",name:"文書"},{icon:"✉️",name:"お手紙"}
+];
+
+const DEFAULT_PHRASES={greeting:["いつもお世話になりありがとうございます。","いつもお世話になっております。","日頃よりお世話になりありがとうございます。"],thanks:["いつも丁寧にご対応いただきありがとうございます。","いつもご協力いただき助かっております。"],closing:["よろしくお願いいたします。","ご確認いただけますと幸いです。","お手数をおかけしますが、よろしくお願いいたします。"]};
+
+let customStep1Items=[];
+let promptLibrary=[], activePromptId="default";
+
+const GROWTH_CONFIG = {
+  s1_1: { icon: "📣", name: "情報共有", defaults: ["お知らせについて","情報共有について","利用者の状態変化について","生活状況について","本人・家族の意向について","今後の対応について","その他"] },
+  s1_2: { icon: "🗓️", name: "会議・日程の案内", defaults: ["会議の開催について","会議の日程について","会議への参加について","会議への回答・照会について","会議後の対応について","その他"] },
+  s1_3: { icon: "🔄", name: "連絡・調整", defaults: ["サービスの変更について","サービスの追加・終了について","利用回数・曜日・時間について","利用日の調整について","受け入れ・空き状況について","サービス内容について","対応について","日程の調整について","実績について","個別援助計画書について","サービス提供状況について","利用状況について","その他"] },
+  s1_5: { icon: "🏥", name: "主治医・医療機関への連絡・相談", defaults: [] },
+  s1_7: { icon: "📄", name: "書類送付・手続き", defaults: ["書類を送付する","書類を添付する","書類の手続き"] },
+  s1_8: { icon: "✏️", name: "その他", defaults: ["連絡事項について","確認事項について","依頼事項について","日程について","書類について","その他"] }
+};
+
+// 主治医・医師向けは「連絡する理由」→「お願い・確認事項」→「作成を依頼する書類」の2段階構成で管理します。
+const MEDICAL_CONFIG = {
+  reasons: [
+    "介護保険を新規利用するため",
+    "介護保険を更新するため",
+    "介護保険の区分変更のため",
+    "体調に変化があったため",
+    "サービスが変わったため",
+    "医療サービスを導入したいため",
+    "ご本人の状況を報告したいため",
+    "福祉用具貸与の例外給付を受けたいため",
+    "医療系サービス利用に向けて",
+    "今後の生活上の注意点について確認したいため"
+  ],
+  actions: [
+    "意見・助言をいただきたい",
+    "ケアプランについて意見をいただきたい",
+    "福祉用具について意見をいただきたい",
+    "軽度者の福祉用具貸与の例外給付について確認したい",
+    "住宅改修について意見・確認したい",
+    "リハビリテーションについて意見・助言をいただきたい",
+    "服薬・治療について確認したい",
+    "食事・嚥下について意見・助言をいただきたい",
+    "認知症・認知機能について意見・助言をいただきたい",
+    "状態変化について報告・相談したい",
+    "受診・医療対応について相談したい",
+    "今後の支援方針について意見・助言をいただきたい",
+    "医療・介護連携について相談したい",
+    "書類作成依頼をしたい",
+    "その他・自由入力"
+  ],
+  documents: [
+    "主治医意見書",
+    "訪問看護指示書",
+    "訪問マッサージ指示書",
+    "福祉用具貸与の例外給付に関する医学的所見",
+    "住宅改修に関する意見・確認",
+    "リハビリテーションに関する指示・情報提供",
+    "その他の書類",
+    "その他・自由入力"
+  ]
+};
+
+const MEDICAL_KEY = "__medical";
+
+const GROWTH_KEY = "bo_coordination_growth_v2";
+let activeGrowthCategory = "s1_1";
+
+function esc(str) {
+  if(!str) return "";
+  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+function getRecipientConfig(){
+  try{const a=JSON.parse(localStorage.getItem(RECIPIENT_CONFIG_KEY));if(Array.isArray(a)&&a.length)return a.filter(x=>x&&typeof x.name==="string"&&x.name.trim()).map(x=>({icon:x.icon||"✏️",name:x.name.trim()}));}catch(e){}
+  return DEFAULT_RECIPIENTS.map(x=>({...x}));
+}
+function saveRecipientConfig(a){localStorage.setItem(RECIPIENT_CONFIG_KEY,JSON.stringify(a));renderRecipientChoices();renderRecipientSettings();}
+function getMethodConfig(){
+  try{const a=JSON.parse(localStorage.getItem(METHOD_CONFIG_KEY));if(Array.isArray(a)&&a.length)return a.filter(x=>x&&typeof x.name==="string"&&x.name.trim()).map(x=>({icon:x.icon||"✏️",name:x.name.trim()}));}catch(e){}
+  return DEFAULT_METHODS.map(x=>({...x}));
+}
+function saveMethodConfig(a){localStorage.setItem(METHOD_CONFIG_KEY,JSON.stringify(a));renderMethodChoices();renderMethodSettings();updateMethodFormatUI();updateRequestAssistVisibility();}
+function renderRecipientChoices(){
+  const root=document.getElementById("recipientChoiceGrid");if(!root)return;
+  root.innerHTML=getRecipientConfig().map((x,i)=>{const id=`recipient_cfg_${i}`;return `<div class="choice"><input id="${id}" name="recipient" type="radio" value="${esc(x.name)}" onchange="updateSummaries()"><label for="${id}">${esc(x.icon)} ${esc(x.name)}</label></div>`;}).join("");
+}
+function renderMethodChoices(){
+  const root=document.getElementById("methodChoiceGrid");if(!root)return;
+  root.innerHTML=getMethodConfig().map((x,i)=>{const id=`method_cfg_${i}`;return `<div class="choice"><input id="${id}" name="method" type="radio" value="${esc(x.name)}"><label for="${id}">${esc(x.icon)} ${esc(x.name)}</label></div>`;}).join("");
+  root.querySelectorAll('input[name="method"]').forEach(input=>input.addEventListener("change",()=>{updateSummaries();handleLetterPromptActivation(input.value);updateMethodFormatUI();updateRequestAssistVisibility();}));
+}
+function getConfirmedStandardArray(key,fallback){
+  try{
+    const standard=getStandardSnapshotPayload();
+    if(standard && standard.data && standard.data[key]){
+      const parsed=JSON.parse(standard.data[key]);
+      if(Array.isArray(parsed)) return parsed;
+    }
+  }catch(e){}
+  return fallback.map(x=>({...x}));
+}
+function getRecipientStandardItem(index){ return getConfirmedStandardArray(RECIPIENT_CONFIG_KEY,DEFAULT_RECIPIENTS)[index] || null; }
+function getMethodStandardItem(index){ return getConfirmedStandardArray(METHOD_CONFIG_KEY,DEFAULT_METHODS)[index] || null; }
+function getMedicalStandardItem(type,index){
+  try{
+    const standard=getStandardSnapshotPayload();
+    if(standard && standard.data && standard.data[GROWTH_KEY]){
+      const growth=JSON.parse(standard.data[GROWTH_KEY]);
+      if(growth && growth[MEDICAL_KEY] && Array.isArray(growth[MEDICAL_KEY][type])) return growth[MEDICAL_KEY][type][index] || null;
+    }
+  }catch(e){}
+  return Array.isArray(MEDICAL_CONFIG[type]) ? (MEDICAL_CONFIG[type][index] || null) : null;
+}
+function restoreRecipientItem(index){ const standard=getRecipientStandardItem(index); if(!standard)return; const a=getRecipientConfig(); a[index]={...standard}; saveRecipientConfig(a); }
+function restoreMethodItem(index){ const standard=getMethodStandardItem(index); if(!standard)return; const a=getMethodConfig(); a[index]={...standard}; saveMethodConfig(a); }
+function restoreMedicalSetting(type,index){ const standard=getMedicalStandardItem(type,index); if(!standard)return; const med=getMedicalData(); med[type][index]=standard; saveMedicalData(med); renderGrowthManager(); renderStep2(); }
+
+function renderRecipientSettings(){
+  const root=document.getElementById("recipientSettingsManager");if(!root)return;
+  const a=getRecipientConfig();
+  root.innerHTML = a.map((x,i) => {
+    return `<div class="editable-item-row">`
+      + `<input value="${esc(x.name)}" onchange="editRecipient(${i},this.value)">`
+      + `<span style="min-width:35px;">${esc(x.icon)}</span>`
+      + `<span class="growth-item-status is-standard">🏢 標準</span>`
+      + `<button type="button" class="growth-item-restore" onclick="restoreRecipientItem(${i})">↩ 標準に戻す</button>`
+      + `<button type="button" class="growth-item-delete" onclick="deleteRecipient(${i})">🗑 削除</button>`
+      + `</div>`;
+  }).join("")
+  + `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">`
+  + `<input id="newRecipientInput" type="text" placeholder="新しい宛先を追加" style="flex:1;min-width:220px;padding:10px;border:2px solid #9fc7eb;border-radius:10px;font-size:14px;">`
+  + `<button type="button" class="primary" style="padding:8px 12px;font-size:13px;" onclick="addRecipient()">＋ 追加</button>`
+  + `<button type="button" class="restore-button" style="padding:8px 12px;font-size:13px;" onclick="resetRecipientSettings()">↩ 標準に戻す</button>`
+  + `</div>`;
+}
+function addRecipient(){const el=document.getElementById("newRecipientInput"),v=el?.value.trim();if(!v)return;const a=getRecipientConfig();if(!a.some(x=>x.name===v))a.push({icon:"✏️",name:v});saveRecipientConfig(a);}
+function editRecipient(i,v){v=v.trim();const a=getRecipientConfig();if(v)a[i].name=v;else a.splice(i,1);saveRecipientConfig(a);}
+function deleteRecipient(i){const a=getRecipientConfig();if(a.length<=1)return; a.splice(i,1);saveRecipientConfig(a);}
+function resetRecipientSettings(){if(!confirm("STEP 1の宛先を標準設定に戻しますか？"))return;saveRecipientConfig(getConfirmedStandardArray(RECIPIENT_CONFIG_KEY,DEFAULT_RECIPIENTS));}
+function renderMethodSettings(){
+  const root=document.getElementById("methodSettingsManager");if(!root)return;
+  const a=getMethodConfig();
+  root.innerHTML = a.map((x,i) => {
+    return `<div class="editable-item-row">`
+      + `<input value="${esc(x.name)}" onchange="editMethod(${i},this.value)">`
+      + `<span style="min-width:35px;">${esc(x.icon)}</span>`
+      + `<span class="growth-item-status is-standard">🏢 標準</span>`
+      + `<button type="button" class="growth-item-restore" onclick="restoreMethodItem(${i})">↩ 標準に戻す</button>`
+      + `<button type="button" class="growth-item-delete" onclick="deleteMethod(${i})">🗑 削除</button>`
+      + `</div>`;
+  }).join("")
+  + `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">`
+  + `<input id="newMethodInput" type="text" placeholder="新しい伝達方法を追加" style="flex:1;min-width:220px;padding:10px;border:2px solid #9fc7eb;border-radius:10px;font-size:14px;">`
+  + `<button type="button" class="primary" style="padding:8px 12px;font-size:13px;" onclick="addMethod()">＋ 追加</button>`
+  + `<button type="button" class="restore-button" style="padding:8px 12px;font-size:13px;" onclick="resetMethodSettings()">↩ 標準に戻す</button>`
+  + `</div>`;
+}
+function addMethod(){const el=document.getElementById("newMethodInput"),v=el?.value.trim();if(!v)return;const a=getMethodConfig();if(!a.some(x=>x.name===v))a.push({icon:"✏️",name:v});saveMethodConfig(a);}
+function editMethod(i,v){v=v.trim();const a=getMethodConfig();if(v)a[i].name=v;else a.splice(i,1);saveMethodConfig(a);}
+function deleteMethod(i){const a=getMethodConfig();if(a.length<=1)return; a.splice(i,1);saveMethodConfig(a);}
+function resetMethodSettings(){if(!confirm("STEP 2の伝達方法を標準設定に戻しますか？"))return;saveMethodConfig(getConfirmedStandardArray(METHOD_CONFIG_KEY,DEFAULT_METHODS));}
+
+function getGrowthData() {
+  try {
+    const d = JSON.parse(localStorage.getItem(GROWTH_KEY));
+    if (d && typeof d === "object") {
+      // 現在使用していない旧カテゴリーの保存データだけを除去します。
+      delete d.s1_4;
+      delete d.s1_6;
+      delete d.customcat_1788244714596;
+      // 書類送付・手続きは、④を「方法」の3項目だけに統一します。
+      // 旧版で保存された「介護保険証を送付・添付する」等の重複項目は、
+      // このカテゴリーだけを新仕様へ移行し、その他のカテゴリー設定は変更しません。
+      if (d.s1_7 && typeof d.s1_7 === "object") {
+        const newDocMethods = ["書類を送付する", "書類を添付する", "書類の手続き"];
+        const oldDocMethods = [
+          "同封する", "送付する", "添付する",
+          "介護保険証を送付・添付する", "負担割合証を送付・添付する",
+          "提供票を送付・添付する", "利用票を送付・添付する",
+          "実績を送付・添付する", "ケアプランを送付・添付する",
+          "情報提供書を送付・添付する", "新規依頼時の情報提供書を送付・添付する",
+          "個別援助計画書を送付・添付する", "契約書類一式を送付・添付する",
+          "サービス利用状況の報告書を送付・添付する", "返信用封筒を送付・添付する",
+          "その他の書類を送付・添付する"
+        ];
+        if (Array.isArray(d.s1_7.items)) {
+          const hasOld = d.s1_7.items.some(v => oldDocMethods.includes(v));
+          if (hasOld) {
+            const custom = d.s1_7.items.filter(v => typeof v === "string" && v.trim() && !oldDocMethods.includes(v) && !newDocMethods.includes(v));
+            d.s1_7.items = [...newDocMethods, ...custom.filter(v => !newDocMethods.includes(v))];
+          }
+        }
+        if (Array.isArray(d.s1_7.origins)) {
+          const hasOldOrigin = d.s1_7.origins.some(v => oldDocMethods.includes(v));
+          if (hasOldOrigin) d.s1_7.origins = d.s1_7.items.map(v => newDocMethods.includes(v) ? v : null);
+        }
+        if (Array.isArray(d.s1_7.hidden)) {
+          d.s1_7.hidden = d.s1_7.hidden.filter(x => {
+            const value = typeof x === "string" ? x : (x && typeof x === "object" ? x.value : "");
+            return !oldDocMethods.includes(value);
+          });
+        }
+      }
+      return d;
+    }
+  } catch (e) {}
+  return {};
+}
+
+function saveGrowthData(data) {
+  localStorage.setItem(GROWTH_KEY, JSON.stringify(data));
+}
+
+function getMedicalData() {
+  const d = getGrowthData();
+  const saved = d[MEDICAL_KEY];
+  const base = {
+    reasons: [...MEDICAL_CONFIG.reasons],
+    actions: [...MEDICAL_CONFIG.actions],
+    documents: [...MEDICAL_CONFIG.documents]
+  };
+  if (saved && typeof saved === "object") {
+    ["reasons","actions","documents"].forEach(type => {
+      if (Array.isArray(saved[type])) base[type] = saved[type].filter(v => typeof v === "string" && v.trim());
+    });
+  }
+  return base;
+}
+
+function saveMedicalData(medical) {
+  const d = getGrowthData();
+  d[MEDICAL_KEY] = {
+    reasons: Array.isArray(medical.reasons) ? medical.reasons : [...MEDICAL_CONFIG.reasons],
+    actions: Array.isArray(medical.actions) ? medical.actions : [...MEDICAL_CONFIG.actions],
+    documents: Array.isArray(medical.documents) ? medical.documents : [...MEDICAL_CONFIG.documents]
+  };
+  saveGrowthData(d);
+}
+
+function getSelectedMedicalValues(name) {
+  return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(i => i.value);
+}
+
+function getDeletedGrowthCategories(data) {
+  return Array.isArray(data.__deletedCategories) ? data.__deletedCategories : [];
+}
+
+function isGrowthCategoryDeleted(k, data) {
+  return getDeletedGrowthCategories(data).includes(k);
+}
+
+function boGrowthCatName(key) {
+  const d = getGrowthData();
+  return (d[key] && d[key].name) ? d[key].name : GROWTH_CONFIG[key].name;
+}
+
+function normalizeGrowthCategory(k, d) {
+  if (!d[k] || typeof d[k] !== "object") return null;
+  const cfg = GROWTH_CONFIG[k];
+  if (!Array.isArray(d[k].items)) d[k].items = [...cfg.defaults];
+  d[k].items = d[k].items.filter(x => typeof x === "string" && x.trim() !== "");
+  if (!Array.isArray(d[k].origins)) {
+    d[k].origins = d[k].items.map((x, i) => cfg.defaults[i] || null);
+  }
+  while (d[k].origins.length < d[k].items.length) d[k].origins.push(null);
+  d[k].origins = d[k].origins.slice(0, d[k].items.length);
+  if (!Array.isArray(d[k].hidden)) d[k].hidden = [];
+  d[k].hidden = d[k].hidden.map(x => {
+    if (typeof x === "string") return {value:x, origin:x};
+    return x && typeof x.value === "string" ? {value:x.value, origin:x.origin || x.value} : null;
+  }).filter(Boolean);
+  return d[k];
+}
+
+function boGrowthVisible(key) {
+  const d = getGrowthData();
+  if (isGrowthCategoryDeleted(key, d)) return [];
+  if (d[key] && Array.isArray(d[key].items)) {
+    return d[key].items.filter(x => typeof x === "string" && x.trim() !== "");
+  }
+  return [...GROWTH_CONFIG[key].defaults];
+}
+
+function isGrowthCategoryAtConfirmedStandard(k, currentData){
+  const payload=getStandardSnapshotPayload();
+  if(!payload || !payload.data || !payload.data[GROWTH_KEY]) return false;
+  try{
+    const standardData=JSON.parse(payload.data[GROWTH_KEY]);
+    const a=currentData[k];
+    const b=standardData[k];
+    if(!a || !b) return !a && !b;
+    return JSON.stringify(a)===JSON.stringify(b);
+  }catch(e){ return false; }
+}
+
+function isMedicalAtStandard(medical){
+  try{
+    const standard=getStandardSnapshotPayload();
+    if(standard && standard.data && standard.data[GROWTH_KEY]){
+      const growth=JSON.parse(standard.data[GROWTH_KEY]);
+      const target=growth && growth[MEDICAL_KEY];
+      if(target && typeof target === "object") return JSON.stringify(medical)===JSON.stringify(target);
+    }
+  }catch(e){}
+  return ["reasons","actions","documents"].every(type => Array.isArray(medical[type]) && JSON.stringify(medical[type])===JSON.stringify(MEDICAL_CONFIG[type]));
+}
+
+function renderGrowthManager() {
+  const container = document.getElementById("growthCategoryManager");
+  if (!container) return;
+
+  const data = getGrowthData();
+  const deletedCategories = getDeletedGrowthCategories(data);
+  let buttonsHtml = `<div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+    <button type="button" class="restore-button" style="padding:7px 12px;font-size:12px;background:#eaf7fb!important;color:#245c80!important;border:1px solid #9fc7eb!important;" onclick="resetAllGrowthCategories()">↩ カテゴリーを全て標準に戻す</button>
+  </div>`;
+  buttonsHtml += '<div class="growth-category-buttons">';
+  Object.keys(GROWTH_CONFIG).forEach(k => {
+    if (deletedCategories.includes(k)) return;
+    const isActive = k === activeGrowthCategory;
+    buttonsHtml += `<button type="button" class="growth-category-button" style="${isActive ? 'border-color:var(--bo-blue);background:#eaf7fb;' : ''}" onclick="selectGrowthCategory('${k}')">
+      <span>${GROWTH_CONFIG[k].icon}</span>
+      <span style="font-weight:bold;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(boGrowthCatName(k))}</span>
+      <span title="標準">🏢 標準</span>
+    </button>`;
+  });
+  buttonsHtml += '</div>';
+
+  let k = activeGrowthCategory;
+  if (!k || isGrowthCategoryDeleted(k, data)) {
+    k = Object.keys(GROWTH_CONFIG).find(id => !isGrowthCategoryDeleted(id, data)) || null;
+    activeGrowthCategory = k;
+  }
+  if (!k) {
+    container.innerHTML = buttonsHtml + '<div class="growth-editor">すべてのカテゴリーが削除されています。「↩ カテゴリーを全て標準に戻す」で復元できます。</div>';
+    return;
+  }
+  const cfg = GROWTH_CONFIG[k];
+  const catName = boGrowthCatName(k);
+  if (k === "s1_5") {
+    const med = getMedicalData();
+    const medicalStandard = (!data[k] || isGrowthCategoryAtConfirmedStandard(k, data)) && isMedicalAtStandard(med);
+    let medicalEditor = `<div class="growth-editor">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;">
+        <h3 style="margin:0;font-size:16px;color:var(--bo-deep);">🏥 ${esc(catName)} の編集</h3>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+          <span class="growth-item-status is-standard">🏢 標準</span>
+          <button type="button" class="growth-item-restore" onclick="resetGrowthCategory('${k}')">↩ 標準に戻す</button>
+          <button type="button" class="growth-item-delete" onclick="deleteGrowthCategory('${k}')">🗑 削除</button>
+        </div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="font-size:13px;font-weight:bold;display:block;margin-bottom:4px;">カテゴリー名（STEP3での表示名）</label>
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="growthCatNameInput" value="${esc(catName)}" style="flex:1;padding:8px;border:1px solid #ccd7da;border-radius:8px;">
+          <button type="button" class="primary" style="padding:8px 14px;font-size:13px;" onclick="saveGrowthCatName('${k}')">確定・保存</button>
+        </div>
+      </div>`;
+    const sections = [
+      ["reasons","③ 主治医へ連絡する理由", "主治医へ連絡する理由の定型項目"],
+      ["actions","④ お願い・確認事項", "意見・助言、確認、書類作成依頼などの定型項目"],
+      ["documents","📄 書類作成依頼の書類", "「書類作成依頼をしたい」を選んだときに表示する定型項目"]
+    ];
+    sections.forEach(([type,title,help]) => {
+      medicalEditor += `<div class="selection-box" style="margin-top:10px;background:#fff;">
+        <div style="font-weight:bold;color:var(--bo-deep);margin-bottom:4px;">${title}</div>
+        <div style="font-size:12px;color:#64777c;margin-bottom:8px;">${help}</div>
+        <div id="medicalSettingList_${type}">`;
+      med[type].forEach((item,idx) => {
+        medicalEditor += `<div class="editable-item-row"><input value="${esc(item)}" onchange="updateMedicalSetting('${type}',${idx},this.value)"><span class="growth-item-status is-standard">🏢 標準</span><button type="button" class="growth-item-restore" onclick="restoreMedicalSetting('${type}',${idx})">↩ 標準に戻す</button><button type="button" class="growth-item-delete" onclick="deleteMedicalSetting('${type}',${idx})">🗑 削除</button></div>`;
+      });
+      medicalEditor += `</div><div class="custom-add-row" style="margin-top:8px;"><input id="newMedical_${type}" type="text" placeholder="新しい項目を追加"><button type="button" class="primary" style="padding:8px 12px;font-size:13px;" onclick="addMedicalSetting('${type}')">＋ 追加</button></div></div>`;
+    });
+    medicalEditor += `</div>`;
+    container.innerHTML = buttonsHtml + medicalEditor;
+    return;
+  }
+  const items = boGrowthVisible(k);
+  const dataForCategory = data[k] ? normalizeGrowthCategory(k, data) : null;
+  const origins = dataForCategory ? dataForCategory.origins : cfg.defaults;
+  const hidden = dataForCategory ? dataForCategory.hidden : [];
+
+  let editorHtml = `<div class="growth-editor">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;">
+      <h3 style="margin:0;font-size:16px;color:var(--bo-deep);">${cfg.icon} ${esc(catName)} の編集</h3>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+        <button type="button" class="restore-button" style="padding:7px 12px;font-size:12px;background:#fff4d6!important;color:#7a5200!important;border:1px solid #d9a441!important;" onclick="resetGrowthCategory('${k}')">↩ 標準に戻す</button>
+        <button type="button" class="growth-item-delete" style="padding:7px 12px;font-size:12px;" data-growth-delete-category="${k}">🗑 削除</button>
+      </div>
+    </div>
+    
+    <div style="margin-bottom:14px;">
+      <label style="font-size:13px;font-weight:bold;display:block;margin-bottom:4px;">カテゴリー名（STEP1での表示名）</label>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="growthCatNameInput" value="${esc(catName)}" style="flex:1;padding:8px;border:1px solid #ccd7da;border-radius:8px;">
+        <button type="button" class="primary" style="padding:8px 14px;font-size:13px;" onclick="saveGrowthCatName('${k}')">確定・保存</button>
+      </div>
+    </div>
+
+    <div style="font-size:13px;font-weight:bold;margin-bottom:6px;">選択可能なサブ項目（STEP2）</div>
+    <div id="growthItemList">`;
+
+  items.forEach((item, idx) => {
+    editorHtml += `<div class="growth-row">
+      <span style="font-size:12px;color:#64777c;">項目 ${idx + 1}</span>
+      <input type="text" value="${esc(item)}" onchange="updateGrowthItem('${k}', ${idx}, this.value)">
+      <span class="growth-item-status is-standard">🏢 標準</span>
+      <button type="button" class="growth-item-restore" onclick="restoreSingleGrowthItem('${k}', ${idx})">↩ 標準に戻す</button>
+      <button type="button" class="growth-item-delete" onclick="hideGrowthItem('${k}', ${idx})">🗑 削除</button>
+    </div>`;
+  });
+
+  editorHtml += `</div>
+    <div class="custom-add-row" style="margin-top:10px;">
+      <input type="text" id="newGrowthItemInput" placeholder="新しいサブ項目を追加">
+      <button type="button" class="primary" style="padding:8px 12px;font-size:13px;" onclick="addGrowthItem('${k}')">＋ 追加</button>
+    </div>`;
+
+  if (hidden.length > 0) {
+    editorHtml += `<div class="growth-hidden">
+      <div class="growth-note">▼ 削除（非表示）された標準項目</div>`;
+    hidden.forEach((hItem, hIdx) => {
+      const hv = typeof hItem === "string" ? hItem : hItem.value;
+      editorHtml += `<div class="growth-hidden-row">
+        <span style="font-size:13px;color:#777;">${esc(hv)}</span>
+        <div style="display:flex;gap:6px;justify-content:flex-end;align-items:center;">
+          <button type="button" class="growth-item-restore" style="padding:6px 10px;font-size:12px;" onclick="restoreGrowthItem('${k}', ${hIdx})">↩ 復元</button>
+          <button type="button" class="growth-item-delete" style="padding:6px 10px;font-size:12px;" onclick="deleteHiddenGrowthItem('${k}', ${hIdx})">🗑 削除</button>
+        </div>
+      </div>`;
+    });
+    editorHtml += `</div>`;
+  }
+
+  editorHtml += `</div>`;
+  container.innerHTML = buttonsHtml + editorHtml;
+}
+
+function updateMedicalSetting(type, index, value) {
+  if (!Object.prototype.hasOwnProperty.call(MEDICAL_CONFIG, type)) return;
+  const med = getMedicalData();
+  const v = String(value || "").trim();
+  if (!v) { med[type].splice(index, 1); } else { med[type][index] = v; }
+  saveMedicalData(med);
+  renderGrowthManager();
+  renderStep2();
+}
+
+function addMedicalSetting(type) {
+  if (!Object.prototype.hasOwnProperty.call(MEDICAL_CONFIG, type)) return;
+  const input = document.getElementById(`newMedical_${type}`);
+  const v = input ? input.value.trim() : "";
+  if (!v) return;
+  const med = getMedicalData();
+  if (!med[type].includes(v)) med[type].push(v);
+  saveMedicalData(med);
+  if (input) input.value = "";
+  renderGrowthManager();
+  renderStep2();
+}
+
+function deleteMedicalSetting(type, index) {
+  if (!Object.prototype.hasOwnProperty.call(MEDICAL_CONFIG, type)) return;
+  const med = getMedicalData();
+  med[type].splice(index, 1);
+  saveMedicalData(med);
+  renderGrowthManager();
+  renderStep2();
+}
+
+function selectGrowthCategory(k) {
+  const d = getGrowthData();
+  if (!GROWTH_CONFIG[k] || isGrowthCategoryDeleted(k, d)) return;
+  activeGrowthCategory = k;
+  renderGrowthManager();
+}
+
+function saveGrowthCatName(k) {
+  const input = document.getElementById("growthCatNameInput");
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) return;
+
+  const d = getGrowthData();
+  if (!d[k]) {
+    d[k] = { name: val, items: [...GROWTH_CONFIG[k].defaults], origins: [...GROWTH_CONFIG[k].defaults], hidden: [] };
+  } else {
+    normalizeGrowthCategory(k, d);
+    d[k].name = val;
+  }
+  saveGrowthData(d);
+  renderGrowthManager();
+  updateStep1Labels();
+  renderStep2();
+}
+
+function updateGrowthItem(k, idx, val) {
+  const trimmed = val.trim();
+  const d = getGrowthData();
+  if (!d[k]) {
+    d[k] = { name: GROWTH_CONFIG[k].name, items: [...GROWTH_CONFIG[k].defaults], origins: [...GROWTH_CONFIG[k].defaults], hidden: [] };
+  }
+  normalizeGrowthCategory(k, d);
+  if (trimmed) {
+    d[k].items[idx] = trimmed;
+  } else {
+    hideGrowthItem(k, idx);
+    return;
+  }
+  saveGrowthData(d);
+  renderGrowthManager();
+  renderStep2();
+}
+
+function addGrowthItem(k) {
+  const input = document.getElementById("newGrowthItemInput");
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) return;
+
+  const d = getGrowthData();
+  if (!d[k]) {
+    d[k] = { name: GROWTH_CONFIG[k].name, items: [...GROWTH_CONFIG[k].defaults], origins: [...GROWTH_CONFIG[k].defaults], hidden: [] };
+  }
+  normalizeGrowthCategory(k, d);
+  d[k].items.push(val);
+  d[k].origins.push(null);
+  saveGrowthData(d);
+  input.value = "";
+  renderGrowthManager();
+  renderStep2();
+}
+
+function hideGrowthItem(k, idx) {
+  const d = getGrowthData();
+  if (!d[k]) {
+    d[k] = { name: GROWTH_CONFIG[k].name, items: [...GROWTH_CONFIG[k].defaults], origins: [...GROWTH_CONFIG[k].defaults], hidden: [] };
+  }
+  normalizeGrowthCategory(k, d);
+  const removedItem = d[k].items.splice(idx, 1)[0];
+  const removedOrigin = d[k].origins.splice(idx, 1)[0];
+  if (removedItem) {
+    d[k].hidden.push({ value: removedItem, origin: removedOrigin || removedItem });
+  }
+  saveGrowthData(d);
+  renderGrowthManager();
+  renderStep2();
+}
+
+function restoreSingleGrowthItem(k, idx) {
+  const d = getGrowthData();
+  if (!d[k]) return;
+  normalizeGrowthCategory(k, d);
+  const standard = getStandardSnapshotPayload();
+  let standardItem = null;
+  if (standard && standard.data && standard.data[GROWTH_KEY]) {
+    try {
+      const sd = JSON.parse(standard.data[GROWTH_KEY]);
+      if (sd && sd[k] && Array.isArray(sd[k].items)) standardItem = sd[k].items[idx] || null;
+    } catch(e) {}
+  }
+  if (standardItem) {
+    d[k].items[idx] = standardItem;
+    d[k].origins[idx] = standardItem;
+  } else {
+    const origin = d[k].origins[idx];
+    if (origin) d[k].items[idx] = origin;
+  }
+  saveGrowthData(d);
+  renderGrowthManager();
+  renderStep2();
+}
+
+function restoreGrowthItem(k, hIdx) {
+  const d = getGrowthData();
+  if (!d[k]) return;
+  normalizeGrowthCategory(k, d);
+  const restored = d[k].hidden.splice(hIdx, 1)[0];
+  if (restored) {
+    d[k].items.push(restored.value);
+    d[k].origins.push(restored.origin);
+  }
+  saveGrowthData(d);
+  renderGrowthManager();
+  renderStep2();
+}
+
+function deleteHiddenGrowthItem(k, hIdx) {
+  const d = getGrowthData();
+  if (!d[k]) return;
+  normalizeGrowthCategory(k, d);
+  d[k].hidden.splice(hIdx, 1);
+  saveGrowthData(d);
+  renderGrowthManager();
+}
+
+function resetGrowthCategory(k) {
+  if (!confirm(`「${boGrowthCatName(k)}」を標準設定に戻しますか？`)) return;
+  const standard = getStandardSnapshotPayload();
+  if (standard && Object.prototype.hasOwnProperty.call(standard.data, GROWTH_KEY)) {
+    try {
+      const d = getGrowthData();
+      const saved = JSON.parse(standard.data[GROWTH_KEY]);
+      if (saved && saved[k]) d[k] = saved[k]; else delete d[k];
+      if (k === "s1_5") {
+        if (saved && saved[MEDICAL_KEY]) d[MEDICAL_KEY] = saved[MEDICAL_KEY];
+        else delete d[MEDICAL_KEY];
+      }
+      if (saved && Array.isArray(saved.__deletedCategories)) d.__deletedCategories = [...saved.__deletedCategories];
+      else delete d.__deletedCategories;
+      saveGrowthData(d);
+      renderGrowthManager(); updateStep1Labels(); renderStep2();
+      return;
+    } catch(e) {}
+  }
+  const d = getGrowthData();
+  delete d[k];
+  if (k === "s1_5") delete d[MEDICAL_KEY];
+  saveGrowthData(d);
+  renderGrowthManager();
+  updateStep1Labels();
+  renderStep2();
+}
+
+function deleteGrowthCategory(k) {
+  if (!confirm(`カテゴリー「${boGrowthCatName(k)}」を非表示・削除しますか？`)) return;
+  const d = getGrowthData();
+  if (!Array.isArray(d.__deletedCategories)) {
+    d.__deletedCategories = [];
+  }
+  if (!d.__deletedCategories.includes(k)) {
+    d.__deletedCategories.push(k);
+  }
+  delete d[k];
+  if (k === "s1_5") delete d[MEDICAL_KEY];
+  saveGrowthData(d);
+  
+  const cb = document.getElementById(k);
+  if (cb) cb.checked = false;
+  
+  const remainingKeys = Object.keys(GROWTH_CONFIG).filter(id => !isGrowthCategoryDeleted(id, d));
+  activeGrowthCategory = remainingKeys.length > 0 ? remainingKeys[0] : null;
+  
+  renderGrowthManager();
+  updateStep1Labels();
+  renderStep2();
+  updateSummaries();
+}
+
+function resetAllGrowthCategories() {
+  if (!confirm("すべてのカテゴリーとサブ項目を標準設定に戻しますか？")) return;
+  const standard = getStandardSnapshotPayload();
+  if (standard && Object.prototype.hasOwnProperty.call(standard.data, GROWTH_KEY)) {
+    try {
+      localStorage.setItem(GROWTH_KEY, standard.data[GROWTH_KEY]);
+    } catch(e) { localStorage.removeItem(GROWTH_KEY); }
+  } else {
+    localStorage.removeItem(GROWTH_KEY);
+  }
+  activeGrowthCategory = "s1_1";
+  // 主治医向けの2段階設定も標準スナップショットに合わせて復元します。
+  try {
+    const d = getGrowthData();
+    if (d[MEDICAL_KEY] && (!getStandardSnapshotPayload() || !getStandardSnapshotPayload().data || !getStandardSnapshotPayload().data[GROWTH_KEY])) delete d[MEDICAL_KEY];
+    saveGrowthData(d);
+  } catch(e) {}
+  cleanLegacyStorage();
+  loadCustomItems();
+  renderCustomGrowthCategoriesOnMain();
+  renderGrowthManager();
+  updateStep1Labels();
+  renderStep2();
+  updateSummaries();
+}
+
+function updateStep1Labels() {
+  const data = getGrowthData();
+  Object.keys(GROWTH_CONFIG).forEach(k => {
+    const choiceEl = document.getElementById(k)?.parentElement;
+    if (choiceEl) {
+      if (isGrowthCategoryDeleted(k, data)) {
+        choiceEl.style.display = "none";
+      } else {
+        choiceEl.style.display = "block";
+        const labelEl = choiceEl.querySelector("label");
+        if (labelEl) {
+          labelEl.textContent = `${GROWTH_CONFIG[k].icon} ${boGrowthCatName(k)}`;
+        }
+      }
+    }
+  });
+}
+
+function renderCustomGrowthCategoriesOnMain() {
+  const grid = document.getElementById("step1Grid");
+  if (!grid) return;
+  const data = getGrowthData();
+  const selected = new Set();
+  grid.querySelectorAll('input[type="checkbox"]:checked').forEach(el => selected.add(el.id));
+  grid.innerHTML = "";
+
+  Object.keys(GROWTH_CONFIG).forEach(k => {
+    if (isGrowthCategoryDeleted(k, data)) return;
+    const wrap = document.createElement("div");
+    wrap.className = "choice";
+    const cb = document.createElement("input");
+    cb.id = k;
+    cb.type = "checkbox";
+    cb.value = boGrowthCatName(k);
+    cb.checked = selected.has(k);
+    const label = document.createElement("label");
+    label.htmlFor = k;
+    label.textContent = `${GROWTH_CONFIG[k].icon} ${boGrowthCatName(k)}`;
+    wrap.appendChild(cb);
+    wrap.appendChild(label);
+    grid.appendChild(wrap);
+  });
+}
+
+function getSelectedStep1() {
+  const selected = [];
+  Object.keys(GROWTH_CONFIG).forEach(k => {
+    const cb = document.getElementById(k);
+    if (cb && cb.checked) {
+      selected.push({ id: k, name: boGrowthCatName(k) });
+    }
+  });
+  return selected;
+}
+
+function renderStep2() {
+  const grid = document.getElementById("dynamicStep2Grid");
+  if (!grid) return;
+  const selectedStep1 = getSelectedStep1();
+  if (selectedStep1.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;color:#64777c;font-size:13px;padding:8px 0;">※ STEP 3 を選択すると、対応する具体的内容の選択肢が表示されます。</div>';
+    updateSummaries();
+    return;
+  }
+
+  let html = "";
+  selectedStep1.forEach(cat => {
+    if (cat.id === "s1_5") {
+      const med = getMedicalData();
+      html += `<div style="grid-column:1/-1;font-weight:bold;color:var(--bo-deep);margin-top:8px;font-size:15px;border-bottom:1px solid #9fc7eb;padding-bottom:4px;">🏥 主治医への情報提供・依頼</div>`;
+      html += `<div style="grid-column:1/-1;font-weight:bold;color:var(--bo-deep);margin-top:10px;font-size:14px;">③ 何のために主治医へ連絡しますか？</div>`;
+      html += `<div style="grid-column:1/-1;color:#64777c;font-size:12px;margin-bottom:4px;">※ 複数選択できます。</div>`;
+      med.reasons.forEach((item, idx) => {
+        const id = `medicalReason_${idx}`;
+        html += `<div class="choice"><input id="${id}" name="medicalReason" type="checkbox" value="${esc(item)}" onchange="updateSummaries()"><label for="${id}">${idx===0?'🆕 ':''}${esc(item)}</label></div>`;
+      });
+      html += `<div style="grid-column:1/-1;font-weight:bold;color:var(--bo-deep);margin-top:14px;font-size:14px;">④ 具体的に何についてお願い・確認しますか？</div>`;
+      html += `<div style="grid-column:1/-1;color:#64777c;font-size:12px;margin-bottom:4px;">※ 複数選択できます。必要な項目をすべて選択してください。</div>`;
+      med.actions.forEach((item, idx) => {
+        const id = `medicalAction_${idx}`;
+        const icon = item.includes("書類作成") ? "📄 " : (item.includes("意見") || item.includes("助言") ? "💬 " : "🏥 ");
+        html += `<div class="choice"><input id="${id}" name="medicalAction" type="checkbox" value="${esc(item)}" onchange="updateSummaries()"><label for="${id}">${icon}${esc(item)}</label></div>`;
+      });
+      html += `<div id="medicalDocumentChoiceArea" style="display:none;grid-column:1/-1;margin-top:8px;padding:10px;background:#f7fbff;border:1px solid #9fc7eb;border-radius:10px;">`;
+      html += `<div style="font-weight:bold;color:var(--bo-deep);margin-bottom:4px;">📄 作成をお願いする書類</div><div style="font-size:12px;color:#64777c;margin-bottom:6px;">※「書類作成依頼をしたい」を選んだ場合に表示します。複数選択できます。</div>`;
+      med.documents.forEach((item, idx) => {
+        const id = `medicalDocument_${idx}`;
+        html += `<div class="choice"><input id="${id}" name="medicalDocument" type="checkbox" value="${esc(item)}" onchange="updateSummaries()"><label for="${id}">📄 ${esc(item)}</label></div>`;
+      });
+      html += `<div id="medicalDocumentSummary" class="selected-summary">選択なし</div></div>`;
+      html += `<div id="medicalReasonSummary" class="selected-summary" style="grid-column:1/-1;">選択なし</div>`;
+      html += `<div id="medicalActionSummary" class="selected-summary" style="grid-column:1/-1;">選択なし</div>`;
+    } else {
+      const items = boGrowthVisible(cat.id);
+      if (items.length > 0) {
+        html += `<div style="grid-column:1/-1;font-weight:bold;color:var(--bo-deep);margin-top:8px;font-size:14px;border-bottom:1px solid #9fc7eb;padding-bottom:4px;">▼ ${esc(cat.name)}</div>`;
+        items.forEach((item, idx) => {
+          const itemId = `${cat.id}_sub_${idx}`;
+          html += `<div class="choice"><input id="${itemId}" type="checkbox" value="${esc(item)}" onchange="updateSummaries()"><label for="${itemId}">${esc(item)}</label></div>`;
+        });
+      }
+    }
+  });
+  grid.innerHTML = html || '<div style="grid-column:1/-1;color:#64777c;font-size:13px;padding:8px 0;">選択可能な詳細項目がありません。</div>';
+  updateMedicalActionVisibility();
+  updateSummaries();
+}
+
+function updateMedicalActionVisibility(){
+  const area = document.getElementById("medicalDocumentChoiceArea");
+  if (!area) return;
+  const show = getSelectedMedicalValues("medicalAction").includes("書類作成依頼をしたい");
+  area.style.display = show ? "block" : "none";
+  if (!show) document.querySelectorAll('input[name="medicalDocument"]').forEach(i => { i.checked = false; });
+}
+
+function updateMedicalRequestVisibility(){
+  updateMedicalActionVisibility();
+}
+
+function updateDocumentStepVisibility(){
+  const selected = getSelectedStep1();
+  const isDoc = selected.some(x => x.id === "s1_7");
+  const box = document.getElementById("documentActionArea");
+  if (box) box.style.display = isDoc ? "block" : "none";
+}
+
+function updateSummaries() {
+  const recipientInput = document.querySelector("input[name='recipient']:checked");
+  const recipientSum = document.getElementById("recipientSummary");
+  if (recipientSum) recipientSum.textContent = recipientInput ? recipientInput.value : "選択なし";
+
+  const s1Sel = getSelectedStep1().map(x => x.name);
+  const s1Sum = document.getElementById("step1Summary");
+  if (s1Sum) s1Sum.textContent = s1Sel.length ? s1Sel.join(" / ") : "選択なし";
+
+  const s2Inputs = document.querySelectorAll("#dynamicStep2Grid input[type='checkbox']:checked");
+  const s2Sel = Array.from(s2Inputs).map(i => i.value);
+  const s2Sum = document.getElementById("step2Summary");
+  if (s2Sum) s2Sum.textContent = s2Sel.length ? s2Sel.join(" / ") : "選択なし";
+
+  const s3Input = document.querySelector("input[name='method']:checked");
+  const s3Sum = document.getElementById("step3Summary");
+  if (s3Sum) s3Sum.textContent = s3Input ? s3Input.value : "選択なし";
+  const docSum = document.getElementById("coordinationDocSummary");
+  const docs = Array.from(document.querySelectorAll("input[name='coordinationDoc']:checked")).map(i => i.value);
+  if (docSum) docSum.textContent = docs.length ? docs.join(" / ") : "選択なし";
+  const actionSum = document.getElementById("coordinationDocActionSummary");
+  const actions = Array.from(document.querySelectorAll("input[name='coordinationDocAction']:checked")).map(i => i.value);
+  if (actionSum) actionSum.textContent = actions.length ? actions.join(" / ") : "選択なし";
+  const medReasonSum = document.getElementById("medicalReasonSummary");
+  const medReasons = getSelectedMedicalValues("medicalReason");
+  if (medReasonSum) medReasonSum.textContent = medReasons.length ? `主治医へ連絡する理由：${medReasons.join(" / ")}` : "主治医へ連絡する理由：選択なし";
+  const medActionSum = document.getElementById("medicalActionSummary");
+  const medActions = getSelectedMedicalValues("medicalAction");
+  if (medActionSum) medActionSum.textContent = medActions.length ? `お願い・確認事項：${medActions.join(" / ")}` : "お願い・確認事項：選択なし";
+  const medDocSum = document.getElementById("medicalDocumentSummary");
+  const medDocs = getSelectedMedicalValues("medicalDocument");
+  if (medDocSum) medDocSum.textContent = medDocs.length ? `作成をお願いする書類：${medDocs.join(" / ")}` : "作成をお願いする書類：選択なし";
+  updateMedicalRequestVisibility();
+  updateDocumentStepVisibility();
+  updateMethodFormatUI();
+}
+
+function getPhraseItems(type){const key=PHRASE_KEYS[type],defaults=DEFAULT_PHRASES[type];try{const x=JSON.parse(localStorage.getItem(key));if(Array.isArray(x))return x.filter(v=>typeof v==="string"&&v.trim());}catch(e){}return [...defaults];}
+function getSelectedPhrase(type){const el=document.querySelector(`input[name="phrase_${type}"]:checked`);return el?el.value:"AIに任せる";}
+function renderPhraseChoices(type,containerId,summaryId){
+  const container=document.getElementById(containerId);
+  if(!container)return;
+  const items=getPhraseItems(type);
+  let html=`<div class="choice"><input id="phrase_${type}_ai" name="phrase_${type}" type="radio" value="AIに任せる" checked><label for="phrase_${type}_ai">🤖 AIに任せる</label></div>`;
+  items.forEach((v,i)=>{
+    const id=`phrase_${type}_${i}`;
+    html+=`<div class="choice"><input id="${id}" name="phrase_${type}" type="radio" value="${esc(v)}"><label for="${id}">${esc(v)}</label></div>`;
+  });
+  container.innerHTML=html;
+  const summary=document.getElementById(summaryId);
+  if(summary)summary.textContent="AIに任せる";
+}
+function renderPhraseChoicesAll(){renderPhraseChoices("greeting","greetingChoices","greetingSummary");renderPhraseChoices("thanks","thanksChoices","thanksSummary");renderPhraseChoices("closing","closingChoices","closingSummary");}
+function updatePhraseSummaries(){["greeting","thanks","closing"].forEach(type=>{const id=type==="greeting"?"greetingSummary":type==="thanks"?"thanksSummary":"closingSummary";const el=document.getElementById(id);if(el)el.textContent=getSelectedPhrase(type);});}
+function cleanLegacyStorage() {
+  try {
+    const legacyId = "customcat_1788244714596";
+    // 旧カテゴリーを現在の構成から除去
+    let defs = JSON.parse(localStorage.getItem(CUSTOM_CATEGORY_KEY) || "[]");
+    if (Array.isArray(defs)) {
+      defs = defs.filter(x => x && x.id !== legacyId && x.name !== "主治医に情報提供・依頼" && x.name !== "主治医への情報提供や依頼");
+      localStorage.setItem(CUSTOM_CATEGORY_KEY, JSON.stringify(defs));
+    }
+    // 旧STEP1/STEP2の保存データは、現在のカテゴリー構造へ移行後に削除
+    const growth = getGrowthData();
+    delete growth.s1_4;
+    delete growth.s1_6;
+    delete growth[legacyId];
+    saveGrowthData(growth);
+
+    // 確定済み標準設定にも旧カテゴリーが残っていれば除去
+    const raw = localStorage.getItem(BO_STANDARD_KEY);
+    if (raw) {
+      const payload = JSON.parse(raw);
+      if (payload && payload.data && typeof payload.data === "object") {
+        if (payload.data[GROWTH_KEY]) {
+          const gd = JSON.parse(payload.data[GROWTH_KEY]);
+          delete gd.s1_4;
+          delete gd.s1_6;
+          delete gd[legacyId];
+          payload.data[GROWTH_KEY] = JSON.stringify(gd);
+        }
+        if (payload.data[CUSTOM_CATEGORY_KEY]) {
+          const cd = JSON.parse(payload.data[CUSTOM_CATEGORY_KEY]);
+          if (Array.isArray(cd)) payload.data[CUSTOM_CATEGORY_KEY] = JSON.stringify(cd.filter(x => x && x.id !== legacyId && x.name !== "主治医に情報提供・依頼" && x.name !== "主治医への情報提供や依頼"));
+        }
+        localStorage.setItem(BO_STANDARD_KEY, JSON.stringify(payload));
+      }
+    }
+  } catch(e) {}
+}
+
+function loadCustomItems() {
+  let defs=[];
+  try { defs = JSON.parse(localStorage.getItem(CUSTOM_CATEGORY_KEY)) || []; } catch(e) { defs=[]; }
+  if (!Array.isArray(defs)) defs=[];
+
+  // 旧「➕ 主治医への情報提供や依頼」カテゴリーは不要になったため削除します。
+  defs = defs.filter(x => x && x.name !== "主治医への情報提供や依頼" && x.name !== "主治医に情報提供・依頼");
+
+  // 旧STEP1追加項目が残っている場合だけ、現在の独立カテゴリーへ移行します。
+  let legacyStep1=[];
+  try { legacyStep1 = JSON.parse(localStorage.getItem(STEP1_CUSTOM_KEY)) || []; } catch(e) { legacyStep1=[]; }
+  if (Array.isArray(legacyStep1)) {
+    legacyStep1.forEach((name, idx) => {
+      if (typeof name !== "string" || !name.trim()) return;
+      if (!defs.some(x => x && x.name === name.trim())) {
+        defs.push({id:"customcat_" + Date.now() + "_" + idx, name:name.trim(), icon:"➕"});
+      }
+    });
+  }
+  localStorage.setItem(CUSTOM_CATEGORY_KEY, JSON.stringify(defs));
+  localStorage.removeItem(STEP1_CUSTOM_KEY);
+
+  const growth = getGrowthData();
+  defs.forEach(def => {
+    if (!def || !def.id || !def.name) return;
+    GROWTH_CONFIG[def.id] = { icon:def.icon || "➕", name:def.name, defaults:[] };
+    if (!growth[def.id]) growth[def.id] = {name:def.name, items:[], origins:[], hidden:[], customCategory:true};
+  });
+  saveGrowthData(growth);
+  customStep1Items=[];
+  renderCustomLists();
+}
+
+function saveCustomCategoryDefs(defs){ localStorage.setItem(CUSTOM_CATEGORY_KEY, JSON.stringify(defs)); }
+
+function getCustomCategoryDefs(){
+  try {
+    const x=JSON.parse(localStorage.getItem(CUSTOM_CATEGORY_KEY)||"[]");
+    if (!Array.isArray(x)) return [];
+    const filtered=x.filter(it => it && it.name !== "主治医への情報提供や依頼" && it.name !== "主治医に情報提供・依頼");
+    if (filtered.length !== x.length) localStorage.setItem(CUSTOM_CATEGORY_KEY, JSON.stringify(filtered));
+    return filtered;
+  } catch(e){ return []; }
+}
+
+function renderCustomLists() {
+  const c1List = document.getElementById("customStep1List");
+  const defs = getCustomCategoryDefs();
+  if (c1List) {
+    c1List.innerHTML = defs.length === 0 ? "追加カテゴリーはありません。" : defs.map((it) =>
+      `<div class="custom-item-row"><span class="custom-item-name">${esc(it.icon || "➕")} ${esc(it.name)}</span><span style="font-size:12px;color:#245c80;font-weight:bold;">✓ 追加済み</span></div>`
+    ).join("");
+  }
+  renderStep2();
+  updateStep1Labels();
+}
+
+function addStep1Item() {
+  const input = document.getElementById("newStep1Item");
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) return;
+  const defs = getCustomCategoryDefs();
+  if (defs.some(x => x.name === val)) { alert("同じ名前のカテゴリーがすでにあります。"); return; }
+  const id = "customcat_" + Date.now();
+  defs.push({id, name:val, icon:"➕"});
+  saveCustomCategoryDefs(defs);
+  GROWTH_CONFIG[id] = {icon:"➕", name:val, defaults:[]};
+  const d=getGrowthData();
+  d[id]={name:val,items:[],origins:[],hidden:[],customCategory:true};
+  saveGrowthData(d);
+  input.value="";
+  activeGrowthCategory = id;
+  renderCustomLists();
+  renderGrowthManager();
+  alert(`新しいカテゴリー「${val}」を追加しました。STEP 3に新しいボタンとして表示されます。
+設定画面でカテゴリーを選択すると、STEP 4の具体的内容を追加できます。`);
+}
+
+function loadPromptLibrary() {
+  try { promptLibrary = JSON.parse(localStorage.getItem(LIBRARY_KEY)) || []; } catch(e) { promptLibrary = []; }
+  if (promptLibrary.length === 0) {
+    promptLibrary = [{ id: "default", name: "標準プロンプト", text: DEFAULT_PROMPT_TEXT }];
+  }
+  // 「お手紙」を選択したときに自動起動できる専用プロンプトを標準ライブラリへ追加します。
+  if (!promptLibrary.find(p => p.id === LETTER_PROMPT_ID)) {
+    promptLibrary.push({ id: LETTER_PROMPT_ID, name: LETTER_PROMPT_NAME, text: LETTER_PROMPT_TEXT });
+  }
+  else {
+    // お手紙用プロンプトは、このHTMLに定義された最新版を使用します。
+    const letterPrompt = promptLibrary.find(p => p.id === LETTER_PROMPT_ID);
+    if (letterPrompt) { letterPrompt.name = LETTER_PROMPT_NAME; letterPrompt.text = LETTER_PROMPT_TEXT; }
+  }
+  savePromptLibrary();
+  activePromptId = localStorage.getItem(ACTIVE_KEY) || "default";
+  if (!promptLibrary.find(p => p.id === activePromptId)) activePromptId = promptLibrary[0].id;
+  renderPromptSelector();
+}
+
+function savePromptLibrary() {
+  localStorage.setItem(LIBRARY_KEY, JSON.stringify(promptLibrary));
+}
+
+function renderPromptSelector() {
+  const sel = document.getElementById("promptSelector");
+  if (!sel) return;
+  sel.innerHTML = promptLibrary.map(p => `<option value="${p.id}" ${p.id === activePromptId ? 'selected' : ''}>${esc(p.name)}</option>`).join("");
+  const activePrompt = promptLibrary.find(p => p.id === activePromptId) || promptLibrary[0];
+  const nameEl = document.getElementById("selectedPromptName");
+  const textEl = document.getElementById("selectedPromptText");
+  if (nameEl) nameEl.value = activePrompt.name;
+  if (textEl) textEl.value = activePrompt.text;
+  
+  const statusEl = document.getElementById("activePromptName");
+  if (statusEl) statusEl.textContent = `現在使用中：${activePrompt.name}`;
+}
+
+function saveSelectedPrompt() {
+  const p = promptLibrary.find(x => x.id === activePromptId);
+  if (!p) return;
+  const nameVal = document.getElementById("selectedPromptName").value.trim();
+  const textVal = document.getElementById("selectedPromptText").value.trim();
+  if (!nameVal || !textVal) { alert("プロンプト名と本文を入力してください。"); return; }
+  p.name = nameVal;
+  p.text = textVal;
+  savePromptLibrary();
+  renderPromptSelector();
+  alert("保存しました。");
+}
+
+function restoreSelectedPrompt() {
+  if (!confirm("現在の標準設定として確定したプロンプトに戻しますか？")) return;
+  const standard = getStandardSnapshotPayload();
+  if (standard && Object.prototype.hasOwnProperty.call(standard.data, LIBRARY_KEY)) {
+    try {
+      promptLibrary = JSON.parse(standard.data[LIBRARY_KEY]) || [];
+      activePromptId = standard.data[ACTIVE_KEY] || "default";
+      savePromptLibrary();
+      localStorage.setItem(ACTIVE_KEY, activePromptId);
+      renderPromptSelector();
+      return;
+    } catch(e) {}
+  }
+  if (activePromptId === "default") {
+    const p = promptLibrary.find(x => x.id === "default");
+    if (p) { p.text = DEFAULT_PROMPT_TEXT; p.name = "標準プロンプト"; savePromptLibrary(); renderPromptSelector(); }
+  } else {
+    alert("まだ標準設定として確定したプロンプトがありません。");
+  }
+}
+
+function deleteSelectedPrompt() {
+  if (activePromptId === "default") { alert("標準プロンプトは削除できません。"); return; }
+  if (confirm("このプロンプトを削除しますか？")) {
+    promptLibrary = promptLibrary.filter(p => p.id !== activePromptId);
+    activePromptId = "default";
+    localStorage.setItem(ACTIVE_KEY, activePromptId);
+    savePromptLibrary();
+    renderPromptSelector();
+  }
+}
+
+function showAddForm() {
+  document.getElementById("addForm").style.display = "block";
+  document.getElementById("showAddButton").style.display = "none";
+}
+
+function cancelAddForm() {
+  document.getElementById("addForm").style.display = "none";
+  document.getElementById("showAddButton").style.display = "inline-block";
+}
+
+function addPrompt() {
+  const nameVal = document.getElementById("newPromptName").value.trim();
+  const textVal = document.getElementById("newPromptText").value.trim();
+  if (!nameVal || !textVal) { alert("プロンプト名と本文を入力してください。"); return; }
+  const newId = "p_" + Date.now();
+  promptLibrary.push({ id: newId, name: nameVal, text: textVal });
+  activePromptId = newId;
+  localStorage.setItem(ACTIVE_KEY, activePromptId);
+  savePromptLibrary();
+  cancelAddForm();
+  renderPromptSelector();
+  alert("新しいプロンプトを追加しました。");
+}
+
+function collectCurrentStandardSnapshot() {
+  const snapshot = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith("bo_coordination_")) {
+      snapshot[key] = localStorage.getItem(key);
+    }
+  }
+  // 標準スナップショット自身は入れ子にしない
+  delete snapshot[BO_STANDARD_KEY];
+  return snapshot;
+}
+
+function rebaseGrowthOriginsToCurrentStandard() {
+  const d = getGrowthData();
+  Object.keys(GROWTH_CONFIG).forEach(k => {
+    if (!d[k] || typeof d[k] !== "object") return;
+    normalizeGrowthCategory(k, d);
+    d[k].origins = d[k].items.map(x => x);
+    d[k].hidden = (Array.isArray(d[k].hidden) ? d[k].hidden : []).map(x => {
+      const value = typeof x === "string" ? x : x.value;
+      return { value, origin: value };
+    }).filter(x => x.value);
+  });
+  saveGrowthData(d);
+}
+
+function confirmStandardSettings() {
+  try {
+    // 現在の自己設定をまず「この時点の標準」として確定する。
+    // その直後に項目の基準値(origin)も現在値へ更新することで、画面上の
+    // 「👤 自己設定」が「🏢 標準」に切り替わる。
+    rebaseGrowthOriginsToCurrentStandard();
+    const snapshot = collectCurrentStandardSnapshot();
+    const payload = { version: 2, savedAt: new Date().toISOString(), data: snapshot };
+    localStorage.setItem(BO_STANDARD_KEY, JSON.stringify(payload));
+    renderGrowthManager();
+    renderStep2();
+    renderPhraseChoicesAll();
+    updateSummaries();
+    updateStandardSettingsStatus();
+    alert("現在の設定を標準設定として確定しました。\n自己設定として変更・追加した内容も、現在の標準設定として採用されました。\nこの操作は何度でも行えます。");
+  } catch(e) {
+    alert("標準設定の確定に失敗しました。ブラウザの保存容量などを確認してください。");
+  }
+}
+
+function getStandardSnapshotPayload() {
+  try {
+    const raw = localStorage.getItem(BO_STANDARD_KEY);
+    const payload = raw ? JSON.parse(raw) : null;
+    if (payload && payload.data && typeof payload.data === "object") return payload;
+  } catch(e) {}
+  return null;
+}
+
+function restoreAllToConfirmedStandard() {
+  const payload = getStandardSnapshotPayload();
+  if (!payload) {
+    alert("まだ標準設定が確定されていません。");
+    return;
+  }
+  if (!confirm("現在の自己設定を破棄し、最後に確定した標準設定に戻しますか？\n\nこの操作は現在の編集内容を元に戻します。")) return;
+  try {
+    const keys = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith("bo_coordination_") && key !== BO_STANDARD_KEY) keys.push(key);
+    }
+    keys.forEach(k => localStorage.removeItem(k));
+    Object.entries(payload.data).forEach(([k,v]) => localStorage.setItem(k,v));
+    loadCustomItems();
+    loadPromptLibrary();
+    renderGrowthManager();
+    renderStep2();
+    renderPhraseChoicesAll();
+    updateSummaries();
+    updateStandardSettingsStatus();
+    alert("最後に確定した標準設定に戻しました。");
+  } catch(e) {
+    alert("標準設定への復元に失敗しました。");
+  }
+}
+
+function updateStandardSettingsStatus() {
+  const el = document.getElementById("standardSettingsStatus");
+  if (!el) return;
+  const payload = getStandardSnapshotPayload();
+  if (!payload) {
+    el.textContent = "まだ標準設定は確定されていません。";
+    return;
+  }
+  const d = payload.savedAt ? new Date(payload.savedAt) : null;
+  const text = d && !isNaN(d.getTime()) ? d.toLocaleString("ja-JP") : "日時不明";
+  el.textContent = `標準設定：確定済み（${text}）\n必要に応じて編集後、もう一度「標準設定として確定」を押せます。`;
+}
+
+function createReleaseHTML() {
+  const payload = getStandardSnapshotPayload();
+  if (!payload) {
+    alert("先に「標準設定として確定」を押してください。");
+    return;
+  }
+
+  // 正式版は必ずメイン画面の状態を元に作成する。
+  // 設定画面から実行した場合でも、設定画面が正式版HTMLに保存されないようにする。
+  const wasSettingsView = document.body.classList.contains("settings-view-active");
+  if (wasSettingsView) showMainView();
+
+  const source = document.documentElement.outerHTML;
+  if (!source || source.length < 1000 || !source.toLowerCase().includes("<html")) {
+    alert("正式版HTMLの元データを取得できませんでした。正式版は作成していません。");
+    return;
+  }
+
+  const embeddedJson = JSON.stringify(payload.data).replace(/</g, "\\u003c");
+  const embeddedScript = `<script>window.BO_RELEASE_MODE=true;window.BO_EMBEDDED_STANDARD=${embeddedJson};<\/script>`;
+
+  // 開発版HTMLへ、現在の標準設定を1つだけ埋め込む。
+  let html = source.replace(/<head>/i, `<head>${embeddedScript}`);
+
+  const finalHtml = "<!doctype html>\n" + html;
+
+  // 作成前に、実際にHTML本文が入っていることを確認する。
+  if (finalHtml.length < 1000 || !finalHtml.toLowerCase().includes("<html")) {
+    alert("正式版HTMLの生成に失敗しました。空のファイルは作成しません。");
+    return;
+  }
+
+  const blob = new Blob([finalHtml], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const stamp = new Date().toISOString().slice(0,10).replace(/-/g, "");
+  a.href = url;
+  a.download = `BlueOcean_関係機関連絡_正式版_${stamp}.html`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  alert("正式版HTMLを作成しました。\n現在の標準設定を埋め込んだ完全なHTMLファイルです。\nこの正式版をGitHubへアップロードしてください。");
+
+  // 生成処理後は、実行前の画面状態を維持する。
+  if (wasSettingsView) showSettingsView();
+}
+
+function showUsageGuide() {
+  const card = document.getElementById("usageCard");
+  if (card) card.scrollIntoView({ behavior: "smooth" });
+}
+
+function togglePurposeChoices(btn) {
+  const area = document.getElementById("purposeChoicesArea");
+  if (!area) return;
+  const isHidden = area.style.display === "none";
+  area.style.display = isHidden ? "block" : "none";
+  if (btn) btn.textContent = isHidden ? "▲ 選択肢を閉じる" : "▼ 選択肢から選ぶ";
+}
+
+function updateMethodFormatUI(){
+  const method=document.querySelector("input[name='method']:checked")?.value || "";
+  const area=document.getElementById("methodFormatArea");
+  const flowArea=document.getElementById("messageFlowArea");
+  const choices=document.getElementById("methodFormatChoices");
+  const title=document.getElementById("methodFormatTitle");
+  const desc=document.getElementById("methodFormatDescription");
+  const titleChoiceArea=document.getElementById("letterTitleChoiceArea");
+  const titleArea=document.getElementById("letterTitleInputArea");
+  const seasonArea=document.getElementById("letterSeasonArea");
+  const summary=document.getElementById("methodFormatSummary");
+  if(!area || !choices) return;
+
+  if(!method){
+    if(flowArea) flowArea.style.display="none";
+    area.style.display="none";
+    if(titleChoiceArea) titleChoiceArea.style.display="none";
+    if(titleArea) titleArea.style.display="none";
+    if(seasonArea) seasonArea.style.display="none";
+    return;
+  }
+
+  if(flowArea) flowArea.style.display="block";
+  area.style.display="block";
+  const formats=METHOD_FORMATS[method] || [];
+  const current=getSelectedMethodFormat();
+  let html=`<div class="choice"><input id="methodFormatAI" name="methodFormat" type="radio" value="AIに任せる" ${current==="AIに任せる"?"checked":""} onchange="updateMethodFormatUI()"><label for="methodFormatAI">🤖 AIに任せる</label></div>`;
+  formats.forEach((v,i)=>{
+    const id=`methodFormat_${i}`;
+    html+=`<div class="choice"><input id="${id}" name="methodFormat" type="radio" value="${esc(v)}" ${current===v?"checked":""} onchange="updateMethodFormatUI()"><label for="${id}">${esc(v)}</label></div>`;
+  });
+  choices.innerHTML=html;
+
+  if(title) title.textContent = method === "お手紙" ? "✉️ お手紙の形式" : `📌 ${method}の形式`;
+  if(desc) desc.textContent = method === "お手紙"
+    ? "手紙の基本形を選択できます。表題と季節の挨拶は、下で別々に指定できます。"
+    : "必要な場合だけ選択してください。選択しない場合はAIが内容に合った形式を判断します。";
+
+  const isLetter=method==="お手紙";
+  if(titleChoiceArea) titleChoiceArea.style.display=isLetter?"block":"none";
+  if(seasonArea) seasonArea.style.display=isLetter?"block":"none";
+
+  if(isLetter){
+    const titleYes=document.getElementById("letterTitleYes");
+    const titleNo=document.getElementById("letterTitleNo");
+    const titleCurrent=document.querySelector("input[name='letterTitleChoice']:checked")?.value;
+    if(!titleCurrent){
+      if(titleNo) titleNo.checked=true;
+    }
+    const effectiveTitle=document.querySelector("input[name='letterTitleChoice']:checked")?.value || "なし";
+    if(titleArea) titleArea.style.display=effectiveTitle==="あり"?"block":"none";
+    const season=document.querySelector("input[name='letterSeason']:checked")?.value || "AIに任せる";
+    if(summary) summary.textContent=`形式：${current} ／ 表題：${effectiveTitle} ／ 季節の挨拶：${season}`;
+  }else{
+    if(titleArea) titleArea.style.display="none";
+    if(summary) summary.textContent=`形式：${current}`;
+  }
+
+  const step3Summary=document.getElementById("step3Summary");
+  if(step3Summary) step3Summary.textContent = method + (current!=="AIに任せる" ? ` / ${current}` : "");
+}
+
+// 旧関数名を残して、既存イベントや保存データから呼ばれても動作するようにします。
+function updateLetterFormatUI(){ updateMethodFormatUI(); }
+
+function handleLetterPromptActivation(methodValue) {
+  // 「お手紙」を選択した場合だけ、お手紙専用プロンプトを自動で使用します。
+  if (methodValue === "お手紙") {
+    if (promptLibrary.find(p => p.id === LETTER_PROMPT_ID)) {
+      activePromptId = LETTER_PROMPT_ID;
+      localStorage.setItem(ACTIVE_KEY, activePromptId);
+      renderPromptSelector();
+    }
+    return;
+  }
+
+  // 「お手紙」から別の伝達方法へ戻した場合は標準プロンプトへ戻します。
+  if (activePromptId === LETTER_PROMPT_ID) {
+    activePromptId = "default";
+    localStorage.setItem(ACTIVE_KEY, activePromptId);
+    renderPromptSelector();
+  }
+}
+
+
+
+/* 復旧: 既存UIで使用する共通関数・媒体形式定義。機能変更は行いません。 */
+const METHOD_FORMATS = {
+  "FAX": ["標準FAX", "簡潔なFAX"],
+  "メール": ["標準メール", "簡潔なメール"],
+  "メッセージ・コメント": ["標準", "やわらかい表現", "簡潔"],
+  "文書": ["標準文書", "案内・通知", "依頼文", "情報提供文", "報告文", "謝罪文", "会議の案内文"],
+  "お手紙": ["① 拝啓・敬具型", "② 簡易手紙型"]
+};
+
+function addPhrase(type){const input=document.getElementById(`newPhrase_${type}`),v=input.value.trim();if(!v)return;const a=getPhraseItems(type);if(!a.includes(v))a.push(v);savePhraseItems(type,a);input.value="";renderPhraseSettings();renderPhraseChoicesAll();}
+
+function boGrowthHidden(key) {
+  const d = getGrowthData();
+  if (d[key] && Array.isArray(d[key].hidden)) {
+    return d[key].hidden.map(x => typeof x === "string" ? x : x.value).filter(x => typeof x === "string" && x.trim() !== "");
+  }
+  return [];
+}
+
+function changeActivePrompt(id) {
+  activePromptId = id;
+  localStorage.setItem(ACTIVE_KEY, activePromptId);
+  renderPromptSelector();
+}
+
+function copyAI() {
+  const recipientInput = document.querySelector("input[name='recipient']:checked");
+  const recipient = recipientInput ? recipientInput.value : "未選択";
+  const selectedStep1 = getSelectedStep1();
+  const s1 = selectedStep1.map(x => x.name).join(", ") || "未選択";
+  const s2Inputs = document.querySelectorAll("#dynamicStep2Grid input[type='checkbox']:checked");
+  const s2 = Array.from(s2Inputs).map(i => i.value).join(", ") || "未選択";
+  const purposeMemo = document.getElementById("purposeMemo")?.value.trim() || "なし";
+  const s3Input = document.querySelector("input[name='method']:checked");
+  const s3 = s3Input ? s3Input.value : "未選択";
+  const memo = document.getElementById("memo").value.trim() || "なし";
+  const greeting = getSelectedPhrase("greeting");
+  const thanks = getSelectedPhrase("thanks");
+  const closing = getSelectedPhrase("closing");
+  const methodFormat = getSelectedMethodFormat();
+  const letterTitle = document.getElementById("letterTitle")?.value.trim() || "未記入";
+  const letterTitleChoice = document.querySelector("input[name='letterTitleChoice']:checked")?.value || (s3 === "お手紙" ? "なし" : "対象外");
+  const letterSeason = document.querySelector("input[name='letterSeason']:checked")?.value || "AIに任せる";
+  const requestAssist = document.getElementById("requestAssistChoice")?.checked === true;
+  const coordinationDocs = Array.from(document.querySelectorAll("input[name='coordinationDoc']:checked")).map(i => i.value).join(", ") || "なし";
+  const coordinationDocActions = Array.from(document.querySelectorAll("input[name='coordinationDocAction']:checked")).map(i => i.value).join(", ") || "なし";
+  const medicalReasons = getSelectedMedicalValues("medicalReason").join(", ") || "なし";
+  const medicalActions = getSelectedMedicalValues("medicalAction").join(", ") || "なし";
+  const medicalDocuments = getSelectedMedicalValues("medicalDocument").join(", ") || "なし";
+  
+  const activePrompt = promptLibrary.find(p => p.id === activePromptId) || { text: DEFAULT_PROMPT_TEXT };
+
+  const fullText = `${activePrompt.text}
+
+【追加ルール：媒体・形式・表現を分けて判断】
+「伝達方法」と「伝達方法の形式」と「丁寧な表現」は、それぞれ別の指定として扱ってください。後に記載される今回の入力情報を優先し、選択された形式に合わせて文章を作成してください。
+
+【媒体別の形式】
+・FAX：標準FAX＝一般的な業務連絡、簡潔なFAX＝要点を短く整理。
+・メール：標準メール＝一般的な業務メール、簡潔なメール＝短く要点を整理。必要に応じて件名を自然に作成してください。
+・メッセージ・コメント：標準＝通常の短文連絡、やわらかい表現＝親しみと配慮を重視、簡潔＝必要最小限に整理。「関係者各位」「拝啓」「敬具」は使用しません。
+・文書：標準文書＝一般的な正式連絡文、案内・通知＝相手に内容が明確に伝わる案内文、依頼文＝依頼内容が明確で配慮ある文面、情報提供文＝必要な情報を整理して伝える文面、報告文＝経過・結果等を整理して伝える文面。
+・お手紙：① 拝啓・敬具型＝「拝啓」で始め「敬具」で結ぶ正式な手紙、② 簡易手紙型＝拝啓・敬具を使わず自然な手紙として作成。表題設定と季節の挨拶は別指定として扱ってください。
+・「AIに任せる」の場合は、宛先・目的・具体的内容から最も自然な形式を選択してください。
+・「丁寧な表現に整える」が「あり」の場合は、内容・事実・依頼事項を変更せず、相手への配慮を込めてより丁寧で柔らかな表現に整えてください。「お願い申し上げます」「ご対応くださいますようお願い申し上げます」「ご検討いただけますと幸いです」「ご確認のほどよろしくお願い申し上げます」等を内容に応じて自然に使い分けてください。
+・「丁寧な表現に整える」が「なし」の場合は、媒体と形式に合った通常の自然な表現で作成してください。
+
+【STEP4・STEP5の扱い】
+・「書類送付・手続き」では、STEP4で「書類を送付する・書類を添付する・書類の手続き」から方法を複数選択できます。これらはケアマネジャー側が今回の書類について行う方法・手続きの指定として扱い、STEP5で選択された書類と相手にしてほしいことを組み合わせて文章化してください。
+・「医師・医療機関への連絡・相談」では、STEP4を2段階で扱います。まず「主治医へ連絡する理由」を整理し、次に「お願い・確認事項」を複数選択します。
+・主治医について「書類作成依頼をしたい」が選択された場合は、その下に表示される書類もすべて選択内容として扱ってください。
+・主治医について選択された理由、お願い・確認事項、作成依頼書類は、すべて一つの自然な主治医宛文書に統合してください。
+・「書類を送付する」「書類を添付する」「書類の手続き」は、ケアマネジャー側の書類に関する方法・手続きの指定です。相手への依頼内容とは混同しないでください。選択された方法をAIが認識し、STEP5の書類・相手にしてほしいことと自然に組み合わせてください。
+・「書類を送付する」は郵送・FAX等で書類を送ること、「書類を添付する」はメール等に書類を添付すること、「書類の手続き」は書類に関する手続き・処理を行うこととして扱ってください。複数選択されている場合は、選択された内容をすべて反映してください。
+・主治医・医師については、選択された「主治医へ連絡する理由」を背景として、選択された「お願い・確認事項」をすべて反映してください。
+・「書類作成依頼をしたい」が選択されている場合は、選択された書類を具体的に記載し、作成依頼として自然に文章化してください。意見・助言と書類作成依頼が同時に選択されている場合は、どちらも省略せず一つの文書に統合してください。
+・「意見・助言をいただきたい」と具体的な対象（ケアプラン、福祉用具、住宅改修、リハビリ、服薬・治療、食事・嚥下等）が同時に選択されている場合は、対象を明確にして意見・助言を求める文章にしてください。
+・FAX・メール・文書・お手紙などの伝達方法に応じて、「送付いたします」「添付いたします」「同封しております」等を自然に使い分けてください。
+・書類について「内容を確認してもらう」は「ご確認ください」「ご確認いただけますと幸いです」等、媒体と相手に合う表現にしてください。
+・「署名・捺印してもらう」「記入・署名後に返送してもらう」「一部を返送してもらう」は、相手に必要な具体的行動が明確に伝わるようにしてください。
+・「書類を作成してもらう」は、STEP4で選択された対象を相手に作成してもらう依頼として文章化してください。
+・医師・主治医への依頼は、STEP4の対象とSTEP5の依頼内容を組み合わせ、医療職への敬意を保った自然な表現にしてください。
+・STEP5で何も選択されていない場合は、相手への依頼・確認を勝手に追加しないでください。
+
+【今回の入力情報】
+■ 宛先：${recipient}
+■ 連絡目的（STEP3・選択）：${s1}
+■ 連絡目的（STEP3・音声/手入力）：${purposeMemo}
+■ 具体的内容（STEP4）：${s2}
+■ 書類送付・手続きの方法（STEP4）：${selectedStep1.some(x => x.id === "s1_7") ? s2 : "対象外"}
+■ 書類（STEP5）：${coordinationDocs}
+■ 書類について相手にしてほしいこと（STEP5）：${coordinationDocActions}
+■ 主治医へ連絡する理由（STEP4）：${medicalReasons}
+■ 主治医へのお願い・確認事項（STEP4）：${medicalActions}
+■ 主治医に作成をお願いする書類（STEP4）：${medicalDocuments}
+■ 伝達方法（STEP2）：${s3}
+■ 伝達方法の形式：${methodFormat}
+■ お手紙の表題設定：${letterTitleChoice}
+■ お手紙の表題：${letterTitle}
+■ お手紙の季節の挨拶：${letterSeason}
+■ 表題の自動設定ルール：表題を付ける場合、表題欄が未入力なら、入力・選択された内容だけを材料として簡潔で自然な表題を自動作成してください。入力されていない事実・日時・人物・出来事等を表題に追加しないでください。
+■ 空欄入力の扱い：音声・手入力欄が空欄でも作成を中止しないでください。選択された宛先・目的・具体的内容・伝達方法・お手紙の形式・定型文等、実際に入力・選択されている情報だけを使って、作成可能な範囲で必ず完成文を作成してください。「空欄なので作成できません」「入力してください」等の拒否文は出力しないでください。
+■ 丁寧な表現に整える：${requestAssist ? "あり" : "なし"}
+■ 丁寧な表現に整える：${requestAssist ? "入力された内容を変えず、相手への配慮を込めて、より丁寧で柔らかな表現に整えてください。「お願い申し上げます」「ご対応くださいますようお願い申し上げます」「ご検討いただけますと幸いです」「ご確認のほどよろしくお願い申し上げます」等、内容に合った表現を自然に使い分けてください。入力されていない依頼内容や事実を追加しないでください。" : "通常の文章表現で作成してください。"}
+■ 基本の挨拶：${greeting}
+■ 感謝・ねぎらい：${thanks}
+■ 結び・お願い：${closing}
+■ 今回伝えたいこと（自由入力/音声入力）：
+${memo}`;
+
+  navigator.clipboard.writeText(fullText).then(() => {
+    const btn = document.getElementById("copyButton");
+    btn.classList.add("copied");
+    btn.textContent = "✓ コピーしました！AIに貼り付けてください";
+    const newBtn = document.getElementById("newMessageButton");
+    if (newBtn) newBtn.style.display = "inline-block";
+    setTimeout(() => {
+      btn.classList.remove("copied");
+      btn.textContent = "📋 AI処理用にコピー";
+    }, 3000);
+  }).catch(err => {
+    alert("コピーに失敗しました。手動で選択してコピーしてください。");
+  });
+}
+
+function createNewMessage() {
+  // 現在の入力・選択だけをリセットし、設定画面の保存内容は変更しない
+  document.querySelectorAll("input[type='radio'], input[type='checkbox']").forEach(input => { input.checked = false; });
+  document.getElementById("memo").value = "";
+  resetRequestAssist();
+  updateRequestAssistVisibility();
+  const flowArea = document.getElementById("messageFlowArea");
+  if (flowArea) flowArea.style.display = "none";
+  const purposeMemoEl = document.getElementById("purposeMemo");
+  if (purposeMemoEl) purposeMemoEl.value = "";
+  const letterTitleEl = document.getElementById("letterTitle");
+  if (letterTitleEl) letterTitleEl.value = "";
+  renderStep2();
+  renderPhraseChoicesAll();
+  updateSummaries();
+  const newBtn = document.getElementById("newMessageButton");
+  if (newBtn) newBtn.style.display = "none";
+  const copyBtn = document.getElementById("copyButton");
+  if (copyBtn) { copyBtn.classList.remove("copied"); copyBtn.textContent = "📋 AI処理用にコピー"; }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function deletePhrase(type,index){const a=getPhraseItems(type);a.splice(index,1);savePhraseItems(type,a);renderPhraseSettings();renderPhraseChoicesAll();}
+
+function editPhrase(type,index,value){const a=getPhraseItems(type),v=value.trim();if(v)a[index]=v;else a.splice(index,1);savePhraseItems(type,a);renderPhraseSettings();renderPhraseChoicesAll();}
+
+function getSelectedLetterFormat(){ return getSelectedMethodFormat(); }
+
+function getSelectedMethodFormat(){
+  const el=document.querySelector("input[name='methodFormat']:checked");
+  return el ? el.value : "AIに任せる";
+}
+
+function goHome() {
+  window.location.href = "https://blueocean2014.github.io/BlueOcean-Support/";
+}
+
+function handleMessageFlow(value) {
+  if (value === "直接音声・手入力に進む") {
+    scrollToMemo();
+  } else if (value === "選択しながら進む") {
+    const purpose = document.getElementById("purposeMemo");
+    if (purpose) purpose.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
+function phraseLabel(type){return type==="greeting"?"基本の挨拶":type==="thanks"?"感謝・ねぎらい":"結び・お願い";}
+
+function removeStep1Item(idx) {
+  const defs=getCustomCategoryDefs();
+  const target=defs[idx];
+  if(!target) return;
+  if(!confirm(`カテゴリー「${target.name}」を削除しますか？`)) return;
+  defs.splice(idx,1);
+  saveCustomCategoryDefs(defs);
+  delete GROWTH_CONFIG[target.id];
+  const d=getGrowthData();
+  delete d[target.id];
+  if(Array.isArray(d.__deletedCategories)) d.__deletedCategories=d.__deletedCategories.filter(x=>x!==target.id);
+  saveGrowthData(d);
+  if(activeGrowthCategory===target.id) activeGrowthCategory=Object.keys(GROWTH_CONFIG)[0]||null;
+  renderCustomLists();
+  renderGrowthManager();
+  updateStep1Labels();
+  renderStep2();
+}
+
+function renderPhraseSettings(){const root=document.getElementById("phraseSettingsManager");if(!root)return;root.innerHTML=["greeting","thanks","closing"].map(type=>{const items=getPhraseItems(type);return `<div class="selection-box" style="margin-top:10px;background:#fff;"><div style="font-weight:bold;color:var(--bo-deep);margin-bottom:8px;">${phraseLabel(type)}</div>${items.map((v,i)=>`<div class="editable-item-row"><input value="${esc(v)}" onchange="editPhrase('${type}',${i},this.value)"><button type="button" class="small-btn danger" onclick="deletePhrase('${type}',${i})">削除</button></div>`).join("")}<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"><input id="newPhrase_${type}" type="text" placeholder="新しい定型文を追加" style="flex:1;min-width:220px;padding:10px;border:2px solid #9fc7eb;border-radius:10px;font-size:14px;"><button type="button" class="primary" style="padding:8px 12px;font-size:13px;" onclick="addPhrase('${type}')">＋ 追加</button><button type="button" class="restore-button" style="padding:8px 12px;font-size:13px;" onclick="resetPhrases('${type}')">↩ 標準に戻す</button></div></div>`;}).join("");}
+
+function resetMedicalSettings() {
+  if (!confirm("主治医・医師向けの理由・お願い・書類項目を標準設定に戻しますか？")) return;
+  const d = getGrowthData();
+  delete d[MEDICAL_KEY];
+  saveGrowthData(d);
+  renderGrowthManager();
+  renderStep2();
+  updateSummaries();
+}
+
+function resetPhrases(type){
+  if(!confirm(`${phraseLabel(type)}を標準の定型文に戻しますか？`))return;
+  const standard = getStandardSnapshotPayload();
+  const key = PHRASE_KEYS[type];
+  if (standard && Object.prototype.hasOwnProperty.call(standard.data, key)) {
+    try { savePhraseItems(type, JSON.parse(standard.data[key])); }
+    catch(e) { savePhraseItems(type,[...DEFAULT_PHRASES[type]]); }
+  } else {
+    savePhraseItems(type,[...DEFAULT_PHRASES[type]]);
+  }
+  renderPhraseSettings();renderPhraseChoicesAll();
+}
+
+function resetRequestAssist() {
+  const choice = document.getElementById("requestAssistChoice");
+  const btn = document.getElementById("requestButton");
+  if (!choice || !btn) return;
+  choice.checked = false;
+  btn.textContent = "🌿 丁寧な表現に整える";
+  btn.setAttribute("aria-pressed", "false");
+}
+
+function savePhraseItems(type,items){localStorage.setItem(PHRASE_KEYS[type],JSON.stringify(items));}
+
+function scrollToMemo() {
+  const memo = document.getElementById("memo");
+  if (memo) memo.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showMainView() {
+  document.body.classList.remove("settings-view-active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showSettingsView() {
+  document.body.classList.add("settings-view-active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function togglePhraseChoices(btn) {
+  const area = document.getElementById("phraseChoicesArea");
+  if (!area) return;
+  const isHidden = area.style.display === "none";
+  area.style.display = isHidden ? "block" : "none";
+  if (btn) btn.textContent = isHidden ? "▲ 選択肢を閉じる" : "▼ 選択肢を表示";
+}
+
+function toggleRequestAssist() {
+  const choice = document.getElementById("requestAssistChoice");
+  const btn = document.getElementById("requestButton");
+  if (!choice || !btn) return;
+  const active = choice.checked;
+  btn.textContent = active ? "✓ 丁寧な表現に整える" : "🌿 丁寧な表現に整える";
+  btn.setAttribute("aria-pressed", active ? "true" : "false");
+}
+
+function updateRequestAssistVisibility() {
+  // 「丁寧な表現に整える」はSTEP 2の伝達方法と一緒に選択できる独立した項目です。
+}
+document.addEventListener("DOMContentLoaded", () => {
+  if (BO_RELEASE_MODE) {
+    document.documentElement.classList.add("bo-release-mode");
+    document.body.classList.remove("settings-view-active");
+  }
+  loadCustomItems();
+  renderCustomGrowthCategoriesOnMain();
+  loadPromptLibrary();
+  renderPhraseChoicesAll();
+  updateRequestAssistVisibility();
+  updateStep1Labels();
+  renderGrowthManager();
+  renderRecipientChoices();
+  renderMethodChoices();
+  renderRecipientSettings();
+  renderMethodSettings();
+  updateStandardSettingsStatus();
+
+  document.getElementById("step1Grid")?.addEventListener("change", (e) => {
+    if (e.target.matches("input[type='checkbox']")) renderStep2();
+  });
+
+  const recipientInputs = document.querySelectorAll("input[name='recipient']");
+  recipientInputs.forEach(input => {
+    input.addEventListener("change", updateSummaries);
+  });
+
+  document.addEventListener("change", (e) => {
+    if (e.target.matches('input[name^="phrase_"]')) updatePhraseSummaries();
+  });
+
+  document.addEventListener("click", (e) => {
+    const target = e.target.closest("[data-growth-delete-category]");
+    if (target) {
+      const catKey = target.getAttribute("data-growth-delete-category");
+      if (catKey) {
+        deleteGrowthCategory(catKey);
+      }
+    }
+  });
+
+  renderStep2();
+  updateLetterFormatUI();
+});
+</script>
+
+</body></html>
