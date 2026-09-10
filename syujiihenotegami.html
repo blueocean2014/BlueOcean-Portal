@@ -1,5 +1,7 @@
 <!doctype html>
 <html lang="ja">
+<!-- BlueOcean standalone interactive HTML: open directly in a browser -->
+
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -8,7 +10,14 @@
 <style id="blueocean-auth-guard-style">
 html.blueocean-auth-checking body { visibility:hidden !important; }
 </style>
-<script>document.documentElement.classList.add("blueocean-auth-checking");</script>
+<script>
+(function(){
+  const isProduction = location.hostname === "blueocean2014.github.io";
+  if (isProduction) {
+    document.documentElement.classList.add("blueocean-auth-checking");
+  }
+})();
+</script>
 <script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-auth-compat.js"></script>
 <script>
@@ -24,6 +33,12 @@ html.blueocean-auth-checking body { visibility:hidden !important; }
   };
 
   if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
+  const isProduction = location.hostname === "blueocean2014.github.io";
+  if (!isProduction) {
+    document.documentElement.classList.remove("blueocean-auth-checking");
+    return;
+  }
 
   firebase.auth().onAuthStateChanged(function(user){
     if (user) {
@@ -346,6 +361,64 @@ body.settings-view-active #promptLibraryArea .settings-page-head .primary{
 .ai-claude{background:#8f5b3f!important}
 @media(max-width:700px){.ai-launcher-grid{grid-template-columns:1fr}}
 </style>
+
+<style id="doctor-ai-color-and-highlight">
+.doctor-options-button{
+  background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%) !important;
+  color:#fff !important;
+  border:2px solid #0875c9 !important;
+  box-shadow:0 4px 12px rgba(19,142,224,.22) !important;
+  font-weight:900 !important;
+}
+.doctor-options-button:hover{
+  background:linear-gradient(135deg,#5dd5f8 0%,#20b4eb 35%,#0f82d3 70%,#0768b3 100%) !important;
+}
+.doctor-options-button.open{
+  background:linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%) !important;
+  color:#fff !important;
+}
+.ai-chatgpt{background:#111 !important;border:2px solid #111 !important;color:#fff !important;}
+.ai-chatgpt:hover{background:#2b2b2b !important;}
+.ai-gemini{background:#4285f4 !important;border:2px solid #4285f4 !important;color:#fff !important;}
+.ai-gemini:hover{background:#2f6fda !important;}
+.ai-claude{background:#7c5ce0 !important;border:2px solid #7c5ce0 !important;color:#fff !important;}
+.ai-claude:hover{background:#6748c7 !important;}
+.ai-launcher-grid-with-keep{grid-template-columns:repeat(4,minmax(0,1fr)) !important;align-items:start;}
+.keep-ai-side{border-left:1px solid #cfe3f7;padding-left:10px;text-align:center;}
+.ai-keep{
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  background:#fff3b0 !important;
+  border:2px solid #d9b300 !important;
+  color:#6b5800 !important;
+  box-sizing:border-box;
+  min-height:49px;
+}
+.ai-keep:hover{background:#ffe780 !important;border-color:#c49f00 !important;color:#5c4a00 !important;}
+.keep-ai-note{margin-top:6px;font-size:11px;line-height:1.5;color:#6b5800;font-weight:700;}
+@media(max-width:850px){
+  .ai-launcher-grid-with-keep{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+  .keep-ai-side{border-left:0;padding-left:0;}
+}
+@media(max-width:700px){
+  .ai-launcher-grid-with-keep{grid-template-columns:1fr !important;}
+}
+</style>
+
+
+<style id="ai-anchor-tab-fix">
+.ai-open-button{
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none !important;
+  box-sizing:border-box;
+  min-height:49px;
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -373,7 +446,7 @@ body.settings-view-active #promptLibraryArea .settings-page-head .primary{
     </section>
 
     <div class="doctor-options-launch">
-      <button id="doctorOptionsButton" class="doctor-options-button" type="button" onclick="toggleDoctorOptions()">＋ 医師に伝えたい内容をボタンで選択する方はこちらから</button>
+      <button id="doctorOptionsButton" class="doctor-options-button" type="button" onclick="toggleDoctorOptions()">＋ 医師に伝えたい内容をボタンで選択したい方はこちらから選択してください</button>
       <p class="doctor-options-help">必要な方だけ開いてください。連絡の目的や、主治医へ相談・依頼したい内容を選択できます。</p>
     </div>
 
@@ -447,10 +520,14 @@ body.settings-view-active #promptLibraryArea .settings-page-head .primary{
       <div id="aiLauncher" class="ai-launcher">
         <div class="ai-launcher-title">🤖 コピーしました。そのまま使うAIを開いてください。</div>
         <div class="ai-launcher-help">コピーした内容はクリップボードに入っています。使いたいAIを開き、入力欄に貼り付けて送信してください。</div>
-        <div class="ai-launcher-grid">
-          <button class="ai-open-button ai-chatgpt" type="button" onclick="openAI('chatgpt')">🤖 ChatGPTで作る</button>
-          <button class="ai-open-button ai-gemini" type="button" onclick="openAI('gemini')">✨ Geminiで作る</button>
-          <button class="ai-open-button ai-claude" type="button" onclick="openAI('claude')">🟣 Claudeで作る</button>
+        <div class="ai-launcher-grid ai-launcher-grid-with-keep">
+          <a class="ai-open-button ai-chatgpt" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">🤖 ChatGPTで作る</a>
+          <a class="ai-open-button ai-gemini" href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">✨ Geminiで作る</a>
+          <a class="ai-open-button ai-claude" href="https://claude.ai/" target="_blank" rel="noopener noreferrer">🟣 Claudeで作る</a>
+          <div class="keep-ai-side">
+            <a class="ai-open-button ai-keep" href="https://keep.google.com/" target="_blank" rel="noopener noreferrer">📝 Google Keepを開く</a>
+            <div class="keep-ai-note">記録を保存したい方はこちらがおすすめ！</div>
+          </div>
         </div>
       </div>
     </section>
@@ -1228,7 +1305,7 @@ function toggleDoctorOptions(){
   const willOpen=area.style.display==="none" || getComputedStyle(area).display==="none";
   area.style.display=willOpen?"grid":"none";
   btn.classList.toggle("open",willOpen);
-  btn.textContent=willOpen?"－ 医師に伝えたい内容の選択を閉じる":"＋ 医師に伝えたい内容をボタンで選択する方はこちらから";
+  btn.textContent=willOpen?"－ 医師に伝えたい内容の選択を閉じる":"＋ 医師に伝えたい内容をボタンで選択したい方はこちらから選択してください";
 }
 function scrollToTop(){window.scrollTo({top:0,behavior:"smooth"})}
 function goHome(){location.href="index.html"}
