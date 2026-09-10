@@ -616,6 +616,162 @@ textarea#memo:focus{background:#fff!important;border-color:var(--blue-dark)!impo
 .ai-launch-search a{color:#0875c9;font-weight:700;text-decoration:underline;cursor:pointer}
 @media(max-width:600px){.ai-launch-buttons{flex-direction:column}.ai-launch-button{width:100%;margin:3px 0}}
 </style>
+
+<style id="google-keep-guide-style">
+.google-keep-guide{
+  display:none;
+  max-width:630px;
+  margin:12px auto 16px;
+  padding:11px 13px;
+  border:1.5px solid #9bc7ee;
+  border-radius:10px;
+  background:#ffffff;
+  box-shadow:0 2px 7px rgba(25,118,210,.08);
+  text-align:center;
+}
+.google-keep-guide.is-visible{display:block;}
+.google-keep-guide-title{
+  margin:0 0 7px;
+  color:#155a91;
+  font-size:14px;
+  font-weight:900;
+}
+.google-keep-guide-text{
+  margin:5px 0;
+  color:#526b7a;
+  font-size:11px;
+  line-height:1.55;
+}
+.google-keep-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:auto !important;
+  min-width:0 !important;
+  margin:7px auto !important;
+  padding:8px 12px !important;
+  border:1.5px solid #138ee0 !important;
+  border-radius:8px !important;
+  background:#fff !important;
+  color:#0875c9 !important;
+  font-size:12px !important;
+  font-weight:900 !important;
+  box-shadow:0 2px 6px rgba(25,118,210,.10);
+}
+.google-keep-button:hover{
+  background:#eef7ff !important;
+  border-color:#0875c9 !important;
+}
+.google-keep-recommend{
+  margin-top:5px;
+  color:#526b7a;
+  font-size:11px;
+  line-height:1.55;
+}
+@media(max-width:600px){
+  .google-keep-guide{margin:10px 0 14px;padding:10px 11px;}
+  .google-keep-button{width:auto !important;}
+}
+</style>
+
+
+<style id="ai-keep-inline-style">
+#aiLaunchArea .ai-launch-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  gap:28px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+#aiLaunchArea .ai-launch-row .ai-launch-buttons{
+  flex:0 1 auto;
+}
+#aiLaunchArea .keep-inline-area{
+  flex:0 0 auto;
+  padding-left:20px;
+  border-left:1px solid #c8def2;
+  text-align:center;
+}
+#aiLaunchArea .keep-inline-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:145px;
+  padding:9px 13px;
+  border:2px solid #138ee0;
+  border-radius:9px;
+  background:#fff;
+  color:#0875c9;
+  font-size:13px;
+  font-weight:800;
+  text-decoration:none;
+  box-sizing:border-box;
+}
+#aiLaunchArea .keep-inline-button:hover{
+  background:#eef7ff;
+  border-color:#0875c9;
+}
+#aiLaunchArea .keep-inline-note{
+  margin-top:6px;
+  color:#526b7a;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.5;
+}
+@media(max-width:760px){
+  #aiLaunchArea .ai-launch-row{gap:14px;}
+  #aiLaunchArea .keep-inline-area{
+    width:100%;
+    padding-left:0;
+    padding-top:12px;
+    border-left:0;
+    border-top:1px solid #c8def2;
+  }
+}
+</style>
+
+
+<style id="ai-provider-colors-and-keep-yellow">
+#aiLaunchArea .ai-launch-button.ai-chatgpt-color{
+  background:#111 !important;
+  border-color:#111 !important;
+  color:#fff !important;
+}
+#aiLaunchArea .ai-launch-button.ai-chatgpt-color:hover{
+  background:#2b2b2b !important;
+  border-color:#2b2b2b !important;
+}
+#aiLaunchArea .ai-launch-button.ai-gemini-color{
+  background:#4285f4 !important;
+  border-color:#4285f4 !important;
+  color:#fff !important;
+}
+#aiLaunchArea .ai-launch-button.ai-gemini-color:hover{
+  background:#2f6fda !important;
+  border-color:#2f6fda !important;
+}
+#aiLaunchArea .ai-launch-button.ai-claude-color{
+  background:#7c5ce0 !important;
+  border-color:#7c5ce0 !important;
+  color:#fff !important;
+}
+#aiLaunchArea .ai-launch-button.ai-claude-color:hover{
+  background:#6748c7 !important;
+  border-color:#6748c7 !important;
+}
+#aiLaunchArea .keep-inline-button{
+  background:#fff3b0 !important;
+  border-color:#d9b300 !important;
+  color:#6b5800 !important;
+}
+#aiLaunchArea .keep-inline-button:hover{
+  background:#ffe780 !important;
+  border-color:#c49f00 !important;
+  color:#5c4a00 !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -813,10 +969,16 @@ class="status"
 
 <div id="aiLaunchArea" class="ai-launch-area">
   <p class="ai-launch-note">下のボタンから使用するAIを開いて、コピーした内容を貼り付けてください。</p>
-  <div class="ai-launch-buttons">
-    <button type="button" class="ai-launch-button" onclick="openAI('chatgpt')">🤖 ChatGPTを開く</button>
-    <button type="button" class="ai-launch-button" onclick="openAI('gemini')">✨ Geminiを開く</button>
-    <button type="button" class="ai-launch-button" onclick="openAI('claude')">🟣 Claudeを開く</button>
+  <div class="ai-launch-row">
+    <div class="ai-launch-buttons">
+      <button type="button" class="ai-launch-button ai-chatgpt-color" onclick="openAI('chatgpt')">🤖 ChatGPTを開く</button>
+      <button type="button" class="ai-launch-button ai-gemini-color" onclick="openAI('gemini')">✨ Geminiを開く</button>
+      <button type="button" class="ai-launch-button ai-claude-color" onclick="openAI('claude')">🟣 Claudeを開く</button>
+    </div>
+    <div class="keep-inline-area">
+      <a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" class="keep-inline-button">📝 Google Keepを開く</a>
+      <div class="keep-inline-note">記録を保存したい方はこちらがおすすめ！</div>
+    </div>
   </div>
   <div class="ai-launch-search">
     開けない場合はこちらから検索してください：
@@ -830,6 +992,7 @@ class="status"
 
 
 </section>
+
 
 <!-- =====================================================
      トップへ戻るエリア
