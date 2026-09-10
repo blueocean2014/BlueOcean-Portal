@@ -5,150 +5,373 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>サービス担当者会議要点作成支援アプリ（BlueOcean）</title>
 <style>
-body{margin:0;background:#f4fbff;color:#185477;font-family:-apple-system,BlinkMacSystemFont,"Yu Gothic","Meiryo",sans-serif}
-header{background:linear-gradient(135deg,#70dcfa 0%,#28bcef 38%,#138ee0 72%,#0875c9 100%);color:white;padding:18px 16px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-header h1{font-size:21px;margin:0 0 6px 0;letter-spacing:.3px}
-.header-inner{
-  max-width:1120px;
-  margin:0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:28px;
+body {
+  margin: 0;
+  background: #f4fbff;
+  color: #185477;
+  font-family: -apple-system,BlinkMacSystemFont,"Yu Gothic","Meiryo",sans-serif;
 }
-.header-description{
-  flex:1;
-  max-width:430px;
-  font-size:15px;
-  line-height:1.7;
-  text-align:left;
-  opacity:.98;
+header {
+  background: linear-gradient(135deg,#70dcfa 0%,#28bcef 38%,#138ee0 72%,#0875c9 100%);
+  color: white;
+  padding: 18px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
 }
-header div{font-size:13px;opacity:.95}
-main{max-width:900px;margin:auto;padding:12px}
-.card{background:white;padding:16px;margin:12px 0;border-radius:15px;box-shadow:0 3px 10px rgba(0,80,100,.10);border:1px solid #dcebed}
-h2{font-size:18px;margin:0 0 13px 0;color:#0872c5}
-.description{font-size:14px;line-height:1.7;color:#44575c;background:#f3f7f9;border:1px solid #d9e3e6;border-radius:8px;padding:10px 12px;box-sizing:border-box}
-textarea{width:100%;box-sizing:border-box;border:1px solid #c9dde1;border-radius:10px;padding:12px;font-size:16px;line-height:1.7;min-height:220px;resize:vertical;outline:none}
-textarea:focus{border-color:#008fa3;box-shadow:0 0 0 2px rgba(0,143,163,.12)}
-button{border:0;border-radius:10px;color:white;padding:12px 16px;font-size:15px;margin:4px 2px;cursor:pointer;transition:.15s}
-button:hover{opacity:.9;transform:translateY(-1px)}
-.copy-button{background:linear-gradient(90deg,#22b9ed,#0879d4);font-weight:bold;font-size:18px;padding:14px 18px}
-.copy-button.copied{background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9)}
-.scroll-top-button{background:#607d83;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
-.home-button{background:#0875c9;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
-.status{background:#eef8fa;border:1px solid #d4eaed;color:#24545d;padding:10px;border-radius:9px;font-size:13px;margin-top:8px;white-space:pre-wrap}
-.status.success{background:#eaf8ef;border-color:#b9dfc5;color:#17652e;font-weight:bold}
-.pattern-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.pattern-option{align-items:flex-start;background:#f8fcfd;border:1px solid #c9dde1;border-radius:10px;padding:11px;display:flex;gap:8px;cursor:pointer}
-.pattern-option input{margin-top:3px;width:20px;height:20px;accent-color:#008fa3}
-.pattern-option:has(input:checked){border-color:#008fa3;background:#eef9fb;box-shadow:0 0 0 2px rgba(0,143,163,.10)}
-.pattern-option small{font-size:12px;color:#53686d;line-height:1.5}
-.usage-card{
-  margin-top:12px;
-  border:2px solid #8bd4ee;
-  border-radius:20px;
-  background:#fffdf3;
-  box-shadow:0 6px 18px rgba(30,120,165,.08);
-  padding:20px 24px;
+header h1 {
+  font-size: 21px;
+  margin: 0 0 6px 0;
+  letter-spacing: .3px;
 }
-.usage-card h2{
-  font-size:18px;
-  margin:0 0 14px;
-  color:#0875c9;
-  text-align:center;
+.header-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
 }
-.usage-flow{
-  display:flex;
-  flex-direction:column;
-  gap:0;
+.header-description {
+  flex: 1;
+  max-width: 430px;
+  font-size: 15px;
+  line-height: 1.7;
+  text-align: left;
+  opacity: .98;
 }
-.usage-step{
-  position:relative;
-  padding:10px 8px 10px 12px;
-  font-size:14px;
-  line-height:1.6;
-  color:#075e6b;
-  text-align:left;
+header div {
+  font-size: 13px;
+  opacity: .95;
 }
-.usage-step:not(:last-child){
-  border-bottom:1px dashed #b8dfec;
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 12px;
 }
-.usage-step span{
-  color:#0875c9;
-  font-size:13px;
+.card {
+  background: white;
+  padding: 16px;
+  margin: 12px 0;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0,80,100,.10);
+  border: 1px solid #dcebed;
 }
-.usage-note{background:#fff9d9;border:2px solid #d8c875;border-radius:10px;color:#6b5b00;}
-.usage-note strong{
-  color:#0875c9;
+h2 {
+  font-size: 18px;
+  margin: 0 0 13px 0;
+  color: #0872c5;
 }
-.setting-box{margin-top:12px;padding:12px;border:1px solid #c9dde1;border-radius:10px;background:#fbfefe}
-.setting-label{font-weight:bold;color:#075e6b;margin-bottom:8px}
-.setting-help{font-size:12px;color:#52676d;line-height:1.6;margin-top:7px}
-.edit-area{margin-top:80px;border-top:3px solid #dcebed;padding-top:24px}
-.edit-note{font-size:13px;line-height:1.7;color:#52676d;background:#f5fafb;border:1px solid #dcebed;border-radius:10px;padding:11px;margin-bottom:12px}
-.prompt-editor{min-height:650px;font-size:14px;line-height:1.7}
-.edit-actions{display:flex;gap:6px;flex-wrap:wrap}
-.save-button{background:#0875c9}
-.restore-button{background:#527b62}
-.clear-button{background:#8a5a42}
-.bo-footer-brand{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px auto 26px;padding:16px 0 4px;border-top:1px solid #dcebed;max-width:720px}
-.bo-footer-brand img{width:58px;height:58px;object-fit:contain;flex:none}
-.bo-footer-brand-text{display:flex;flex-direction:column;gap:3px;text-align:left}
-.bo-footer-brand-title{font-size:17px;font-weight:bold;letter-spacing:.3px}
-.bo-footer-brand-subtitle{font-size:12px}
-#newCaseButton{background:#1976d2!important;background-image:none!important;color:#fff!important;border:1px solid #1565c0!important;box-shadow:0 2px 5px rgba(0,0,0,.15)!important;border-radius:8px;padding:12px 34px;min-width:260px;font-size:15px;cursor:pointer}
-.settings-open-button{background:#e58a00!important;color:#fff!important;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
-.view-back-button{background:#607d83;font-weight:bold;font-size:16px;width:100%;margin-top:10px;padding:14px}
-.view-hidden{display:none!important}
-body.settings-view-active main > *:not(#promptLibraryArea){display:none!important}
-body.settings-view-active #promptLibraryArea{display:block!important}
-
-.usage-open-button{background:#f5e6a8;color:#5f5500;font-weight:bold;font-size:16px;width:100%;max-width:520px;padding:14px;border:1px solid #25864a;border-radius:8px;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.12)}
-
-
-@media(max-width:600px){
- .pattern-grid{grid-template-columns:1fr}
- button{width:100%;margin:4px 0}
- header h1{font-size:19px}
- .edit-actions{display:block}
- .usage-card{padding:17px 16px}
- .usage-card h2{font-size:18px}
- .usage-step{font-size:13px;padding:9px 6px 9px 8px}
- .usage-step span{font-size:12px}
- .header-inner{display:block}
- .header-description{margin-top:12px;max-width:none;font-size:14px}
+.description {
+  font-size: 14px;
+  line-height: 1.7;
+  background: #f3f7f9;
+  border: 1px solid #d9e3e6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-sizing: border-box;
 }
-.prompt-item{border:1px solid #c9dde1;border-radius:10px;background:#fff;padding:12px;margin-top:8px}.prompt-item.active{border:2px solid #008fa3;background:#eef9fb}.prompt-item-name{font-weight:bold;color:#0872c5;margin-bottom:8px}.prompt-item-actions{display:flex;gap:6px;flex-wrap:wrap}.prompt-item-actions button{border:0;border-radius:8px;padding:8px 12px;cursor:pointer;font-weight:bold}.prompt-select{background:#0879d4;color:#fff}.prompt-edit{background:#e5f0f2;color:#075e6b}.prompt-delete{background:#8a5a42;color:#fff}</style>
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #c9dde1;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 220px;
+  resize: vertical;
+  outline: none;
+}
+textarea:focus {
+  border-color: #008fa3;
+  box-shadow: 0 0 0 2px rgba(0,143,163,.12);
+}
+button {
+  border: 0;
+  border-radius: 10px;
+  color: white;
+  padding: 12px 16px;
+  font-size: 15px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition: .15s;
+}
+button:hover {
+  opacity: .9;
+  transform: translateY(-1px);
+}
+.copy-button {
+  background: linear-gradient(90deg,#22b9ed,#0879d4);
+  font-weight: bold;
+  font-size: 18px;
+  padding: 14px 18px;
+}
+.copy-button.copied {
+  background: linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9);
+}
+.home-button {
+  background: #0875c9;
+  font-weight: bold;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+}
+.status {
+  background: #eef8fa;
+  border: 1px solid #d4eaed;
+  padding: 10px;
+  border-radius: 9px;
+  font-size: 13px;
+  margin-top: 8px;
+  white-space: pre-wrap;
+}
+.status.success {
+  background: #eaf8ef;
+  border-color: #b9dfc5;
+  color: #17652e;
+  font-weight: bold;
+}
+.usage-card {
+  margin-top: 12px;
+  border: 2px solid #8bd4ee;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(30,120,165,.08);
+  padding: 20px 24px;
+}
+.usage-card h2 {
+  font-size: 18px;
+  margin: 0 0 14px;
+  color: #0875c9;
+  text-align: center;
+}
+.usage-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.usage-step {
+  position: relative;
+  padding: 10px 8px 10px 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #075e6b;
+  text-align: left;
+}
+.usage-step:not(:last-child) {
+  border-bottom: 1px dashed #b8dfec;
+}
+.usage-step span {
+  color: #0875c9;
+  font-size: 13px;
+}
+.usage-note {
+  background: #fff9d9;
+  border: 2px solid #d8c875;
+  border-radius: 10px;
+  color: #6b5b00;
+}
+.usage-note strong {
+  color: #0875c9;
+}
+.setting-box {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #c9dde1;
+  border-radius: 10px;
+  background: #fbfefe;
+}
+.setting-label {
+  font-weight: bold;
+  color: #075e6b;
+  margin-bottom: 8px;
+}
+.setting-help {
+  font-size: 12px;
+  color: #52676d;
+  line-height: 1.6;
+  margin-top: 7px;
+}
+.edit-area {
+  margin-top: 80px;
+  border-top: 3px solid #dcebed;
+  padding-top: 24px;
+}
+.edit-note {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #52676d;
+  background: #f5fafb;
+  border: 1px solid #dcebed;
+  border-radius: 10px;
+  padding: 11px;
+  margin-bottom: 12px;
+}
+.prompt-editor {
+  min-height: 650px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.edit-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.save-button {
+  background: #0875c9;
+}
+.restore-button {
+  background: #527b62;
+}
+.clear-button {
+  background: #8a5a42;
+}
+.bo-footer-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 10px auto 26px;
+  padding: 16px 0 4px;
+  border-top: 1px solid #dcebed;
+  max-width: 720px;
+}
+.bo-footer-brand img {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+  flex: none;
+}
+.bo-footer-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+}
+.bo-footer-brand-title {
+  font-size: 17px;
+  font-weight: bold;
+  letter-spacing: .3px;
+}
+.bo-footer-brand-subtitle {
+  font-size: 12px;
+}
+#newCaseButton {
+  background: #1976d2!important;
+  background-image: none!important;
+  color: #fff!important;
+  border: 1px solid #1565c0!important;
+  box-shadow: 0 2px 5px rgba(0,0,0,.15)!important;
+  border-radius: 8px;
+  padding: 12px 34px;
+  min-width: 260px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.settings-open-button {
+  background: #e58a00!important;
+  font-weight: bold;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+}
+.view-back-button {
+  background: #607d83;
+  font-weight: bold;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+}
+.view-hidden {
+  display: none!important;
+}
+body.settings-view-active main > *:not(#promptLibraryArea) {
+  display: none!important;
+}
+body.settings-view-active #promptLibraryArea {
+  display: block!important;
+}
+.usage-open-button {
+  background: #f5e6a8;
+  color: #5f5500;
+  font-weight: bold;
+  font-size: 16px;
+  width: 100%;
+  max-width: 520px;
+  padding: 14px;
+  border: 1px solid #25864a;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,.12);
+}
+@media(max-width:600px) {
+  button {
+    width: 100%;
+    margin: 4px 0;
+  }
+  header h1 {
+    font-size: 19px;
+  }
+  .edit-actions {
+    display: block;
+  }
+  .usage-card {
+    padding: 17px 16px;
+  }
+  .usage-card h2 {
+    font-size: 18px;
+  }
+  .usage-step {
+    font-size: 13px;
+    padding: 9px 6px 9px 8px;
+  }
+  .usage-step span {
+    font-size: 12px;
+  }
+  .header-inner {
+    display: block;
+  }
+  .header-description {
+    margin-top: 12px;
+    max-width: none;
+    font-size: 14px;
+  }
+}
+</style>
 <style id="requested-title-only">
 header .app-title-main,
-header .app-title-sub{
-  display:block;
+header .app-title-sub {
+  display: block;
 }
-header .app-title-main{
-  font-size:27px;
+header .app-title-main {
+  font-size: 27px;
 }
-header .app-title-sub{
-  font-size:24px;
-  margin-top:6px;
+header .app-title-sub {
+  font-size: 24px;
+  margin-top: 6px;
 }
-@media(max-width:600px){
-  header .app-title-main{font-size:23px}
-  header .app-title-sub{font-size:20px}
+@media(max-width:600px) {
+  header .app-title-main {
+    font-size: 23px;
+  }
+  header .app-title-sub {
+    font-size: 20px;
+  }
 }
 </style>
 
 <style id="meeting-input-style">
-#memo{
-  background:#f4faff !important;
-  border:4px solid #8bd4ee !important;
-  border-radius:14px !important;
-  box-sizing:border-box !important;
+#memo {
+  background: #f4faff !important;
+  border: 4px solid #8bd4ee !important;
+  border-radius: 14px !important;
+  box-sizing: border-box !important;
 }
-#memo:focus{
-  background:#f4faff !important;
-  border-color:#8bd4ee !important;
-  box-shadow:0 0 0 3px rgba(139,212,238,.20) !important;
+#memo:focus {
+  background: #f4faff !important;
+  border-color: #8bd4ee !important;
+  box-shadow: 0 0 0 3px rgba(139,212,238,.20) !important;
 }
 </style>
 
@@ -167,24 +390,50 @@ button.ai-copy-green-button:active {
 
 
 <style id="blue-ocean-design-system-override">
-/* デザインのみの上書き。機能・HTML構造・JavaScriptは変更しない。 */
-:root{
-  --blue:#1976d2;
-  --blue-dark:#1565c0;
-  --blue-light:#eaf5ff;
-  --blue-pale:#f4faff;
-  --yellow:#fff7d6;
-  --yellow-border:#e6c94c;
-  --text:#185477;
+:root {
+  --blue: #1976d2;
+  --blue-dark: #1565c0;
+  --blue-light: #eaf5ff;
+  --blue-pale: #f4faff;
+  --yellow: #fff7d6;
+  --yellow-border: #e6c94c;
+  --text: #185477;
 }
-body{background:#f4faff;color:var(--text)}
-header{background:var(--blue);box-shadow:0 2px 8px rgba(25,118,210,.18)}
-.card{background:#fff;border:2px solid #b9d9f5;border-radius:18px;box-shadow:0 3px 12px rgba(25,118,210,.08)}
-h2{color:var(--blue-dark)}
-.description{background:#fff;border:1px solid #cfe3f7;border-radius:12px;color:#44575c}
-textarea{background:#fff;border:2px solid #9fc7eb;border-radius:14px}
-textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(25,118,210,.12)}
-button{border-radius:12px}
+body {
+  background: #f4faff;
+  color: var(--text);
+}
+header {
+  background: var(--blue);
+  box-shadow: 0 2px 8px rgba(25,118,210,.18);
+}
+.card {
+  background: #fff;
+  border: 2px solid #b9d9f5;
+  border-radius: 18px;
+  box-shadow: 0 3px 12px rgba(25,118,210,.08);
+}
+h2 {
+  color: var(--blue-dark);
+}
+.description {
+  background: #fff;
+  border: 1px solid #cfe3f7;
+  border-radius: 12px;
+  color: #44575c;
+}
+textarea {
+  background: #fff;
+  border: 2px solid #9fc7eb;
+  border-radius: 14px;
+}
+textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(25,118,210,.12);
+}
+button {
+  border-radius: 12px;
+}
 .copy-button,
 .copy-button.copied,
 button.ai-copy-green-button,
@@ -193,302 +442,355 @@ button.ai-copy-green-button:focus,
 button.ai-copy-green-button:active,
 .save-button,
 .prompt-select,
-#newCaseButton{background:var(--blue)!important;background-image:none!important;color:#fff!important;border-color:var(--blue-dark)!important}
+#newCaseButton {
+  background: var(--blue)!important;
+  background-image: none!important;
+  color: #fff!important;
+  border-color: var(--blue-dark)!important;
+}
 .copy-button:hover,
 button.ai-copy-green-button:hover,
 .save-button:hover,
 .prompt-select:hover,
-#newCaseButton:hover{background:var(--blue-dark)!important}
+#newCaseButton:hover {
+  background: var(--blue-dark)!important;
+}
 .scroll-top-button,
 .view-back-button,
-.home-button{background:var(--blue)!important;color:#fff!important;border:1px solid var(--blue-dark)!important}
-.settings-open-button{background:var(--blue)!important;color:#fff!important;border:1px solid var(--blue-dark)!important}
-.usage-open-button{background:var(--yellow)!important;color:#675700!important;border:2px solid var(--yellow-border)!important;border-radius:12px}
-.pattern-option{background:#fff;border:2px solid #9fc7eb;border-radius:14px}
-.pattern-option:has(input:checked){background:var(--blue-light);border-color:var(--blue);box-shadow:0 0 0 2px rgba(25,118,210,.08)}
-.pattern-option input{accent-color:var(--blue)}
-.setting-box{background:#fff;border:2px solid #b9d9f5;border-radius:14px}
-.setting-label{color:var(--blue-dark)}
-.edit-note{background:#fff;border:1px solid #cfe3f7;border-radius:12px}
-.edit-area{border-top:3px solid #b9d9f5}
-.prompt-item{background:#fff;border:2px solid #b9d9f5;border-radius:14px}
-.prompt-item.active{border:2px solid var(--blue);background:var(--blue-light)}
-.prompt-item-name{color:var(--blue-dark)}
-.prompt-edit{background:#fff;color:var(--blue-dark);border:1px solid #9fc7eb!important}
-.restore-button{background:var(--blue)!important;color:#fff!important}
-.clear-button{background:var(--blue-dark)!important;color:#fff!important}
-.status{background:#f4faff;border:1px solid #cfe3f7;color:#24545d;border-radius:12px}
-.status.success{background:#f4faff;border-color:#b9d9f5;color:var(--blue-dark)}
-.usage-card{background:#fffdf3;border:2px solid #9fc7eb;border-radius:18px;box-shadow:0 4px 14px rgba(25,118,210,.08)}
-.usage-card h2,.usage-note strong{color:var(--blue-dark)}
-.usage-step{color:#245c80}
-.usage-step span{color:var(--blue-dark)}
-.usage-step:not(:last-child){border-bottom:1px dashed #b9d9f5}
-.usage-note{border-top:1px solid #cfe3f7;color:#245c80}
-.bo-footer-brand{border-top:1px solid #b9d9f5}
-@media(max-width:600px){
-  .card{border-radius:16px}
-  .pattern-option{border-radius:13px}
-  .setting-box,.prompt-item{border-radius:13px}
+.home-button {
+  background: var(--blue)!important;
+  color: #fff!important;
+  border: 1px solid var(--blue-dark)!important;
+}
+.settings-open-button {
+  background: var(--blue)!important;
+  color: #fff!important;
+  border: 1px solid var(--blue-dark)!important;
+}
+.usage-open-button {
+  background: var(--yellow)!important;
+  color: #675700!important;
+  border: 2px solid var(--yellow-border)!important;
+  border-radius: 12px;
+}
+.setting-box {
+  background: #fff;
+  border: 2px solid #b9d9f5;
+  border-radius: 14px;
+}
+.setting-label {
+  color: var(--blue-dark);
+}
+.edit-note {
+  background: #fff;
+  border: 1px solid #cfe3f7;
+  border-radius: 12px;
+}
+.edit-area {
+  border-top: 3px solid #b9d9f5;
+}
+.restore-button {
+  background: var(--blue)!important;
+  color: #fff!important;
+}
+.clear-button {
+  background: var(--blue-dark)!important;
+  color: #fff!important;
+}
+.status {
+  background: #f4faff;
+  border: 1px solid #cfe3f7;
+  color: #24545d;
+  border-radius: 12px;
+}
+.status.success {
+  background: #f4faff;
+  border-color: #b9d9f5;
+  color: var(--blue-dark);
+}
+.usage-card {
+  background: #fffdf3;
+  border: 2px solid #9fc7eb;
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(25,118,210,.08);
+}
+.usage-card h2,.usage-note strong {
+  color: var(--blue-dark);
+}
+.usage-step {
+  color: #245c80;
+}
+.usage-step span {
+  color: var(--blue-dark);
+}
+.usage-step:not(:last-child) {
+  border-bottom: 1px dashed #b9d9f5;
+}
+.usage-note {
+  border-top: 1px solid #cfe3f7;
+  color: #245c80;
+}
+.bo-footer-brand {
+  border-top: 1px solid #b9d9f5;
+}
+@media(max-width:600px) {
+  .card {
+    border-radius: 16px;
+  }
+  .setting-box,.prompt-item {
+    border-radius: 13px;
+  }
 }
 </style>
 
 <style id="settings-button-orange-only">
-/* 設定ボタンだけをオレンジ色に変更 */
-button[onclick="openPromptSettings()"]{
-  background:#f39c12 !important;
-  border-color:#e67e22 !important;
-  color:#fff !important;
+button[onclick="openPromptSettings()"] {
+  background: #f39c12 !important;
+  border-color: #e67e22 !important;
+  color: #fff !important;
 }
-button[onclick="openPromptSettings()"]:hover{
-  background:#e67e22 !important;
+button[onclick="openPromptSettings()"]:hover {
+  background: #e67e22 !important;
 }
 </style>
 
 
 <style id="settings-orange-and-bottom-navigation">
-/* 指定された設定ボタンだけオレンジ */
-button.settings-orange-target{
-  background:#f39c12 !important;
-  border-color:#e67e22 !important;
-  color:#fff !important;
+button.settings-orange-target {
+  background: #f39c12 !important;
+  border-color: #e67e22 !important;
+  color: #fff !important;
 }
-button.settings-orange-target:hover{
-  background:#e67e22 !important;
-  border-color:#d96f0b !important;
+button.settings-orange-target:hover {
+  background: #e67e22 !important;
+  border-color: #d96f0b !important;
 }
-
-/* 設定画面の一番下に追加するナビゲーション */
-.settings-bottom-navigation{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin:28px 0 8px;
+.settings-bottom-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 28px 0 8px;
 }
-.settings-bottom-navigation .settings-bottom-home{
-  margin:0 !important;
+.settings-bottom-navigation .settings-bottom-home {
+  margin: 0 !important;
 }
 </style>
 
 
 <style id="three-return-buttons-small-unified">
-/* 3つの戻る系ボタンだけ、文字量に合わせた小型・同一幅にする */
 button.settings-bottom-home,
 button[onclick="goHome()"],
-button[onclick="showMainView()"]{
-  width:auto !important;
-  min-width:0 !important;
-  max-width:none !important;
-  padding:8px 16px !important;
-  margin-left:auto !important;
-  margin-right:auto !important;
-  white-space:nowrap !important;
+button[onclick="showMainView()"] {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  padding: 8px 16px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  white-space: nowrap !important;
 }
 </style>
 
 
 <style id="return-buttons-final-size">
-/* 戻る系ボタン3種類だけを、文字が入る程度の小さな同一サイズにする */
 button.home-button.settings-bottom-home,
 button.home-button[onclick="scrollToTop()"],
 button.home-button[onclick="goHome()"],
-button.view-back-button[onclick="showMainView()"]{
-  width:auto !important;
-  min-width:0 !important;
-  max-width:none !important;
-  box-sizing:border-box !important;
-  padding:8px 14px !important;
-  margin-top:0 !important;
-  white-space:nowrap !important;
-  display:inline-flex !important;
-  align-items:center !important;
-  justify-content:center !important;
+button.view-back-button[onclick="showMainView()"] {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+  padding: 8px 14px !important;
+  margin-top: 0 !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 </style>
 
 
 <style id="usage-open-button-width-only">
-/* 「📖 使い方の説明はこちら」の横幅だけを文字量に合わせる */
-.usage-open-button{
-  width:auto !important;
-  max-width:none !important;
+.usage-open-button {
+  width: auto !important;
+  max-width: none !important;
 }
 </style>
 
 
 <style id="blueocean-color-only">
-/* BlueOcean 基本カラー：#70dcfa → #28bcef → #138ee0 → #0875c9 */
-:root{
-  --bo-light:#70dcfa;
-  --bo-sky:#28bcef;
-  --bo-blue:#138ee0;
-  --bo-deep:#0875c9;
+:root {
+  --bo-light: #70dcfa;
+  --bo-sky: #28bcef;
+  --bo-blue: #138ee0;
+  --bo-deep: #0875c9;
 }
-
-/* タイトル・主要見出し */
 header,
 .app-header,
 .page-header,
-.main-header{
-  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+.main-header {
+  background: linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
 }
-
-/* 青系の既存アクセントをBlueOceanグラデーションへ */
 h1,h2,h3,
 .section-title,
-.card-title{
-  color:var(--bo-deep) !important;
+.card-title {
+  color: var(--bo-deep) !important;
 }
-
-/* 主要ボタン・青系ボタン */
 button.primary,
 button.btn-primary,
 button.home-button,
 button[class*="blue"],
-button[class*="primary"]{
-  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
-  border-color:var(--bo-blue) !important;
-  color:#fff !important;
+button[class*="primary"] {
+  background: linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  border-color: var(--bo-blue) !important;
+  color: #fff !important;
 }
-
-/* 青系の枠線 */
 .card,
 .section,
 .panel,
 .input-group,
 textarea:focus,
 input:focus,
-select:focus{
-  border-color:var(--bo-blue) !important;
+select:focus {
+  border-color: var(--bo-blue) !important;
 }
-
-/* 青系の強調・選択状態 */
 .selected,
 .active,
 .choice.selected,
-.option.selected{
-  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue)) !important;
-  border-color:var(--bo-blue) !important;
-  color:#fff !important;
+.option.selected {
+  background: linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue)) !important;
+  border-color: var(--bo-blue) !important;
+  color: #fff !important;
 }
-
-/* 青系の既存グラデーション背景をBlueOcean基準へ */
 [style*="#70dcfa"],
 [style*="#28bcef"],
 [style*="#138ee0"],
-[style*="#0875c9"]{
-  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+[style*="#0875c9"] {
+  background: linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
 }
 </style>
 
 
 <style id="blueocean-target-buttons-only">
-/* 指定された5つのボタンだけBlueOceanカラーを明示適用 */
 button.view-back-button[onclick="showMainView()"],
 button.ai-copy-green-button,
 button.save-button,
 button.restore-button,
-button#showAddPromptButton{
-  background:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
-  background-image:linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
-  border-color:var(--bo-blue) !important;
-  color:#fff !important;
+button#showAddPromptButton {
+  background: linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  background-image: linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  border-color: var(--bo-blue) !important;
+  color: #fff !important;
 }
-
 button.view-back-button[onclick="showMainView()"]:hover,
 button.ai-copy-green-button:hover,
 button.save-button:hover,
 button.restore-button:hover,
-button#showAddPromptButton:hover{
-  background:linear-gradient(135deg,var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
-  background-image:linear-gradient(135deg,var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
-  border-color:var(--bo-deep) !important;
-  color:#fff !important;
+button#showAddPromptButton:hover {
+  background: linear-gradient(135deg,var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  background-image: linear-gradient(135deg,var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
+  border-color: var(--bo-deep) !important;
+  color: #fff !important;
 }
 </style>
 
 <style id="bo-white-title-only">
-/* 指定されたタイトルの文字色だけを白に変更 */
-h1.bo-white-title{
-  color:#fff !important;
+h1.bo-white-title {
+  color: #fff !important;
 }
 </style>
 
 <style id="meeting-pattern-blueocean-style">
-/* 要点のタイプ周辺のみBlueOceanのイメージに合わせて文字色・選択枠を調整 */
-#meetingPatternSelector option[value="default"]{color:#0875c9;font-weight:700;}
-#meetingPatternSelector option[value="update"]{color:#008fa3;font-weight:700;}
-#meetingPatternSelector option[value="change"]{color:#075e6b;font-weight:700;}
-#mainView section.card:has(#meetingPatternSelector) h2{color:#0875c9;}
-#mainView section.card:has(#meetingPatternSelector) > .description{color:#075e6b;}
-#mainView section.card:has(#meetingPatternSelector) label[for="meetingPatternSelector"]{color:#0875c9;}
-#mainView section.card:has(#meetingPatternSelector) .setting-box{
-  border:2px solid #7ccfe3 !important;
-  background:linear-gradient(180deg,#f2fbfd 0%,#eaf7fb 100%) !important;
-  box-shadow:0 3px 10px rgba(8,117,201,.10);
+#meetingPatternSelector option[value="default"] {
+  color: #0875c9;
+  font-weight: 700;
 }
-#meetingPatternSelector{
-  border:2px solid #1aa6c8 !important;
-  background:#ffffff !important;
-  color:#075e6b !important;
-  font-weight:700 !important;
-  box-shadow:0 0 0 3px rgba(26,166,200,.10);
-  outline:none;
+#meetingPatternSelector option[value="update"] {
+  color: #008fa3;
+  font-weight: 700;
 }
-#meetingPatternSelector:focus{
-  border-color:#0875c9 !important;
-  box-shadow:0 0 0 4px rgba(8,117,201,.16) !important;
+#meetingPatternSelector option[value="change"] {
+  color: #075e6b;
+  font-weight: 700;
 }
-#meetingPatternStatus{color:#075e6b !important;}
+#mainView section.card:has(#meetingPatternSelector) h2 {
+  color: #0875c9;
+}
+#mainView section.card:has(#meetingPatternSelector) > .description {
+  color: #075e6b;
+}
+#mainView section.card:has(#meetingPatternSelector) label[for="meetingPatternSelector"] {
+  color: #0875c9;
+}
+#mainView section.card:has(#meetingPatternSelector) .setting-box {
+  border: 2px solid #7ccfe3 !important;
+  background: linear-gradient(180deg,#f2fbfd 0%,#eaf7fb 100%) !important;
+  box-shadow: 0 3px 10px rgba(8,117,201,.10);
+}
+#meetingPatternSelector {
+  border: 2px solid #1aa6c8 !important;
+  background: #ffffff !important;
+  color: #075e6b !important;
+  font-weight: 700 !important;
+  box-shadow: 0 0 0 3px rgba(26,166,200,.10);
+  outline: none;
+}
+#meetingPatternSelector:focus {
+  border-color: #0875c9 !important;
+  box-shadow: 0 0 0 4px rgba(8,117,201,.16) !important;
+}
+#meetingPatternStatus {
+  color: #075e6b !important;
+}
 </style>
 
 
 <style id="ai-launch-buttons-style">
-.ai-launch-box{
-  margin-top:12px;
-  padding:14px;
-  background:#f4faff;
-  border:1px solid #b9d9f5;
-  border-radius:12px;
+.ai-launch-box {
+  margin-top: 12px;
+  padding: 14px;
+  background: #f4faff;
+  border: 1px solid #b9d9f5;
+  border-radius: 12px;
 }
-.ai-launch-title{
-  font-weight:700;
-  color:#0875c9;
-  margin-bottom:8px;
+.ai-launch-title {
+  font-weight: 700;
+  color: #0875c9;
+  margin-bottom: 8px;
 }
-.ai-launch-note{
-  font-size:13px;
-  line-height:1.6;
-  color:#52676d;
-  margin-bottom:8px;
+.ai-launch-note {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #52676d;
+  margin-bottom: 8px;
 }
-.ai-launch-buttons{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
+.ai-launch-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
-.ai-launch-buttons button{
-  flex:1 1 180px;
-  margin:0;
-  font-weight:700;
+.ai-launch-buttons button {
+  flex: 1 1 180px;
+  margin: 0;
+  font-weight: 700;
 }
-.ai-chatgpt-button{
-  background:#222 !important;
-  color:#fff !important;
+.ai-chatgpt-button {
+  background: #222 !important;
 }
-.ai-gemini-button{
-  background:#4285f4 !important;
-  color:#fff !important;
+.ai-claude-button {
+  background: #d97757 !important;
 }
-.ai-claude-button{
-  background:#d97757 !important;
-  color:#fff !important;
-}
-@media(max-width:600px){
-  .ai-launch-buttons{display:block}
-  .ai-launch-buttons button{width:100%;margin:4px 0}
+@media(max-width:600px) {
+  .ai-launch-buttons {
+    display: block;
+  }
+  .ai-launch-buttons button {
+    width: 100%;
+    margin: 4px 0;
+  }
 }
 </style>
 
@@ -510,85 +812,84 @@ h1.bo-white-title{
 
 
 <style id="bo-ai-launcher-final-style">
-/* AI選択欄はコピー完了後のみ表示 */
-#aiLaunchBox{
-  display:none;
+#aiLaunchBox {
+  display: none;
 }
-#aiLaunchBox.show{
-  display:block;
+#aiLaunchBox.show {
+  display: block;
 }
-
-/* AIボタン4色 */
-.ai-launch-buttons{
-  display:grid !important;
-  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
-  gap:10px !important;
+.ai-launch-buttons {
+  display: grid !important;
+  grid-template-columns: repeat(4,minmax(0,1fr)) !important;
+  gap: 10px !important;
 }
-.ai-launch-buttons a{
-  min-height:50px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:12px;
-  padding:12px 14px;
-  font-size:15px;
-  font-weight:800;
-  text-decoration:none !important;
-  box-sizing:border-box;
-  text-align:center;
+.ai-launch-buttons a {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none !important;
+  box-sizing: border-box;
+  text-align: center;
 }
-.ai-chatgpt-button{
-  background:#111 !important;
-  color:#fff !important;
-  border:2px solid #111 !important;
+.ai-chatgpt-button {
+  background: #111 !important;
+  color: #fff !important;
+  border: 2px solid #111 !important;
 }
-.ai-chatgpt-button:hover{background:#2b2b2b !important;}
-.ai-gemini-button{
-  background:#4285f4 !important;
-  color:#fff !important;
-  border:2px solid #4285f4 !important;
+.ai-chatgpt-button:hover {
+  background: #2b2b2b !important;
 }
-.ai-gemini-button:hover{background:#2f6fda !important;}
-.ai-claude-button{
-  background:#7c5ce0 !important;
-  color:#fff !important;
-  border:2px solid #7c5ce0 !important;
+.ai-gemini-button {
+  background: #4285f4 !important;
+  color: #fff !important;
+  border: 2px solid #4285f4 !important;
 }
-.ai-claude-button:hover{background:#6748c7 !important;}
-.ai-keep-button{
-  background:#fff3b0 !important;
-  color:#6b5800 !important;
-  border:2px solid #d9b300 !important;
+.ai-gemini-button:hover {
+  background: #2f6fda !important;
 }
-.ai-keep-button:hover{
-  background:#ffe780 !important;
-  color:#5c4a00 !important;
+.ai-claude-button {
+  background: #7c5ce0 !important;
+  color: #fff !important;
+  border: 2px solid #7c5ce0 !important;
 }
-
-/* AI処理用コピーを大きく */
-#copyButton.copy-button{
-  width:100% !important;
-  min-height:62px !important;
-  padding:17px 24px !important;
-  font-size:21px !important;
-  font-weight:900 !important;
-  border-radius:14px !important;
-  box-sizing:border-box !important;
+.ai-claude-button:hover {
+  background: #6748c7 !important;
 }
-
-/* スマホ */
-@media(max-width:850px){
-  .ai-launch-buttons{
-    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+.ai-keep-button {
+  background: #fff3b0 !important;
+  color: #6b5800 !important;
+  border: 2px solid #d9b300 !important;
+}
+.ai-keep-button:hover {
+  background: #ffe780 !important;
+  color: #5c4a00 !important;
+}
+#copyButton.copy-button {
+  width: 100% !important;
+  min-height: 62px !important;
+  padding: 17px 24px !important;
+  font-size: 21px !important;
+  font-weight: 900 !important;
+  border-radius: 14px !important;
+  box-sizing: border-box !important;
+}
+@media(max-width:850px) {
+  .ai-launch-buttons {
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
   }
 }
-@media(max-width:600px){
-  .ai-launch-buttons{
-    grid-template-columns:1fr !important;
+@media(max-width:600px) {
+  .ai-launch-buttons {
+    grid-template-columns: 1fr !important;
   }
-  #copyButton.copy-button{
-    min-height:58px !important;
-    font-size:19px !important;
+  #copyButton.copy-button {
+    min-height: 58px !important;
+    font-size: 19px !important;
   }
 }
 </style>
@@ -803,8 +1104,12 @@ h1.bo-white-title{
 </div>
 <style id="meeting-record-notice-style">
 @keyframes meetingNoticeBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.25; }
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
 }
 </style>
 
@@ -916,67 +1221,63 @@ function copyExampleText() {
 <script>
 (function(){
 
-window.scrollToTop = function(){
-  window.scrollTo({top:0, behavior:"smooth"});
-};
+  window.scrollToTop = function(){
+    window.scrollTo({top:0, behavior:"smooth"});
+  };
 
-window.showUsageGuide = function(){
-  const usage = document.querySelector(".usage-card");
-  if(usage) usage.scrollIntoView({behavior:"smooth", block:"start"});
-};
+  window.showUsageGuide = function(){
+    const usage = document.querySelector(".usage-card");
+    if(usage) usage.scrollIntoView({behavior:"smooth", block:"start"});
+  };
 
-window.showSettingsView = function(){
-  const mainView = document.getElementById("mainView");
-  const settingsView = document.getElementById("promptLibraryArea");
-  document.body.classList.add("settings-view-active");
-  if(mainView) mainView.classList.add("view-hidden");
-  if(settingsView) settingsView.classList.remove("view-hidden");
-  window.scrollTo({top:0, behavior:"smooth"});
-};
+  window.showSettingsView = function(){
+    const mainView = document.getElementById("mainView");
+    const settingsView = document.getElementById("promptLibraryArea");
+    document.body.classList.add("settings-view-active");
+    if(mainView) mainView.classList.add("view-hidden");
+    if(settingsView) settingsView.classList.remove("view-hidden");
+    window.scrollTo({top:0, behavior:"smooth"});
+  };
 
-window.showMainView = function(){
-  const mainView = document.getElementById("mainView");
-  const settingsView = document.getElementById("promptLibraryArea");
-  document.body.classList.remove("settings-view-active");
-  if(settingsView) settingsView.classList.add("view-hidden");
-  if(mainView) mainView.classList.remove("view-hidden");
-  window.scrollTo({top:0, behavior:"smooth"});
-};
+  window.showMainView = function(){
+    const mainView = document.getElementById("mainView");
+    const settingsView = document.getElementById("promptLibraryArea");
+    document.body.classList.remove("settings-view-active");
+    if(settingsView) settingsView.classList.add("view-hidden");
+    if(mainView) mainView.classList.remove("view-hidden");
+    window.scrollTo({top:0, behavior:"smooth"});
+  };
 
-window.goHome = function(){
-  location.href = 'https://blueocean2014.github.io/BlueOcean-Portal/';
-};
-
+  window.goHome = function(){
+    location.href = 'https://blueocean2014.github.io/BlueOcean-Portal/';
+  };
 
   window.openAI = function(ai){
     const AI_SITES = {
-      chatgpt: 'https://chatgpt.com/',
-      gemini: 'https://gemini.google.com/',
-      claude: 'https://claude.ai/'
+      chatgpt: 'https://chatgpt.com/', gemini: 'https://gemini.google.com/', claude: 'https://claude.ai/'
     };
     const url = AI_SITES[ai];
     if(url) window.open(url, '_blank', 'noopener,noreferrer');
   };
 
-window.showAILauncherAfterCopy = function(){
-  const box = document.getElementById("aiLaunchBox");
-  if (box) {
-    box.classList.add("show");
-    box.scrollIntoView({behavior:"smooth", block:"nearest"});
-  }
-};
+  window.showAILauncherAfterCopy = function(){
+    const box = document.getElementById("aiLaunchBox");
+    if (box) {
+      box.classList.add("show");
+      box.scrollIntoView({behavior:"smooth", block:"nearest"});
+    }
+  };
 
-window.copyAI = async function(){
-  const button = document.getElementById("copyButton");
-  const status = document.getElementById("cs");
+  window.copyAI = async function(){
+    const button = document.getElementById("copyButton");
+    const status = document.getElementById("cs");
 
-  const memo = document.getElementById("memo")?.value || "";
-  const prompt = typeof window.getActiveMeetingPrompt === "function"
+    const memo = document.getElementById("memo")?.value || "";
+    const prompt = typeof window.getActiveMeetingPrompt === "function"
     ? window.getActiveMeetingPrompt()
     : "";
 
-  const text =
-`【サービス担当者会議作成支援：AI処理用】
+  const text = `【サービス担当者会議作成支援：AI処理用】
 
 【サービス担当者会議プロンプト】
 ${prompt}
@@ -984,40 +1285,7 @@ ${prompt}
 【今回の会議内容】
 ${memo}`;
 
-  try {
-    await navigator.clipboard.writeText(text);
-    if (button) {
-      button.classList.add("copied");
-      button.textContent = "コピーしました。そのままAIに貼り付けてください。";
-      setTimeout(() => {
-        button.classList.remove("copied");
-        button.textContent = "📋 AI処理用にコピー";
-      }, 1800);
-    }
-    if (status) {
-      status.className = "status success";
-      status.textContent = "✓ AI処理用の内容をコピーしました。";
-    }
-    window.showAILauncherAfterCopy();
-  } catch (err) {
-    // HTTPS等でClipboard APIが使えない環境でも動作する代替処理
-    const temp = document.createElement("textarea");
-    temp.value = text;
-    temp.style.position = "fixed";
-    temp.style.left = "-9999px";
-    document.body.appendChild(temp);
-    temp.focus();
-    temp.select();
-
-    let copied = false;
-    try {
-      copied = document.execCommand("copy");
-    } catch (e) {
-      copied = false;
-    }
-    document.body.removeChild(temp);
-
-    if (copied) {
+    function finishMeetingCopy(){
       if (button) {
         button.classList.add("copied");
         button.textContent = "コピーしました。そのままAIに貼り付けてください。";
@@ -1031,21 +1299,46 @@ ${memo}`;
         status.textContent = "✓ AI処理用の内容をコピーしました。";
       }
       window.showAILauncherAfterCopy();
-    } else {
-      if (status) {
-        status.className = "status";
-        status.textContent = "コピーできませんでした。ブラウザの権限を確認してください。";
+    }
+
+    try {
+      await navigator.clipboard.writeText(text);
+      finishMeetingCopy();
+    } catch (err) {
+      // HTTPS等でClipboard APIが使えない環境でも動作する代替処理
+      const temp = document.createElement("textarea");
+      temp.value = text;
+      temp.style.position = "fixed";
+      temp.style.left = "-9999px";
+      document.body.appendChild(temp);
+      temp.focus();
+      temp.select();
+
+      let copied = false;
+      try {
+        copied = document.execCommand("copy");
+      } catch (e) {
+        copied = false;
+      }
+      document.body.removeChild(temp);
+
+      if (copied) {
+        finishMeetingCopy();
+      } else {
+        if (status) {
+          status.className = "status";
+          status.textContent = "コピーできませんでした。ブラウザの権限を確認してください。";
+        }
       }
     }
-  }
-};
+  };
 
-(function(){
-const LIBRARY_KEY="bo_service_meeting_prompt_library_v2";
-const ACTIVE_KEY="bo_service_meeting_active_prompt_v2";
-const DEFAULT_PROMPT_TEXT="情報が入力されていない項目は空欄とする。\n\nただし「医師からの意見や医学的所見」の項目のみ、情報がない場合は「なし」と記載する。\n\n総括は情報が存在する項目のみ作成する。\n\n出力本文には、指示文や設定条件（例：ケアマネ視点、200字以内 等）を一切記載しない。これらは内部処理として遵守する。\n\nあなたは経験豊富な介護支援専門員です。以下の記録内容を基に、運営指導において指摘を受けない水準のサービス担当者会議要点を作成してください。出力は必ず下記構成で作成すること。\n\n【出力構成】■検討した項目■検討内容■結論■残された課題\n\n【検討した項目】\n\n1.利用者の現状と課題\n\n2.各サービス事業所からの報告・意見\n\n3.ケアプラン原案・今後のサービス方針\n\n【検討した項目】では1〜3は項目名のみ記載し内容は書かない。\n\n【検討内容】\n\n1.利用者の現状と課題（箇条書き禁止。ケアマネ視点、180字以内で総合的に文章でまとめる）\n\n2.ケアマネジャーの所見：（専門職としての評価・課題分析・リスク整理を180字以内で簡潔にまとめる）\n\n3.利用者・家族からの意見・要望：本人：〇〇〇　家族：〇〇〇（話し言葉で記載。発言がない場合は空欄可）\n\n4.各サービス事業所からの報告・意見\n\n各サービス事業所の内容は、単なる発言記録ではなく、「現状の支援状況」「専門職としての評価」「今後の支援に関する提案」の3点を含めて、ケアマネジャーが整理統合して記載すること。\n\n「報告があった」「確認された」「提案があった」「示された」「述べられた」等の会議経過表現は使用しない。\n\n主語は「訪問介護」「通所介護」「訪問看護」「福祉用具専門相談員」等の職種名とし、各専門職の評価・支援状況・今後の対応を記録文体（常体）で簡潔に記載する。\n\n内容は支援場面が具体的にイメージできるよう、観察状況・支援内容・今後の対応を含め、それぞれの意見ごとに記載する。\n\n「利用者の現状と課題」「ケアマネジャーの所見」はケアマネジャーの視点で総括文章として記載する。\n\n「各サービス事業所からの報告・意見」は\n\n各サービス事業所ごとに区切って記載する。\n\nサービスごとの内容は、ケアマネジャーが整理統合した文章としてまとめ、サービス内では箇条書きを使用しない。\n\nサービス区分（例：施設介護職、訪問看護、福祉用具専門相談員等）のみ箇条書きとし、その後に続く内容は文章で記載する。\n\n【検討内容記載時のルール】\n\n①950文字以内で記載すること\n\n【結論】\n\n1.決定事項・今後の支援方針・サービス調整内容（新規導入・変更・継続）を具体的かつ実務的に記載（単なる羅列ではなく、ケアマネジャーが内容を整理統合した上で、各決定事項ごとに箇条書きで記載する。\n\n・決定事項と記載の後に、\n\n各決定事項を\n\n①〇〇\n\n②〇〇のように箇条書で記載すること\n\n2.医師からの意見や医学的な所見（ない場合はなしと記載するが、ある場合は具体的内容を記載する）\n\n3.サービスの利用については、当面の間、様子を観察し、状態に変化があった際に内容を再検討する。と記載する。\n\n４.今回のサービス担当者会議で提示したケアプラン原案について、利用者・家族・各サービス事業所と協議した結果、原案通り実施することで合意を得た。と記載する。\n\n【残された課題】\n\n1.継続検討事項や連携が必要な事項を記録する。\n\n2.（現状はしばらく状態観察とし、特に問題が無ければ次回プラン更新時にサービス担当者会議を開催して検討する。ただし、問題が発生した場合にはサービス担当者会議は開催する。問題や要望がなければ短期目標期間まで様子をみることとする。）\n\n3.上記2は必ず結論の最後に記載すること。\n\n以上の条件を厳守し、介護支援専門員の公式記録として適切な専門的文体で作成すること。";
-let promptLibrary=[];
-let activePromptId="default";
+  (function(){
+    const LIBRARY_KEY="bo_service_meeting_prompt_library_v2";
+    const ACTIVE_KEY="bo_service_meeting_active_prompt_v2";
+    const DEFAULT_PROMPT_TEXT="情報が入力されていない項目は空欄とする。\n\nただし「医師からの意見や医学的所見」の項目のみ、情報がない場合は「なし」と記載する。\n\n総括は情報が存在する項目のみ作成する。\n\n出力本文には、指示文や設定条件（例：ケアマネ視点、200字以内 等）を一切記載しない。これらは内部処理として遵守する。\n\nあなたは経験豊富な介護支援専門員です。以下の記録内容を基に、運営指導において指摘を受けない水準のサービス担当者会議要点を作成してください。出力は必ず下記構成で作成すること。\n\n【出力構成】■検討した項目■検討内容■結論■残された課題\n\n【検討した項目】\n\n1.利用者の現状と課題\n\n2.各サービス事業所からの報告・意見\n\n3.ケアプラン原案・今後のサービス方針\n\n【検討した項目】では1〜3は項目名のみ記載し内容は書かない。\n\n【検討内容】\n\n1.利用者の現状と課題（箇条書き禁止。ケアマネ視点、180字以内で総合的に文章でまとめる）\n\n2.ケアマネジャーの所見：（専門職としての評価・課題分析・リスク整理を180字以内で簡潔にまとめる）\n\n3.利用者・家族からの意見・要望：本人：〇〇〇　家族：〇〇〇（話し言葉で記載。発言がない場合は空欄可）\n\n4.各サービス事業所からの報告・意見\n\n各サービス事業所の内容は、単なる発言記録ではなく、「現状の支援状況」「専門職としての評価」「今後の支援に関する提案」の3点を含めて、ケアマネジャーが整理統合して記載すること。\n\n「報告があった」「確認された」「提案があった」「示された」「述べられた」等の会議経過表現は使用しない。\n\n主語は「訪問介護」「通所介護」「訪問看護」「福祉用具専門相談員」等の職種名とし、各専門職の評価・支援状況・今後の対応を記録文体（常体）で簡潔に記載する。\n\n内容は支援場面が具体的にイメージできるよう、観察状況・支援内容・今後の対応を含め、それぞれの意見ごとに記載する。\n\n「利用者の現状と課題」「ケアマネジャーの所見」はケアマネジャーの視点で総括文章として記載する。\n\n「各サービス事業所からの報告・意見」は\n\n各サービス事業所ごとに区切って記載する。\n\nサービスごとの内容は、ケアマネジャーが整理統合した文章としてまとめ、サービス内では箇条書きを使用しない。\n\nサービス区分（例：施設介護職、訪問看護、福祉用具専門相談員等）のみ箇条書きとし、その後に続く内容は文章で記載する。\n\n【検討内容記載時のルール】\n\n①950文字以内で記載すること\n\n【結論】\n\n1.決定事項・今後の支援方針・サービス調整内容（新規導入・変更・継続）を具体的かつ実務的に記載（単なる羅列ではなく、ケアマネジャーが内容を整理統合した上で、各決定事項ごとに箇条書きで記載する。\n\n・決定事項と記載の後に、\n\n各決定事項を\n\n①〇〇\n\n②〇〇のように箇条書で記載すること\n\n2.医師からの意見や医学的な所見（ない場合はなしと記載するが、ある場合は具体的内容を記載する）\n\n3.サービスの利用については、当面の間、様子を観察し、状態に変化があった際に内容を再検討する。と記載する。\n\n４.今回のサービス担当者会議で提示したケアプラン原案について、利用者・家族・各サービス事業所と協議した結果、原案通り実施することで合意を得た。と記載する。\n\n【残された課題】\n\n1.継続検討事項や連携が必要な事項を記録する。\n\n2.（現状はしばらく状態観察とし、特に問題が無ければ次回プラン更新時にサービス担当者会議を開催して検討する。ただし、問題が発生した場合にはサービス担当者会議は開催する。問題や要望がなければ短期目標期間まで様子をみることとする。）\n\n3.上記2は必ず結論の最後に記載すること。\n\n以上の条件を厳守し、介護支援専門員の公式記録として適切な専門的文体で作成すること。";
+    let promptLibrary=[];
+    let activePromptId="default";
 
 const UPDATE_PROMPT_TEXT=`あなたは経験豊富な介護支援専門員です。以下の会議記録を基に、サービス担当者会議の要点を、介護支援専門員の公式記録として適切な文章に整理してください。
 
@@ -1125,164 +1418,164 @@ const CHANGE_PROMPT_TEXT=`情報が入力されていない項目は空欄とす
 
 以上の条件を厳守し、介護支援専門員の公式記録として適切な専門的文体で作成すること。`;
 
-function loadPromptLibrary(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(LIBRARY_KEY)||"null");
-    if(Array.isArray(saved)&&saved.length) promptLibrary=saved;
-  }catch(e){}
-  if(!promptLibrary.length){
-    promptLibrary=[
-      {id:"default",name:"タイプA（標準）",text:DEFAULT_PROMPT_TEXT,builtin:true},
-      {id:"update",name:"タイプB",text:UPDATE_PROMPT_TEXT,builtin:true},
-      {id:"change",name:"タイプC",text:CHANGE_PROMPT_TEXT,builtin:true}
-    ];
-  }
-  activePromptId=localStorage.getItem(ACTIVE_KEY)||"default";
-  if(!promptLibrary.some(p=>p.id===activePromptId)) activePromptId=promptLibrary[0].id;
-  savePromptLibrary();
-}
-function savePromptLibrary(){
-  localStorage.setItem(LIBRARY_KEY,JSON.stringify(promptLibrary));
-  localStorage.setItem(ACTIVE_KEY,activePromptId);
-}
-
-// 標準プロンプトは今回指定された内容を初期値として使用する。
-// 既に保存済みの自作プロンプトはそのまま保持する。
-(function ensureBuiltinMeetingPrompts(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(LIBRARY_KEY)||"null");
-    if(Array.isArray(saved)&&saved.length){
-      const builtins={
-        default:{name:"タイプA（標準）",text:DEFAULT_PROMPT_TEXT},
-        update:{name:"タイプB",text:UPDATE_PROMPT_TEXT},
-        change:{name:"タイプC",text:CHANGE_PROMPT_TEXT}
-      };
-      Object.keys(builtins).forEach(function(id){
-        const item=saved.find(function(p){return p.id===id;});
-        if(!item){
-          saved.push({id:id,name:builtins[id].name,text:builtins[id].text,builtin:true});
-        }else if(item.builtin){
-          item.name=builtins[id].name;
-          item.text=builtins[id].text;
-        }
-      });
-      localStorage.setItem(LIBRARY_KEY,JSON.stringify(saved));
+    function loadPromptLibrary(){
+      try{
+        const saved=JSON.parse(localStorage.getItem(LIBRARY_KEY)||"null");
+        if(Array.isArray(saved)&&saved.length) promptLibrary=saved;
+      }catch(e){}
+      if(!promptLibrary.length){
+        promptLibrary=[
+        {id:"default",name:"タイプA（標準）",text:DEFAULT_PROMPT_TEXT,builtin:true}, {id:"update",name:"タイプB",text:UPDATE_PROMPT_TEXT,builtin:true}, {id:"change",name:"タイプC",text:CHANGE_PROMPT_TEXT,builtin:true}
+        ];
+      }
+      activePromptId=localStorage.getItem(ACTIVE_KEY)||"default";
+      if(!promptLibrary.some(p=>p.id===activePromptId)) activePromptId=promptLibrary[0].id;
+      savePromptLibrary();
     }
-  }catch(e){}
-})();
+    function savePromptLibrary(){
+      localStorage.setItem(LIBRARY_KEY,JSON.stringify(promptLibrary));
+      localStorage.setItem(ACTIVE_KEY,activePromptId);
+    }
 
-function activePrompt(){return promptLibrary.find(p=>p.id===activePromptId)||promptLibrary[0];}
+    // 標準プロンプトは今回指定された内容を初期値として使用する。
+    // 既に保存済みの自作プロンプトはそのまま保持する。
+    (function ensureBuiltinMeetingPrompts(){
+      try{
+        const saved=JSON.parse(localStorage.getItem(LIBRARY_KEY)||"null");
+        if(Array.isArray(saved)&&saved.length){
+          const builtins={
+            default:{name:"タイプA（標準）",text:DEFAULT_PROMPT_TEXT}, update:{name:"タイプB",text:UPDATE_PROMPT_TEXT}, change:{name:"タイプC",text:CHANGE_PROMPT_TEXT}
+          };
+          Object.keys(builtins).forEach(function(id){
+            const item=saved.find(function(p){return p.id===id;});
+            if(!item){
+              saved.push({id:id,name:builtins[id].name,text:builtins[id].text,builtin:true});
+            }else if(item.builtin){
+              item.name=builtins[id].name;
+              item.text=builtins[id].text;
+            }
+          });
+          localStorage.setItem(LIBRARY_KEY,JSON.stringify(saved));
+        }
+      }catch(e){}
+    })();
 
-function renderMeetingPatternSelector(){
-  const selector=document.getElementById("meetingPatternSelector");
-  const status=document.getElementById("meetingPatternStatus");
-  if(selector){
-    selector.innerHTML="";
-    promptLibrary.forEach(function(item){
-      const o=document.createElement("option");
-      o.value=item.id;
-      o.textContent=item.name;
-      o.selected=item.id===activePromptId;
-      selector.appendChild(o);
+    function saveAndRenderPromptManager(){
+      savePromptLibrary();
+      renderPromptManager();
+    }
+
+    function activePrompt(){return promptLibrary.find(p=>p.id===activePromptId)||promptLibrary[0];}
+
+    function renderMeetingPatternSelector(){
+      const selector=document.getElementById("meetingPatternSelector");
+      const status=document.getElementById("meetingPatternStatus");
+      if(selector){
+        selector.innerHTML="";
+        promptLibrary.forEach(function(item){
+          const o=document.createElement("option");
+          o.value=item.id;
+          o.textContent=item.name;
+          o.selected=item.id===activePromptId;
+          selector.appendChild(o);
+        });
+      }
+      const p=activePrompt();
+      if(status&&p) status.textContent="現在選択中：「"+p.name+"」";
+    }
+
+    function renderPromptManager(){
+      const p=activePrompt(); if(!p)return;
+      renderMeetingPatternSelector();
+      const name=document.getElementById("activePromptName");
+      const selector=document.getElementById("promptSelector");
+      const editName=document.getElementById("selectedPromptName");
+      const editText=document.getElementById("selectedPromptText");
+      const status=document.getElementById("selectedPromptStatus");
+      if(name) name.textContent="現在使用中：「"+p.name+"」";
+      if(selector){
+        selector.innerHTML="";
+        promptLibrary.forEach(function(item){
+          const o=document.createElement("option");
+          o.value=item.id;
+          o.textContent=item.name+(item.builtin?"（標準）":"（自分で追加）");
+          o.selected=item.id===activePromptId;
+          selector.appendChild(o);
+        });
+      }
+      if(editName) editName.value=p.name;
+      if(editText) editText.value=p.text;
+      if(status) status.textContent="現在選択中：「"+p.name+"」";
+      const del=document.querySelector('#promptLibraryArea button[onclick="deleteSelectedMeetingPrompt()"]');
+      if(del) del.style.display=p.builtin?"none":"inline-block";
+    }
+
+    window.getActiveMeetingPrompt=function(){return activePrompt().text;};
+    window.getActiveMeetingPromptName=function(){return activePrompt().name;};
+
+    window.showAddPromptForm=function(){
+      document.getElementById("addPromptForm").style.display="block";
+      document.getElementById("showAddPromptButton").style.display="none";
+      document.getElementById("newPromptName").focus();
+    };
+    window.cancelAddPrompt=function(){
+      document.getElementById("addPromptForm").style.display="none";
+      document.getElementById("showAddPromptButton").style.display="inline-block";
+      document.getElementById("newPromptName").value="";
+      document.getElementById("newPromptText").value="";
+    };
+    window.addMeetingPrompt=function(){
+      const name=document.getElementById("newPromptName").value.trim();
+      const body=document.getElementById("newPromptText").value;
+      if(!name){alert("新しいプロンプトの名前を入力してください。");return;}
+      if(!body.trim()){alert("新しいプロンプト本文を入力してください。");return;}
+      if(promptLibrary.some(p=>p.name===name)){alert("同じ名前のプロンプトがあります。別の名前にしてください。");return;}
+      const id="custom_"+Date.now().toString(36);
+      promptLibrary.push({id:id,name:name,text:body,builtin:false});
+      activePromptId=id;
+      savePromptLibrary();
+      cancelAddPrompt();
+      renderPromptManager();
+      document.getElementById("selectedPromptStatus").textContent="✓ 新しいプロンプト「"+name+"」を追加し、現在使用するプロンプトにしました。";
+    };
+    window.saveSelectedMeetingPrompt=function(){
+      const p=activePrompt();
+      const name=document.getElementById("selectedPromptName").value.trim();
+      const body=document.getElementById("selectedPromptText").value;
+      if(!name){alert("プロンプト名を入力してください。");return;}
+      if(!body.trim()){alert("プロンプト本文を入力してください。");return;}
+      if(promptLibrary.some(x=>x.id!==p.id&&x.name===name)){alert("同じ名前のプロンプトがあります。別の名前にしてください。");return;}
+      p.name=name;p.text=body;saveAndRenderPromptManager();
+      document.getElementById("selectedPromptStatus").textContent="✓ 「"+name+"」を保存しました。今後はこの内容を使用します。";
+    };
+    window.restoreSelectedMeetingPrompt=function(){
+      const p=activePrompt();
+      if(!confirm("「"+p.name+"」を標準プロンプトの内容に戻しますか？"))return;
+      p.text=DEFAULT_PROMPT_TEXT;saveAndRenderPromptManager();
+      document.getElementById("selectedPromptStatus").textContent="✓ 標準プロンプトの内容に戻しました。";
+    };
+    window.deleteSelectedMeetingPrompt=function(){
+      const p=activePrompt();
+      if(p.builtin){alert("標準プロンプトは削除できません。");return;}
+      if(!confirm("「"+p.name+"」を削除しますか？"))return;
+      promptLibrary=promptLibrary.filter(x=>x.id!==p.id);
+      activePromptId="default";saveAndRenderPromptManager();
+    };
+
+    document.addEventListener("DOMContentLoaded",function(){
+      loadPromptLibrary();
+      const selector=document.getElementById("promptSelector");
+      if(selector) selector.addEventListener("change",function(){
+        activePromptId=this.value;saveAndRenderPromptManager();
+      });
+      const meetingPatternSelector=document.getElementById("meetingPatternSelector");
+      if(meetingPatternSelector) meetingPatternSelector.addEventListener("change",function(){
+        activePromptId=this.value;
+        saveAndRenderPromptManager();
+      });
+      renderPromptManager();
     });
-  }
-  const p=activePrompt();
-  if(status&&p) status.textContent="現在選択中：「"+p.name+"」";
-}
-
-function renderPromptManager(){
-  const p=activePrompt(); if(!p)return;
-  renderMeetingPatternSelector();
-  const name=document.getElementById("activePromptName");
-  const selector=document.getElementById("promptSelector");
-  const editName=document.getElementById("selectedPromptName");
-  const editText=document.getElementById("selectedPromptText");
-  const status=document.getElementById("selectedPromptStatus");
-  if(name) name.textContent="現在使用中：「"+p.name+"」";
-  if(selector){
-    selector.innerHTML="";
-    promptLibrary.forEach(function(item){
-      const o=document.createElement("option");
-      o.value=item.id;
-      o.textContent=item.name+(item.builtin?"（標準）":"（自分で追加）");
-      o.selected=item.id===activePromptId;
-      selector.appendChild(o);
-    });
-  }
-  if(editName) editName.value=p.name;
-  if(editText) editText.value=p.text;
-  if(status) status.textContent="現在選択中：「"+p.name+"」";
-  const del=document.querySelector('#promptLibraryArea button[onclick="deleteSelectedMeetingPrompt()"]');
-  if(del) del.style.display=p.builtin?"none":"inline-block";
-}
-
-window.getActiveMeetingPrompt=function(){return activePrompt().text;};
-window.getActiveMeetingPromptName=function(){return activePrompt().name;};
-
-window.showAddPromptForm=function(){
-  document.getElementById("addPromptForm").style.display="block";
-  document.getElementById("showAddPromptButton").style.display="none";
-  document.getElementById("newPromptName").focus();
-};
-window.cancelAddPrompt=function(){
-  document.getElementById("addPromptForm").style.display="none";
-  document.getElementById("showAddPromptButton").style.display="inline-block";
-  document.getElementById("newPromptName").value="";
-  document.getElementById("newPromptText").value="";
-};
-window.addMeetingPrompt=function(){
-  const name=document.getElementById("newPromptName").value.trim();
-  const body=document.getElementById("newPromptText").value;
-  if(!name){alert("新しいプロンプトの名前を入力してください。");return;}
-  if(!body.trim()){alert("新しいプロンプト本文を入力してください。");return;}
-  if(promptLibrary.some(p=>p.name===name)){alert("同じ名前のプロンプトがあります。別の名前にしてください。");return;}
-  const id="custom_"+Date.now().toString(36);
-  promptLibrary.push({id:id,name:name,text:body,builtin:false});
-  activePromptId=id;
-  savePromptLibrary();
-  cancelAddPrompt();
-  renderPromptManager();
-  document.getElementById("selectedPromptStatus").textContent="✓ 新しいプロンプト「"+name+"」を追加し、現在使用するプロンプトにしました。";
-};
-window.saveSelectedMeetingPrompt=function(){
-  const p=activePrompt();
-  const name=document.getElementById("selectedPromptName").value.trim();
-  const body=document.getElementById("selectedPromptText").value;
-  if(!name){alert("プロンプト名を入力してください。");return;}
-  if(!body.trim()){alert("プロンプト本文を入力してください。");return;}
-  if(promptLibrary.some(x=>x.id!==p.id&&x.name===name)){alert("同じ名前のプロンプトがあります。別の名前にしてください。");return;}
-  p.name=name;p.text=body;savePromptLibrary();renderPromptManager();
-  document.getElementById("selectedPromptStatus").textContent="✓ 「"+name+"」を保存しました。今後はこの内容を使用します。";
-};
-window.restoreSelectedMeetingPrompt=function(){
-  const p=activePrompt();
-  if(!confirm("「"+p.name+"」を標準プロンプトの内容に戻しますか？"))return;
-  p.text=DEFAULT_PROMPT_TEXT;savePromptLibrary();renderPromptManager();
-  document.getElementById("selectedPromptStatus").textContent="✓ 標準プロンプトの内容に戻しました。";
-};
-window.deleteSelectedMeetingPrompt=function(){
-  const p=activePrompt();
-  if(p.builtin){alert("標準プロンプトは削除できません。");return;}
-  if(!confirm("「"+p.name+"」を削除しますか？"))return;
-  promptLibrary=promptLibrary.filter(x=>x.id!==p.id);
-  activePromptId="default";savePromptLibrary();renderPromptManager();
-};
-
-document.addEventListener("DOMContentLoaded",function(){
-  loadPromptLibrary();
-  const selector=document.getElementById("promptSelector");
-  if(selector) selector.addEventListener("change",function(){
-    activePromptId=this.value;savePromptLibrary();renderPromptManager();
-  });
-  const meetingPatternSelector=document.getElementById("meetingPatternSelector");
-  if(meetingPatternSelector) meetingPatternSelector.addEventListener("change",function(){
-    activePromptId=this.value;
-    savePromptLibrary();
-    renderPromptManager();
-  });
-  renderPromptManager();
-});
-})();
+  })();
 })();
 </script>
 </body>
