@@ -1045,7 +1045,16 @@ h1.bo-white-title{
       </div>
       <div id="simpleFinalStatus" class="bo-simple-status">先に作りたい書類を選んでください。</div>
       <div class="bo-paste-callout">AIが開いたら、ここでも <strong>Ctrl＋V → 送信</strong> だけです。</div>
+
     </div>
+  </div>
+
+  <div id="googleKeepGuide" class="google-keep-guide" style="display:none;">
+    <div class="google-keep-title"><strong>✅ AIで作成した内容を保存しますか？</strong></div>
+    <p>AIの回答をコピーしてから、下のボタンを押してください。Google Keepが別タブで開きます。</p>
+    <a href="https://keep.google.com/" target="_blank" rel="noopener" class="google-keep-button">📝 Google Keepを開く</a>
+    <p>Keepが開いたら「メモを入力」をクリックし、<strong>Ctrl＋V</strong> で貼り付けてください。</p>
+    <p><strong>Google Keep</strong> は、このアプリとの相性が良く、作成した記録の一時的な保管場所にもできますのでオススメです。</p>
   </div>
 </div>
 <h2>プラン作成支援：資料の確認</h2>
@@ -4071,6 +4080,8 @@ document.addEventListener('DOMContentLoaded', function(){
       setStatus('✓ 確認済み情報＋正式な作成プロンプトをまとめてコピーしました。別タブで開いたAIで Ctrl＋V → 送信してください。','ok');
       const step5=q('simpleStep5');
       if(step5){step5.classList.remove('is-current');step5.classList.add('is-done');}
+      const keepGuide=q('googleKeepGuide');
+      if(keepGuide) keepGuide.style.display='block';
     })();
     return true;
   };
@@ -4120,6 +4131,8 @@ document.addEventListener('DOMContentLoaded', function(){
     setStatus('✓ 確認済み情報＋正式な作成プロンプトをまとめてコピーしました。AIで Ctrl＋V → 送信してください。','ok');
     const step5=q('simpleStep5');
     if(step5){step5.classList.remove('is-current');step5.classList.add('is-done');}
+    const keepGuide=q('googleKeepGuide');
+    if(keepGuide) keepGuide.style.display='block';
 
     if(aiWindow && !aiWindow.closed){
       aiWindow.location.href=finalAiUrl;
@@ -4136,6 +4149,15 @@ document.addEventListener('DOMContentLoaded', function(){
   else init();
 })();
 </script>
+
+<style id="google-keep-guide-style">
+.google-keep-guide{width:70%;box-sizing:border-box;margin:16px auto 0;padding:12px 14px;border:2px solid #8bd4ee;border-radius:12px;background:#fffdf3;line-height:1.65;color:#24545d;font-size:13px;}
+.google-keep-title{font-size:15px;color:#0875c9;margin-bottom:6px;}
+.google-keep-guide p{margin:7px 0;}
+.google-keep-button{display:block;width:70%;box-sizing:border-box;margin:9px auto;padding:10px 13px;border-radius:9px;background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9);color:#fff!important;text-decoration:none;text-align:center;font-size:14px;font-weight:900;}
+.google-keep-button:hover{opacity:.92;}
+@media(max-width:600px){.google-keep-guide{width:92%;}.google-keep-button{width:90%;}}
+</style>
 <style id="blueocean-step5-canonical-style">
 #simpleStep5 .bo-final-ai{display:grid!important;visibility:visible!important;opacity:1!important}
 #simpleStep5 .bo-final-ai .bo-ai-btn{visibility:visible!important;pointer-events:auto!important;cursor:pointer!important}
