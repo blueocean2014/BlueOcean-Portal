@@ -497,7 +497,100 @@ h1.bo-white-title{
 <script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-auth-compat.js"></script>
 <style id="firebase-auth-guard-style">
-  body{visibility:hidden;}
+  body{visibility:visible;}
+  html.blueocean-auth-checking body{visibility:hidden;}
+</style>
+<script>
+(function(){
+  if (location.hostname === "blueocean2014.github.io") {
+    document.documentElement.classList.add("blueocean-auth-checking");
+  }
+})();
+</script>
+
+
+<style id="bo-ai-launcher-final-style">
+/* AI選択欄はコピー完了後のみ表示 */
+#aiLaunchBox{
+  display:none;
+}
+#aiLaunchBox.show{
+  display:block;
+}
+
+/* AIボタン4色 */
+.ai-launch-buttons{
+  display:grid !important;
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:10px !important;
+}
+.ai-launch-buttons a{
+  min-height:50px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  padding:12px 14px;
+  font-size:15px;
+  font-weight:800;
+  text-decoration:none !important;
+  box-sizing:border-box;
+  text-align:center;
+}
+.ai-chatgpt-button{
+  background:#111 !important;
+  color:#fff !important;
+  border:2px solid #111 !important;
+}
+.ai-chatgpt-button:hover{background:#2b2b2b !important;}
+.ai-gemini-button{
+  background:#4285f4 !important;
+  color:#fff !important;
+  border:2px solid #4285f4 !important;
+}
+.ai-gemini-button:hover{background:#2f6fda !important;}
+.ai-claude-button{
+  background:#7c5ce0 !important;
+  color:#fff !important;
+  border:2px solid #7c5ce0 !important;
+}
+.ai-claude-button:hover{background:#6748c7 !important;}
+.ai-keep-button{
+  background:#fff3b0 !important;
+  color:#6b5800 !important;
+  border:2px solid #d9b300 !important;
+}
+.ai-keep-button:hover{
+  background:#ffe780 !important;
+  color:#5c4a00 !important;
+}
+
+/* AI処理用コピーを大きく */
+#copyButton.copy-button{
+  width:100% !important;
+  min-height:62px !important;
+  padding:17px 24px !important;
+  font-size:21px !important;
+  font-weight:900 !important;
+  border-radius:14px !important;
+  box-sizing:border-box !important;
+}
+
+/* スマホ */
+@media(max-width:850px){
+  .ai-launch-buttons{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+@media(max-width:600px){
+  .ai-launch-buttons{
+    grid-template-columns:1fr !important;
+  }
+  #copyButton.copy-button{
+    min-height:58px !important;
+    font-size:19px !important;
+  }
+}
 </style>
 
 </head>
@@ -519,11 +612,20 @@ h1.bo-white-title{
     firebase.initializeApp(firebaseConfig);
   }
 
+  const isProduction = location.hostname === "blueocean2014.github.io";
+
+  if (!isProduction) {
+    document.documentElement.classList.remove("blueocean-auth-checking");
+    document.body.style.visibility = "visible";
+    return;
+  }
+
   const auth = firebase.auth();
   auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
 
   auth.onAuthStateChanged(function(user){
     if (user) {
+      document.documentElement.classList.remove("blueocean-auth-checking");
       document.body.style.visibility = "visible";
     } else {
       window.location.replace("https://blueocean2014.github.io/BlueOcean-Portal/");
@@ -591,9 +693,10 @@ h1.bo-white-title{
     下のボタンはAIのサイトを開くだけです。コピーした文章は自動では送信されませんので、開いたAIの画面にご自身で貼り付けてください。
   </div>
   <div class="ai-launch-buttons">
-    <button type="button" class="ai-chatgpt-button" onclick="openAI('chatgpt')">🤖 ChatGPTを開く</button>
-    <button type="button" class="ai-gemini-button" onclick="openAI('gemini')">✨ Geminiを開く</button>
-    <button type="button" class="ai-claude-button" onclick="openAI('claude')">🟣 Claudeを開く</button>
+    <a class="ai-chatgpt-button" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">🤖 ChatGPTを開く</a>
+    <a class="ai-gemini-button" href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">✨ Geminiを開く</a>
+    <a class="ai-claude-button" href="https://claude.ai/" target="_blank" rel="noopener noreferrer">🟣 Claudeを開く</a>
+    <a class="ai-keep-button" href="https://keep.google.com/" target="_blank" rel="noopener noreferrer">📝 Google Keepを開く</a>
   </div>
 </div>
 
@@ -855,6 +958,14 @@ window.goHome = function(){
     if(url) window.open(url, '_blank', 'noopener,noreferrer');
   };
 
+window.showAILauncherAfterCopy = function(){
+  const box = document.getElementById("aiLaunchBox");
+  if (box) {
+    box.classList.add("show");
+    box.scrollIntoView({behavior:"smooth", block:"nearest"});
+  }
+};
+
 window.copyAI = async function(){
   const button = document.getElementById("copyButton");
   const status = document.getElementById("cs");
@@ -887,6 +998,7 @@ ${memo}`;
       status.className = "status success";
       status.textContent = "✓ AI処理用の内容をコピーしました。";
     }
+    window.showAILauncherAfterCopy();
   } catch (err) {
     // HTTPS等でClipboard APIが使えない環境でも動作する代替処理
     const temp = document.createElement("textarea");
@@ -918,6 +1030,7 @@ ${memo}`;
         status.className = "status success";
         status.textContent = "✓ AI処理用の内容をコピーしました。";
       }
+      window.showAILauncherAfterCopy();
     } else {
       if (status) {
         status.className = "status";
