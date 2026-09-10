@@ -1074,7 +1074,7 @@ h1.bo-white-title{
 ①「🔎 読み込んだ資料に個人情報が入っていないかチェックする」を押す → ② <strong>🔴 強い警告がなければ次へ進めます</strong> → ③ 強い警告があれば、該当箇所を削除・匿名化してからもう一度確認します。<br>
 🟠「確認推奨」は内容を確認したうえで、そのまま次へ進めます。<br><br>
 選択した資料の文字情報をブラウザ内で確認し、<strong>本人を直接特定できる可能性が高い情報</strong>を中心に自動検出します。<br>
-氏名・生年月日・住所・電話番号・介護保険被保険者番号・マイナンバー・主治医/医師の氏名・家族/キーパーソンの氏名等は<strong>強い警告</strong>として次工程を停止し、医療機関名・施設名・事業所名等は<strong>確認推奨</strong>として区別します。<br>
+氏名・生年月日・住所・電話番号・介護保険被保険者番号・各種保険証等の番号・マイナンバー・主治医/医師の氏名・病院名・家族/キーパーソンの氏名等は<strong>強い警告</strong>として次工程を停止します。妻・夫・兄・妹・長男・長女等の続柄だけの記載、病名、検査値、要介護度、ADL等は警告対象にしません。施設名・事業所名は<strong>確認推奨</strong>として区別します。<br>
 疾患名、発症年、年齢、要介護度、ADL・IADL、服薬、介助内容など、プラン作成に必要な情報そのものは、原則として個人情報検出の対象から除外します。<br>
 資料そのものを変更・保存・サーバー送信する処理は行いません。
 </div>
@@ -1210,7 +1210,7 @@ h1.bo-white-title{
 
 <div class="setting-box">
 <div class="setting-label">② AIへ渡す前に個人情報を確認する</div>
-<p class="description">読み込んだ資料をブラウザ内で確認し、氏名、生年月日、住所、電話番号、被保険者番号、マイナンバー、主治医・家族等の氏名など、本人を直接特定できる可能性が高い情報を中心に自動チェックします。医療機関名・施設名・事業所名などは「確認推奨」として区別します。</p>
+<p class="description">読み込んだ資料をブラウザ内で確認し、氏名、生年月日、住所、電話番号、介護保険番号、各種保険証等の番号、マイナンバー、主治医・医師の氏名、病院名、家族・キーパーソンの氏名など、個人や関係者を直接特定できる情報を自動チェックします。妻・夫・兄・妹・長男・長女等の続柄だけの記載、病名、検査値、要介護度、ADL等は警告対象にしません。施設名・事業所名は「確認推奨」として区別します。</p>
 <div class="privacy-warning" style="margin-top:10px;"><strong>⚠️ 重要</strong><br>自動チェックは100％確実ではありません。検出されなかった場合でも、AIへ資料を添付する前に、必ずケアマネジャーご自身で資料全体を確認してください。個人情報が残っている資料はAIへ渡さないでください。</div>
 </div>
 
@@ -1589,50 +1589,114 @@ window.goHome = function(){
   }
 
   // 🔴 強い警告・次工程停止
-  // 本人を直接特定できる情報、および主治医・家族・キーパーソン等の「氏名」を検出。
+  // 強い警告は「個人・関係者・保険情報等を直接特定できる情報」に限定する。
+  // 続柄（妻・夫・兄・妹・長女等）、病名、検査値、要介護度、ADL等は警告対象にしない。
   const strongPatterns=[
-    ['本人の氏名らしき記載',/(?:氏名|名前|利用者氏名|利用者名|本人氏名|本人名)\s*[:：]\s*(?!本人|なし|不明|未記載)[一-龥々]{2,6}(?:\s*[一-龥々]{1,5})?/g],
-    ['主治医・医師の氏名らしき記載',/(?:主治医|担当医|主治医名|担当医名|医師名)\s*[:：]\s*(?!なし|不明|未定|未記載)[一-龥々]{2,6}(?:\s*[一-龥々]{1,5})?/g],
-    ['家族・キーパーソンの氏名らしき記載',/(?:キーパーソン|キーパーソン名|家族氏名|家族名|長女|次女|三女|長男|次男|三男|妻|夫|配偶者|娘|息子)\s*[:：]\s*(?!本人|家族|長女|次女|三女|長男|次男|三男|妻|夫|配偶者|娘|息子|なし|不明|未定|未記載)[一-龥々]{2,6}(?:\s*[一-龥々]{1,5})?/g],
+    ['本人の氏名らしき記載',/(?<![一-龥々ぁ-んァ-ヶー])(?:利用者氏名|利用者名|本人氏名|本人名|氏名|名前)\s*[:：]\s*(?!本人|なし|不明|未記載)[一-龥々ぁ-んァ-ヶー]{2,12}(?:[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12})?/g],
+    ['主治医・医師の氏名らしき記載',/(?:主治医氏名|主治医名|担当医氏名|担当医名|医師氏名|医師名)\s*[:：]\s*(?!なし|不明|未定|未記載)[一-龥々ぁ-んァ-ヶー]{2,12}(?:[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12})?/g],
+    ['主治医・医師の氏名らしき記載',/(?:主治医|担当医)\s*[:：]\s*(?!なし|不明|未定|未記載|往診|受診|診察|病院|医院|クリニック|診療所)[一-龥々ぁ-んァ-ヶー]{2,12}[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12}/g],
+    ['家族・キーパーソンの氏名らしき記載',/(?:キーパーソン氏名|キーパーソン名|家族氏名|家族名|妻氏名|夫氏名|配偶者氏名|長女氏名|次女氏名|三女氏名|長男氏名|次男氏名|三男氏名|娘氏名|息子氏名|兄氏名|弟氏名|姉氏名|妹氏名)\s*[:：]\s*(?!なし|不明|未定|未記載)[一-龥々ぁ-んァ-ヶー]{2,12}(?:[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12})?/g],
+    ['家族・キーパーソンの氏名らしき記載',/(?:妻|夫|配偶者|長女|次女|三女|長男|次男|三男|娘|息子|兄|弟|姉|妹|キーパーソン)\s*[:：]\s*[一-龥々ぁ-んァ-ヶー]{2,12}[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12}/g],
     ['住所らしき記載',/(?:住所|現住所|所在地|居住地)\s*[:：]\s*[^\n]{3,}/g],
     ['電話番号らしき記載',/(?:0\d{1,4}[-ー－]\d{1,4}[-ー－]\d{3,4}|0\d{9,10})/g],
-    ['郵便番号らしき記載',/〒?\s*\d{3}[-ー－]\d{4}/g],
+    ['郵便番号らしき記載',/(?<![0-9０-９\-ー－])〒?\s*\d{3}[-ー－]\d{4}(?![0-9０-９\-ー－])/g],
     ['メールアドレス',/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi],
-    ['介護保険被保険者番号等',/(?:被保険者番号|介護保険被保険者番号|保険者番号|認定番号|受給者番号)\s*[:：]?\s*[0-9０-９\-ー－]{5,}/g],
+    ['介護保険被保険者番号等',/(?:介護保険被保険者番号|被保険者番号|保険者番号|認定番号)\s*[:：]?\s*[0-9０-９\-ー－]{5,}/g],
+    ['各種保険証・受給者証等の番号',/(?:健康保険証番号|健康保険被保険者番号|医療保険被保険者番号|後期高齢者医療被保険者番号|後期高齢者被保険者番号|受給者証番号|受給者番号|公費負担者番号|公費受給者番号|身体障害者手帳番号|障害者手帳番号|療育手帳番号|精神障害者保健福祉手帳番号)\s*[:：]?\s*[A-ZＡ-Ｚ0-9０-９\-ー－]{4,}/gi],
     ['マイナンバー・個人番号',/(?:マイナンバー|個人番号)\s*[:：]?\s*[0-9０-９]{12}/g],
     ['生年月日らしき記載',/(?:生年月日|誕生日|出生年月日)\s*[:：]\s*[^\n]{4,}/g],
-    ['市町村番号等',/(?:市町村番号|市区町村番号)\s*[:：]?\s*[0-9０-９\-ー－]{3,}/g]
+    ['医療機関名らしき記載',/[一-龥々ぁ-んァ-ヶーA-Za-z0-9０-９・\-ー－]{2,30}(?:病院|医院|クリニック|診療所|医療センター)/g]
   ];
 
   // 🟠 確認推奨
-  // 医療機関・施設・事業所の「名称」は、主治医個人の氏名とは区別。
+  // 施設名・事業所名は現時点では確認推奨。続柄・病名・検査値等はここにも含めない。
   const advisoryPatterns=[
-    ['医療機関名らしき記載',/[^\n]{0,25}(?:病院|医院|クリニック|診療所|医療センター)[^\n]{0,25}/g],
-    ['施設・事業所名らしき記載',/[^\n]{0,25}(?:施設名|事業所名)[^\n]{0,25}/g]
+    ['施設・事業所名らしき記載',/(?:施設名|事業所名)\s*[:：]\s*[^\n]{2,60}/g]
   ];
 
   const strongHits=[];
   const advisoryHits=[];
 
+  // 検出した「種類」だけでなく、実際の文字・行番号・前後の文章も保持する。
+  // ここで扱う情報は、すでにブラウザ内へ読み込まれた文字情報のみ。外部送信は行わない。
+  function getPrivacyLineInfo(text,index){
+    const before=String(text||'').slice(0,index);
+    const lineNumber=before.split('\n').length;
+    const lines=String(text||'').split('\n');
+    const currentIndex=Math.max(0,lineNumber-1);
+    const context=[];
+    if(currentIndex>0 && lines[currentIndex-1]?.trim()) context.push(lines[currentIndex-1].trim());
+    if(lines[currentIndex]?.trim()) context.push(lines[currentIndex].trim());
+    if(currentIndex+1<lines.length && lines[currentIndex+1]?.trim()) context.push(lines[currentIndex+1].trim());
+    let contextText=context.join(' ／ ').replace(/\s+/g,' ').trim();
+    if(contextText.length>180) contextText=contextText.slice(0,180)+'…';
+    return {lineNumber,contextText};
+  }
+
+  function collectPrivacyHits(item,patterns,target){
+    const sourceText=String(item.text||'');
+    patterns.forEach(pattern=>{
+      const label=pattern[0];
+      const baseRegex=pattern[1];
+      const flags=baseRegex.flags.includes('g')?baseRegex.flags:baseRegex.flags+'g';
+      const regex=new RegExp(baseRegex.source,flags);
+      let match;
+      let safety=0;
+      while((match=regex.exec(sourceText))!==null && safety<100){
+        safety++;
+        const detected=String(match[0]||'').trim();
+        const info=getPrivacyLineInfo(sourceText,match.index);
+        target.push({
+          fileName:item.file.name,
+          label,
+          detected,
+          lineNumber:info.lineNumber,
+          contextText:info.contextText
+        });
+        if(match[0]==='') regex.lastIndex++;
+      }
+    });
+  }
+
   preventiveFiles.forEach(item=>{
-    strongPatterns.forEach(pattern=>{
-      pattern[1].lastIndex=0;
-      if(pattern[1].test(item.text||'')) strongHits.push(item.file.name+'：'+pattern[0]);
-      pattern[1].lastIndex=0;
-    });
-    advisoryPatterns.forEach(pattern=>{
-      pattern[1].lastIndex=0;
-      if(pattern[1].test(item.text||'')) advisoryHits.push(item.file.name+'：'+pattern[0]);
-      pattern[1].lastIndex=0;
-    });
+    collectPrivacyHits(item,strongPatterns,strongHits);
+    collectPrivacyHits(item,advisoryPatterns,advisoryHits);
   });
+
+  function formatPrivacyHits(hits){
+    const seen=new Set();
+    const unique=hits.filter(hit=>{
+      const key=[hit.fileName,hit.label,hit.detected,hit.lineNumber].join('\u0001');
+      if(seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    const grouped=new Map();
+    unique.forEach(hit=>{
+      if(!grouped.has(hit.fileName)) grouped.set(hit.fileName,[]);
+      grouped.get(hit.fileName).push(hit);
+    });
+    const blocks=[];
+    grouped.forEach((fileHits,fileName)=>{
+      const rows=['📄 '+fileName+'（'+fileHits.length+'件）'];
+      fileHits.forEach((hit,index)=>{
+        rows.push('  '+(index+1)+'. '+hit.label);
+        rows.push('     検出文字：'+hit.detected);
+        rows.push('     場所：読み取り文字の '+hit.lineNumber+'行目付近');
+        if(hit.contextText) rows.push('     前後：'+hit.contextText);
+      });
+      blocks.push(rows.join('\n'));
+    });
+    return blocks.join('\n\n');
+  }
 
   if(strongHits.length){
     result.className='privacy-result alert';
     result.textContent='🔴 個人情報の可能性が高い記載を検出しました。次の工程には進めません。\n\n'
-      +[...new Set(strongHits)].join('\n')
-      +(advisoryHits.length?'\n\n🟠 あわせて確認推奨：\n'+[...new Set(advisoryHits)].join('\n'):'')
-      +'\n\n氏名・生年月日・住所・電話番号・介護保険番号・マイナンバー等に加え、主治医・医師の氏名、家族・キーパーソンの氏名も強い警告の対象です。該当する氏名を削除・匿名化してから再確認してください。';
+      +'【修正する場所】\n'+formatPrivacyHits(strongHits)
+      +(advisoryHits.length?'\n\n🟠 あわせて確認推奨：\n'+formatPrivacyHits(advisoryHits):'')
+      +'\n\n※「行目付近」は、資料からブラウザ内で読み取った文字情報を基準にした目安です。PDF・Word・Excel・OCR資料では、元資料のページやセル位置と完全には一致しない場合があります。'
+      +'\n\n氏名・生年月日・住所・電話番号・介護保険番号・各種保険証等の番号・マイナンバー・主治医/医師の氏名・病院名・家族/キーパーソンの氏名は強い警告の対象です。妻・夫・兄・妹・長男・長女等の続柄だけの記載、病名、検査値、要介護度、ADL等は警告対象ではありません。表示された箇所を元資料で削除・匿名化してから再確認してください。';
     if(promptBox)promptBox.style.display='none';
     if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button';checkBtn.textContent='🔴 強い警告あり → 修正して再確認';}
     return;
@@ -1641,9 +1705,10 @@ window.goHome = function(){
   if(advisoryHits.length){
     result.className='privacy-result warn';
     result.textContent='🟠 確認推奨の記載があります。\n\n'
-      +[...new Set(advisoryHits)].join('\n')
-      +'\n\n医療機関名・施設名・事業所名などは、本人や医師等の個人名とは区別して「確認推奨」としています。内容を確認したうえでAIへ渡してください。'
-      +'\n\n「家族」「長女」「次女」「長男」「次男」「妻」「夫」など、続柄だけの記載は強い警告の対象ではありません。';
+      +formatPrivacyHits(advisoryHits)
+      +'\n\n※「行目付近」は、資料からブラウザ内で読み取った文字情報を基準にした目安です。'
+      +'\n\n施設名・事業所名は「確認推奨」としています。病院名・医院名・クリニック名・診療所名等の医療機関名は強い警告の対象です。内容を確認したうえでAIへ渡してください。'
+      +'\n\n「家族」「妻」「夫」「兄」「弟」「姉」「妹」「長女」「次女」「長男」「次男」など、続柄だけの記載は強い警告の対象ではありません。病名、検査値、要介護度、ADL等も警告対象ではありません。';
     if(promptBox){promptBox.style.display='block';promptBox.classList.add('ready-next');}
     if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button review';checkBtn.textContent='✓ 強い警告なし';}
     if(nextNote){nextNote.innerHTML='✓ <strong>強い警告はありません。次の工程へ進めます。</strong><br>🟠 確認推奨の内容だけ、表示された内容を確認してから進んでください。';nextNote.classList.add('show');}
@@ -3614,7 +3679,7 @@ document.addEventListener('DOMContentLoaded', function(){
 .bo-simple-one{font-size:15px;line-height:1.75;color:#334f5d;margin-bottom:11px}
 .bo-big-action{display:block;width:100%;margin:8px 0!important;padding:16px!important;font-size:18px!important;font-weight:900!important;background:linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9)!important;color:#fff!important}
 .bo-big-action:disabled,.bo-ai-btn:disabled{opacity:.4!important;cursor:not-allowed!important;transform:none!important}
-.bo-simple-status{margin-top:8px;padding:10px 12px;border-radius:10px;background:#f4f8fb;color:#42606f;font-size:14px;line-height:1.65;font-weight:700}
+.bo-simple-status{margin-top:8px;padding:10px 12px;border-radius:10px;background:#f4f8fb;color:#42606f;font-size:14px;line-height:1.65;font-weight:700;white-space:pre-wrap}
 .bo-simple-status.ok{background:#edf9f0;color:#17652e;border:1px solid #8bc79d}
 .bo-simple-status.warn{background:#fff6e5;color:#7a5200;border:1px solid #e6c16a}
 .bo-simple-status.bad{background:#fff1f1;color:#8b2626;border:1px solid #e29a9a}
@@ -3679,16 +3744,22 @@ document.addEventListener('DOMContentLoaded', function(){
     window.checkPreventivePrivacy();
     const result=qs('preventivePrivacyResult');
     const promptBox=qs('preventivePromptBox');
+    const detailText=result ? String(result.textContent||'').trim() : '';
     const passed=!!(promptBox && promptBox.style.display==='block' && result && !result.classList.contains('alert'));
     simplePrivacyPassed=passed;
     if(passed){
       const advisory=result.classList.contains('warn');
-      setStatus('simplePrivacyStatus',advisory?'✓ 強い警告はありません。表示された「確認推奨」だけ確認して次へ進んでください。':'✓ 個人情報チェックを通過しました。','ok');
+      setStatus('simplePrivacyStatus',detailText || (advisory?'✓ 強い警告はありません。確認推奨の内容を確認して次へ進んでください。':'✓ 個人情報チェックを通過しました。'),advisory?'warn':'ok');
       setStep(2,'is-done');setStep(3,'is-current');enablePreAI(true);
-      qs('simpleStep3').scrollIntoView({behavior:'smooth',block:'center'});
+      if(advisory){
+        qs('simpleStep2').scrollIntoView({behavior:'smooth',block:'center'});
+      }else{
+        qs('simpleStep3').scrollIntoView({behavior:'smooth',block:'center'});
+      }
     }else{
-      setStatus('simplePrivacyStatus','🔴 個人情報の可能性が高い記載があります。元資料を匿名化して、資料を選び直してください。','bad');
+      setStatus('simplePrivacyStatus',detailText || '🔴 個人情報の可能性が高い記載があります。元資料を匿名化して、資料を選び直してください。','bad');
       enablePreAI(false);
+      qs('simpleStep2').scrollIntoView({behavior:'smooth',block:'center'});
     }
   };
 
