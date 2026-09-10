@@ -7,7 +7,13 @@
 <style id="blueocean-auth-guard-style">
 html.blueocean-auth-checking body { visibility:hidden !important; }
 </style>
-<script>document.documentElement.classList.add("blueocean-auth-checking");</script>
+<script>
+(function(){
+  if (location.hostname === "blueocean2014.github.io") {
+    document.documentElement.classList.add("blueocean-auth-checking");
+  }
+})();
+</script>
 <script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.18.0/firebase-auth-compat.js"></script>
 <script>
@@ -23,6 +29,12 @@ html.blueocean-auth-checking body { visibility:hidden !important; }
   };
 
   if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
+  const isProduction = location.hostname === "blueocean2014.github.io";
+  if (!isProduction) {
+    document.documentElement.classList.remove("blueocean-auth-checking");
+    return;
+  }
 
   firebase.auth().onAuthStateChanged(function(user){
     if (user) {
@@ -536,6 +548,66 @@ body.settings-view-active #promptLibraryArea{display:block!important;
   border-top:1px solid #d8e8f3;}
 }
 </style>
+
+<style id="bo-ai-four-colors-final">
+.ai-launch-buttons{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:9px !important;
+}
+.ai-launch-button{
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none !important;
+  box-sizing:border-box;
+  min-height:50px;
+}
+.ai-chatgpt{background:#111 !important;color:#fff !important;border:2px solid #111 !important;}
+.ai-chatgpt:hover{background:#2b2b2b !important;}
+.ai-gemini{background:#4285f4 !important;color:#fff !important;border:2px solid #4285f4 !important;}
+.ai-gemini:hover{background:#2f6fda !important;}
+.ai-claude{background:#7c5ce0 !important;color:#fff !important;border:2px solid #7c5ce0 !important;}
+.ai-claude:hover{background:#6748c7 !important;}
+.ai-keep{background:#fff3b0 !important;color:#6b5800 !important;border:2px solid #d9b300 !important;}
+.ai-keep:hover{background:#ffe780 !important;color:#5c4a00 !important;}
+@media(max-width:850px){
+  .ai-launch-buttons{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+}
+@media(max-width:600px){
+  .ai-launch-buttons{grid-template-columns:1fr !important;}
+}
+</style>
+
+
+<style id="bo-ai-explanation-final">
+.ai-keep-wrap{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+.ai-keep-note{
+  margin-top:6px;
+  font-size:12px;
+  line-height:1.5;
+  color:#6b5800;
+  font-weight:800;
+  text-align:center;
+}
+.ai-search-fallback{
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid #cfe3f7;
+  font-size:13px;
+  line-height:1.8;
+  color:#52676d;
+  text-align:center;
+}
+.ai-search-fallback a{
+  color:#0875c9;
+  text-decoration:underline;
+}
+</style>
+
 </head>
 <body class="">
 <header>
@@ -720,11 +792,23 @@ body.settings-view-active #promptLibraryArea{display:block!important;
       <p class="description">これまでのアプリと同じ形式で、選択した内容・伝達方法・入力内容・現在使用中のAI処理用プロンプトを一つにまとめてコピーします。コピー後、そのままChatGPT・Gemini・Claudeなどへ貼り付けてください。</p>
       <button id="copyButton" class="copy-button primary" onclick="copyAI()">📋 AI処理用にコピー</button>
       <div id="aiLaunchArea" class="ai-launch-area">
-        <div class="ai-launch-title">🤖 使うAIを選んでください</div>
+        <div class="ai-launch-title">下のボタンから使用するAIを開いて、コピーした内容を貼り付けてください。</div>
         <div class="ai-launch-buttons">
-          <button type="button" class="ai-launch-button ai-chatgpt" onclick="window.location.href='https://chatgpt.com/'">🤖 ChatGPTで作る</button>
-          <button type="button" class="ai-launch-button ai-gemini" onclick="window.location.href='https://gemini.google.com/app'">✨ Geminiで作る</button>
-          <button type="button" class="ai-launch-button ai-claude" onclick="window.location.href='https://claude.ai/new'">🟣 Claudeで作る</button>
+          <a class="ai-launch-button ai-chatgpt" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">🤖 ChatGPTを開く</a>
+          <a class="ai-launch-button ai-gemini" href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer">✨ Geminiを開く</a>
+          <a class="ai-launch-button ai-claude" href="https://claude.ai/new" target="_blank" rel="noopener noreferrer">🟣 Claudeを開く</a>
+          <div class="ai-keep-wrap">
+            <a class="ai-launch-button ai-keep" href="https://keep.google.com/" target="_blank" rel="noopener noreferrer">📝 Google Keepを開く</a>
+            <div class="ai-keep-note">記録を保存したい方はこちらがおすすめ！</div>
+          </div>
+        </div>
+        <div class="ai-search-fallback">
+          開けない場合はこちらから検索してください：
+          <a href="https://www.google.com/search?q=ChatGPT" target="_blank" rel="noopener noreferrer"><strong>ChatGPT</strong></a>
+          ／
+          <a href="https://www.google.com/search?q=Google+Gemini" target="_blank" rel="noopener noreferrer"><strong>Gemini</strong></a>
+          ／
+          <a href="https://www.google.com/search?q=Claude+AI" target="_blank" rel="noopener noreferrer"><strong>Claude</strong></a>
         </div>
       </div>
       <button id="newMessageButton" class="copy-button primary" type="button" onclick="createNewMessage()" style="display:none;margin-top:10px;">➕ 新しいメッセージを作る</button>
