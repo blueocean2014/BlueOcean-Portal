@@ -2207,6 +2207,44 @@ h1.bo-white-title {
   .bo-ai-three,.ai-unified-buttons{grid-template-columns:1fr!important;}
 }
 </style>
+
+<style id="google-keep-enhancement-style">
+.keep-download-area{
+  margin-top:8px;
+}
+.keep-download-label{
+  margin-bottom:5px;
+  font-size:11px;
+  line-height:1.5;
+  color:#52676d;
+}
+.keep-download-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:auto;
+  min-height:38px;
+  padding:8px 11px;
+  border:2px solid #d9b300;
+  border-radius:10px;
+  background:#fff3b0;
+  color:#6b5800;
+  font-size:12px;
+  font-weight:800;
+  text-decoration:none;
+  box-sizing:border-box;
+}
+.keep-download-button:hover{
+  background:#ffe780;
+  color:#5c4a00;
+}
+@media(max-width:620px){
+  .keep-download-button{
+    width:100%;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -2323,9 +2361,13 @@ h1.bo-white-title {
         <a href="https://chatgpt.com/" target="_blank" rel="noopener" class="bo-ai-btn bo-chat" onclick="return simplePreorganizeLink(event,'chatgpt')" aria-disabled="true" style="pointer-events:none;text-decoration:none;display:block;text-align:center;box-sizing:border-box">🤖 ChatGPTで整理</a>
         <a href="https://gemini.google.com/" target="_blank" rel="noopener" class="bo-ai-btn bo-gem" onclick="return simplePreorganizeLink(event,'gemini')" aria-disabled="true" style="pointer-events:none;text-decoration:none;display:block;text-align:center;box-sizing:border-box">✨ Geminiで整理</a>
         <a href="https://claude.ai/" target="_blank" rel="noopener" class="bo-ai-btn bo-claude" onclick="return simplePreorganizeLink(event,'claude')" aria-disabled="true" style="pointer-events:none;text-decoration:none;display:block;text-align:center;box-sizing:border-box">🟣 Claudeで整理</a>
-        <a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" class="bo-ai-btn bo-keep" style="text-decoration:none;display:flex;text-align:center;box-sizing:border-box;align-items:center;justify-content:center">📝 Google Keepを開く</a>
+        <a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" class="bo-ai-btn bo-keep" onclick="return openGoogleKeep(event)" style="text-decoration:none;display:flex;text-align:center;box-sizing:border-box;align-items:center;justify-content:center">📝 Google Keepを開く</a>
       </div>
-      <div class="ai-unified-keep-note">記録を保存したい方は<a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer"><strong>Google Keep</strong></a><strong>がおすすめ！</strong></div>
+      <div class="ai-unified-keep-note">このアプリ上からGoogle Keepを開くと、基本的にパソコン用の画面が開きます。iPhone等の携帯やiPad等、他の端末で開く場合は、Google Keepアプリをダウンロードしないとうまく開けない場合があります。ダウンロード後、ホーム画面のGoogle Keepアプリから作業していただくと、スムーズに進められます。
+<div class="keep-download-area" style="display:none;">
+  <div class="keep-download-label">Google Keepアプリをお持ちでない方</div>
+  <a class="keep-download-button" href="#" target="_blank" rel="noopener noreferrer">📱 アプリをダウンロード</a>
+</div></div>
       <div id="simpleAIStatus" class="bo-simple-status">個人情報チェックが終わると選べます。</div>
       <div class="bo-paste-callout">AIが開いたら <strong>Ctrl＋V</strong> → <strong>送信</strong> だけです。</div>
       <details class="bo-help"><summary>？ Ctrl＋V が分からない</summary><div>AIの入力欄を一度クリックして、キーボードの「Ctrl」を押しながら「V」を押します。コピーした指示と資料がまとめて貼り付きます。資料をデスクトップからもう一度探す必要はありません。</div></details>
@@ -2360,9 +2402,13 @@ h1.bo-white-title {
           <a href="https://chatgpt.com/" target="_blank" rel="noopener" class="bo-ai-btn ai-unified-button ai-unified-chatgpt" onclick="return simpleFinalLink(event,'chatgpt')">🤖 ChatGPTを開く</a>
           <a href="https://gemini.google.com/" target="_blank" rel="noopener" class="bo-ai-btn ai-unified-button ai-unified-gemini" onclick="return simpleFinalLink(event,'gemini')">✨ Geminiを開く</a>
           <a href="https://claude.ai/" target="_blank" rel="noopener" class="bo-ai-btn ai-unified-button ai-unified-claude" onclick="return simpleFinalLink(event,'claude')">🟣 Claudeを開く</a>
-          <a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" class="ai-unified-keep">📝 Google Keepを開く</a>
+          <a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" class="ai-unified-keep" onclick="return openGoogleKeep(event)">📝 Google Keepを開く</a>
         </div>
-        <div class="ai-unified-keep-note">記録を保存したい方は<a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer"><strong>Google Keep</strong></a><strong>がおすすめ！</strong></div>
+        <div class="ai-unified-keep-note">このアプリ上からGoogle Keepを開くと、基本的にパソコン用の画面が開きます。iPhone等の携帯やiPad等、他の端末で開く場合は、Google Keepアプリをダウンロードしないとうまく開けない場合があります。ダウンロード後、ホーム画面のGoogle Keepアプリから作業していただくと、スムーズに進められます。
+<div class="keep-download-area" style="display:none;">
+  <div class="keep-download-label">Google Keepアプリをお持ちでない方</div>
+  <a class="keep-download-button" href="#" target="_blank" rel="noopener noreferrer">📱 アプリをダウンロード</a>
+</div></div>
       </div>
       <div class="ai-unified-search">開けない場合はこちらから検索してください： <a href="https://www.google.com/search?q=ChatGPT" target="_blank" rel="noopener noreferrer">ChatGPT</a> ／ <a href="https://www.google.com/search?q=Google+Gemini" target="_blank" rel="noopener noreferrer">Gemini</a> ／ <a href="https://www.google.com/search?q=Claude+AI" target="_blank" rel="noopener noreferrer">Claude</a></div>
       <div id="simpleFinalStatus" class="bo-simple-status">先に作りたい書類を選んでください。</div>
@@ -2443,9 +2489,13 @@ h1.bo-white-title {
       <button type="button" class="ai-unified-button ai-unified-chatgpt" onclick="openAI('chatgpt')">🤖 ChatGPTを開く</button>
       <button type="button" class="ai-unified-button ai-unified-gemini" onclick="openAI('gemini')">✨ Geminiを開く</button>
       <button type="button" class="ai-unified-button ai-unified-claude" onclick="openAI('claude')">🟣 Claudeを開く</button>
-      <a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" class="ai-unified-keep">📝 Google Keepを開く</a>
+      <a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" class="ai-unified-keep" onclick="return openGoogleKeep(event)">📝 Google Keepを開く</a>
     </div>
-    <div class="ai-unified-keep-note">記録を保存したい方は<a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer"><strong>Google Keep</strong></a><strong>がおすすめ！</strong></div>
+    <div class="ai-unified-keep-note">このアプリ上からGoogle Keepを開くと、基本的にパソコン用の画面が開きます。iPhone等の携帯やiPad等、他の端末で開く場合は、Google Keepアプリをダウンロードしないとうまく開けない場合があります。ダウンロード後、ホーム画面のGoogle Keepアプリから作業していただくと、スムーズに進められます。
+<div class="keep-download-area" style="display:none;">
+  <div class="keep-download-label">Google Keepアプリをお持ちでない方</div>
+  <a class="keep-download-button" href="#" target="_blank" rel="noopener noreferrer">📱 アプリをダウンロード</a>
+</div></div>
   </div>
   <div class="ai-unified-search">開けない場合はこちらから検索してください： <a href="https://www.google.com/search?q=ChatGPT" target="_blank" rel="noopener noreferrer">ChatGPT</a> ／ <a href="https://www.google.com/search?q=Google+Gemini" target="_blank" rel="noopener noreferrer">Gemini</a> ／ <a href="https://www.google.com/search?q=Claude+AI" target="_blank" rel="noopener noreferrer">Claude</a></div>
 
@@ -2496,9 +2546,13 @@ h1.bo-white-title {
       <button type="button" class="ai-unified-button ai-unified-chatgpt" onclick="openAI('chatgpt')">🤖 ChatGPTを開く</button>
       <button type="button" class="ai-unified-button ai-unified-gemini" onclick="openAI('gemini')">✨ Geminiを開く</button>
       <button type="button" class="ai-unified-button ai-unified-claude" onclick="openAI('claude')">🟣 Claudeを開く</button>
-      <a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" class="ai-unified-keep">📝 Google Keepを開く</a>
+      <a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" class="ai-unified-keep" onclick="return openGoogleKeep(event)">📝 Google Keepを開く</a>
     </div>
-    <div class="ai-unified-keep-note">記録を保存したい方は<a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer"><strong>Google Keep</strong></a><strong>がおすすめ！</strong></div>
+    <div class="ai-unified-keep-note">このアプリ上からGoogle Keepを開くと、基本的にパソコン用の画面が開きます。iPhone等の携帯やiPad等、他の端末で開く場合は、Google Keepアプリをダウンロードしないとうまく開けない場合があります。ダウンロード後、ホーム画面のGoogle Keepアプリから作業していただくと、スムーズに進められます。
+<div class="keep-download-area" style="display:none;">
+  <div class="keep-download-label">Google Keepアプリをお持ちでない方</div>
+  <a class="keep-download-button" href="#" target="_blank" rel="noopener noreferrer">📱 アプリをダウンロード</a>
+</div></div>
   </div>
   <div class="ai-unified-search">開けない場合はこちらから検索してください： <a href="https://www.google.com/search?q=ChatGPT" target="_blank" rel="noopener noreferrer">ChatGPT</a> ／ <a href="https://www.google.com/search?q=Google+Gemini" target="_blank" rel="noopener noreferrer">Gemini</a> ／ <a href="https://www.google.com/search?q=Claude+AI" target="_blank" rel="noopener noreferrer">Claude</a></div>
 
@@ -5849,6 +5903,60 @@ document.addEventListener('DOMContentLoaded', function(){
   cursor: pointer!important;
 }
 </style>
+
+
+<script id="google-keep-enhancement-script">
+function openGoogleKeep(event){
+  const webUrl = "https://keep.google.com/";
+  const ua = navigator.userAgent || "";
+  const isIOS = /iPad|iPhone|iPod/i.test(ua) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/i.test(ua);
+
+  // Googleが公式公開していない独自URLスキームは使用しない。
+  // モバイルは公式HTTPSリンクをOS/ブラウザに渡し、
+  // アプリへ移行できない場合もWeb版を開けるようにする。
+  if(isIOS || isAndroid){
+    return true;
+  }
+
+  if(event) event.preventDefault();
+  window.open(webUrl, "_blank", "noopener,noreferrer");
+  return false;
+}
+
+function setupGoogleKeepDownloadEntries(){
+  const ua = navigator.userAgent || "";
+  const isIOS = /iPad|iPhone|iPod/i.test(ua) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/i.test(ua);
+
+  let storeUrl = "";
+  if(isIOS){
+    storeUrl = "https://apps.apple.com/jp/app/google-keep-%E3%83%A1%E3%83%A2%E3%81%A8%E3%83%AA%E3%82%B9%E3%83%88/id1029207872";
+  }else if(isAndroid){
+    storeUrl = "https://play.google.com/store/apps/details?id=com.google.android.keep";
+  }
+
+  document.querySelectorAll(".keep-download-area").forEach(function(area){
+    const link = area.querySelector(".keep-download-button");
+    if(!link) return;
+
+    if(storeUrl){
+      link.href = storeUrl;
+      area.style.display = "block";
+    }else{
+      area.style.display = "none";
+    }
+  });
+}
+
+if(document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded", setupGoogleKeepDownloadEntries);
+}else{
+  setupGoogleKeepDownloadEntries();
+}
+</script>
 
 </body>
 </html>
