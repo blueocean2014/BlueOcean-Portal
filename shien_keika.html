@@ -2755,13 +2755,13 @@ function openGoogleKeep(event){
   }
 
   /*
-    iPhone/iPad：Google Keepについて、Webページから確実に利用できる
-    公式専用URLスキームは確認できないため、未保証の独自スキームは使用しない。
-    ブラウザ版へ自動移動させると利用者の希望に反してしまうため、
-    安全な選択画面を表示する。
+    iPhone/iPad：未確認の独自URLスキームは使用せず、まずGoogle Keepの
+    通常のHTTPSリンクを開く。iOS側でアプリへ引き渡せる場合はその動作に任せる。
+    直接アプリに切り替わらない場合でも「開けませんでした」とは即判定せず、
+    Safari等でブラウザ版Google Keepを利用できるようにする。
   */
   if(device.isIOS){
-    showGoogleKeepFallback();
+    window.open(webUrl, "_blank", "noopener,noreferrer");
     return false;
   }
 
