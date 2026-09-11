@@ -823,15 +823,19 @@ h1.bo-white-title {
   grid-template-columns: repeat(4,minmax(0,1fr)) !important;
   gap: 10px !important;
 }
-.ai-launch-buttons a {
+.ai-launch-buttons > a,
+.ai-launch-buttons > .ai-keep-wrap > .ai-keep-button {
   min-height: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 12px;
   padding: 12px 14px;
+  margin: 0;
   font-size: 15px;
   font-weight: 800;
+  line-height: 1.2;
   text-decoration: none !important;
   box-sizing: border-box;
   text-align: center;
@@ -890,6 +894,79 @@ h1.bo-white-title {
   #copyButton.copy-button {
     min-height: 58px !important;
     font-size: 19px !important;
+  }
+}
+</style>
+
+
+<style id="google-keep-enhancement-style">
+.ai-keep-wrap {
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.ai-keep-wrap > .ai-keep-button {
+  width: 100% !important;
+  min-height: 50px !important;
+  height: 50px !important;
+  padding: 12px 14px !important;
+  margin: 0 !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+  flex: none !important;
+}
+.ai-keep-note {
+  font-size: 11px;
+  line-height: 1.55;
+  color: #6b5800;
+  background: #fffdf3;
+  border: 1px solid #ead889;
+  border-radius: 10px;
+  padding: 9px 10px;
+  box-sizing: border-box;
+}
+.ai-keep-download-area {
+  text-align: center;
+}
+.ai-keep-download-label {
+  margin-bottom: 5px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #52676d;
+}
+.ai-keep-download-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-height: 40px;
+  padding: 9px 12px;
+  border: 2px solid #d9b300;
+  border-radius: 10px;
+  background: #fff3b0;
+  color: #6b5800;
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+.ai-keep-download-button:hover {
+  background: #ffe780;
+  color: #5c4a00;
+}
+@media(max-width:600px) {
+  .ai-keep-note {
+    font-size: 12px;
+  }
+  .ai-keep-download-button {
+    width: 100%;
   }
 }
 </style>
@@ -997,7 +1074,14 @@ h1.bo-white-title {
     <a class="ai-chatgpt-button" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">🤖 ChatGPTを開く</a>
     <a class="ai-gemini-button" href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">✨ Geminiを開く</a>
     <a class="ai-claude-button" href="https://claude.ai/" target="_blank" rel="noopener noreferrer">🟣 Claudeを開く</a>
-    <a class="ai-keep-button" href="https://keep.google.com/" target="_blank" rel="noopener noreferrer">📝 Google Keepを開く</a>
+    <div class="ai-keep-wrap">
+      <a class="ai-keep-button" href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" onclick="return openGoogleKeep(event)">📝 Google Keepを開く</a>
+      <div class="ai-keep-note">このアプリ上からGoogle Keepを開くと、基本的にパソコン用の画面が開きます。iPhone等の携帯やiPad等、他の端末で開く場合は、Google Keepアプリをダウンロードしないとうまく開けない場合があります。ダウンロード後、ホーム画面のGoogle Keepアプリから作業していただくと、スムーズに進められます。</div>
+      <div id="keepDownloadArea" class="ai-keep-download-area" style="display:none;">
+        <div class="ai-keep-download-label">Google Keepアプリをお持ちでない方</div>
+        <a id="keepDownloadLink" class="ai-keep-download-button" href="#" target="_blank" rel="noopener noreferrer">📱 アプリをダウンロード</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1259,6 +1343,50 @@ function copyExampleText() {
     const url = AI_SITES[ai];
     if(url) window.open(url, '_blank', 'noopener,noreferrer');
   };
+
+  window.openGoogleKeep = function(event){
+    const webUrl = 'https://keep.google.com/';
+    const ua = navigator.userAgent || '';
+    const isIOS = /iPad|iPhone|iPod/i.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/i.test(ua);
+
+    // 未保証の独自URLスキームは使用せず、公式HTTPSリンクをOS/ブラウザに渡す。
+    if (isIOS || isAndroid) {
+      return true;
+    }
+
+    if (event) event.preventDefault();
+    window.open(webUrl, '_blank', 'noopener,noreferrer');
+    return false;
+  };
+
+  window.setupGoogleKeepDownloadEntry = function(){
+    const area = document.getElementById('keepDownloadArea');
+    const link = document.getElementById('keepDownloadLink');
+    if (!area || !link) return;
+
+    const ua = navigator.userAgent || '';
+    const isIOS = /iPad|iPhone|iPod/i.test(ua) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/i.test(ua);
+
+    if (isIOS) {
+      link.href = 'https://apps.apple.com/jp/app/google-keep-%E3%83%A1%E3%83%A2%E3%81%A8%E3%83%AA%E3%82%B9%E3%83%88/id1029207872';
+      area.style.display = 'block';
+    } else if (isAndroid) {
+      link.href = 'https://play.google.com/store/apps/details?id=com.google.android.keep';
+      area.style.display = 'block';
+    } else {
+      area.style.display = 'none';
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', window.setupGoogleKeepDownloadEntry);
+  } else {
+    window.setupGoogleKeepDownloadEntry();
+  }
 
   window.showAILauncherAfterCopy = function(){
     const box = document.getElementById("aiLaunchBox");
