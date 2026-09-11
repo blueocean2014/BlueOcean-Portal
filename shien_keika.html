@@ -1240,6 +1240,39 @@ textarea#memo:focus {
 }
 </style>
 
+<style id="google-keep-download-entry-style">
+.keep-download-area {
+  margin-top: 8px;
+  text-align: center;
+}
+.keep-download-label {
+  margin-bottom: 5px;
+  color: #526b7a;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.keep-download-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto !important;
+  min-width: 0 !important;
+  margin: 0 auto !important;
+  padding: 7px 11px !important;
+  border: 1.5px solid #d9b300 !important;
+  border-radius: 8px !important;
+  background: #fffdf3 !important;
+  color: #6b5800 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+  box-sizing: border-box;
+}
+.keep-download-button:hover {
+  background: #fff3b0 !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -1444,8 +1477,12 @@ class="status"
       <button type="button" class="ai-launch-button ai-claude-color" onclick="openAI('claude')">🟣 Claudeを開く</button>
     </div>
     <div class="keep-inline-area">
-      <a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" class="keep-inline-button">📝 Google Keepを開く</a>
+      <a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" class="keep-inline-button" onclick="return openGoogleKeep(event)">📝 Google Keepを開く</a>
       <div class="keep-inline-note">記録を保存したい方はこちらがおすすめ！</div>
+      <div id="keepDownloadArea" class="keep-download-area" style="display:none;">
+        <div class="keep-download-label">Google Keepアプリをお持ちでない方</div>
+        <a id="keepDownloadLink" href="#" target="_blank" rel="noopener noreferrer" class="keep-download-button">📱 アプリをダウンロード</a>
+      </div>
     </div>
   </div>
   <div class="ai-launch-search">
@@ -2606,6 +2643,59 @@ function copySuccess(element, successMessage){
 function openAI(type){
   const urls={chatgpt:"https://chatgpt.com/",gemini:"https://gemini.google.com/",claude:"https://claude.ai/"};
   if(urls[type]) window.open(urls[type], "_blank", "noopener,noreferrer");
+}
+
+function openGoogleKeep(event){
+  const webUrl = "https://keep.google.com/";
+  const ua = navigator.userAgent || "";
+  const isIOS = /iPad|iPhone|iPod/i.test(ua) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/i.test(ua);
+
+  /*
+    Google Keepは、Webページから利用できる公式の専用URLスキームを
+    公開していないため、未保証の独自スキームは使用しない。
+    iPhone/iPad/Androidでは、ユーザーが実際に押した公式HTTPSリンクを
+    そのままブラウザ/OSへ渡す。OS側でKeepへのリンク関連付けが利用可能なら
+    アプリへ引き渡され、利用できない場合はWeb版が開く。
+  */
+  if(isIOS || isAndroid){
+    return true;
+  }
+
+  /*
+    Windows/Mac等は従来どおりWeb版を新しいタブで開く。
+  */
+  if(event) event.preventDefault();
+  window.open(webUrl, "_blank", "noopener,noreferrer");
+  return false;
+}
+
+function setupGoogleKeepDownloadEntry(){
+  const downloadArea = document.getElementById("keepDownloadArea");
+  const downloadLink = document.getElementById("keepDownloadLink");
+  if(!downloadArea || !downloadLink) return;
+
+  const ua = navigator.userAgent || "";
+  const isIOS = /iPad|iPhone|iPod/i.test(ua) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/i.test(ua);
+
+  if(isIOS){
+    downloadLink.href = "https://apps.apple.com/jp/app/google-keep-%E3%83%A1%E3%83%A2%E3%81%A8%E3%83%AA%E3%82%B9%E3%83%88/id1029207872";
+    downloadArea.style.display = "block";
+  }else if(isAndroid){
+    downloadLink.href = "https://play.google.com/store/apps/details?id=com.google.android.keep";
+    downloadArea.style.display = "block";
+  }else{
+    downloadArea.style.display = "none";
+  }
+}
+
+if(document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded", setupGoogleKeepDownloadEntry);
+}else{
+  setupGoogleKeepDownloadEntry();
 }
 
 function startNewSupportRecord(){
