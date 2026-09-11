@@ -419,6 +419,45 @@ body.settings-view-active #promptLibraryArea .settings-page-head .primary{
 }
 </style>
 
+
+<style id="google-keep-enhancement-style">
+.keep-download-area{
+  margin-top:8px;
+  text-align:center;
+}
+.keep-download-label{
+  margin-bottom:5px;
+  font-size:11px;
+  line-height:1.5;
+  color:#52676d;
+}
+.keep-download-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:auto;
+  min-height:38px;
+  padding:8px 11px;
+  border:2px solid #d9b300;
+  border-radius:10px;
+  background:#fff3b0;
+  color:#6b5800;
+  font-size:12px;
+  font-weight:800;
+  text-decoration:none;
+  box-sizing:border-box;
+}
+.keep-download-button:hover{
+  background:#ffe780;
+  color:#5c4a00;
+}
+@media(max-width:700px){
+  .keep-download-button{
+    width:100%;
+  }
+}
+</style>
+
 </head>
 <body>
 <header>
@@ -525,8 +564,12 @@ body.settings-view-active #promptLibraryArea .settings-page-head .primary{
           <a class="ai-open-button ai-gemini" href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer">✨ Geminiで作る</a>
           <a class="ai-open-button ai-claude" href="https://claude.ai/" target="_blank" rel="noopener noreferrer">🟣 Claudeで作る</a>
           <div class="keep-ai-side">
-            <a class="ai-open-button ai-keep" href="https://keep.google.com/" target="_blank" rel="noopener noreferrer">📝 Google Keepを開く</a>
-            <div class="keep-ai-note">記録を保存したい方はこちらがおすすめ！</div>
+            <a class="ai-open-button ai-keep" href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" onclick="return openGoogleKeep(event)">📝 Google Keepを開く</a>
+            <div class="keep-ai-note">このアプリ上からGoogle Keepを開くと、基本的にパソコン用の画面が開きます。iPhone等の携帯やiPad等、他の端末で開く場合は、Google Keepアプリをダウンロードしないとうまく開けない場合があります。ダウンロード後、ホーム画面のGoogle Keepアプリから作業していただくと、スムーズに進められます。</div>
+            <div id="keepDownloadArea" class="keep-download-area" style="display:none;">
+              <div class="keep-download-label">Google Keepアプリをお持ちでない方</div>
+              <a id="keepDownloadLink" class="keep-download-button" href="#" target="_blank" rel="noopener noreferrer">📱 アプリをダウンロード</a>
+            </div>
           </div>
         </div>
       </div>
@@ -1376,6 +1419,52 @@ document.addEventListener("DOMContentLoaded", function(){
     });
   }catch(e){}
 });
+</script>
+
+
+<script id="google-keep-enhancement-script">
+function openGoogleKeep(event){
+  const webUrl = "https://keep.google.com/";
+  const ua = navigator.userAgent || "";
+  const isIOS = /iPad|iPhone|iPod/i.test(ua) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/i.test(ua);
+
+  if(isIOS || isAndroid){
+    return true;
+  }
+
+  if(event) event.preventDefault();
+  window.open(webUrl, "_blank", "noopener,noreferrer");
+  return false;
+}
+
+function setupGoogleKeepDownloadEntry(){
+  const area = document.getElementById("keepDownloadArea");
+  const link = document.getElementById("keepDownloadLink");
+  if(!area || !link) return;
+
+  const ua = navigator.userAgent || "";
+  const isIOS = /iPad|iPhone|iPod/i.test(ua) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/i.test(ua);
+
+  if(isIOS){
+    link.href = "https://apps.apple.com/jp/app/google-keep-%E3%83%A1%E3%83%A2%E3%81%A8%E3%83%AA%E3%82%B9%E3%83%88/id1029207872";
+    area.style.display = "block";
+  }else if(isAndroid){
+    link.href = "https://play.google.com/store/apps/details?id=com.google.android.keep";
+    area.style.display = "block";
+  }else{
+    area.style.display = "none";
+  }
+}
+
+if(document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded", setupGoogleKeepDownloadEntry);
+}else{
+  setupGoogleKeepDownloadEntry();
+}
 </script>
 
 </body>
