@@ -988,7 +988,6 @@ header .app-title-sub {
   header .app-title-main {
     font-size: 23px;
   }
-
   header .app-title-sub {
     font-size: 20px;
   }
@@ -1213,11 +1212,9 @@ button.ai-copy-green-button:hover,
   .card {
     border-radius: 16px;
   }
-
   .pattern-option {
     border-radius: 13px;
   }
-
   .setting-box,.prompt-item {
     border-radius: 13px;
   }
@@ -1535,11 +1532,9 @@ h1.bo-white-title {
   .file-item {
     align-items: flex-start;
   }
-
   .file-item-meta {
     white-space: normal;
   }
-
   .preventive-actions button {
     width: 100%;
   }
@@ -1820,23 +1815,16 @@ h1.bo-white-title {
 
 <style>
 .privacy-important-box {
-  margin: 18px 0;
   border-radius: 12px;
-  overflow: hidden;
 }
 
 .privacy-important-box > .privacy-summary {
-  list-style: none;
   padding: 18px 20px;
 }
 
-
-
 .privacy-important-box > .privacy-summary::after {
   content: " ▼";
-  float: right;
 }
-
 </style>
 
 
@@ -1887,7 +1875,6 @@ h1.bo-white-title {
   .privacy-important-box > .privacy-summary {
     font-size: 15px;
   }
-
   .privacy-important-body {
     font-size: 14px;
     padding: 15px;
@@ -2114,7 +2101,6 @@ h1.bo-white-title {
   .ai-launch-buttons {
     grid-template-columns: 1fr;
   }
-
   .ai-launch-buttons button {
     font-size: 16px!important;
   }
@@ -2122,114 +2108,298 @@ h1.bo-white-title {
 </style>
 
 <style id="support-record-ai-button-unified">
-.ai-unified-note{margin:0 0 10px;color:#526b7a;font-size:13px;line-height:1.6;text-align:center;}
-.ai-unified-row{display:flex;align-items:flex-start;justify-content:center;gap:12px;flex-wrap:nowrap;margin-top:10px;}
-.ai-unified-buttons{display:flex;justify-content:center;gap:8px;flex-wrap:nowrap;flex:0 1 auto;}
-.ai-unified-button{min-width:150px;margin:2px!important;padding:11px 16px!important;border-radius:10px!important;font-weight:800!important;font-size:14px!important;text-decoration:none!important;display:inline-flex!important;align-items:center;justify-content:center;box-sizing:border-box;cursor:pointer;border:2px solid transparent!important;}
-.ai-unified-chatgpt{background:#111!important;border-color:#111!important;color:#fff!important;}
-.ai-unified-chatgpt:hover{background:#2b2b2b!important;border-color:#2b2b2b!important;}
-.ai-unified-gemini{background:#4285f4!important;border-color:#4285f4!important;color:#fff!important;}
-.ai-unified-gemini:hover{background:#2f6fda!important;border-color:#2f6fda!important;}
-.ai-unified-claude{background:#7c5ce0!important;border-color:#7c5ce0!important;color:#fff!important;}
-.ai-unified-claude:hover{background:#6748c7!important;border-color:#6748c7!important;}
-.ai-unified-keep-area{flex:0 0 auto;padding-left:0;border-left:0;text-align:center;}
-.ai-unified-keep{min-width:145px;padding:9px 13px!important;border:2px solid #d9b300!important;border-radius:9px!important;background:#fff3b0!important;color:#6b5800!important;font-size:13px!important;font-weight:800!important;text-decoration:none!important;display:inline-flex!important;align-items:center;justify-content:center;box-sizing:border-box;}
-.ai-unified-keep:hover{background:#ffe780!important;border-color:#c49f00!important;color:#5c4a00!important;}
-.ai-unified-keep-note{margin-top:6px;color:#526b7a;font-size:11px;font-weight:700;line-height:1.5;}
-.ai-unified-search{margin-top:9px;font-size:12px;color:#6b7280;text-align:center;}
-.ai-unified-search a{color:#0875c9;font-weight:700;text-decoration:underline;}
-@media(max-width:760px){.ai-unified-row{flex-wrap:wrap;gap:10px}.ai-unified-buttons{flex-wrap:wrap}.ai-unified-keep-area{padding-left:0;border-left:0}}
-@media(max-width:600px){.ai-unified-row{flex-direction:column;align-items:stretch}.ai-unified-buttons{flex-direction:column;width:100%}.ai-unified-button,.ai-unified-keep{width:100%;margin:3px 0!important}.ai-unified-keep-area{width:100%}}
+.ai-unified-note {
+  margin:0 0 10px;
+  color:#526b7a;
+  font-size:13px;
+  line-height:1.6;
+  text-align:center;
+}
+
+.ai-unified-row {
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:nowrap;
+  margin-top:10px;
+}
+
+.ai-unified-buttons {
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:nowrap;
+  flex:0 1 auto;
+}
+
+.ai-unified-button {
+  min-width:150px;
+  margin:2px!important;
+  padding:11px 16px!important;
+  border-radius:10px!important;
+  font-weight:800!important;
+  font-size:14px!important;
+  text-decoration:none!important;
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;
+  cursor:pointer;
+  border:2px solid transparent!important;
+}
+
+.ai-unified-chatgpt {
+  background:#111!important;
+  border-color:#111!important;
+  color:#fff!important;
+}
+
+.ai-unified-chatgpt:hover {
+  background:#2b2b2b!important;
+  border-color:#2b2b2b!important;
+}
+
+.ai-unified-gemini {
+  background:#4285f4!important;
+  border-color:#4285f4!important;
+  color:#fff!important;
+}
+
+.ai-unified-gemini:hover {
+  background:#2f6fda!important;
+  border-color:#2f6fda!important;
+}
+
+.ai-unified-claude {
+  background:#7c5ce0!important;
+  border-color:#7c5ce0!important;
+  color:#fff!important;
+}
+
+.ai-unified-claude:hover {
+  background:#6748c7!important;
+  border-color:#6748c7!important;
+}
+
+.ai-unified-keep-area {
+  flex:0 0 auto;
+  padding-left:0;
+  border-left:0;
+  text-align:center;
+}
+
+.ai-unified-keep {
+  min-width:145px;
+  padding:9px 13px!important;
+  border:2px solid #d9b300!important;
+  border-radius:9px!important;
+  background:#fff3b0!important;
+  color:#6b5800!important;
+  font-size:13px!important;
+  font-weight:800!important;
+  text-decoration:none!important;
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;
+}
+
+.ai-unified-keep:hover {
+  background:#ffe780!important;
+  border-color:#c49f00!important;
+  color:#5c4a00!important;
+}
+
+.ai-unified-keep-note {
+  margin-top:6px;
+  color:#526b7a;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.5;
+}
+
+.ai-unified-search {
+  margin-top:9px;
+  font-size:12px;
+  color:#6b7280;
+  text-align:center;
+}
+
+.ai-unified-search a {
+  color:#0875c9;
+  font-weight:700;
+  text-decoration:underline;
+}
+
+@media(max-width:760px) {
+  .ai-unified-row {
+    flex-wrap:wrap;
+    gap:10px
+  }
+  .ai-unified-buttons {
+    flex-wrap:wrap
+  }
+  .ai-unified-keep-area {
+    padding-left:0;
+    border-left:0
+  }
+}
+
+@media(max-width:600px) {
+  .ai-unified-row {
+    flex-direction:column;
+    align-items:stretch
+  }
+  .ai-unified-buttons {
+    flex-direction:column;
+    width:100%
+  }
+  .ai-unified-button,.ai-unified-keep {
+    width:100%;
+    margin:3px 0!important
+  }
+  .ai-unified-keep-area {
+    width:100%
+  }
+}
 </style>
 
 <style id="ai-four-buttons-final-fix">
+.ai-unified-row {
+  margin-top:10px!important;
+}
 
-.ai-unified-row{display:block!important;margin-top:10px!important;}
-.ai-unified-buttons{
-  display:grid!important;
-  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+.ai-unified-buttons {
   gap:8px!important;
-  width:100%!important;
   max-width:820px!important;
-  margin:0 auto!important;
   align-items:stretch!important;
 }
-.ai-unified-button,.ai-unified-keep{
-  width:100%!important;
-  min-width:0!important;
+
+.ai-unified-button,.ai-unified-keep {
   min-height:48px!important;
-  margin:0!important;
   padding:10px 8px!important;
   display:flex!important;
   align-items:center!important;
   justify-content:center!important;
-  box-sizing:border-box!important;
-  white-space:nowrap!important;
 }
-.ai-unified-keep-note{
+
+.ai-unified-keep-note {
   display:block!important;
   margin:6px auto 0!important;
   max-width:820px!important;
-  text-align:right!important;
   font-size:12px!important;
   color:#6b5800!important;
 }
-@media(max-width:760px){
-  .ai-unified-buttons{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
-  .ai-unified-keep-note{text-align:center!important;}
+
+@media(max-width:760px) {
+  .ai-unified-buttons {
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .ai-unified-keep-note {
+    text-align:center!important;
+  }
 }
-@media(max-width:480px){
-  .ai-unified-buttons{grid-template-columns:1fr!important;}
+
+@media(max-width:480px) {
+  .ai-unified-buttons {
+    grid-template-columns:1fr!important;
+  }
 }
 </style>
 
 <style id="ai-four-buttons-user-request-final">
-
-.bo-ai-three{
+.bo-ai-three {
   display:grid!important;
   grid-template-columns:repeat(4,minmax(0,1fr))!important;
   gap:7px!important;
   width:100%!important;
   margin:10px 0!important;
 }
-.bo-ai-three .bo-ai-btn{
-  width:100%!important;min-width:0!important;min-height:46px!important;
-  margin:0!important;padding:9px 6px!important;font-size:13px!important;
-  line-height:1.25!important;white-space:nowrap!important;
+
+.bo-ai-three .bo-ai-btn {
+  width:100%!important;
+  min-width:0!important;
+  min-height:46px!important;
+  margin:0!important;
+  padding:9px 6px!important;
+  font-size:13px!important;
+  line-height:1.25!important;
+  white-space:nowrap!important;
 }
-.bo-keep{background:#fff3b0!important;color:#6b5800!important;border:2px solid #d9b300!important;}
-.bo-keep:hover{background:#ffe780!important;color:#5c4a00!important;}
-.ai-unified-buttons{
-  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;
-  gap:7px!important;width:100%!important;max-width:100%!important;margin:0 auto!important;
+
+.bo-keep {
+  background:#fff3b0!important;
+  color:#6b5800!important;
+  border:2px solid #d9b300!important;
 }
-.ai-unified-button,.ai-unified-keep{
-  width:100%!important;min-width:0!important;min-height:46px!important;
-  margin:0!important;padding:9px 6px!important;font-size:13px!important;
-  line-height:1.25!important;white-space:nowrap!important;box-sizing:border-box!important;
+
+.bo-keep:hover {
+  background:#ffe780!important;
+  color:#5c4a00!important;
 }
-.ai-unified-row{display:block!important;width:100%!important;}
-.ai-unified-keep-note{text-align:right!important;margin:6px 0 0!important;max-width:none!important;}
-@media(max-width:620px){
-  .bo-ai-three,.ai-unified-buttons{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
-  .ai-unified-keep-note{text-align:center!important;}
+
+.ai-unified-buttons {
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:7px!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin:0 auto!important;
 }
-@media(max-width:390px){
-  .bo-ai-three,.ai-unified-buttons{grid-template-columns:1fr!important;}
+
+.ai-unified-button,.ai-unified-keep {
+  width:100%!important;
+  min-width:0!important;
+  min-height:46px!important;
+  margin:0!important;
+  padding:9px 6px!important;
+  font-size:13px!important;
+  line-height:1.25!important;
+  white-space:nowrap!important;
+  box-sizing:border-box!important;
+}
+
+.ai-unified-row {
+  display:block!important;
+  width:100%!important;
+}
+
+.ai-unified-keep-note {
+  text-align:right!important;
+  margin:6px 0 0!important;
+  max-width:none!important;
+}
+
+@media(max-width:620px) {
+  .bo-ai-three,.ai-unified-buttons {
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  .ai-unified-keep-note {
+    text-align:center!important;
+  }
+}
+
+@media(max-width:390px) {
+  .bo-ai-three,.ai-unified-buttons {
+    grid-template-columns:1fr!important;
+  }
 }
 </style>
 
 <style id="google-keep-enhancement-style">
-.keep-download-area{
+.keep-download-area {
   margin-top:8px;
 }
-.keep-download-label{
+
+.keep-download-label {
   margin-bottom:5px;
   font-size:11px;
   line-height:1.5;
   color:#52676d;
 }
-.keep-download-button{
+
+.keep-download-button {
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -2245,12 +2415,14 @@ h1.bo-white-title {
   text-decoration:none;
   box-sizing:border-box;
 }
-.keep-download-button:hover{
+
+.keep-download-button:hover {
   background:#ffe780;
   color:#5c4a00;
 }
-@media(max-width:620px){
-  .keep-download-button{
+
+@media(max-width:620px) {
+  .keep-download-button {
     width:100%;
   }
 }
@@ -2670,217 +2842,217 @@ h1.bo-white-title {
 <script>
 (function(){
 
-window.scrollToTop = function(){
-  window.scrollTo({top:0, behavior:"smooth"});
-};
+  window.scrollToTop = function(){
+    window.scrollTo({top:0, behavior:"smooth"});
+  };
 
-window.showUsageGuide = function(){
-  const usage = document.querySelector(".usage-card");
-  if(!usage) return;
-  const isHidden = getComputedStyle(usage).display === "none";
-  usage.style.display = isHidden ? "block" : "none";
-  if(isHidden) usage.scrollIntoView({behavior:"smooth", block:"start"});
-};
+  window.showUsageGuide = function(){
+    const usage = document.querySelector(".usage-card");
+    if(!usage) return;
+    const isHidden = getComputedStyle(usage).display === "none";
+    usage.style.display = isHidden ? "block" : "none";
+    if(isHidden) usage.scrollIntoView({behavior:"smooth", block:"start"});
+  };
 
-window.showSettingsView = function(){
-  const mainView = document.getElementById("mainView");
-  const settingsView = document.getElementById("promptLibraryArea");
-  document.body.classList.add("settings-view-active");
-  if(mainView) mainView.classList.add("view-hidden");
-  if(settingsView) settingsView.classList.remove("view-hidden");
-  window.scrollTo({top:0, behavior:"smooth"});
-};
+  window.showSettingsView = function(){
+    const mainView = document.getElementById("mainView");
+    const settingsView = document.getElementById("promptLibraryArea");
+    document.body.classList.add("settings-view-active");
+    if(mainView) mainView.classList.add("view-hidden");
+    if(settingsView) settingsView.classList.remove("view-hidden");
+    window.scrollTo({top:0, behavior:"smooth"});
+  };
 
-window.showMainView = function(){
-  const mainView = document.getElementById("mainView");
-  const settingsView = document.getElementById("promptLibraryArea");
-  document.body.classList.remove("settings-view-active");
-  if(settingsView) settingsView.classList.add("view-hidden");
-  if(mainView) mainView.classList.remove("view-hidden");
-  window.scrollTo({top:0, behavior:"smooth"});
-};
+  window.showMainView = function(){
+    const mainView = document.getElementById("mainView");
+    const settingsView = document.getElementById("promptLibraryArea");
+    document.body.classList.remove("settings-view-active");
+    if(settingsView) settingsView.classList.add("view-hidden");
+    if(mainView) mainView.classList.remove("view-hidden");
+    window.scrollTo({top:0, behavior:"smooth"});
+  };
 
-window.goHome = function(){
-  location.href = 'https://blueocean2014.github.io/BlueOcean-Portal/';
-};
+  window.goHome = function(){
+    location.href = 'https://blueocean2014.github.io/BlueOcean-Portal/';
+  };
 
-/* =========================================================
-   介護予防計画書：資料読み込み・個人情報チェック
-   方針：
-   ・ファイル選択では登録のみ。自動解析しない。
-   ・「読み込み開始」を押した時だけ実際のファイル解析を行う。
-   ・文字情報を取得できない場合は成功扱いにしない。
-   ・取得した文字情報は既存の個人情報チェックへ渡す。
-   ・元ファイルそのものは加工・アップロードしない。
-   ========================================================= */
-(function(){
-  'use strict';
+  /* =========================================================
+  介護予防計画書：資料読み込み・個人情報チェック
+  方針：
+  ・ファイル選択では登録のみ。自動解析しない。
+  ・「読み込み開始」を押した時だけ実際のファイル解析を行う。
+  ・文字情報を取得できない場合は成功扱いにしない。
+  ・取得した文字情報は既存の個人情報チェックへ渡す。
+  ・元ファイルそのものは加工・アップロードしない。
+  ========================================================= */
+  (function(){
+    'use strict';
 
-  const preventiveFiles=[];
-  const $=id=>document.getElementById(id);
-  const FILE_TYPES={pdf:'PDF',xlsx:'Excel',xls:'Excel',docx:'Word',doc:'Word（DOC）',txt:'TXT',csv:'CSV',jpg:'画像',jpeg:'画像',png:'画像'};
+    const preventiveFiles=[];
+    const $=id=>document.getElementById(id);
+    const FILE_TYPES={pdf:'PDF',xlsx:'Excel',xls:'Excel',docx:'Word',doc:'Word（DOC）',txt:'TXT',csv:'CSV',jpg:'画像',jpeg:'画像',png:'画像'};
 
-  function getExtension(file){
-    const match=String(file?.name||'').toLowerCase().match(/\.([a-z0-9]+)$/i);
-    return match?match[1]:'';
-  }
-  function kindOf(file){return FILE_TYPES[getExtension(file)]||'その他';}
-  function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+    function getExtension(file){
+      const match=String(file?.name||'').toLowerCase().match(/\.([a-z0-9]+)$/i);
+      return match?match[1]:'';
+    }
+    function kindOf(file){return FILE_TYPES[getExtension(file)]||'その他';}
+    function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
 
-  function setStatus(message,type=''){
-    const el=$('preventiveLoadStatus');
-    if(!el)return;
-    const isNextCheckMessage=String(message).includes('<span class="bo-next-step">次に「🔎 読み込んだ資料に個人情報が入っていないかチェックする」に進んでください。</span>');
-    el.className='status'+(type?' '+type:'')+(isNextCheckMessage?' next-check-message':'');
-    el.textContent=message;
-  }
-  function setFileStatus(message,type=''){
-    const el=$('preventiveFileStatus');
-    if(!el)return;
-    el.className='status'+(type?' '+type:'');
-    el.textContent=message;
-  }
-  function updateLoadButton(){
-    const btn=$('preventiveLoadButton');
-    if(!btn)return;
-    const busy=btn.dataset.busy==='1';
-    btn.disabled=busy||preventiveFiles.length===0;
-    btn.textContent=busy?'⏳ 読み込み中…':'📥 読み込み開始';
-  }
-  function renderFileList(){
-    const list=$('preventiveFileList');
-    if(!list)return;
-    list.innerHTML=preventiveFiles.map((item,index)=>{
-      let state='未読み込み',detail='';
-      if(item.loading){state='⏳ 読み込み中';detail=item.progress||'資料を解析しています…';}
-      else if(item.loaded){state='✓ 読み込み成功';detail='取得文字数：'+item.charCount.toLocaleString()+'文字'+(item.detail?'\n'+item.detail:'');}
-      else if(item.error){state='✕ 読み込み失敗';detail='エラー：'+item.error;}
-      return '<div class="file-item"><div style="min-width:0;flex:1">'
+    function setStatus(message,type=''){
+      const el=$('preventiveLoadStatus');
+      if(!el)return;
+      const isNextCheckMessage=String(message).includes('<span class="bo-next-step">次に「🔎 読み込んだ資料に個人情報が入っていないかチェックする」に進んでください。</span>');
+      el.className='status'+(type?' '+type:'')+(isNextCheckMessage?' next-check-message':'');
+      el.textContent=message;
+    }
+    function setFileStatus(message,type=''){
+      const el=$('preventiveFileStatus');
+      if(!el)return;
+      el.className='status'+(type?' '+type:'');
+      el.textContent=message;
+    }
+    function updateLoadButton(){
+      const btn=$('preventiveLoadButton');
+      if(!btn)return;
+      const busy=btn.dataset.busy==='1';
+      btn.disabled=busy||preventiveFiles.length===0;
+      btn.textContent=busy?'⏳ 読み込み中…':'📥 読み込み開始';
+    }
+    function renderFileList(){
+      const list=$('preventiveFileList');
+      if(!list)return;
+      list.innerHTML=preventiveFiles.map((item,index)=>{
+        let state='未読み込み',detail='';
+        if(item.loading){state='⏳ 読み込み中';detail=item.progress||'資料を解析しています…';}
+        else if(item.loaded){state='✓ 読み込み成功';detail='取得文字数：'+item.charCount.toLocaleString()+'文字'+(item.detail?'\n'+item.detail:'');}
+        else if(item.error){state='✕ 読み込み失敗';detail='エラー：'+item.error;}
+        return '<div class="file-item"><div style="min-width:0;flex:1">'
         +'<div class="file-item-name">'+escapeHtml(item.file.name)+'</div>'
         +'<div class="file-item-meta preventive-file-state">'+escapeHtml(item.kind)+'　｜　'+escapeHtml(state)+'</div>'
         +(detail?'<div class="preventive-file-detail">'+escapeHtml(detail)+'</div>':'')
         +'</div><button type="button" class="file-remove" onclick="removePreventiveFile('+index+')">削除</button></div>';
-    }).join('');
-  }
-  function updateSimpleLoadProgress(percent,label,detail,show=true){
-    const wrap=$('simpleLoadProgressWrap');
-    const bar=$('simpleLoadProgressBar');
-    const pct=$('simpleLoadProgressPercent');
-    const lab=$('simpleLoadProgressLabel');
-    const det=$('simpleLoadProgressDetail');
-    const safe=Math.max(0,Math.min(100,Math.round(Number(percent)||0)));
-    if(wrap)wrap.style.display=show?'block':'none';
-    if(bar)bar.style.width=safe+'%';
-    if(pct)pct.textContent=safe+'%';
-    if(lab)lab.textContent=label||'資料を読み取っています…';
-    if(det)det.textContent=detail||'';
-  }
-
-  function updateProgress(index,total,file,message){
-    const item=preventiveFiles[index];
-    if(item){item.loading=true;item.progress=message;}
-    const base=(index/Math.max(total,1))*100;
-    const perFile=100/Math.max(total,1);
-    let within=0.18;
-    const msg=String(message||'');
-    const pageMatch=msg.match(/(\d+)\s*\/\s*(\d+)\s*ページ/);
-    if(pageMatch && Number(pageMatch[2])>0){
-      within=Math.min(0.95,Number(pageMatch[1])/Number(pageMatch[2]));
-    }else if(/OCR|文字認識/.test(msg)){
-      within=0.62;
-    }else if(/抽出|解析|読み込み/.test(msg)){
-      within=0.38;
+      }).join('');
     }
-    const overall=Math.min(98,base+(perFile*within));
-    updateSimpleLoadProgress(overall,'資料を読み取っています…',(index+1)+' / '+total+'件　'+file.name+'　'+msg,true);
-    setStatus('⏳ '+(index+1)+'/'+total+'件目を読み込み中…\n'+file.name+'\n'+message);
-    renderFileList();
-  }
-  function requireLibrary(globalName,message){
-    if(!window[globalName])throw new Error(message);
-  }
-
-  async function extractPdf(file,progress){
-    requireLibrary('pdfjsLib','PDF読み込み機能が利用できません。ページを再読み込みしてください。');
-    const pdf=await window.pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
-    let output='',textPages=0;
-    for(let pageNo=1;pageNo<=pdf.numPages;pageNo++){
-      progress('PDF文字情報を解析中… '+pageNo+'/'+pdf.numPages+'ページ');
-      const page=await pdf.getPage(pageNo);
-      const content=await page.getTextContent();
-      const text=(content.items||[]).map(item=>item.str||'').join(' ').trim();
-      if(text){output+='\n【PDF '+pageNo+'ページ】\n'+text;textPages++;}
-      await new Promise(r=>setTimeout(r,0));
+    function updateSimpleLoadProgress(percent,label,detail,show=true){
+      const wrap=$('simpleLoadProgressWrap');
+      const bar=$('simpleLoadProgressBar');
+      const pct=$('simpleLoadProgressPercent');
+      const lab=$('simpleLoadProgressLabel');
+      const det=$('simpleLoadProgressDetail');
+      const safe=Math.max(0,Math.min(100,Math.round(Number(percent)||0)));
+      if(wrap)wrap.style.display=show?'block':'none';
+      if(bar)bar.style.width=safe+'%';
+      if(pct)pct.textContent=safe+'%';
+      if(lab)lab.textContent=label||'資料を読み取っています…';
+      if(det)det.textContent=detail||'';
     }
-    if(output.trim())return {text:output.trim(),detail:'PDF '+pdf.numPages+'ページ中 '+textPages+'ページから文字情報を取得'};
 
-    requireLibrary('Tesseract','スキャンPDFのOCR機能が利用できません。インターネット接続を確認してページを再読み込みしてください。');
-    let ocr='';
-    for(let pageNo=1;pageNo<=pdf.numPages;pageNo++){
-      progress('スキャンPDFをOCR処理中… '+pageNo+'/'+pdf.numPages+'ページ');
-      const page=await pdf.getPage(pageNo);
-      const viewport=page.getViewport({scale:1.8});
-      const canvas=document.createElement('canvas');
-      const ctx=canvas.getContext('2d',{willReadFrequently:true});
-      canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);
-      await page.render({canvasContext:ctx,viewport}).promise;
-      const result=await window.Tesseract.recognize(canvas,'jpn+eng',{
-        logger:m=>{if(m?.status==='recognizing text')progress('スキャンPDFをOCR処理中… '+pageNo+'/'+pdf.numPages+'ページ（'+Math.round((m.progress||0)*100)+'%）');}
-      });
-      const text=String(result?.data?.text||'').trim();
-      if(text)ocr+='\n【PDF '+pageNo+'ページ OCR】\n'+text;
-      canvas.width=1;canvas.height=1;
+    function updateProgress(index,total,file,message){
+      const item=preventiveFiles[index];
+      if(item){item.loading=true;item.progress=message;}
+      const base=(index/Math.max(total,1))*100;
+      const perFile=100/Math.max(total,1);
+      let within=0.18;
+      const msg=String(message||'');
+      const pageMatch=msg.match(/(\d+)\s*\/\s*(\d+)\s*ページ/);
+      if(pageMatch && Number(pageMatch[2])>0){
+        within=Math.min(0.95,Number(pageMatch[1])/Number(pageMatch[2]));
+      }else if(/OCR|文字認識/.test(msg)){
+        within=0.62;
+      }else if(/抽出|解析|読み込み/.test(msg)){
+        within=0.38;
+      }
+      const overall=Math.min(98,base+(perFile*within));
+      updateSimpleLoadProgress(overall,'資料を読み取っています…',(index+1)+' / '+total+'件　'+file.name+'　'+msg,true);
+      setStatus('⏳ '+(index+1)+'/'+total+'件目を読み込み中…\n'+file.name+'\n'+message);
+      renderFileList();
     }
-    if(!ocr.trim())throw new Error('PDFは開けましたが、文字情報を取得できませんでした。');
-    return {text:ocr.trim(),detail:'スキャンPDFをOCR処理して '+pdf.numPages+'ページを確認'};
-  }
+    function requireLibrary(globalName,message){
+      if(!window[globalName])throw new Error(message);
+    }
 
-  async function extractExcel(file,progress){
-    requireLibrary('XLSX','Excel読み込み機能が利用できません。ページを再読み込みしてください。');
-    progress('Excelファイルを開いています…');
-    const workbook=window.XLSX.read(await file.arrayBuffer(),{type:'array',cellDates:true,cellNF:false,cellText:true});
-    if(!workbook.SheetNames?.length)throw new Error('Excelに読み込み可能なシートがありません。');
-    let output='',totalCells=0,totalRows=0;
-    for(let s=0;s<workbook.SheetNames.length;s++){
-      const sheetName=workbook.SheetNames[s];
-      progress('Excelを解析中… シート '+(s+1)+'/'+workbook.SheetNames.length+'「'+sheetName+'」');
-      const sheet=workbook.Sheets[sheetName];
-      if(!sheet)continue;
-      const rows=window.XLSX.utils.sheet_to_json(sheet,{header:1,raw:false,defval:'',blankrows:false});
-      let sheetOutput='';
-      rows.forEach((row,rowIndex)=>{
-        const values=(Array.isArray(row)?row:[]).map(cell=>{
-          const value=String(cell??'').trim();if(value)totalCells++;return value;
+    async function extractPdf(file,progress){
+      requireLibrary('pdfjsLib','PDF読み込み機能が利用できません。ページを再読み込みしてください。');
+      const pdf=await window.pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
+      let output='',textPages=0;
+      for(let pageNo=1;pageNo<=pdf.numPages;pageNo++){
+        progress('PDF文字情報を解析中… '+pageNo+'/'+pdf.numPages+'ページ');
+        const page=await pdf.getPage(pageNo);
+        const content=await page.getTextContent();
+        const text=(content.items||[]).map(item=>item.str||'').join(' ').trim();
+        if(text){output+='\n【PDF '+pageNo+'ページ】\n'+text;textPages++;}
+        await new Promise(r=>setTimeout(r,0));
+      }
+      if(output.trim())return {text:output.trim(),detail:'PDF '+pdf.numPages+'ページ中 '+textPages+'ページから文字情報を取得'};
+
+      requireLibrary('Tesseract','スキャンPDFのOCR機能が利用できません。インターネット接続を確認してページを再読み込みしてください。');
+      let ocr='';
+      for(let pageNo=1;pageNo<=pdf.numPages;pageNo++){
+        progress('スキャンPDFをOCR処理中… '+pageNo+'/'+pdf.numPages+'ページ');
+        const page=await pdf.getPage(pageNo);
+        const viewport=page.getViewport({scale:1.8});
+        const canvas=document.createElement('canvas');
+        const ctx=canvas.getContext('2d',{willReadFrequently:true});
+        canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);
+        await page.render({canvasContext:ctx,viewport}).promise;
+        const result=await window.Tesseract.recognize(canvas,'jpn+eng',{
+          logger:m=>{if(m?.status==='recognizing text')progress('スキャンPDFをOCR処理中… '+pageNo+'/'+pdf.numPages+'ページ（'+Math.round((m.progress||0)*100)+'%）');}
         });
-        const line=values.join('\t');
-        if(line.trim()){totalRows++;sheetOutput+='【'+(rowIndex+1)+'行目】 '+line+'\n';}
-      });
-      if(sheetOutput.trim())output+='\n【Excelシート：'+sheetName+'】\n'+sheetOutput;
-      await new Promise(r=>setTimeout(r,0));
+        const text=String(result?.data?.text||'').trim();
+        if(text)ocr+='\n【PDF '+pageNo+'ページ OCR】\n'+text;
+        canvas.width=1;canvas.height=1;
+      }
+      if(!ocr.trim())throw new Error('PDFは開けましたが、文字情報を取得できませんでした。');
+      return {text:ocr.trim(),detail:'スキャンPDFをOCR処理して '+pdf.numPages+'ページを確認'};
     }
-    if(!output.trim()||totalCells===0)throw new Error('Excelは開けましたが、文字情報の入ったセルを取得できませんでした。');
-    return {text:output.trim(),detail:workbook.SheetNames.length+'シート・'+totalCells.toLocaleString()+'セル・'+totalRows.toLocaleString()+'行を取得'};
-  }
 
-  async function extractWord(file,progress){
-    requireLibrary('mammoth','Word読み込み機能が利用できません。ページを再読み込みしてください。');
-    progress('Word（DOCX）を解析しています…');
-    const buffer=await file.arrayBuffer();
-    const result=await window.mammoth.extractRawText({arrayBuffer:buffer});
-    let text=String(result?.value||'').replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim();
-    if(!text){
-      try{
-        const htmlResult=await window.mammoth.convertToHtml({arrayBuffer:buffer});
-        const temp=document.createElement('div');temp.innerHTML=htmlResult?.value||'';
-        text=String(temp.innerText||temp.textContent||'').replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim();
-      }catch(e){}
+    async function extractExcel(file,progress){
+      requireLibrary('XLSX','Excel読み込み機能が利用できません。ページを再読み込みしてください。');
+      progress('Excelファイルを開いています…');
+      const workbook=window.XLSX.read(await file.arrayBuffer(),{type:'array',cellDates:true,cellNF:false,cellText:true});
+      if(!workbook.SheetNames?.length)throw new Error('Excelに読み込み可能なシートがありません。');
+      let output='',totalCells=0,totalRows=0;
+      for(let s=0;s<workbook.SheetNames.length;s++){
+        const sheetName=workbook.SheetNames[s];
+        progress('Excelを解析中… シート '+(s+1)+'/'+workbook.SheetNames.length+'「'+sheetName+'」');
+        const sheet=workbook.Sheets[sheetName];
+        if(!sheet)continue;
+        const rows=window.XLSX.utils.sheet_to_json(sheet,{header:1,raw:false,defval:'',blankrows:false});
+        let sheetOutput='';
+        rows.forEach((row,rowIndex)=>{
+          const values=(Array.isArray(row)?row:[]).map(cell=>{
+            const value=String(cell??'').trim();if(value)totalCells++;return value;
+          });
+          const line=values.join('\t');
+          if(line.trim()){totalRows++;sheetOutput+='【'+(rowIndex+1)+'行目】 '+line+'\n';}
+        });
+        if(sheetOutput.trim())output+='\n【Excelシート：'+sheetName+'】\n'+sheetOutput;
+        await new Promise(r=>setTimeout(r,0));
+      }
+      if(!output.trim()||totalCells===0)throw new Error('Excelは開けましたが、文字情報の入ったセルを取得できませんでした。');
+      return {text:output.trim(),detail:workbook.SheetNames.length+'シート・'+totalCells.toLocaleString()+'セル・'+totalRows.toLocaleString()+'行を取得'};
     }
-    if(!text)throw new Error('Word（DOCX）は開けましたが、文字情報を取得できませんでした。');
-    return {text,detail:'Word本文を取得'};
-  }
 
-  async function extractText(file,progress){
-    switch(getExtension(file)){
+    async function extractWord(file,progress){
+      requireLibrary('mammoth','Word読み込み機能が利用できません。ページを再読み込みしてください。');
+      progress('Word（DOCX）を解析しています…');
+      const buffer=await file.arrayBuffer();
+      const result=await window.mammoth.extractRawText({arrayBuffer:buffer});
+      let text=String(result?.value||'').replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim();
+      if(!text){
+        try{
+          const htmlResult=await window.mammoth.convertToHtml({arrayBuffer:buffer});
+          const temp=document.createElement('div');temp.innerHTML=htmlResult?.value||'';
+          text=String(temp.innerText||temp.textContent||'').replace(/\r\n/g,'\n').replace(/\r/g,'\n').trim();
+        }catch(e){}
+      }
+      if(!text)throw new Error('Word（DOCX）は開けましたが、文字情報を取得できませんでした。');
+      return {text,detail:'Word本文を取得'};
+    }
+
+    async function extractText(file,progress){
+      switch(getExtension(file)){
       case 'pdf':return extractPdf(file,progress);
       case 'xlsx':case 'xls':return extractExcel(file,progress);
       case 'docx':return extractWord(file,progress);
@@ -2900,224 +3072,224 @@ window.goHome = function(){
         return {text,detail:'画像をOCR処理して文字情報を取得'};
       }
       default:throw new Error('このファイル形式は自動読み込みに対応していません。');
-    }
-  }
-
-  window.showPreventivePlanView=function(){const area=$('preventivePlanArea'),launch=document.querySelector('.preventive-launch-card');if(area)area.style.display='block';if(launch)launch.style.display='none';window.scrollTo({top:0,behavior:'smooth'});};
-  window.closePreventivePlanView=function(){const area=$('preventivePlanArea'),launch=document.querySelector('.preventive-launch-card');if(area)area.style.display='none';if(launch)launch.style.display='block';window.scrollTo({top:0,behavior:'smooth'});};
-
-  window.removePreventiveFile=function(index){
-    if(index<0||index>=preventiveFiles.length)return;
-    preventiveFiles.splice(index,1);renderFileList();updateLoadButton();
-    $('preventivePromptBox').style.display='none';
-    const privacy=$('preventivePrivacyResult');if(privacy){privacy.className='privacy-result';privacy.textContent='資料を選択すると、ここにチェック結果が表示されます。';}
-    setFileStatus(preventiveFiles.length?'資料を選択しています。':'まだ資料が選択されていません。');
-    setStatus(preventiveFiles.length?'📄 資料を選択済みです。「📥 読み込み開始」を押してください。':'資料を選択してください。');
-  };
-
-  window.addPreventiveFiles=function(fileList){
-    const files=Array.from(fileList||[]);if(!files.length)return;
-    files.forEach(file=>preventiveFiles.push({file,kind:kindOf(file),text:'',loaded:false,loading:false,error:null,progress:'',detail:'',charCount:0}));
-    renderFileList();updateLoadButton();$('preventivePromptBox').style.display='none';
-    setStatus('📄 '+preventiveFiles.length+'件の資料を選択しました。\nまだ中身は解析していません。\n「📥 読み込み開始」を押してください。');
-    setFileStatus('📄 資料を選択済みです。読み込み開始ボタンを押すと、実際に中身を解析します。');
-  };
-
-  window.loadPreventiveFiles=async function(){
-    if(!preventiveFiles.length){setStatus('⚠️ 先に資料を選択してください。','alert');return;}
-    updateSimpleLoadProgress(0,'資料を読み取っています…','読み込みを開始します。',true);
-    preventiveFiles.forEach(item=>{item.loaded=false;item.loading=false;item.error=null;item.text='';item.progress='';item.detail='';item.charCount=0;});
-    $('preventivePromptBox').style.display='none';
-    const btn=$('preventiveLoadButton');if(btn){btn.dataset.busy='1';btn.style.opacity='.7';btn.style.cursor='wait';}updateLoadButton();renderFileList();
-    let success=0,failed=0;const errors=[];
-    for(let i=0;i<preventiveFiles.length;i++){
-      const item=preventiveFiles[i];
-      try{
-        updateProgress(i,preventiveFiles.length,item.file,'ファイルを開いています…');
-        await new Promise(r=>setTimeout(r,20));
-        const result=await extractText(item.file,message=>updateProgress(i,preventiveFiles.length,item.file,message));
-        const text=String(result?.text||'').trim();
-        if(!text)throw new Error('資料から確認可能な文字情報を取得できませんでした。');
-        item.text=text;item.charCount=text.length;item.detail=result.detail||'';item.loaded=true;item.loading=false;item.error=null;item.progress='';success++;
-      }catch(error){
-        item.text='';item.charCount=0;item.detail='';item.loaded=false;item.loading=false;item.error=error?.message||'資料を読み込めませんでした。';errors.push('・'+item.file.name+'：'+item.error);failed++;
       }
-      renderFileList();await new Promise(r=>setTimeout(r,20));
     }
-    if(btn){btn.dataset.busy='0';btn.style.opacity='';btn.style.cursor='';}updateLoadButton();
-    if(failed===0&&success===preventiveFiles.length){
-      const totalChars=preventiveFiles.reduce((sum,item)=>sum+item.charCount,0);
-      setStatus('✓ 読み込み成功\n'+success+'件すべての資料の中身を取得しました。\n合計取得文字数：'+totalChars.toLocaleString()+'文字\n次に「🔎 読み込んだ資料に個人情報が入っていないかチェックする」に進んでください。','success');
-      setFileStatus('✓ '+success+'件すべての資料を正常に読み込みました。各資料の取得文字数を確認してください。','success');
-      updateSimpleLoadProgress(100,'読み込み完了','すべての資料を読み取りました。',true);
-    }else{
-      setStatus('⚠️ 読み込み失敗\n成功：'+success+'件　失敗：'+failed+'件\n\n'+errors.join('\n')+'\n\n失敗した資料があるため、個人情報チェックには進めません。','alert');
-      updateSimpleLoadProgress(0,'読み込みに失敗しました','読み込めなかった資料があります。',true);
-      setFileStatus('⚠️ 一部または全部の資料を正常に読み込めませんでした。','alert');
-    }
-  };
+
+    window.showPreventivePlanView=function(){const area=$('preventivePlanArea'),launch=document.querySelector('.preventive-launch-card');if(area)area.style.display='block';if(launch)launch.style.display='none';window.scrollTo({top:0,behavior:'smooth'});};
+    window.closePreventivePlanView=function(){const area=$('preventivePlanArea'),launch=document.querySelector('.preventive-launch-card');if(area)area.style.display='none';if(launch)launch.style.display='block';window.scrollTo({top:0,behavior:'smooth'});};
+
+    window.removePreventiveFile=function(index){
+      if(index<0||index>=preventiveFiles.length)return;
+      preventiveFiles.splice(index,1);renderFileList();updateLoadButton();
+      $('preventivePromptBox').style.display='none';
+      const privacy=$('preventivePrivacyResult');if(privacy){privacy.className='privacy-result';privacy.textContent='資料を選択すると、ここにチェック結果が表示されます。';}
+      setFileStatus(preventiveFiles.length?'資料を選択しています。':'まだ資料が選択されていません。');
+      setStatus(preventiveFiles.length?'📄 資料を選択済みです。「📥 読み込み開始」を押してください。':'資料を選択してください。');
+    };
+
+    window.addPreventiveFiles=function(fileList){
+      const files=Array.from(fileList||[]);if(!files.length)return;
+      files.forEach(file=>preventiveFiles.push({file,kind:kindOf(file),text:'',loaded:false,loading:false,error:null,progress:'',detail:'',charCount:0}));
+      renderFileList();updateLoadButton();$('preventivePromptBox').style.display='none';
+      setStatus('📄 '+preventiveFiles.length+'件の資料を選択しました。\nまだ中身は解析していません。\n「📥 読み込み開始」を押してください。');
+      setFileStatus('📄 資料を選択済みです。読み込み開始ボタンを押すと、実際に中身を解析します。');
+    };
+
+    window.loadPreventiveFiles=async function(){
+      if(!preventiveFiles.length){setStatus('⚠️ 先に資料を選択してください。','alert');return;}
+      updateSimpleLoadProgress(0,'資料を読み取っています…','読み込みを開始します。',true);
+      preventiveFiles.forEach(item=>{item.loaded=false;item.loading=false;item.error=null;item.text='';item.progress='';item.detail='';item.charCount=0;});
+      $('preventivePromptBox').style.display='none';
+      const btn=$('preventiveLoadButton');if(btn){btn.dataset.busy='1';btn.style.opacity='.7';btn.style.cursor='wait';}updateLoadButton();renderFileList();
+      let success=0,failed=0;const errors=[];
+      for(let i=0;i<preventiveFiles.length;i++){
+        const item=preventiveFiles[i];
+        try{
+          updateProgress(i,preventiveFiles.length,item.file,'ファイルを開いています…');
+          await new Promise(r=>setTimeout(r,20));
+          const result=await extractText(item.file,message=>updateProgress(i,preventiveFiles.length,item.file,message));
+          const text=String(result?.text||'').trim();
+          if(!text)throw new Error('資料から確認可能な文字情報を取得できませんでした。');
+          item.text=text;item.charCount=text.length;item.detail=result.detail||'';item.loaded=true;item.loading=false;item.error=null;item.progress='';success++;
+        }catch(error){
+          item.text='';item.charCount=0;item.detail='';item.loaded=false;item.loading=false;item.error=error?.message||'資料を読み込めませんでした。';errors.push('・'+item.file.name+'：'+item.error);failed++;
+        }
+        renderFileList();await new Promise(r=>setTimeout(r,20));
+      }
+      if(btn){btn.dataset.busy='0';btn.style.opacity='';btn.style.cursor='';}updateLoadButton();
+      if(failed===0&&success===preventiveFiles.length){
+        const totalChars=preventiveFiles.reduce((sum,item)=>sum+item.charCount,0);
+        setStatus('✓ 読み込み成功\n'+success+'件すべての資料の中身を取得しました。\n合計取得文字数：'+totalChars.toLocaleString()+'文字\n次に「🔎 読み込んだ資料に個人情報が入っていないかチェックする」に進んでください。','success');
+        setFileStatus('✓ '+success+'件すべての資料を正常に読み込みました。各資料の取得文字数を確認してください。','success');
+        updateSimpleLoadProgress(100,'読み込み完了','すべての資料を読み取りました。',true);
+      }else{
+        setStatus('⚠️ 読み込み失敗\n成功：'+success+'件　失敗：'+failed+'件\n\n'+errors.join('\n')+'\n\n失敗した資料があるため、個人情報チェックには進めません。','alert');
+        updateSimpleLoadProgress(0,'読み込みに失敗しました','読み込めなかった資料があります。',true);
+        setFileStatus('⚠️ 一部または全部の資料を正常に読み込めませんでした。','alert');
+      }
+    };
 
 
-  window.arePreventiveFilesReady=function(){
-    return preventiveFiles.length>0 && preventiveFiles.every(item=>item.loaded && String(item.text||'').trim());
-  };
+    window.arePreventiveFilesReady=function(){
+      return preventiveFiles.length>0 && preventiveFiles.every(item=>item.loaded && String(item.text||'').trim());
+    };
 
-  window.checkPreventivePrivacy=function(){
-  const result=$('preventivePrivacyResult');if(!result)return;
-  const checkBtn=$('preventivePrivacyCheckButton'),nextNote=$('preventiveNextNote'),promptBox=$('preventivePromptBox');
-  if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button';checkBtn.textContent='🔎 読み込んだ資料に個人情報が入っていないかチェックする';}
-  if(nextNote)nextNote.classList.remove('show');
-  if(promptBox)promptBox.classList.remove('ready-next');
-  if(!preventiveFiles.length){
-    result.className='privacy-result alert';
-    result.textContent='⚠️ 先に資料を選択してください。';
-    return;
-  }
+    window.checkPreventivePrivacy=function(){
+      const result=$('preventivePrivacyResult');if(!result)return;
+      const checkBtn=$('preventivePrivacyCheckButton'),nextNote=$('preventiveNextNote'),promptBox=$('preventivePromptBox');
+      if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button';checkBtn.textContent='🔎 読み込んだ資料に個人情報が入っていないかチェックする';}
+      if(nextNote)nextNote.classList.remove('show');
+      if(promptBox)promptBox.classList.remove('ready-next');
+      if(!preventiveFiles.length){
+        result.className='privacy-result alert';
+        result.textContent='⚠️ 先に資料を選択してください。';
+        return;
+      }
 
-  const notReady=preventiveFiles.filter(item=>!item.loaded||!String(item.text||'').trim());
-  if(notReady.length){
-    result.className='privacy-result alert';
-    result.textContent='⚠️ 個人情報チェックを開始できません。\n\nすべての資料について「📥 読み込み開始」を押し、✓ 読み込み成功になっていることを確認してください。';
-    if(promptBox)promptBox.style.display='none';
-    return;
-  }
+      const notReady=preventiveFiles.filter(item=>!item.loaded||!String(item.text||'').trim());
+      if(notReady.length){
+        result.className='privacy-result alert';
+        result.textContent='⚠️ 個人情報チェックを開始できません。\n\nすべての資料について「📥 読み込み開始」を押し、✓ 読み込み成功になっていることを確認してください。';
+        if(promptBox)promptBox.style.display='none';
+        return;
+      }
 
-  // 🔴 強い警告・次工程停止
-  // 強い警告は「個人・関係者・保険情報等を直接特定できる情報」に限定する。
-  // 続柄（妻・夫・兄・妹・長女等）、病名、検査値、要介護度、ADL等は警告対象にしない。
-  const strongPatterns=[
-    ['本人の氏名らしき記載',/(?<![一-龥々ぁ-んァ-ヶー])(?:利用者氏名|利用者名|本人氏名|本人名|氏名|名前)\s*[:：]\s*(?!本人|なし|不明|未記載)[一-龥々ぁ-んァ-ヶー]{2,12}(?:[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12})?/g],
-    ['主治医・医師の氏名らしき記載',/(?:主治医氏名|主治医名|担当医氏名|担当医名|医師氏名|医師名)\s*[:：]\s*(?!なし|不明|未定|未記載)[一-龥々ぁ-んァ-ヶー]{2,12}(?:[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12})?/g],
-    ['主治医・医師の氏名らしき記載',/(?:主治医|担当医)\s*[:：]\s*(?!なし|不明|未定|未記載|往診|受診|診察|病院|医院|クリニック|診療所)[一-龥々ぁ-んァ-ヶー]{2,12}[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12}/g],
-    ['家族・キーパーソンの氏名らしき記載',/(?:キーパーソン氏名|キーパーソン名|家族氏名|家族名|妻氏名|夫氏名|配偶者氏名|長女氏名|次女氏名|三女氏名|長男氏名|次男氏名|三男氏名|娘氏名|息子氏名|兄氏名|弟氏名|姉氏名|妹氏名)\s*[:：]\s*(?!なし|不明|未定|未記載)[一-龥々ぁ-んァ-ヶー]{2,12}(?:[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12})?/g],
-    ['家族・キーパーソンの氏名らしき記載',/(?:妻|夫|配偶者|長女|次女|三女|長男|次男|三男|娘|息子|兄|弟|姉|妹|キーパーソン)\s*[:：]\s*[一-龥々ぁ-んァ-ヶー]{2,12}[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12}/g],
-    ['住所らしき記載',/(?:住所|現住所|所在地|居住地)\s*[:：]\s*[^\n]{3,}/g],
-    ['電話番号らしき記載',/(?:0\d{1,4}[-ー－]\d{1,4}[-ー－]\d{3,4}|0\d{9,10})/g],
-    ['郵便番号らしき記載',/(?<![0-9０-９\-ー－])〒?\s*\d{3}[-ー－]\d{4}(?![0-9０-９\-ー－])/g],
-    ['メールアドレス',/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi],
-    ['介護保険被保険者番号等',/(?:介護保険被保険者番号|被保険者番号|保険者番号|認定番号)\s*[:：]?\s*[0-9０-９\-ー－]{5,}/g],
-    ['各種保険証・受給者証等の番号',/(?:健康保険証番号|健康保険被保険者番号|医療保険被保険者番号|後期高齢者医療被保険者番号|後期高齢者被保険者番号|受給者証番号|受給者番号|公費負担者番号|公費受給者番号|身体障害者手帳番号|障害者手帳番号|療育手帳番号|精神障害者保健福祉手帳番号)\s*[:：]?\s*[A-ZＡ-Ｚ0-9０-９\-ー－]{4,}/gi],
-    ['マイナンバー・個人番号',/(?:マイナンバー|個人番号)\s*[:：]?\s*[0-9０-９]{12}/g],
-    ['生年月日らしき記載',/(?:生年月日|誕生日|出生年月日)\s*[:：]\s*[^\n]{4,}/g],
-    ['医療機関名らしき記載',/[一-龥々ぁ-んァ-ヶーA-Za-z0-9０-９・\-ー－]{2,30}(?:病院|医院|クリニック|診療所|医療センター)/g]
-  ];
+      // 🔴 強い警告・次工程停止
+      // 強い警告は「個人・関係者・保険情報等を直接特定できる情報」に限定する。
+      // 続柄（妻・夫・兄・妹・長女等）、病名、検査値、要介護度、ADL等は警告対象にしない。
+      const strongPatterns=[
+        ['本人の氏名らしき記載',/(?<![一-龥々ぁ-んァ-ヶー])(?:利用者氏名|利用者名|本人氏名|本人名|氏名|名前)\s*[:：]\s*(?!本人|なし|不明|未記載)[一-龥々ぁ-んァ-ヶー]{2,12}(?:[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12})?/g],
+        ['主治医・医師の氏名らしき記載',/(?:主治医氏名|主治医名|担当医氏名|担当医名|医師氏名|医師名)\s*[:：]\s*(?!なし|不明|未定|未記載)[一-龥々ぁ-んァ-ヶー]{2,12}(?:[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12})?/g],
+        ['主治医・医師の氏名らしき記載',/(?:主治医|担当医)\s*[:：]\s*(?!なし|不明|未定|未記載|往診|受診|診察|病院|医院|クリニック|診療所)[一-龥々ぁ-んァ-ヶー]{2,12}[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12}/g],
+        ['家族・キーパーソンの氏名らしき記載',/(?:キーパーソン氏名|キーパーソン名|家族氏名|家族名|妻氏名|夫氏名|配偶者氏名|長女氏名|次女氏名|三女氏名|長男氏名|次男氏名|三男氏名|娘氏名|息子氏名|兄氏名|弟氏名|姉氏名|妹氏名)\s*[:：]\s*(?!なし|不明|未定|未記載)[一-龥々ぁ-んァ-ヶー]{2,12}(?:[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12})?/g],
+        ['家族・キーパーソンの氏名らしき記載',/(?:妻|夫|配偶者|長女|次女|三女|長男|次男|三男|娘|息子|兄|弟|姉|妹|キーパーソン)\s*[:：]\s*[一-龥々ぁ-んァ-ヶー]{2,12}[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12}/g],
+        ['住所らしき記載',/(?:住所|現住所|所在地|居住地)\s*[:：]\s*[^\n]{3,}/g],
+        ['電話番号らしき記載',/(?:0\d{1,4}[-ー－]\d{1,4}[-ー－]\d{3,4}|0\d{9,10})/g],
+        ['郵便番号らしき記載',/(?<![0-9０-９\-ー－])〒?\s*\d{3}[-ー－]\d{4}(?![0-9０-９\-ー－])/g],
+        ['メールアドレス',/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi],
+        ['介護保険被保険者番号等',/(?:介護保険被保険者番号|被保険者番号|保険者番号|認定番号)\s*[:：]?\s*[0-9０-９\-ー－]{5,}/g],
+        ['各種保険証・受給者証等の番号',/(?:健康保険証番号|健康保険被保険者番号|医療保険被保険者番号|後期高齢者医療被保険者番号|後期高齢者被保険者番号|受給者証番号|受給者番号|公費負担者番号|公費受給者番号|身体障害者手帳番号|障害者手帳番号|療育手帳番号|精神障害者保健福祉手帳番号)\s*[:：]?\s*[A-ZＡ-Ｚ0-9０-９\-ー－]{4,}/gi],
+        ['マイナンバー・個人番号',/(?:マイナンバー|個人番号)\s*[:：]?\s*[0-9０-９]{12}/g],
+        ['生年月日らしき記載',/(?:生年月日|誕生日|出生年月日)\s*[:：]\s*[^\n]{4,}/g],
+        ['医療機関名らしき記載',/[一-龥々ぁ-んァ-ヶーA-Za-z0-9０-９・\-ー－]{2,30}(?:病院|医院|クリニック|診療所|医療センター)/g]
+      ];
 
-  // 🟠 確認推奨
-  // 施設名・事業所名は現時点では確認推奨。続柄・病名・検査値等はここにも含めない。
-  const advisoryPatterns=[
-    ['施設・事業所名らしき記載',/(?:施設名|事業所名)\s*[:：]\s*[^\n]{2,60}/g]
-  ];
+      // 🟠 確認推奨
+      // 施設名・事業所名は現時点では確認推奨。続柄・病名・検査値等はここにも含めない。
+      const advisoryPatterns=[
+        ['施設・事業所名らしき記載',/(?:施設名|事業所名)\s*[:：]\s*[^\n]{2,60}/g]
+      ];
 
-  const strongHits=[];
-  const advisoryHits=[];
+      const strongHits=[];
+      const advisoryHits=[];
 
-  // 検出した「種類」だけでなく、実際の文字・行番号・前後の文章も保持する。
-  // ここで扱う情報は、すでにブラウザ内へ読み込まれた文字情報のみ。外部送信は行わない。
-  function getPrivacyLineInfo(text,index){
-    const before=String(text||'').slice(0,index);
-    const lineNumber=before.split('\n').length;
-    const lines=String(text||'').split('\n');
-    const currentIndex=Math.max(0,lineNumber-1);
-    const context=[];
-    if(currentIndex>0 && lines[currentIndex-1]?.trim()) context.push(lines[currentIndex-1].trim());
-    if(lines[currentIndex]?.trim()) context.push(lines[currentIndex].trim());
-    if(currentIndex+1<lines.length && lines[currentIndex+1]?.trim()) context.push(lines[currentIndex+1].trim());
-    let contextText=context.join(' ／ ').replace(/\s+/g,' ').trim();
-    if(contextText.length>180) contextText=contextText.slice(0,180)+'…';
-    return {lineNumber,contextText};
-  }
+      // 検出した「種類」だけでなく、実際の文字・行番号・前後の文章も保持する。
+      // ここで扱う情報は、すでにブラウザ内へ読み込まれた文字情報のみ。外部送信は行わない。
+      function getPrivacyLineInfo(text,index){
+        const before=String(text||'').slice(0,index);
+        const lineNumber=before.split('\n').length;
+        const lines=String(text||'').split('\n');
+        const currentIndex=Math.max(0,lineNumber-1);
+        const context=[];
+        if(currentIndex>0 && lines[currentIndex-1]?.trim()) context.push(lines[currentIndex-1].trim());
+        if(lines[currentIndex]?.trim()) context.push(lines[currentIndex].trim());
+        if(currentIndex+1<lines.length && lines[currentIndex+1]?.trim()) context.push(lines[currentIndex+1].trim());
+        let contextText=context.join(' ／ ').replace(/\s+/g,' ').trim();
+        if(contextText.length>180) contextText=contextText.slice(0,180)+'…';
+        return {lineNumber,contextText};
+      }
 
-  function collectPrivacyHits(item,patterns,target){
-    const sourceText=String(item.text||'');
-    patterns.forEach(pattern=>{
-      const label=pattern[0];
-      const baseRegex=pattern[1];
-      const flags=baseRegex.flags.includes('g')?baseRegex.flags:baseRegex.flags+'g';
-      const regex=new RegExp(baseRegex.source,flags);
-      let match;
-      let safety=0;
-      while((match=regex.exec(sourceText))!==null && safety<100){
-        safety++;
-        const detected=String(match[0]||'').trim();
-        const info=getPrivacyLineInfo(sourceText,match.index);
-        target.push({
-          fileName:item.file.name,
-          label,
-          detected,
-          lineNumber:info.lineNumber,
-          contextText:info.contextText
+      function collectPrivacyHits(item,patterns,target){
+        const sourceText=String(item.text||'');
+        patterns.forEach(pattern=>{
+          const label=pattern[0];
+          const baseRegex=pattern[1];
+          const flags=baseRegex.flags.includes('g')?baseRegex.flags:baseRegex.flags+'g';
+          const regex=new RegExp(baseRegex.source,flags);
+          let match;
+          let safety=0;
+          while((match=regex.exec(sourceText))!==null && safety<100){
+            safety++;
+            const detected=String(match[0]||'').trim();
+            const info=getPrivacyLineInfo(sourceText,match.index);
+            target.push({
+              fileName:item.file.name,
+              label,
+              detected,
+              lineNumber:info.lineNumber,
+              contextText:info.contextText
+            });
+            if(match[0]==='') regex.lastIndex++;
+          }
         });
-        if(match[0]==='') regex.lastIndex++;
       }
-    });
-  }
 
-  preventiveFiles.forEach(item=>{
-    collectPrivacyHits(item,strongPatterns,strongHits);
-    collectPrivacyHits(item,advisoryPatterns,advisoryHits);
-  });
-
-  function formatPrivacyHits(hits){
-    const seen=new Set();
-    const unique=hits.filter(hit=>{
-      const key=[hit.fileName,hit.label,hit.detected,hit.lineNumber].join('\u0001');
-      if(seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-    const grouped=new Map();
-    unique.forEach(hit=>{
-      if(!grouped.has(hit.fileName)) grouped.set(hit.fileName,[]);
-      grouped.get(hit.fileName).push(hit);
-    });
-    const blocks=[];
-    grouped.forEach((fileHits,fileName)=>{
-      const rows=['📄 '+fileName+'（'+fileHits.length+'件）'];
-      fileHits.forEach((hit,index)=>{
-        rows.push('  '+(index+1)+'. '+hit.label);
-        rows.push('     検出文字：'+hit.detected);
-        rows.push('     場所：読み取り文字の '+hit.lineNumber+'行目付近');
-        if(hit.contextText) rows.push('     前後：'+hit.contextText);
+      preventiveFiles.forEach(item=>{
+        collectPrivacyHits(item,strongPatterns,strongHits);
+        collectPrivacyHits(item,advisoryPatterns,advisoryHits);
       });
-      blocks.push(rows.join('\n'));
-    });
-    return blocks.join('\n\n');
-  }
 
-  if(strongHits.length){
-    result.className='privacy-result alert';
-    result.textContent='🔴 個人情報の可能性が高い記載を検出しました。次の工程には進めません。\n\n'
-      +'【修正する場所】\n'+formatPrivacyHits(strongHits)
-      +(advisoryHits.length?'\n\n🟠 あわせて確認推奨：\n'+formatPrivacyHits(advisoryHits):'')
-      +'\n\n※「行目付近」は、資料からブラウザ内で読み取った文字情報を基準にした目安です。PDF・Word・Excel・OCR資料では、元資料のページやセル位置と完全には一致しない場合があります。'
-      +'\n\n氏名・生年月日・住所・電話番号・介護保険番号・各種保険証等の番号・マイナンバー・主治医/医師の氏名・病院名・家族/キーパーソンの氏名は強い警告の対象です。妻・夫・兄・妹・長男・長女等の続柄だけの記載、病名、検査値、要介護度、ADL等は警告対象ではありません。表示された箇所を元資料で削除・匿名化してから再確認してください。';
-    if(promptBox)promptBox.style.display='none';
-    if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button';checkBtn.textContent='🔴 強い警告あり → 修正して再確認';}
-    return;
-  }
+      function formatPrivacyHits(hits){
+        const seen=new Set();
+        const unique=hits.filter(hit=>{
+          const key=[hit.fileName,hit.label,hit.detected,hit.lineNumber].join('\u0001');
+          if(seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+        const grouped=new Map();
+        unique.forEach(hit=>{
+          if(!grouped.has(hit.fileName)) grouped.set(hit.fileName,[]);
+          grouped.get(hit.fileName).push(hit);
+        });
+        const blocks=[];
+        grouped.forEach((fileHits,fileName)=>{
+          const rows=['📄 '+fileName+'（'+fileHits.length+'件）'];
+          fileHits.forEach((hit,index)=>{
+            rows.push('  '+(index+1)+'. '+hit.label);
+            rows.push('     検出文字：'+hit.detected);
+            rows.push('     場所：読み取り文字の '+hit.lineNumber+'行目付近');
+            if(hit.contextText) rows.push('     前後：'+hit.contextText);
+          });
+          blocks.push(rows.join('\n'));
+        });
+        return blocks.join('\n\n');
+      }
 
-  if(advisoryHits.length){
-    result.className='privacy-result warn';
-    result.textContent='🟠 確認推奨の記載があります。\n\n'
-      +formatPrivacyHits(advisoryHits)
-      +'\n\n※「行目付近」は、資料からブラウザ内で読み取った文字情報を基準にした目安です。'
-      +'\n\n施設名・事業所名は「確認推奨」としています。病院名・医院名・クリニック名・診療所名等の医療機関名は強い警告の対象です。内容を確認したうえでAIへ渡してください。'
-      +'\n\n「家族」「妻」「夫」「兄」「弟」「姉」「妹」「長女」「次女」「長男」「次男」など、続柄だけの記載は強い警告の対象ではありません。病名、検査値、要介護度、ADL等も警告対象ではありません。';
-    if(promptBox){promptBox.style.display='block';promptBox.classList.add('ready-next');}
-    if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button review';checkBtn.textContent='✓ 強い警告なし';}
-    if(nextNote){nextNote.innerHTML='✓ <strong>強い警告はありません。次の工程へ進めます。</strong><br>🟠 確認推奨の内容だけ、表示された内容を確認してから進んでください。';nextNote.classList.add('show');}
-    return;
-  }
+      if(strongHits.length){
+        result.className='privacy-result alert';
+        result.textContent='🔴 個人情報の可能性が高い記載を検出しました。次の工程には進めません。\n\n'
+        +'【修正する場所】\n'+formatPrivacyHits(strongHits)
+        +(advisoryHits.length?'\n\n🟠 あわせて確認推奨：\n'+formatPrivacyHits(advisoryHits):'')
+        +'\n\n※「行目付近」は、資料からブラウザ内で読み取った文字情報を基準にした目安です。PDF・Word・Excel・OCR資料では、元資料のページやセル位置と完全には一致しない場合があります。'
+        +'\n\n氏名・生年月日・住所・電話番号・介護保険番号・各種保険証等の番号・マイナンバー・主治医/医師の氏名・病院名・家族/キーパーソンの氏名は強い警告の対象です。妻・夫・兄・妹・長男・長女等の続柄だけの記載、病名、検査値、要介護度、ADL等は警告対象ではありません。表示された箇所を元資料で削除・匿名化してから再確認してください。';
+        if(promptBox)promptBox.style.display='none';
+        if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button';checkBtn.textContent='🔴 強い警告あり → 修正して再確認';}
+        return;
+      }
 
-  result.className='privacy-result ok';
-  result.textContent='✓ 自動チェックでは、直接本人や関係者を特定できる可能性が高い情報は検出されませんでした。\n\n'
-    +'「家族」「長女」「次女」「長男」などの続柄だけの記載、疾患名、発症年、年齢、要介護度、HDS-R、ADL・IADL、服薬、サービス利用回数、介助内容などは、通常のケアプラン作成情報として検出対象にしていません。'
-    +'\n\nただし、自動チェックは100％確実ではありません。AIへ渡す前に、必ずケアマネジャー自身で資料全体を確認してください。';
-  if(promptBox){promptBox.style.display='block';promptBox.classList.add('ready-next');}
-  if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button ready';checkBtn.textContent='✓ 個人情報チェック完了 → 次の工程へ';}
-  if(nextNote){nextNote.innerHTML='✓ <strong>個人情報チェックを通過しました。次の工程へ進めます。</strong><br>③「AIに資料を事前整理してもらう」へ進み、📋 事前整理の指示＋資料をまとめてコピー を押してください。';nextNote.classList.add('show');}
-};
-const PREVENTIVE_PRE_PROMPT_BASE = `あなたは優秀なケアマネジャーです。 以下の条件を踏まえたケアプラン作成に必要なアセスメントをします。アセスメントの前に、情報をまとめますが、下記の各項目に沿って情報を細かく分析して 作成しコードブロックで出力させてください。
+      if(advisoryHits.length){
+        result.className='privacy-result warn';
+        result.textContent='🟠 確認推奨の記載があります。\n\n'
+        +formatPrivacyHits(advisoryHits)
+        +'\n\n※「行目付近」は、資料からブラウザ内で読み取った文字情報を基準にした目安です。'
+        +'\n\n施設名・事業所名は「確認推奨」としています。病院名・医院名・クリニック名・診療所名等の医療機関名は強い警告の対象です。内容を確認したうえでAIへ渡してください。'
+        +'\n\n「家族」「妻」「夫」「兄」「弟」「姉」「妹」「長女」「次女」「長男」「次男」など、続柄だけの記載は強い警告の対象ではありません。病名、検査値、要介護度、ADL等も警告対象ではありません。';
+        if(promptBox){promptBox.style.display='block';promptBox.classList.add('ready-next');}
+        if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button review';checkBtn.textContent='✓ 強い警告なし';}
+        if(nextNote){nextNote.innerHTML='✓ <strong>強い警告はありません。次の工程へ進めます。</strong><br>🟠 確認推奨の内容だけ、表示された内容を確認してから進んでください。';nextNote.classList.add('show');}
+        return;
+      }
+
+      result.className='privacy-result ok';
+      result.textContent='✓ 自動チェックでは、直接本人や関係者を特定できる可能性が高い情報は検出されませんでした。\n\n'
+      +'「家族」「長女」「次女」「長男」などの続柄だけの記載、疾患名、発症年、年齢、要介護度、HDS-R、ADL・IADL、服薬、サービス利用回数、介助内容などは、通常のケアプラン作成情報として検出対象にしていません。'
+      +'\n\nただし、自動チェックは100％確実ではありません。AIへ渡す前に、必ずケアマネジャー自身で資料全体を確認してください。';
+      if(promptBox){promptBox.style.display='block';promptBox.classList.add('ready-next');}
+      if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button ready';checkBtn.textContent='✓ 個人情報チェック完了 → 次の工程へ';}
+      if(nextNote){nextNote.innerHTML='✓ <strong>個人情報チェックを通過しました。次の工程へ進めます。</strong><br>③「AIに資料を事前整理してもらう」へ進み、📋 事前整理の指示＋資料をまとめてコピー を押してください。';nextNote.classList.add('show');}
+    };
+    const PREVENTIVE_PRE_PROMPT_BASE = `あなたは優秀なケアマネジャーです。 以下の条件を踏まえたケアプラン作成に必要なアセスメントをします。アセスメントの前に、情報をまとめますが、下記の各項目に沿って情報を細かく分析して 作成しコードブロックで出力させてください。
 
 作成の為のルール
 
@@ -3315,10 +3487,10 @@ const PREVENTIVE_PRE_PROMPT_BASE = `あなたは優秀なケアマネジャー�
 
 【特別な状況】
 ターミナルや独居等の状況`;
-const PREVENTIVE_PRE_PROMPT_ADDITIONAL_RULES = ``;
-const PREVENTIVE_PRE_PROMPT = PREVENTIVE_PRE_PROMPT_BASE;
+    const PREVENTIVE_PRE_PROMPT_ADDITIONAL_RULES = ``;
+    const PREVENTIVE_PRE_PROMPT = PREVENTIVE_PRE_PROMPT_BASE;
 
-  const PREVENTIVE_CARE_PLAN_PROMPT = `【介護予防プラン（案）作成用プロンプト】
+    const PREVENTIVE_CARE_PLAN_PROMPT = `【介護予防プラン（案）作成用プロンプト】
 
 介護予防サービス支援計画表作成プロンプト
 
@@ -3874,103 +4046,103 @@ IADL全般においての生活上の状況と課題を整理してください�
 （ここに情報を貼り付ける）`;
 
 
-  function cleanAIResult(text){
-    return String(text||"")
+    function cleanAIResult(text){
+      return String(text||"")
       .replace(/```(?:text|txt|markdown|md|json)?\s*/gi,"")
       .replace(/```\s*/g,"")
       .trim();
-  }
-
-  async function copyTextToClipboard(text){
-    try{
-      await navigator.clipboard.writeText(text);
-      return true;
-    }catch(e){
-      const textarea=document.createElement('textarea');
-      textarea.value=text;
-      textarea.style.position='fixed';
-      textarea.style.left='-9999px';
-      textarea.style.top='0';
-      document.body.appendChild(textarea);
-      textarea.focus();
-      textarea.select();
-      let copied=false;
-      try{copied=document.execCommand('copy');}catch(err){copied=false;}
-      textarea.remove();
-      return copied;
     }
-  }
 
-  // 第一段階ガイドの開閉を一か所で管理します。
-  window.toggleFirstStageGuide=function(){
-    const guide=document.getElementById('aiFirstStageGuide');
-    const button=document.getElementById('aiFirstStageToggle');
-    if(!guide||!button)return;
+    async function copyTextToClipboard(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        return true;
+      }catch(e){
+        const textarea=document.createElement('textarea');
+        textarea.value=text;
+        textarea.style.position='fixed';
+        textarea.style.left='-9999px';
+        textarea.style.top='0';
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+        let copied=false;
+        try{copied=document.execCommand('copy');}catch(err){copied=false;}
+        textarea.remove();
+        return copied;
+      }
+    }
 
-    const isOpen=guide.style.display==='block';
-    guide.style.display=isOpen?'none':'block';
-    button.textContent=isOpen
+    // 第一段階ガイドの開閉を一か所で管理します。
+    window.toggleFirstStageGuide=function(){
+      const guide=document.getElementById('aiFirstStageGuide');
+      const button=document.getElementById('aiFirstStageToggle');
+      if(!guide||!button)return;
+
+      const isOpen=guide.style.display==='block';
+      guide.style.display=isOpen?'none':'block';
+      button.textContent=isOpen
       ? '【第一段階】あなたのAIに「指示書」と「資料」を渡します。※ここが一番重要　説明を見るにはここをクリック！'
       : '【第一段階】説明を閉じる';
 
-    const aiLaunchBox=document.getElementById('preAiLaunchBox');
-    if(aiLaunchBox) aiLaunchBox.style.display='block';
-  };
-
-  window.copyPreventivePrePrompt=async function(){
-    const btn=$('preventivePrePromptCopyButton'),status=$('preventivePrePromptStatus');
-    const readyFiles=preventiveFiles.filter(item=>item.loaded && String(item.text||'').trim());
-    if(!readyFiles.length){
-      if(status){status.style.display='block';status.className='status alert';status.textContent='⚠️ 先に資料を読み込み、個人情報チェックを完了してください。';}
-      return false;
-    }
-    const promptBox=$('preventivePromptBox');
-    if(!promptBox || promptBox.style.display==='none'){
-      if(status){status.style.display='block';status.className='status alert';status.textContent='⚠️ 個人情報チェックを通過してから進んでください。';}
-      return false;
-    }
-    const sourceText=readyFiles.map((item,index)=>
-      `\n\n【資料${index+1}：${item.file.name}】\n${String(item.text||'').trim()}`
-    ).join('');
-    const combinedText = PREVENTIVE_PRE_PROMPT +
-      `\n\n【以下は個人情報チェック済みの資料内容です】` + sourceText;
-    const copiedMessage='✓ 事前整理の指示＋資料をまとめてコピーしました';
-    const setCopiedState=()=>{
-      if(btn){btn.classList.add('prompt-copy-button','copied');btn.textContent=copiedMessage;}
-      const preLaunchBox=document.getElementById('preAiLaunchBox');
-      if(preLaunchBox) preLaunchBox.style.display='block';
-      if(status){status.className='status success';status.style.display='block';status.textContent='✓ もう一度ファイルを選ぶ必要はありません。AIを開いて Ctrl＋V で貼り付けてください。';}
+      const aiLaunchBox=document.getElementById('preAiLaunchBox');
+      if(aiLaunchBox) aiLaunchBox.style.display='block';
     };
-    const copied=await copyTextToClipboard(combinedText);
-    if(copied){setCopiedState();return true;}
-    if(status){status.style.display='block';status.className='status';status.textContent='コピーできませんでした。ブラウザのコピー権限を確認してください。';}
-    return false;
-  };
 
-  window.confirmPreventiveOrganizedInfo=function(){
-    const input=$('preventiveOrganizedInput'),status=$('preventiveOrganizedStatus'),finalBox=$('preventiveFinalBox');
-    if(!input||!status||!finalBox)return;
-    const cleaned=cleanAIResult(input.value);
-    if(!cleaned){
-      status.className='status alert';
-      status.textContent='⚠️ AIが整理した情報を貼り付けてください。';
-      finalBox.style.display='none';
-      return;
-    }
-    input.value=cleaned;
-    if(typeof finalDocumentState !== 'undefined') finalDocumentState.confirmedOrganizedInfo=cleaned;
-    status.className='status success';
-    status.textContent='✓ 整理情報を保存しました。内容を確認・修正したうえで、最終コピーへ進んでください。';
-    finalBox.style.display='block';
-    updateFinalSelectionUI();
-    finalBox.scrollIntoView({behavior:'smooth',block:'start'});
-  };
+    window.copyPreventivePrePrompt=async function(){
+      const btn=$('preventivePrePromptCopyButton'),status=$('preventivePrePromptStatus');
+      const readyFiles=preventiveFiles.filter(item=>item.loaded && String(item.text||'').trim());
+      if(!readyFiles.length){
+        if(status){status.style.display='block';status.className='status alert';status.textContent='⚠️ 先に資料を読み込み、個人情報チェックを完了してください。';}
+        return false;
+      }
+      const promptBox=$('preventivePromptBox');
+      if(!promptBox || promptBox.style.display==='none'){
+        if(status){status.style.display='block';status.className='status alert';status.textContent='⚠️ 個人情報チェックを通過してから進んでください。';}
+        return false;
+      }
+      const sourceText=readyFiles.map((item,index)=>
+      `\n\n【資料${index+1}：${item.file.name}】\n${String(item.text||'').trim()}`
+      ).join('');
+      const combinedText = PREVENTIVE_PRE_PROMPT +
+      `\n\n【以下は個人情報チェック済みの資料内容です】` + sourceText;
+      const copiedMessage='✓ 事前整理の指示＋資料をまとめてコピーしました';
+      const setCopiedState=()=>{
+        if(btn){btn.classList.add('prompt-copy-button','copied');btn.textContent=copiedMessage;}
+        const preLaunchBox=document.getElementById('preAiLaunchBox');
+        if(preLaunchBox) preLaunchBox.style.display='block';
+        if(status){status.className='status success';status.style.display='block';status.textContent='✓ もう一度ファイルを選ぶ必要はありません。AIを開いて Ctrl＋V で貼り付けてください。';}
+      };
+      const copied=await copyTextToClipboard(combinedText);
+      if(copied){setCopiedState();return true;}
+      if(status){status.style.display='block';status.className='status';status.textContent='コピーできませんでした。ブラウザのコピー権限を確認してください。';}
+      return false;
+    };
 
-  // 各書類の正式プロンプト：ユーザー指定内容をそのまま登録
-  const PLAN_DOCUMENT_PROMPTS = {
-    care: {
-      name: 'ケアプラン（案）',
-      prompt: `あなたは経験豊富な介護支援専門員（主任ケアマネジャー）です。
+    window.confirmPreventiveOrganizedInfo=function(){
+      const input=$('preventiveOrganizedInput'),status=$('preventiveOrganizedStatus'),finalBox=$('preventiveFinalBox');
+      if(!input||!status||!finalBox)return;
+      const cleaned=cleanAIResult(input.value);
+      if(!cleaned){
+        status.className='status alert';
+        status.textContent='⚠️ AIが整理した情報を貼り付けてください。';
+        finalBox.style.display='none';
+        return;
+      }
+      input.value=cleaned;
+      if(typeof finalDocumentState !== 'undefined') finalDocumentState.confirmedOrganizedInfo=cleaned;
+      status.className='status success';
+      status.textContent='✓ 整理情報を保存しました。内容を確認・修正したうえで、最終コピーへ進んでください。';
+      finalBox.style.display='block';
+      updateFinalSelectionUI();
+      finalBox.scrollIntoView({behavior:'smooth',block:'start'});
+    };
+
+    // 各書類の正式プロンプト：ユーザー指定内容をそのまま登録
+    const PLAN_DOCUMENT_PROMPTS = {
+      care: {
+        name: 'ケアプラン（案）',
+        prompt: `あなたは経験豊富な介護支援専門員（主任ケアマネジャー）です。
 
 以下に入力された利用者の情報をもとに、ケアプラン作成に必要な情報を分析・整理し、「ニーズの抽出 → ケアプラン第1表 → 第2表 → 第3表」までを一連の流れとして作成してください。
 
@@ -4607,10 +4779,10 @@ IADL全般においての生活上の状況と課題を整理してください�
 「その支援を誰がどのように行うのか」
 
 が明確にわかるケアプランを作成してください。`
-    },
-    assessment: {
-      name: 'アセスメント（案）',
-      prompt: `あなたは優秀なケアマネジャーです。
+      },
+      assessment: {
+        name: 'アセスメント（案）',
+        prompt: `あなたは優秀なケアマネジャーです。
 以下の記録を各項目に沿って分析し、アセスメントシートを作成してください。
 
 【構成】
@@ -5011,14 +5183,14 @@ IADL全般においての生活上の状況と課題を整理してください�
 ①～⑭すべて同じ構造を維持する。
 
 以上を守り、以下の記録からアセスメントシートを作成してください。`
-    },
-    preventive: {
-      name: '介護予防プラン（案）',
-      prompt: PREVENTIVE_CARE_PLAN_PROMPT
-    },
-    issue: {
-      name: '課題整理総括表（案）',
-      prompt: `下記にあるのはケアマネジャーとして課題整理総括表を作成するための条件です。
+      },
+      preventive: {
+        name: '介護予防プラン（案）',
+        prompt: PREVENTIVE_CARE_PLAN_PROMPT
+      },
+      issue: {
+        name: '課題整理総括表（案）',
+        prompt: `下記にあるのはケアマネジャーとして課題整理総括表を作成するための条件です。
 
 書類の項目の構成としては「自立した日常生活の阻害要因（心身の状態、環境等）」「状況の事実」「現在」「要因」「改善/維持の可能性」「備考」「見通し」「生活全般の解決すべき課題（ニーズ）」がある。
 
@@ -5610,152 +5782,150 @@ IADL全般においての生活上の状況と課題を整理してください�
 3. 医療管理と適切な観察のもとで帯状疱疹の痛みを和らげ、皮膚トラブルや尿失禁による不快感を改善したい。
 4. 自身のペースに合わせた声かけや関わりを通じて、安心して意欲的に日々の生活や他者との交流に取り組みたい。
 `
-    }
-  };
+      }
+    };
 
-  
-  // ここでは上記 PLAN_DOCUMENT_PROMPTS の内容をそのまま参照します。
-  // プロンプト本文そのものは変更・加工・連結しません。
-  // ===== 最終書類プロンプトの単一登録簿 =====
-  // 書類種別 → 正式な作成用プロンプト、の対応をここだけで管理します。
-  // プロンプト本文はユーザー指定内容を変更・加工せず、そのまま参照します。
-  const FINAL_DOCUMENT_PROMPTS = Object.freeze({
-    care: Object.freeze(PLAN_DOCUMENT_PROMPTS.care),
-    assessment: Object.freeze(PLAN_DOCUMENT_PROMPTS.assessment),
-    preventive: Object.freeze(PLAN_DOCUMENT_PROMPTS.preventive),
-    issue: Object.freeze(PLAN_DOCUMENT_PROMPTS.issue)
-  });
-  const FINAL_DOCUMENT_TYPES = Object.freeze(['care','preventive','issue','assessment']);
 
-  // ===== 最終書類選択・結合処理 =====
-  // 最終工程では「選択種別」だけを状態として保持し、プロンプト本体は必ず登録簿から再取得します。
-  // これにより、選択ボタンと別書類のプロンプトが混ざる経路をなくします。
-  const finalDocumentState = {
-    selectedType: null,
-    confirmedOrganizedInfo: ''
-  };
-
-  function getFinalDocument(type){
-    if(!FINAL_DOCUMENT_TYPES.includes(type)) return null;
-    const item = FINAL_DOCUMENT_PROMPTS[type];
-    if(!item || typeof item.name !== 'string' || !item.name.trim() ||
-       typeof item.prompt !== 'string' || !item.prompt.trim()) return null;
-    return item;
-  }
-
-  function updateFinalSelectionUI(){
-    document.querySelectorAll('.document-choice-button').forEach(button=>{
-      button.classList.toggle('selected', button.dataset.documentType === finalDocumentState.selectedType);
+    // ===== 最終書類プロンプトの単一登録簿 =====
+    // 書類種別 → 正式な作成用プロンプト、の対応をここだけで管理します。
+    // プロンプト本文はユーザー指定内容を変更・加工せず、そのまま参照します。
+    const FINAL_DOCUMENT_PROMPTS = Object.freeze({
+      care: Object.freeze(PLAN_DOCUMENT_PROMPTS.care),
+      assessment: Object.freeze(PLAN_DOCUMENT_PROMPTS.assessment),
+      preventive: Object.freeze(PLAN_DOCUMENT_PROMPTS.preventive),
+      issue: Object.freeze(PLAN_DOCUMENT_PROMPTS.issue)
     });
-    const status=document.getElementById('selectedDocumentStatus');
-    const btn=document.getElementById('preventiveFinalCopyButton');
-    if(!status || !btn) return;
-    const item=getFinalDocument(finalDocumentState.selectedType);
-    const input=document.getElementById('preventiveOrganizedInput');
-    const currentOrganized=input ? cleanAIResult(input.value) : '';
-    const confirmed=!!item && !!currentOrganized && currentOrganized===finalDocumentState.confirmedOrganizedInfo;
-    if(item){
-      status.textContent=confirmed
+    const FINAL_DOCUMENT_TYPES = Object.freeze(['care','preventive','issue','assessment']);
+
+    // ===== 最終書類選択・結合処理 =====
+    // 最終工程では「選択種別」だけを状態として保持し、プロンプト本体は必ず登録簿から再取得します。
+    // これにより、選択ボタンと別書類のプロンプトが混ざる経路をなくします。
+    const finalDocumentState = {
+      selectedType: null,
+      confirmedOrganizedInfo: ''
+    };
+
+    function getFinalDocument(type){
+      if(!FINAL_DOCUMENT_TYPES.includes(type)) return null;
+      const item = FINAL_DOCUMENT_PROMPTS[type];
+      if(!item || typeof item.name !== 'string' || !item.name.trim() ||
+      typeof item.prompt !== 'string' || !item.prompt.trim()) return null;
+      return item;
+    }
+
+    function updateFinalSelectionUI(){
+      document.querySelectorAll('.document-choice-button').forEach(button=>{
+        button.classList.toggle('selected', button.dataset.documentType === finalDocumentState.selectedType);
+      });
+      const status=document.getElementById('selectedDocumentStatus');
+      const btn=document.getElementById('preventiveFinalCopyButton');
+      if(!status || !btn) return;
+      const item=getFinalDocument(finalDocumentState.selectedType);
+      const input=document.getElementById('preventiveOrganizedInput');
+      const currentOrganized=input ? cleanAIResult(input.value) : '';
+      const confirmed=!!item && !!currentOrganized && currentOrganized===finalDocumentState.confirmedOrganizedInfo;
+      if(item){
+        status.textContent=confirmed
         ? '✓ 現在選択中：「'+item.name+'」｜確認済み情報あり'
         : '✓ 現在選択中：「'+item.name+'」｜まず整理情報を確認・保存してください';
-      btn.disabled=!confirmed;
-      btn.textContent=confirmed
+        btn.disabled=!confirmed;
+        btn.textContent=confirmed
         ? '📋 '+item.name+'作成用データ（最終）をコピーする'
         : '📋 整理情報を確認・保存するとコピーできます';
-    }else{
-      status.textContent='';
-      btn.disabled=true;
-      btn.textContent='📋 選択した書類のAI用データ（最終）をコピーする';
-    }
-  }
-
-  window.selectFinalDocument=function(type){
-    const item=getFinalDocument(type);
-    const status=document.getElementById('selectedDocumentStatus');
-    if(!item){
-      if(status){
-        status.className='status alert';
-        status.textContent='⚠️ 選択した書類の作成用プロンプトを確認できません。';
+      }else{
+        status.textContent='';
+        btn.disabled=true;
+        btn.textContent='📋 選択した書類のAI用データ（最終）をコピーする';
       }
-      finalDocumentState.selectedType=null;
+    }
+
+    window.selectFinalDocument=function(type){
+      const item=getFinalDocument(type);
+      const status=document.getElementById('selectedDocumentStatus');
+      if(!item){
+        if(status){
+          status.className='status alert';
+          status.textContent='⚠️ 選択した書類の作成用プロンプトを確認できません。';
+        }
+        finalDocumentState.selectedType=null;
+        updateFinalSelectionUI();
+        return false;
+      }
+      finalDocumentState.selectedType=type;
       updateFinalSelectionUI();
-      return false;
-    }
-    finalDocumentState.selectedType=type;
-    updateFinalSelectionUI();
-    if(status) status.className='status success';
-    return true;
-  };
+      if(status) status.className='status success';
+      return true;
+    };
 
-  window.copySelectedFinalData=async function(){
-    const input=$('preventiveOrganizedInput');
-    const status=$('preventiveFinalStatus');
-    const btn=$('preventiveFinalCopyButton');
-    if(!input||!status||!btn)return;
+    window.copySelectedFinalData=async function(){
+      const input=$('preventiveOrganizedInput');
+      const status=$('preventiveFinalStatus');
+      const btn=$('preventiveFinalCopyButton');
+      if(!input||!status||!btn)return;
 
-    // 重要：コピー時に selectedItem は使わず、選択種別から必ず登録簿を再取得します。
-    const selectedType=finalDocumentState.selectedType;
-    const item=getFinalDocument(selectedType);
-    if(!item){
-      status.className='status alert';
-      status.textContent='⚠️ 先に作成する書類を選択してください。';
-      return;
-    }
+      // 重要：コピー時に selectedItem は使わず、選択種別から必ず登録簿を再取得します。
+      const selectedType=finalDocumentState.selectedType;
+      const item=getFinalDocument(selectedType);
+      if(!item){
+        status.className='status alert';
+        status.textContent='⚠️ 先に作成する書類を選択してください。';
+        return;
+      }
 
-    const organized=cleanAIResult(input.value);
-    if(!organized){
-      status.className='status alert';
-      status.textContent='⚠️ 先に整理情報を貼り付け、確認してください。';
-      return;
-    }
-    if(finalDocumentState.confirmedOrganizedInfo !== organized){
-      status.className='status alert';
-      status.textContent='⚠️ 整理情報を修正した場合は、もう一度「確認・保存」を行ってください。';
-      return;
-    }
+      const organized=cleanAIResult(input.value);
+      if(!organized){
+        status.className='status alert';
+        status.textContent='⚠️ 先に整理情報を貼り付け、確認してください。';
+        return;
+      }
+      if(finalDocumentState.confirmedOrganizedInfo !== organized){
+        status.className='status alert';
+        status.textContent='⚠️ 整理情報を修正した場合は、もう一度「確認・保存」を行ってください。';
+        return;
+      }
 
-    // 選択書類とプロンプトの対応をコピー直前にも再検証します。
-    const registeredItem=getFinalDocument(selectedType);
-    if(!registeredItem || registeredItem !== item || registeredItem.name !== item.name){
-      status.className='status alert';
-      status.textContent='⚠️ 書類選択情報を再確認してください。';
-      return;
-    }
+      // 選択書類とプロンプトの対応をコピー直前にも再検証します。
+      const registeredItem=getFinalDocument(selectedType);
+      if(!registeredItem || registeredItem !== item || registeredItem.name !== item.name){
+        status.className='status alert';
+        status.textContent='⚠️ 書類選択情報を再確認してください。';
+        return;
+      }
 
-    // 最終工程では、事前整理用プロンプトを絶対に使用せず、
-    // 選択された書類種別に対応する正式な作成用プロンプトだけを登録簿から取得します。
-    const finalPrompt=registeredItem.prompt;
-    const displayInstruction=(window.BO_FINAL_DISPLAY_INSTRUCTIONS && window.BO_FINAL_DISPLAY_INSTRUCTIONS[selectedType]) || '';
-    if(!finalPrompt || finalPrompt !== item.prompt){
-      status.className='status alert';
-      status.textContent='⚠️ 最終作成用プロンプトの選択確認に失敗しました。コピーを中止しました。';
-      return;
-    }
+      // 最終工程では、事前整理用プロンプトを絶対に使用せず、
+      // 選択された書類種別に対応する正式な作成用プロンプトだけを登録簿から取得します。
+      const finalPrompt=registeredItem.prompt;
+      const displayInstruction=(window.BO_FINAL_DISPLAY_INSTRUCTIONS && window.BO_FINAL_DISPLAY_INSTRUCTIONS[selectedType]) || '';
+      if(!finalPrompt || finalPrompt !== item.prompt){
+        status.className='status alert';
+        status.textContent='⚠️ 最終作成用プロンプトの選択確認に失敗しました。コピーを中止しました。';
+        return;
+      }
 
-    // 最終工程では、事前整理用プロンプトそのものを参照していないことを確認します。
-    // 事前整理用プロンプトは PREVENTIVE_PRE_PROMPT_BASE / PREVENTIVE_PRE_PROMPT に限定され、
-    // 最終3書類は FINAL_DOCUMENT_PROMPTS からのみ取得します。
-    if(finalPrompt === PREVENTIVE_PRE_PROMPT_BASE || finalPrompt === PREVENTIVE_PRE_PROMPT){
-      status.className='status alert';
-      status.textContent='⚠️ 事前整理用プロンプトとの混同を検出したため、コピーを中止しました。';
-      return;
-    }
+      // 最終工程では、事前整理用プロンプトそのものを参照していないことを確認します。
+      // 事前整理用プロンプトは PREVENTIVE_PRE_PROMPT_BASE / PREVENTIVE_PRE_PROMPT に限定され、
+      // 最終3書類は FINAL_DOCUMENT_PROMPTS からのみ取得します。
+      if(finalPrompt === PREVENTIVE_PRE_PROMPT_BASE || finalPrompt === PREVENTIVE_PRE_PROMPT){
+        status.className='status alert';
+        status.textContent='⚠️ 事前整理用プロンプトとの混同を検出したため、コピーを中止しました。';
+        return;
+      }
 
-    // 事前整理用プロンプトの特徴的な文言が最終データへ混入していないかを確認します。
-    const prePromptContaminationMarkers=[
-      'アセスメントの前に、情報をまとめますが、下記の各項目に沿って情報を細かく分析して',
-      '【出力後の案内】',
-      'このコードブロック（AIが整理した情報）をコピーしてください。',
-      '「④ AIが整理した情報をこのアプリに貼り付けてください。」'
-    ];
-    if(prePromptContaminationMarkers.some(marker=>finalPrompt.includes(marker))){
-      status.className='status alert';
-      status.textContent='⚠️ 事前整理用プロンプトが最終作成用プロンプトとして登録されています。コピーを中止しました。';
-      return;
-    }
+      // 事前整理用プロンプトの特徴的な文言が最終データへ混入していないかを確認します。
+      const prePromptContaminationMarkers=[
+        'アセスメントの前に、情報をまとめますが、下記の各項目に沿って情報を細かく分析して',
+        '【出力後の案内】',
+        'このコードブロック（AIが整理した情報）をコピーしてください。',
+        '「④ AIが整理した情報をこのアプリに貼り付けてください。」'
+      ];
+      if(prePromptContaminationMarkers.some(marker=>finalPrompt.includes(marker))){
+        status.className='status alert';
+        status.textContent='⚠️ 事前整理用プロンプトが最終作成用プロンプトとして登録されています。コピーを中止しました。';
+        return;
+      }
 
-    const finalText =
-`【${item.name}作成支援：AI処理用】
+      const finalText =
+      `【${item.name}作成支援：AI処理用】
 
 【重要】
 以下の「ケアマネジャー確認済み情報」を最優先の事実情報として使用してください。
@@ -5767,80 +5937,80 @@ ${organized}
 【${item.name}作成用プロンプト】
 ${finalPrompt}${displayInstruction ? `\n\n${displayInstruction}` : ''}`;
 
-    // 「整理情報」と「選択した正式な作成用プロンプト」の両方が実際に結合されたことを確認してからコピーします。
-    if(!finalText.includes(organized) || !finalText.includes(finalPrompt)){
-      status.className='status alert';
-      status.textContent='⚠️ 結合確認に失敗しました。コピーを中止しました。';
-      return;
-    }
+      // 「整理情報」と「選択した正式な作成用プロンプト」の両方が実際に結合されたことを確認してからコピーします。
+      if(!finalText.includes(organized) || !finalText.includes(finalPrompt)){
+        status.className='status alert';
+        status.textContent='⚠️ 結合確認に失敗しました。コピーを中止しました。';
+        return;
+      }
 
-    const copied=await copyTextToClipboard(finalText);
-    status.className=copied?'status success':'status';
-    status.textContent=copied
+      const copied=await copyTextToClipboard(finalText);
+      status.className=copied?'status success':'status';
+      status.textContent=copied
       ?'✓ 「'+item.name+'」用の確認済み情報＋作成用プロンプトを一つにまとめてコピーしました。そのままAIへ貼り付けてください。'
       :'コピーできませんでした。ブラウザのコピー権限を確認してください。';
-    if(copied){
-      btn.classList.add('final-copy-button-copied');
-      btn.textContent='✓ '+item.name+'作成用データを作成しました。そのままAIへ貼り付けてください。';
-      setTimeout(()=>{
-        btn.classList.remove('final-copy-button-copied');
-        updateFinalSelectionUI();
-      },1800);
-    }
-    return copied;
-  };
-
-  // 4種類すべての登録状態を起動時に検証します。
-  function validateFinalDocumentRegistry(){
-    const types=FINAL_DOCUMENT_TYPES;
-    const prePromptMarkers=[
-      'アセスメントの前に、情報をまとめますが、下記の各項目に沿って情報を細かく分析して',
-      '【出力後の案内】',
-      'このコードブロック（AIが整理した情報）をコピーしてください。',
-      '「④ AIが整理した情報をこのアプリに貼り付けてください。」'
-    ];
-    const result={};
-    types.forEach(type=>{
-      const item=getFinalDocument(type);
-      result[type]=!!item && item.prompt !== PREVENTIVE_PRE_PROMPT_BASE && item.prompt !== PREVENTIVE_PRE_PROMPT && !prePromptMarkers.some(marker=>item.prompt.includes(marker));
-    });
-    return result.care && result.assessment && result.preventive && result.issue;
-  }
-
-  window.getFinalDocumentValidation=function(){
-    return {
-      care: !!getFinalDocument('care'),
-      assessment: !!getFinalDocument('assessment'),
-      preventive: !!getFinalDocument('preventive'),
-      issue: !!getFinalDocument('issue')
-    };
-  };
-
-  // 既存の確認処理を置き換えず、確認成功時だけ最終状態へ保存するための監視。
-  const organizedInputForFinal = $('preventiveOrganizedInput');
-  if(organizedInputForFinal){
-    organizedInputForFinal.addEventListener('input',()=>{
-      finalDocumentState.confirmedOrganizedInfo='';
-      const finalStatus=document.getElementById('preventiveFinalStatus');
-      if(finalStatus){
-        finalStatus.className='status';
-        finalStatus.textContent='';
+      if(copied){
+        btn.classList.add('final-copy-button-copied');
+        btn.textContent='✓ '+item.name+'作成用データを作成しました。そのままAIへ貼り付けてください。';
+        setTimeout(()=>{
+          btn.classList.remove('final-copy-button-copied');
+          updateFinalSelectionUI();
+        },1800);
       }
-      updateFinalSelectionUI();
-    });
-  }
+      return copied;
+    };
 
-  document.addEventListener('DOMContentLoaded',function(){
-    const input=$('preventiveFileInput'),zone=$('preventiveDropZone');if(!input||!zone)return;
-    input.addEventListener('change',function(){addPreventiveFiles(this.files);this.value='';});
-    zone.addEventListener('click',()=>input.click());
-    zone.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();input.click();}});
-    zone.addEventListener('dragover',event=>{event.preventDefault();zone.classList.add('dragover');});
-    zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));
-    zone.addEventListener('drop',event=>{event.preventDefault();zone.classList.remove('dragover');addPreventiveFiles(event.dataTransfer?.files);});
-    updateLoadButton();renderFileList();
-  });
-})();
+    // 4種類すべての登録状態を起動時に検証します。
+    function validateFinalDocumentRegistry(){
+      const types=FINAL_DOCUMENT_TYPES;
+      const prePromptMarkers=[
+        'アセスメントの前に、情報をまとめますが、下記の各項目に沿って情報を細かく分析して',
+        '【出力後の案内】',
+        'このコードブロック（AIが整理した情報）をコピーしてください。',
+        '「④ AIが整理した情報をこのアプリに貼り付けてください。」'
+      ];
+      const result={};
+      types.forEach(type=>{
+        const item=getFinalDocument(type);
+        result[type]=!!item && item.prompt !== PREVENTIVE_PRE_PROMPT_BASE && item.prompt !== PREVENTIVE_PRE_PROMPT && !prePromptMarkers.some(marker=>item.prompt.includes(marker));
+      });
+      return result.care && result.assessment && result.preventive && result.issue;
+    }
+
+    window.getFinalDocumentValidation=function(){
+      return {
+        care: !!getFinalDocument('care'),
+        assessment: !!getFinalDocument('assessment'),
+        preventive: !!getFinalDocument('preventive'),
+        issue: !!getFinalDocument('issue')
+      };
+    };
+
+    // 既存の確認処理を置き換えず、確認成功時だけ最終状態へ保存するための監視。
+    const organizedInputForFinal = $('preventiveOrganizedInput');
+    if(organizedInputForFinal){
+      organizedInputForFinal.addEventListener('input',()=>{
+        finalDocumentState.confirmedOrganizedInfo='';
+        const finalStatus=document.getElementById('preventiveFinalStatus');
+        if(finalStatus){
+          finalStatus.className='status';
+          finalStatus.textContent='';
+        }
+        updateFinalSelectionUI();
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded',function(){
+      const input=$('preventiveFileInput'),zone=$('preventiveDropZone');if(!input||!zone)return;
+      input.addEventListener('change',function(){addPreventiveFiles(this.files);this.value='';});
+      zone.addEventListener('click',()=>input.click());
+      zone.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();input.click();}});
+      zone.addEventListener('dragover',event=>{event.preventDefault();zone.classList.add('dragover');});
+      zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));
+      zone.addEventListener('drop',event=>{event.preventDefault();zone.classList.remove('dragover');addPreventiveFiles(event.dataTransfer?.files);});
+      updateLoadButton();renderFileList();
+    });
+  })();
 
 })();
 </script>
@@ -6132,21 +6302,17 @@ document.addEventListener('DOMContentLoaded', function(){
     padding: 14px 11px;
     gap: 8px;
   }
-
   .bo-simple-num {
     width: 34px;
     height: 34px;
     font-size: 17px;
   }
-
   .bo-simple-title {
     font-size: 18px;
   }
-
   .bo-ai-three,.bo-doc-three {
     grid-template-columns: 1fr;
   }
-
   .bo-simple-head h2 {
     font-size: 23px!important;
   }
@@ -6175,12 +6341,12 @@ document.addEventListener('DOMContentLoaded', function(){
           try{
             await window.loadPreventiveFiles();
             const ok=(typeof window.arePreventiveFilesReady==='function')
-              ? window.arePreventiveFilesReady()
-              : !!(qs('preventiveLoadStatus') && qs('preventiveLoadStatus').classList.contains('success'));
+            ? window.arePreventiveFilesReady()
+            : !!(qs('preventiveLoadStatus') && qs('preventiveLoadStatus').classList.contains('success'));
             if(ok){
               setStatus('simpleFileStatus','✓ 資料の読み込みが終わりました。次へ進めます。','ok');
               const pbar=qs('simpleLoadProgressBar'), ppct=qs('simpleLoadProgressPercent'),
-                    plab=qs('simpleLoadProgressLabel'), pdet=qs('simpleLoadProgressDetail');
+              plab=qs('simpleLoadProgressLabel'), pdet=qs('simpleLoadProgressDetail');
               if(pbar)pbar.style.width='100%';
               if(ppct)ppct.textContent='100%';
               if(plab)plab.textContent='読み込み完了';
@@ -6242,9 +6408,9 @@ document.addEventListener('DOMContentLoaded', function(){
     }else setStatus('simpleOrganizedStatus','⚠️ 内容を確認してください。','bad');
   };
 
-  
 
-  
+
+
 })();
 </script>
 
@@ -6393,6 +6559,22 @@ document.addEventListener('DOMContentLoaded', function(){
     return await copyTextToClipboard(PREVENTIVE_PRE_PROMPT);
   }
 
+  function setFileCopyStatus(st, copied){
+    if(st){
+      st.className='bo-simple-status '+(copied?'ok':'bad');
+      st.innerHTML=copied
+      ? '✓ 事前整理プロンプトをコピーしました。<strong>別タブで開いたAIに、個人情報除去済みの元ファイルを添付 → Ctrl＋V → 送信</strong>してください。'
+      : '⚠️ コピーできませんでした。';
+    }
+  }
+
+  function setTextCopyStatus(st, copied){
+    if(st){
+      st.className='bo-simple-status '+(copied?'ok':'bad');
+      st.textContent=copied?'✓ 指示と読み取り済み資料をまとめてコピーしました。別タブで開いたAIで Ctrl＋V → 送信してください。':'⚠️ コピーできませんでした。';
+    }
+  }
+
   function markPreorganizationCopied(){
     const s3=document.getElementById('simpleStep3'),s4=document.getElementById('simpleStep4');
     if(s3){s3.classList.remove('is-current');s3.classList.add('is-done');}
@@ -6419,18 +6601,10 @@ document.addEventListener('DOMContentLoaded', function(){
       let copied=false;
       if(mode==='file'){
         copied=await copyPromptOnly();
-        if(st){
-          st.className='bo-simple-status '+(copied?'ok':'bad');
-          st.innerHTML=copied
-            ? '✓ 事前整理プロンプトをコピーしました。<strong>別タブで開いたAIに、個人情報除去済みの元ファイルを添付 → Ctrl＋V → 送信</strong>してください。'
-            : '⚠️ コピーできませんでした。';
-        }
+        setFileCopyStatus(st, copied);
       }else{
         copied=await window.copyPreventivePrePrompt();
-        if(st){
-          st.className='bo-simple-status '+(copied?'ok':'bad');
-          st.textContent=copied?'✓ 指示と読み取り済み資料をまとめてコピーしました。別タブで開いたAIで Ctrl＋V → 送信してください。':'⚠️ コピーできませんでした。';
-        }
+        setTextCopyStatus(st, copied);
       }
       if(copied){
         markPreorganizationCopied();
@@ -6439,7 +6613,7 @@ document.addEventListener('DOMContentLoaded', function(){
     return true;
   };
 
-  
+
   window.simplePreorganizeWithAI = async function(ai){
     const st=document.getElementById('simpleAIStatus');
     const promptBox=document.getElementById('preventivePromptBox');
@@ -6464,18 +6638,10 @@ document.addEventListener('DOMContentLoaded', function(){
     let copied=false;
     if(mode==='file'){
       copied=await copyPromptOnly();
-      if(st){
-        st.className='bo-simple-status '+(copied?'ok':'bad');
-        st.innerHTML=copied
-          ? '✓ 事前整理プロンプトをコピーしました。<strong>別タブで開いたAIに、個人情報除去済みの元ファイルを添付 → Ctrl＋V → 送信</strong>してください。'
-          : '⚠️ コピーできませんでした。';
-      }
+      setFileCopyStatus(st, copied);
     }else{
       copied=await window.copyPreventivePrePrompt();
-      if(st){
-        st.className='bo-simple-status '+(copied?'ok':'bad');
-        st.textContent=copied?'✓ 指示と読み取り済み資料をまとめてコピーしました。別タブで開いたAIで Ctrl＋V → 送信してください。':'⚠️ コピーできませんでした。';
-      }
+      setTextCopyStatus(st, copied);
     }
 
     if(!copied){
@@ -6493,8 +6659,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   };
 
-  // 最終書類は「正式プロンプト本文」を変更せず、最後に表示形式だけ追加してコピーします。
-  
+
 
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',insertDeliveryChoice);
   else insertDeliveryChoice();
@@ -6713,7 +6878,6 @@ document.addEventListener('DOMContentLoaded', function(){
   .google-keep-guide {
     width: 92%;
   }
-
   .google-keep-button {
     width: 90%;
   }
@@ -6739,7 +6903,7 @@ function openGoogleKeep(event){
   const webUrl = "https://keep.google.com/";
   const ua = navigator.userAgent || "";
   const isIOS = /iPad|iPhone|iPod/i.test(ua) ||
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   const isAndroid = /Android/i.test(ua);
 
   // Googleが公式公開していない独自URLスキームは使用しない。
@@ -6757,7 +6921,7 @@ function openGoogleKeep(event){
 function setupGoogleKeepDownloadEntries(){
   const ua = navigator.userAgent || "";
   const isIOS = /iPad|iPhone|iPod/i.test(ua) ||
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   const isAndroid = /Android/i.test(ua);
 
   let storeUrl = "";
