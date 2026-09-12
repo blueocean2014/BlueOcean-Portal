@@ -1450,6 +1450,90 @@ textarea#memo:focus {
 }
 </style>
 
+
+<style id="ai-launch-layout-match-doctor-app">
+#aiLaunchArea.ai-launch-area{
+  margin-top:14px;
+  padding:16px;
+  border:2px solid #b9d9f5;
+  border-radius:14px;
+  background:#f8fcff;
+}
+#aiLaunchArea .ai-launch-title{
+  margin:0 0 6px;
+  font-weight:800;
+  color:#0875c9;
+  font-size:16px;
+  text-align:center;
+}
+#aiLaunchArea .ai-launch-note{
+  margin:0 0 10px;
+  font-size:13px;
+  line-height:1.6;
+  color:#52676d;
+  text-align:center;
+}
+#aiLaunchArea .ai-launch-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+#aiLaunchArea .ai-launch-grid-with-keep{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  align-items:start;
+}
+#aiLaunchArea .ai-launch-button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-width:0;
+  min-height:49px;
+  margin:0!important;
+  padding:13px 12px!important;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:800;
+  text-decoration:none!important;
+  box-sizing:border-box;
+}
+#aiLaunchArea .keep-ai-side{
+  border-left:1px solid #cfe3f7;
+  padding-left:10px;
+  text-align:center;
+}
+#aiLaunchArea .keep-inline-button{
+  width:100%!important;
+  min-width:0!important;
+  min-height:49px;
+  margin:0!important;
+  padding:13px 12px!important;
+  border-radius:12px!important;
+  font-size:16px!important;
+}
+#aiLaunchArea .keep-inline-note{
+  margin-top:6px;
+  color:#6b5800;
+  font-size:11px;
+  font-weight:700;
+  line-height:1.5;
+}
+@media(max-width:850px){
+  #aiLaunchArea .ai-launch-grid-with-keep{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  #aiLaunchArea .keep-ai-side{
+    border-left:0;
+    padding-left:0;
+  }
+}
+@media(max-width:700px){
+  #aiLaunchArea .ai-launch-grid-with-keep{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+
 </head>
 
 <body>
@@ -1646,27 +1730,20 @@ class="status"
 </div>
 
 <div id="aiLaunchArea" class="ai-launch-area">
-  <p class="ai-launch-note">下のボタンから使用するAIを開いて、コピーした内容を貼り付けてください。</p>
-  <div class="ai-launch-row">
-    <div class="ai-launch-buttons">
-      <button type="button" class="ai-launch-button ai-chatgpt-color" onclick="openAI('chatgpt')">🤖 ChatGPTを開く</button>
-      <button type="button" class="ai-launch-button ai-gemini-color" onclick="openAI('gemini')">✨ Geminiを開く</button>
-      <button type="button" class="ai-launch-button ai-claude-color" onclick="openAI('claude')">🟣 Claudeを開く</button>
-    </div>
-    <div class="keep-inline-area">
-      <a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" class="keep-inline-button" onclick="return openGoogleKeep(event)">📝 Google Keepを開く</a>
-      <div class="keep-inline-note">記録を保存したい方はこちらがおすすめ！</div>
+  <div class="ai-launch-title">🤖 コピーしました。そのまま使うAIを開いてください。</div>
+  <p class="ai-launch-note">コピーした内容はクリップボードに入っています。使いたいAIを開き、入力欄に貼り付けて送信してください。</p>
+  <div class="ai-launch-grid ai-launch-grid-with-keep">
+    <button type="button" class="ai-launch-button ai-chatgpt-color" onclick="openAI('chatgpt')">🤖 ChatGPTで作る</button>
+    <button type="button" class="ai-launch-button ai-gemini-color" onclick="openAI('gemini')">✨ Geminiで作る</button>
+    <button type="button" class="ai-launch-button ai-claude-color" onclick="openAI('claude')">🟣 Claudeで作る</button>
+    <div class="keep-ai-side">
+      <a href="https://keep.google.com/" target="_blank" rel="noopener noreferrer" class="ai-launch-button keep-inline-button" onclick="return openGoogleKeep(event)">📝 Google Keepを開く</a>
+      <div class="keep-inline-note">このアプリ上からGoogle Keepを開くと、基本的にパソコン用の画面が開きます。iPhone等の携帯やiPad等、他の端末で開く場合は、Google Keepアプリをダウンロードしないとうまく開けない場合があります。ダウンロード後、ホーム画面のGoogle Keepアプリから作業していただくと、スムーズに進められます。</div>
       <div id="keepDownloadArea" class="keep-download-area" style="display:none;">
         <div class="keep-download-label">Google Keepアプリをお持ちでない方</div>
         <a id="keepDownloadLink" href="#" target="_blank" rel="noopener noreferrer" class="keep-download-button">📱 アプリをダウンロード</a>
       </div>
     </div>
-  </div>
-  <div class="ai-launch-search">
-    このアプリ上からGoogle Keepを開くと、基本的にパソコン用の画面が開きます。iPhone等の携帯やiPad等、他の端末で開く場合は、Google Keepアプリをダウンロードしないとうまく開けない場合があります。ダウンロード後、ホーム画面のGoogle Keepアプリから作業していただくと、スムーズに進められます。
-    <a href="https://www.google.com/search?q=ChatGPT" target="_blank" rel="noopener noreferrer">ChatGPT</a> ／
-    <a href="https://www.google.com/search?q=Google+Gemini" target="_blank" rel="noopener noreferrer">Gemini</a> ／
-    <a href="https://www.google.com/search?q=Claude+AI" target="_blank" rel="noopener noreferrer">Claude</a>
   </div>
 </div>
 
