@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>サービス担当者会議要点作成支援アプリ（BlueOcean）</title>
-<style>
+<style id="meeting-app-styles-refactored">
 body {
   margin: 0;
   background: #f4fbff;
@@ -338,8 +338,7 @@ body.settings-view-active #promptLibraryArea {
     font-size: 14px;
   }
 }
-</style>
-<style id="requested-title-only">
+
 header .app-title-main,
 header .app-title-sub {
   display: block;
@@ -359,9 +358,7 @@ header .app-title-sub {
     font-size: 20px;
   }
 }
-</style>
 
-<style id="meeting-input-style">
 #memo {
   background: #f4faff !important;
   border: 4px solid #8bd4ee !important;
@@ -373,10 +370,7 @@ header .app-title-sub {
   border-color: #8bd4ee !important;
   box-shadow: 0 0 0 3px rgba(139,212,238,.20) !important;
 }
-</style>
 
-
-<style id="ai-copy-green-button-style">
 button.ai-copy-green-button,
 button.ai-copy-green-button:hover,
 button.ai-copy-green-button:focus,
@@ -386,10 +380,7 @@ button.ai-copy-green-button:active {
   color: #ffffff !important;
   border-color: #2e9d57 !important;
 }
-</style>
 
-
-<style id="blue-ocean-design-system-override">
 :root {
   --blue: #1976d2;
   --blue-dark: #1565c0;
@@ -541,9 +532,7 @@ button.ai-copy-green-button:hover,
     border-radius: 13px;
   }
 }
-</style>
 
-<style id="settings-button-orange-only">
 button[onclick="openPromptSettings()"] {
   background: #f39c12 !important;
   border-color: #e67e22 !important;
@@ -552,10 +541,7 @@ button[onclick="openPromptSettings()"] {
 button[onclick="openPromptSettings()"]:hover {
   background: #e67e22 !important;
 }
-</style>
 
-
-<style id="settings-orange-and-bottom-navigation">
 button.settings-orange-target {
   background: #f39c12 !important;
   border-color: #e67e22 !important;
@@ -576,10 +562,7 @@ button.settings-orange-target:hover {
 .settings-bottom-navigation .settings-bottom-home {
   margin: 0 !important;
 }
-</style>
 
-
-<style id="three-return-buttons-small-unified">
 button.settings-bottom-home,
 button[onclick="goHome()"],
 button[onclick="showMainView()"] {
@@ -591,10 +574,7 @@ button[onclick="showMainView()"] {
   margin-right: auto !important;
   white-space: nowrap !important;
 }
-</style>
 
-
-<style id="return-buttons-final-size">
 button.home-button.settings-bottom-home,
 button.home-button[onclick="scrollToTop()"],
 button.home-button[onclick="goHome()"],
@@ -610,18 +590,12 @@ button.view-back-button[onclick="showMainView()"] {
   align-items: center !important;
   justify-content: center !important;
 }
-</style>
 
-
-<style id="usage-open-button-width-only">
 .usage-open-button {
   width: auto !important;
   max-width: none !important;
 }
-</style>
 
-
-<style id="blueocean-color-only">
 :root {
   --bo-light: #70dcfa;
   --bo-sky: #28bcef;
@@ -671,10 +645,7 @@ select:focus {
 [style*="#0875c9"] {
   background: linear-gradient(135deg,var(--bo-light),var(--bo-sky),var(--bo-blue),var(--bo-deep)) !important;
 }
-</style>
 
-
-<style id="blueocean-target-buttons-only">
 button.view-back-button[onclick="showMainView()"],
 button.ai-copy-green-button,
 button.save-button,
@@ -695,15 +666,11 @@ button#showAddPromptButton:hover {
   border-color: var(--bo-deep) !important;
   color: #fff !important;
 }
-</style>
 
-<style id="bo-white-title-only">
 h1.bo-white-title {
   color: #fff !important;
 }
-</style>
 
-<style id="meeting-pattern-blueocean-style">
 #meetingPatternSelector option[value="default"] {
   color: #0875c9;
   font-weight: 700;
@@ -745,10 +712,7 @@ h1.bo-white-title {
 #meetingPatternStatus {
   color: #075e6b !important;
 }
-</style>
 
-
-<style id="ai-launch-buttons-style">
 .ai-launch-box {
   margin-top: 12px;
   padding: 14px;
@@ -811,7 +775,7 @@ h1.bo-white-title {
 </script>
 
 
-<style id="bo-ai-launcher-final-style">
+<style id="meeting-feature-styles-refactored">
 #aiLaunchBox {
   display: none;
 }
@@ -896,10 +860,7 @@ h1.bo-white-title {
     font-size: 19px !important;
   }
 }
-</style>
 
-
-<style id="google-keep-enhancement-style">
 .ai-keep-wrap {
   min-width: 0;
   width: 100%;
@@ -967,6 +928,60 @@ h1.bo-white-title {
   }
   .ai-keep-download-button {
     width: 100%;
+  }
+}
+
+.settings-help-panel {
+  margin: 14px 0;
+  background: #fffdf3;
+  border: 2px solid #d8c875;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.settings-help-toggle {
+  width: 100%;
+  margin: 0 !important;
+  padding: 14px 16px;
+  border: 0;
+  border-radius: 0;
+  background: #fff9d9 !important;
+  color: #6b5b00 !important;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: left;
+}
+
+.settings-help-toggle:hover {
+  background: #fff3b0 !important;
+  color: #5b4e00 !important;
+}
+
+.settings-help-content {
+  display: none;
+  padding: 14px 16px 16px;
+  background: #fffdf3;
+  color: #5b4e00;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.settings-help-content.open {
+  display: block;
+}
+
+.settings-help-content p {
+  margin: 0 0 12px;
+}
+
+.settings-help-content p:last-child {
+  margin-bottom: 0;
+}
+
+@media(max-width:600px) {
+  .settings-help-toggle {
+    width: 100%;
+    font-size: 15px;
   }
 }
 </style>
@@ -1121,6 +1136,31 @@ h1.bo-white-title {
 そのため、<strong>管理者が一律に皆様の設定内容を変更するのではなく、必要に応じて各自で設定を変更していただく運用を基本としています。</strong><br><br>
 ご自身の業務に合わせて、使いやすいように設定を調整しながらご利用ください。
 </div>
+</div>
+
+<div class="settings-help-panel">
+  <button class="settings-help-toggle" type="button" onclick="toggleMeetingSettingsHelp()">
+    📖 設定の使い方を確認する
+  </button>
+  <div id="meetingSettingsHelpContent" class="settings-help-content">
+    <p><strong>① 今使っているプロンプト</strong><br>
+    サービス担当者会議の要点作成に使用するプロンプトを選択します。タイプA・タイプB・タイプCの標準プロンプトと、ご自身で追加したプロンプトから選択できます。</p>
+
+    <p><strong>② 今のプロンプトを確認・編集</strong><br>
+    現在選択しているプロンプト名と本文を確認できます。必要なところを編集した場合は「💾 このプロンプトを保存」で保存してください。</p>
+
+    <p><strong>③ 標準プロンプト</strong><br>
+    タイプA・タイプB・タイプCは、最初から登録されている標準プロンプトです。標準プロンプトは削除できません。</p>
+
+    <p><strong>④ ↩ 標準プロンプトに戻す</strong><br>
+    編集したプロンプトの内容を標準プロンプトの内容へ戻したいときに使用します。</p>
+
+    <p><strong>⑤ 🗑 このプロンプトを削除</strong><br>
+    ご自身で追加したプロンプトを削除できます。標準プロンプトでは削除ボタンは表示されません。</p>
+
+    <p><strong>⑥ 新しいプロンプトを追加</strong><br>
+    「＋ 新しいプロンプトを作る」から、プロンプト名と本文を入力して新しい作成ルールを追加できます。追加したプロンプトは、この端末のブラウザ内に保存されます。</p>
+  </div>
 </div>
 
 <div class="setting-box">
@@ -1308,6 +1348,11 @@ function copyExampleText() {
   window.showUsageGuide = function(){
     const usage = document.querySelector(".usage-card");
     if(usage) usage.scrollIntoView({behavior:"smooth", block:"start"});
+  };
+
+  window.toggleMeetingSettingsHelp = function(){
+    const box = document.getElementById("meetingSettingsHelpContent");
+    if(box) box.classList.toggle("open");
   };
 
   window.showSettingsView = function(){
