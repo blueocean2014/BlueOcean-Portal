@@ -1534,6 +1534,32 @@ textarea#memo:focus {
 }
 </style>
 
+
+<style id="settings-help-yellow-match-doctor">
+.settings-help {
+  background: #fffdf3 !important;
+  border: 2px solid #d8c875 !important;
+  border-radius: 14px !important;
+  overflow: hidden;
+}
+
+.settings-help button {
+  background: #fff9d9 !important;
+  color: #6b5b00 !important;
+  border: 0 !important;
+}
+
+.settings-help button:hover {
+  background: #fff3b0 !important;
+  color: #5b4e00 !important;
+}
+
+.settings-help-content {
+  background: #fffdf3 !important;
+  color: #5b4e00 !important;
+}
+</style>
+
 </head>
 
 <body>
@@ -1795,7 +1821,7 @@ onclick="goHome()"
 </button>
 </div>
 
-<div style="display:flex;justify-content:center;margin:18px 0 12px;"><button type="button" onclick="openAppSettings()" style="border:1px solid #d97706!important;background:#f28c28!important;color:#fff!important;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:600;">項目・定型文・支援経過のプロンプトを自分用に編集・追加する方はこちらはこちら</button></div>
+<div style="display:flex;justify-content:center;margin:18px 0 12px;"><button type="button" onclick="openAppSettings()" style="border:1px solid #d97706!important;background:#f28c28!important;color:#fff!important;border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:600;">⚙ 設定　項目・定型文・支援経過プロンプトの編集・追加はこちら</button></div>
 
 </div>
 
@@ -1823,11 +1849,7 @@ onclick="goHome()"
 ===================================================== -->
 <div id="editAreaPlaceholder" style="display:none;"></div>
 <section class="card" id="editArea" style="display:none;">
-<h2>項目・定型文・支援経過のプロンプトを自分用に編集・追加する方はこちらはこちら</h2>
-<div class="edit-note">
-ここでは、この端末で使用する区分と定型文を自由に編集できます。<br>
-追加・編集・削除した内容は、この端末のブラウザに保存されるため、それぞれ個々の端末の中でしか変更ができません。パソコンや携帯等複数台で管理される方はそれぞれの変更が必要になりますのでご注意ください。
-</div>
+<h2>項目・定型文・支援経過プロンプトの管理</h2>
 
 <div id="editGrid" class="edit-grid"></div>
 
@@ -3637,48 +3659,43 @@ function goHome(){
       <div class="settings-intro">
         <h3>設定について</h3>
         <p>
-          ここでは、この端末で使用する「項目」や「定型文」を、ご自身の使いやすいように自由に追加・編集・削除できます。
+          ここでは、この端末で使用する「項目・定型文」や「支援経過の追加プロンプト」を、
+          ご自身の使いやすいように確認・編集・追加・削除できます。
         </p>
         <p style="margin-top:12px;">
-          追加・編集・削除した内容は、<strong>現在ご使用の端末のブラウザ内に保存されます。</strong><br>
-          そのため、パソコンやスマートフォンなど、複数の端末でご利用になる場合は、<strong style="color:#d00000!important;">端末ごとに設定内容を変更する必要があります。</strong>
+          変更した内容は<strong>現在ご使用の端末のブラウザ内に保存されます。</strong><br>
+          パソコンやスマートフォンなど複数の端末でご利用になる場合は、端末ごとに設定が必要です。
         </p>
         <p style="margin-top:12px;">
-          ※ある端末で行った設定変更が、別の端末へ自動的に反映されるものではありませんので、ご注意ください。
+          標準として登録されている項目には<strong>「🏢 標準」</strong>が表示されます。
+          標準項目を変更・削除した場合は<strong>「↩ 標準に戻す」</strong>や復元機能で元の標準状態へ戻せます。
+          ご自身で追加した項目・プロンプトは編集・削除できます。
         </p>
-
-        <div style="margin-top:22px;padding-top:18px;border-top:1px solid #e5e7eb;">
-          <h3 style="margin:0 0 10px;color:#334155;font-size:18px;">設定でできること</h3>
-          <p>
-            この設定画面では、「項目」や「定型文」を、ご自身の業務や使い方に合わせて自由に追加・編集・削除できます。
-          </p>
-          <p style="margin-top:12px;">
-            標準として登録されている項目には<strong>「🏢 標準」</strong>が表示されます。必要に応じて内容を変更したり、削除したりすることができ、<strong>「↩ 標準に戻す」</strong>を使えば、標準の内容に戻すこともできます。
-          </p>
-          <p style="margin-top:12px;">
-            また、ご自身で必要な項目や定型文を追加したり、支援経過のプロンプトを追加したりすることもできます。業務内容や記録の方法に合わせて、使いやすいように設定してください。
-          </p>
-          <p style="margin-top:12px;">
-            設定を変更した内容は、<strong>現在ご使用の端末のブラウザ内に保存されます。</strong>そのため、パソコンやスマートフォンなど複数の端末でご利用になる場合は、端末ごとに設定が必要です。
-          </p>
-          <p style="margin-top:12px;">
-            ※ある端末で行った設定変更が、別の端末へ自動的に反映されるものではありません。
-          </p>
-          <p style="margin-top:12px;">
-          </p>
-          <p style="margin-top:12px;">
-          </p>
-        </div>
       </div>
+
       <div class="settings-help">
-        
+        <button type="button" onclick="toggleAppHelp()">📖 設定の使い方を確認する</button>
         <div id="appHelpBox" class="settings-help-content">
-          ① 支援経過A・B・Cから作成したい形を選択します。<br>
-          ② 必要に応じて出力方法を選択します。通常は「標準」のままで使用できます。<br>
-          ③ 支援経過に必要な情報を入力します。<br>
-          ④ 「AI処理用にコピー」を押して、AI処理用の文章をコピーします。<br>
-          ⑤ 新しく作成するときは「新しい支援経過を作成」を使用します。<br>
-          ⑥ 設定画面では、項目・定型文・支援経過のプロンプトを、ご自身の使いやすいように追加・編集・削除できます。
+          <p><strong>① 項目・定型文を確認・編集</strong><br>
+          標準項目と、ご自身で追加した項目・定型文を確認できます。「編集」を押すと項目名や定型文を変更でき、「保存」で確定します。</p>
+
+          <p><strong>② 🏢 標準</strong><br>
+          最初から登録されている標準項目を示します。標準項目もこの端末用に名前や定型文を編集できます。</p>
+
+          <p><strong>③ ↩ 標準に戻す</strong><br>
+          編集した標準項目の名前や定型文を、元の標準内容へ戻したいときに使用します。</p>
+
+          <p><strong>④ 🗑 削除・復元</strong><br>
+          項目を非表示にできます。削除した標準項目は、設定画面内の「削除した標準項目」から復元できます。ご自身で追加した項目は削除できます。</p>
+
+          <p><strong>⑤ 新しい項目・定型文を追加</strong><br>
+          新しい項目名と定型文を入力し、「＋ 項目と定型文を追加」で、この端末用の項目として追加できます。</p>
+
+          <p><strong>⑥ 支援経過の追加プロンプトを管理</strong><br>
+          ご自身で追加した支援経過用プロンプトは、一覧から「編集」「保存」「削除」ができます。追加したプロンプトはメイン画面から選択して使用できます。</p>
+
+          <p style="margin-bottom:0;"><strong>⑦ 新しい支援経過プロンプトを追加</strong><br>
+          プロンプト名とAI処理用プロンプトを入力して保存すると、新しい用途の支援経過プロンプトとして追加できます。</p>
         </div>
       </div>
       <div id="settingsEditorHost" class="settings-real-editor"></div>
@@ -3708,6 +3725,8 @@ window.closeAppSettings=function(){
   if(!overlay||!editor)return;
   if(placeholder)placeholder.appendChild(editor);
   editor.style.display='none';
+  const help=document.getElementById('appHelpBox');
+  if(help)help.classList.remove('open');
   overlay.classList.remove('open');
   overlay.setAttribute('aria-hidden','true');
   window.scrollTo({top:0,behavior:'instant'});
