@@ -50,7 +50,7 @@ html.blueocean-auth-checking body {
 })();
 </script>
 <!-- /BlueOcean Firebase Authentication Guard -->
-<style>
+<style id="blueocean-app-styles-refactored">
 :root {
   --bo-light:#70dcfa;
   --bo-sky:#28bcef;
@@ -550,8 +550,7 @@ body.settings-view-active #promptLibraryArea {
     border-top:1px solid #d8e8f3;
   }
 }
-</style>
-<style id="layout-c-wide-style">
+
 .pair-row-unified {
   width:100%;
 }
@@ -573,8 +572,7 @@ body.settings-view-active #promptLibraryArea {
     padding:16px;
   }
 }
-</style>
-<style id="user-settings-guide-style">
+
 .user-settings-guide {
   margin:14px 0 18px;
   border:2px solid #e6c94c;
@@ -640,9 +638,7 @@ body.settings-view-active #promptLibraryArea {
     font-size:13px
   }
 }
-</style>
 
-<style id="growth-settings-style">
 .growth-category-buttons {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
@@ -752,9 +748,7 @@ body.settings-view-active #promptLibraryArea {
     border-top:1px solid #d8e8f3;
   }
 }
-</style>
 
-<style id="bo-ai-four-colors-final">
 .ai-launch-buttons {
   grid-template-columns:repeat(4,minmax(0,1fr)) !important;
   gap:9px !important;
@@ -810,10 +804,7 @@ body.settings-view-active #promptLibraryArea {
     grid-template-columns:1fr !important;
   }
 }
-</style>
 
-
-<style id="bo-ai-explanation-final">
 .ai-keep-note {
   font-size:12px;
   line-height:1.5;
@@ -834,10 +825,7 @@ body.settings-view-active #promptLibraryArea {
   color:#0875c9;
   text-decoration:underline;
 }
-</style>
 
-
-<style id="google-keep-enhancement-style">
 .keep-download-area {
   margin-top:8px;
   text-align:center;
@@ -873,10 +861,7 @@ body.settings-view-active #promptLibraryArea {
     width:100%;
   }
 }
-</style>
 
-
-<style id="google-keep-button-equal-size-fix">
 .ai-launch-buttons > .ai-launch-button, .ai-launch-buttons > .ai-keep-wrap > .ai-launch-button {
   width:100% !important;
   min-height:50px !important;
@@ -901,6 +886,32 @@ body.settings-view-active #promptLibraryArea {
 }
 .ai-keep-note {
   margin-top:0 !important;
+}
+
+/* 支援経過作成支援アプリと設定操作の色を統一 */
+#promptLibraryArea .growth-item-status.is-standard {
+  background:#eef7f0 !important;
+  color:#356b45 !important;
+  border:1px solid #a8c9b0 !important;
+  font-weight:700 !important;
+}
+
+#promptLibraryArea .growth-item-restore,
+#promptLibraryArea button[onclick*="restore"][onclick*="Standard"],
+#promptLibraryArea button[onclick*="restore"][onclick*="standard"] {
+  background:#eef7ff !important;
+  color:#0875c9 !important;
+  border:1px solid #9bc7ee !important;
+  font-weight:700 !important;
+}
+
+#promptLibraryArea .growth-item-delete,
+#promptLibraryArea button[onclick*="deleteGrowth"],
+#promptLibraryArea button[onclick*="deleteCustom"] {
+  background:#e85d5d !important;
+  color:#fff !important;
+  border:1px solid #d94c4c !important;
+  font-weight:700 !important;
 }
 </style>
 
@@ -1133,14 +1144,33 @@ body.settings-view-active #promptLibraryArea {
     <div class="usage-note"><strong>🌱 ポイント</strong><br>「情報提供書を送りますので、ご確認ください」「実績をいただけますか」「○○さんのサービスを週2回から週3回に変更したいです」など、伝えたいことをそのまま入力してください。AIが相手に失礼のない、温かみのある事務連絡に整えます。</div>
   </section>
 
-  <div class="main-only" style="text-align:center;margin:18px 0 10px;">
-    <button class="restore-button" type="button" onclick="createReleaseHTML()">📦 正式版HTMLを作成</button>
-  </div>
-
   <section class="card edit-area view-hidden" id="promptLibraryArea">
     <h2>⚙ 設定 関係機関への連絡・事務連絡</h2>
     <button class="primary" type="button" onclick="showMainView()">← メイン画面に戻る</button>
-    <div class="description" style="margin-top:12px;">標準の連絡項目・定型文・AI処理用プロンプトを自分で確認・編集・追加できます。変更内容はこの端末のブラウザに保存されます。</div>
+    <div class="settings-intro-box" style="margin-top:12px;">
+      <h3>設定について</h3>
+      <p style="margin:0 0 10px;">
+        ここでは、この端末で使用する「宛先」「伝達方法」「連絡項目」「具体的な内容」「定型文」「AI処理用プロンプト」を、
+        ご自身の使いやすいように確認・編集・追加・削除できます。
+      </p>
+      <p style="margin:0 0 10px;">
+        変更した内容は<strong>現在ご使用の端末のブラウザ内に保存されます。</strong>
+        パソコンやスマートフォンなど複数の端末でご利用になる場合は、端末ごとに設定が必要です。
+      </p>
+      <p style="margin:0;">
+        標準として登録されている項目は、必要に応じて編集・削除・標準状態への復元ができます。
+        ご自身で追加した項目やプロンプトも、あとから編集・削除できます。
+      </p>
+
+      <div style="margin-top:18px;padding-top:14px;border-top:1px solid #dcebed;">
+        <strong>～管理者からのお願い～</strong><br><br>
+        <strong>設定に関する注意点</strong><br>
+        このアプリでは、「宛先」「伝達方法」「連絡項目」「具体的な内容」「定型文」「AI処理用プロンプト」などを、管理者側で追加・編集・削除することも可能です。<br>
+        ですが、このアプリは、ご利用いただく皆様が、それぞれの業務や使い方に合わせて、必要な項目や定型文、プロンプトなどを自由に追加・編集・削除し、ご自身にとって使いやすい環境を作っていただくことを大切にしています。<br>
+        そのため、管理者が一律に設定内容を変更するのではなく、必要に応じて、それぞれの利用者ご自身で設定を変更していただく運用としています。<br><br>
+        ご自身の業務や使い方に合わせて、使いやすいように設定を調整しながらご利用ください。
+      </div>
+    </div>
 
     <div class="user-settings-guide">
   <details>
@@ -1148,54 +1178,38 @@ body.settings-view-active #promptLibraryArea {
     <div class="user-settings-guide-content">
       <h3>この設定画面でできること</h3>
       <p>
-        この画面では、普段の業務で使う「宛先」「伝達方法」「連絡項目」「具体的な内容」、そしてAI処理用の「プロンプト」を、ご自身の使いやすいように確認・編集・追加できます。
+        普段の業務で使用する「宛先」「伝達方法」「連絡項目」「具体的な内容」「定型文」「AI処理用プロンプト」を、
+        ご自身の使いやすい形に調整できます。
       </p>
 
-      <h3>① 標準設定について</h3>
+      <h3>① 現在使用するプロンプト</h3>
       <p>
-        「💾 標準設定として確定」を押すと、その時点の設定を標準として保存できます。
-        確定後も編集できますので、必要に応じて何度でも更新できます。
-      </p>
-      <p>
-        「↩ 現在の標準設定に戻す」を使うと、最後に標準として保存した状態へ戻すことができます。
-      </p>
-      <p>
-        設定が完成したら「📦 正式版HTMLを作成」を使用すると、現在の標準設定を組み込んだHTMLを作成できます。
+        AI処理用に使用するプロンプトを選択します。標準プロンプトのほか、ご自身で追加したプロンプトも選択できます。
       </p>
 
-      <h3>② 現在使用するプロンプト</h3>
+      <h3>② プロンプトを確認・編集</h3>
       <p>
-        現在使用するAI処理用プロンプトを選択できます。標準プロンプトのほか、ご自身で追加したプロンプトも選択できます。
-      </p>
-      <p>
-        プロンプトを変更・編集した場合は、「💾 このプロンプトを保存」を押してください。
-        標準として確定したプロンプトへ戻したい場合は「↩ 標準プロンプトに戻す」を使用します。
+        現在選択しているプロンプト名と本文を確認・編集できます。編集後は「💾 このプロンプトを保存」で保存してください。
+        標準内容へ戻したい場合は「↩ 標準に戻す」を使用します。
       </p>
 
-      <h3>③ STEP 3・4の項目を自分用に変更する</h3>
+      <h3>③ 宛先・伝達方法を自分用に変更する</h3>
       <p>
-        「標準カテゴリー項目のカスタマイズ」では、STEP 3のカテゴリー名と、STEP 4に表示される具体的な内容を変更できます。
-      </p>
-      <ul>
-        <li>カテゴリー名を変更する</li>
-        <li>具体的な項目の文章を変更する</li>
-        <li>新しい具体的な項目を追加する</li>
-        <li>不要な項目を削除する</li>
-        <li>変更した項目を標準に戻す</li>
-        <li>カテゴリー全体を標準に戻す</li>
-      </ul>
-      <p>
-        すべてのカテゴリー・項目は「🏢 標準」「↩ 標準に戻す」「🗑 削除」で統一して表示されます。
+        STEP 1の「宛先」とSTEP 2の「伝達方法」は、普段の業務に合わせて確認・編集・追加・削除できます。
       </p>
 
-      <h3>④ STEP 3に新しいカテゴリーを追加する</h3>
+      <h3>④ STEP 3・STEP 4の項目を自分用に変更する</h3>
       <p>
-        既存のカテゴリーとは別に、ご自身の業務でよく使う新しいカテゴリーを追加できます。
-        追加したカテゴリーはSTEP 3に表示され、設定画面でSTEP 4の具体的な内容も追加できます。
+        連絡の目的となるカテゴリー名や、具体的な連絡内容を編集・追加・削除できます。
+        標準項目を変更した場合も、必要に応じて標準状態へ戻すことができます。
       </p>
 
-      <h3>⑤ 新しいプロンプトを作る</h3>
+      <h3>⑤ 新しいカテゴリー・項目を追加する</h3>
+      <p>
+        既存の項目だけでは足りない場合は、ご自身の業務でよく使うカテゴリーや具体的な内容を追加できます。
+      </p>
 
+      <h3>⑥ 新しいプロンプトを追加する</h3>
       <p>
         ご自身で作成したAI処理用プロンプトを、新しいプロンプトとして追加できます。
         追加したプロンプトは「現在使用するプロンプト」から選択して使用できます。
@@ -1204,29 +1218,16 @@ body.settings-view-active #promptLibraryArea {
       <div class="user-settings-guide-note">
         <strong>🌱 設定するときのポイント</strong><br>
         最初からすべてを変更する必要はありません。まずは標準設定のまま使ってみて、
-        「この項目はよく使う」「この言い方にしたい」「この連絡内容も選べるようにしたい」と感じた部分だけを変更・追加してください。
+        「この項目はよく使う」「この言い方にしたい」「この内容も選べるようにしたい」と感じた部分だけを変更・追加してください。
         <br><br>
         <strong>⚠ 設定内容について</strong><br>
-        変更した内容は、この端末のブラウザに保存されます。パソコンやスマートフォンなど別の端末には自動で反映されません。
-        複数の端末で使用する場合は、端末ごとに設定が必要です。
+        変更した内容は、この端末のブラウザに保存されます。別の端末へ自動的には反映されません。
+        複数の端末で使用する場合は、端末ごとに設定してください。
       </div>
     </div>
   </details>
 </div>
-
-
-    <div class="selection-box" id="releaseSettingsBox" style="border:2px solid #e6c94c;background:#fffdf0;">
-      <div class="step-title">🚀 標準設定・正式版HTML</div>
-      <p class="step-help">開発中は何度でも標準設定を更新できます。「標準設定として確定」は現在の設定を標準として保存するだけで、編集をロックしません。完成した時点で「正式版HTMLを作成」を押すと、その標準設定を埋め込んだ管理者画面なしのHTMLを作成できます。</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-        <button class="primary" type="button" onclick="confirmStandardSettings()">💾 標準設定として確定</button>
-        <button class="restore-button" type="button" onclick="restoreAllToConfirmedStandard()">↩ 現在の標準設定に戻す</button>
-        <button class="restore-button" type="button" onclick="createReleaseHTML()">📦 正式版HTMLを作成</button>
-      </div>
-      <div id="standardSettingsStatus" class="status"></div>
-    </div>
-
-    <div class="selection-box">
+<div class="selection-box">
       <div class="step-title">現在使用するプロンプト</div>
       <select id="promptSelector" style="width:100%;padding:12px;border:2px solid #9fc7eb;border-radius:12px;font-size:15px;background:#fff;"></select>
       <div id="activePromptName" class="status success">現在使用中：お手紙用プロンプト</div>
