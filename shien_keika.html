@@ -44,7 +44,7 @@
 </script>
 <!-- ===== /Firebase Authentication ===== -->
 
-<style>
+<style data-refactored-group="2">
 :root {
   --blue-deep: #0875c9;
   --blue-light: #eef7ff;
@@ -928,9 +928,8 @@ textarea#memo:focus {
     padding: 14px;
   }
 }
-</style>
 
-<style id="new-case-button-blue">
+
 #newCaseButton {
   background: #1976d2 !important;
   background-image: none !important;
@@ -947,15 +946,8 @@ textarea#memo:focus {
 #newCaseButton:hover {
   background: #1565c0 !important;
 }
-</style>
 
 
-<style id="mobile-ui-adjustments">
-
-</style>
-
-
-<style id="remove-category-row-lines">
 #cats label {
   border: 2px solid var(--blue) !important;
   background: var(--blue-pale) !important;
@@ -976,10 +968,8 @@ textarea#memo:focus {
 #cats input[type="checkbox"] {
   accent-color: var(--green) !important;
 }
-</style>
 
 
-<style id="force-visual-fix">
 .pattern-title-force {
   text-indent: 0 !important;
   margin-left: auto !important;
@@ -992,10 +982,8 @@ textarea#memo:focus {
 .pattern-title-force ~ button:empty {
   display: none !important;
 }
-</style>
 
 
-<style id="final-visible-pattern-fix">
 .pattern-title-force {
   padding: 16px 30px !important;
   margin: 0 0 14px 0 !important;
@@ -1012,10 +1000,8 @@ textarea#memo:focus {
   background: #1976d2 !important;
   border-color: #1565c0 !important;
 }
-</style>
 
 
-<style id="heading-size-color-fix">
 .pattern-title-force {
   font-size: 1.02rem !important;
 }
@@ -1025,17 +1011,13 @@ textarea#memo:focus {
   border-color: #68a9df !important;
   color: #155a91 !important;
 }
-</style>
 
 
-<style id="final-small-button-fix">
 .pattern-title-force {
   padding: 10px 24px !important;
 }
-</style>
 
 
-<style id="final-blue-selection-adjustment">
 .pattern-output-option.is-selected {
   border-color: var(--blue)!important;
   font-weight: 700;
@@ -1058,9 +1040,8 @@ textarea#memo:focus {
   background: var(--blue)!important;
   color: #fff!important;
 }
-</style>
 
-<style id="final-category-background-fix">
+
 #cats label {
   background: #ffffff !important;
 }
@@ -1074,9 +1055,8 @@ textarea#memo:focus {
   border-color: var(--blue) !important;
   color: var(--blue-deep) !important;
 }
-</style>
 
-<style id="pattern-selection-compact-adjustment">
+
 .pattern-grid {
   gap: 8px !important;
 }
@@ -1125,8 +1105,8 @@ textarea#memo:focus {
     grid-template-columns: 1fr !important;
   }
 }
-</style>
-<style id="summary-mode-blueocean-final">
+
+
 #summaryModeButton.summary-mode-button,
 #bulletSummaryModeButton.summary-mode-button {
   background: #fff !important;
@@ -1150,8 +1130,8 @@ textarea#memo:focus {
   border-color: #0875c9 !important;
   color: #fff !important;
 }
-</style>
-<style id="ai-launch-buttons">
+
+
 .ai-launch-area {
   display: none;
   margin: 12px 0 4px;
@@ -1227,9 +1207,8 @@ textarea#memo:focus {
     margin: 3px 0;
   }
 }
-</style>
 
-<style id="google-keep-guide-style">
+
 .google-keep-guide {
   display: none;
   max-width: 630px;
@@ -1299,10 +1278,8 @@ textarea#memo:focus {
     width: auto !important;
   }
 }
-</style>
 
 
-<style id="ai-keep-inline-style">
 #aiLaunchArea .ai-launch-row {
   display: flex;
   align-items: flex-start;
@@ -1364,10 +1341,8 @@ textarea#memo:focus {
     border-top: 1px solid #c8def2;
   }
 }
-</style>
 
 
-<style id="ai-provider-colors-and-keep-yellow">
 #aiLaunchArea .ai-launch-button.ai-chatgpt-color {
   background: #111 !important;
   border-color: #111 !important;
@@ -1412,9 +1387,8 @@ textarea#memo:focus {
   border-color: #c49f00 !important;
   color: #5c4a00 !important;
 }
-</style>
 
-<style id="google-keep-download-entry-style">
+
 .keep-download-area {
   margin-top: 8px;
   text-align: center;
@@ -1448,10 +1422,8 @@ textarea#memo:focus {
 .keep-download-button:hover {
   background: #fff3b0 !important;
 }
-</style>
 
 
-<style id="ai-launch-layout-match-doctor-app">
 #aiLaunchArea.ai-launch-area{
   margin-top:14px;
   padding:16px;
@@ -1532,10 +1504,8 @@ textarea#memo:focus {
     grid-template-columns:1fr;
   }
 }
-</style>
 
 
-<style id="settings-help-yellow-match-doctor">
 .settings-help {
   background: #fffdf3 !important;
   border: 2px solid #d8c875 !important;
@@ -1557,6 +1527,26 @@ textarea#memo:focus {
 .settings-help-content {
   background: #fffdf3 !important;
   color: #5b4e00 !important;
+}
+
+
+/* 設定画面の3種類のボタンだけ、主治医連絡・情報提供コードと同じ配色に統一 */
+#editArea .edit-btn:not(.edit-delete):not(.standard-restore-btn):not(.edit-save):not(.edit-add) {
+  background: linear-gradient(135deg,#70dcfa,#28bcef,#138ee0,#0875c9) !important;
+  color: #fff !important;
+}
+
+#editArea .standard-restore-btn {
+  background: #eef7ff !important;
+  color: #0875c9 !important;
+  border: 1px solid #9bc7ee !important;
+  font-weight: 700 !important;
+}
+
+#editArea .edit-delete {
+  background: #e85d5d !important;
+  color: #fff !important;
+  border: 1px solid #d94c4c !important;
 }
 </style>
 
@@ -2010,6 +2000,34 @@ function boOriginalKey(displayName){
 function boDisplayName(original){
   const r=boGetRenames();
   return r[original]||original;
+}
+
+/* 標準項目を、この端末での編集前の標準状態へ戻す */
+function boRestoreCategory(original){
+  if(!Object.prototype.hasOwnProperty.call(T, original)) return;
+
+  const personal = getPersonalTemplates();
+  const renames = boGetRenames();
+  const deleted = getDeletedCategories();
+
+  /* 個人編集した定型文を解除 */
+  if(Object.prototype.hasOwnProperty.call(personal, original)){
+    delete personal[original];
+    savePersonalTemplates(personal);
+  }
+
+  /* 個人編集した項目名を解除 */
+  if(Object.prototype.hasOwnProperty.call(renames, original)){
+    delete renames[original];
+    boSaveRenames(renames);
+  }
+
+  /* 念のため削除状態も解除 */
+  if(deleted.includes(original)){
+    saveDeletedCategories(deleted.filter(x => x !== original));
+  }
+
+  boRefreshCategoryEditor();
 }
 
 function allCategories(){
@@ -3748,7 +3766,7 @@ function showUsageGuide(){
 <!-- ===== 設定・使い方ページ：ここまで追加 ===== -->
 
 
-<style id="custom-support-prompt-pattern-style">
+<style data-refactored-group="4">
 .custom-prompt-pattern-area {
   margin-top: 14px;
   padding-top: 12px;
@@ -3795,9 +3813,8 @@ function showUsageGuide(){
     grid-template-columns: 1fr !important;
   }
 }
-</style>
 
-<style id="final-blue-choice-unification">
+
 .pattern-option {
   border: 3px solid var(--blue) !important;
 }
@@ -3843,9 +3860,8 @@ function showUsageGuide(){
 #cats input[type="checkbox"] {
   accent-color: var(--blue) !important;
 }
-</style>
 
-<style id="final-pattern-title-center-fix">
+
 .pattern-option > span:first-of-type {
   text-align: center !important;
 }
@@ -3857,11 +3873,8 @@ function showUsageGuide(){
   justify-content: center !important;
   align-items: center !important;
 }
-</style>
 
 
-
-<style id="memo-final-color-fix">
 textarea#memo {
   background: #f4faff !important;
   border: 4px solid #68a9df !important;
@@ -3873,9 +3886,8 @@ textarea#memo:focus {
   border-color: #68a9df !important;
   box-shadow: 0 0 0 3px rgba(104,169,223,.20) !important;
 }
-</style>
 
-<style id="final-output-selection-blue-fix">
+
 .pattern-output-option.is-selected {
   background: var(--blue) !important;
   border-color: var(--blue-dark) !important;
@@ -3887,23 +3899,15 @@ textarea#memo:focus {
   border-color: var(--blue-dark) !important;
   color: #fff !important;
 }
-</style>
 
 
-<style id="final-output-pill-white-fix">
-
-</style>
-
-<style id="final-pattern-title-white-fix">
 .pattern-title-force,
 .pattern-option:hover .pattern-title-force,
 .pattern-option:has(input:checked) .pattern-title-force {
   background: #fff !important;
 }
-</style>
 
 
-<style id="final-pattern-exact-color-fix">
 .pattern-option {
   background: #fff !important;
 }
@@ -3944,9 +3948,8 @@ textarea#memo:focus {
   background: var(--blue) !important;
   border-color: var(--blue) !important;
 }
-</style>
 
-<style id="blueocean-gradient-final">
+
 header {
   background: linear-gradient(135deg,#70dcfa 0%,#28bcef 35%,#138ee0 70%,#0875c9 100%) !important;
 }
@@ -3984,10 +3987,8 @@ header {
   border-color: #0875c9 !important;
   color: #fff !important;
 }
-</style>
 
 
-<style id="blueocean-requested-final-adjustment">
 .pattern-title-force,
 .pattern-option:hover .pattern-title-force {
   background: #fff !important;
@@ -4063,9 +4064,8 @@ header {
 .pattern-output-options {
 
 }
-</style>
 
-<style id="blueocean-redesign-prototype-02">
+
 :root {
   --blue: #138ee0;
   --blue-dark: #0875c9;
@@ -4224,10 +4224,8 @@ main {
     grid-template-columns: 1fr !important;
   }
 }
-</style>
 
 
-<style id="blueocean-dashboard-final-polish">
 main {
   max-width: 1180px!important;
   padding: 18px 20px 36px!important;
@@ -4447,9 +4445,8 @@ textarea#memo {
     margin: 4px!important;
   }
 }
-</style>
 
-<style id="final-user-request-usage-original-wide-memo">
+
 .usage-card {
   margin-top: 12px!important;
   border: 2px solid #d8c875!important;
@@ -4549,11 +4546,8 @@ textarea#memo {
     min-height: 230px!important;
   }
 }
-</style>
 
 
-
-<style id="design-slide-down">
 .pattern-option {
   position: relative;
   overflow: visible!important;
