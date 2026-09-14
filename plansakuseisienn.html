@@ -91,6 +91,15 @@ html.blueocean-auth-checking body {
   font-size: 13px;
   line-height: 1.6;
 }
+
+/* 個人情報チェック：検出結果をシンプルに一覧表示 */
+.privacy-hit-file{margin:12px 0;padding:12px 14px;border:1px solid #efb2b2;border-radius:10px;background:#fffafa;}
+.privacy-hit-file-title{font-weight:900;color:#7d1f1f;margin-bottom:10px;}
+.privacy-simple-list{display:flex;flex-direction:column;gap:8px;}
+.privacy-simple-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:2px solid #d93025;border-radius:8px;background:#ffe8e8;}
+.privacy-simple-detected{font-weight:900;color:#b00020;font-size:16px;word-break:break-word;}
+.privacy-simple-label{font-size:12px;font-weight:800;color:#7d1f1f;background:#fff;padding:2px 7px;border-radius:999px;border:1px solid #efb2b2;white-space:nowrap;}
+.privacy-hit-help{margin-top:10px;font-size:13px;line-height:1.6;color:#6b3b3b;}
 </style>
 <script>
 document.documentElement.classList.add("blueocean-auth-checking");
@@ -1813,20 +1822,6 @@ h1.bo-white-title {
 </style>
 
 
-<style>
-.privacy-important-box {
-  border-radius: 12px;
-}
-
-.privacy-important-box > .privacy-summary {
-  padding: 18px 20px;
-}
-
-.privacy-important-box > .privacy-summary::after {
-  content: " ▼";
-}
-</style>
-
 
 <style>
 .privacy-important-box {
@@ -2506,9 +2501,13 @@ h1.bo-white-title {
   <div class="bo-simple-step is-current" id="simpleStep1">
     <div class="bo-simple-num">1</div>
     <div class="bo-simple-body">
-      <div class="bo-simple-title">資料を入れる</div>
+      <div class="bo-simple-title">資料を入れる（可能な限り個人情報を消した資料を添付してください）</div>
       <div class="bo-simple-one">最初に1回だけ、資料を選びます。</div>
-      <button type="button" class="bo-big-action" onclick="simpleChooseFiles()">📂 資料を選ぶ</button>
+      <div class="bo-three-file-select">
+        <button type="button" class="bo-big-action" onclick="simpleChooseFileSlot(1)">📂 資料1を選ぶ</button>
+        <button type="button" class="bo-big-action" onclick="simpleChooseFileSlot(2)">📂 資料2を選ぶ</button>
+        <button type="button" class="bo-big-action" onclick="simpleChooseFileSlot(3)">📂 資料3を選ぶ</button>
+      </div>
       <div id="simpleFileStatus" class="bo-simple-status">まだ資料を選んでいません。</div>
       <div id="simpleLoadProgressWrap" class="bo-load-progress-wrap" style="display:none;" aria-live="polite">
         <div class="bo-load-progress-head">
@@ -2531,15 +2530,61 @@ h1.bo-white-title {
       <div class="bo-simple-one">読み取った資料に、個人を特定する情報が残っていないか確認します。</div>
       <button type="button" class="bo-big-action" id="simplePrivacyButton" onclick="simplePrivacyCheck()" disabled>🔒 個人情報をチェックする</button>
       <div id="simplePrivacyStatus" class="bo-simple-status">資料の読み込みが終わると押せます。</div>
-      <details class="bo-help"><summary>？ なぜ確認するの？</summary><div>氏名・住所・電話番号などが残ったままAIへ渡らないようにするためです。自動チェックだけで完全ではないため、最終的にはケアマネジャー自身でも内容を確認してください。</div></details>
+
+      <div id="simpleAnonymizeArea" class="bo-anonymize-area" style="display:none;">
+        <div class="bo-anonymize-title">🔒 個人情報が見つかりました</div>
+        <div class="bo-anonymize-explain">元の資料は変更せず、AIに渡すための<strong>新しい匿名化資料</strong>をこのパソコン内で作成します。作成後は必ず全文を画面に表示しますので、個人情報が消えていることを自分の目で確認できます。</div>
+        <button type="button" class="bo-big-action" onclick="simpleCreateAnonymizedDocument()">🔒 匿名化作業を開始して、新しい資料を作成する<br><span style="display:inline-block;margin-top:5px;font-size:13px;font-weight:700;">（この匿名化作業は「⚡ かんたん（おすすめ）」で使用するための機能です。）</span></button>
+        <div style="margin:8px 0 0;padding:11px 13px;border-radius:10px;background:#f8fcff;border:1px solid #b9def7;line-height:1.7;font-size:13px;">
+          「📄 資料を確認して添付」を使用される方は、元の資料をご自身で確認・修正したうえで、上の「🔒 個人情報をチェックする」で個人情報が残っていないことを確認してください。
+        </div>
+        <button type="button" class="bo-secondary-action" id="simpleResetPrivacyAfterAnonymizeButton" onclick="simpleResetPrivacyAfterAnonymize(event)" disabled style="margin-top:10px; width:100%;">↩ 最初の状態に戻して、📂 資料を選ぶ からもう一度やり直す</button>
+      </div>
+
+      <div id="simpleGeneratedDocumentArea" class="bo-generated-document" style="display:none;">
+        <div class="bo-generated-title">📄 新しく作成した匿名化済みAI用資料</div>
+        <div class="bo-generated-explain"><strong>① まず、この新しい資料全体を確認してください。</strong><br>下に表示されている内容が、元資料とは別にこのブラウザ内で作成したAI用の匿名化資料です。<strong>同じ文章を下に重ねて表示せず、この「匿名化・個人情報チェック表示」1か所だけで確認・修正できます。色付きの資料本文を直接クリックして、その場で文字を修正してください。</strong><br><strong style="display:inline-block;color:#005a9c;background:#ffffff;border:1px solid #78b9e6;border-radius:7px;padding:5px 8px;font-weight:900;">🔵 青字は、システムが個人情報として匿名化し「〇〇」等へ置き換えた箇所です。</strong><br><strong style="color:#c62828;">赤字は、再チェックでシステムが「個人情報の可能性がある」と認識した確認箇所です。</strong>実際には個人情報ではない誤認識の場合もあります。赤字が本当の個人情報なら色付きの資料本文を直接修正し、誤認識なら「個人情報ではないとして確認済みにする」を押してください。</div>
+        <div id="simpleGeneratedDocumentFiles"></div>
+        <div class="bo-generated-actions">
+          <button type="button" class="bo-secondary-action" onclick="simpleOpenGeneratedDocumentFullView()">🔍 匿名化資料を全体表示して確認する</button>
+          <button type="button" class="bo-big-action" onclick="simpleApplyGeneratedDocument()">② この新しい資料を再確認用に反映して、もう一度個人情報チェックする</button>
+          <div id="simpleFinalUserReview" style="display:none;margin-top:12px;padding:14px;border:2px solid #138ee0;border-radius:12px;background:#f8fcff;">
+            <div style="font-weight:900;font-size:16px;margin-bottom:6px;">✓ 最後にご自身で確認してください</div>
+            <div style="line-height:1.7;margin-bottom:10px;">個人情報の最終チェックをしましたか？<br>青字の匿名化箇所と赤字の確認箇所を含め、AIへ渡してよい資料になっていることをご自身で確認してください。</div>
+            <button type="button" class="bo-big-action" id="simpleGeneratedConfirmButton" onclick="simpleConfirmGeneratedDocument()" style="display:block;">✓ 確認しました。次に進む</button>
+          </div>
+        </div>
+        <div id="simpleGeneratedDocumentStatus" class="bo-simple-status"></div>
+        <button type="button" class="bo-big-action" id="simpleRetryPrivacyCheckButton"
+          style="display:none;margin-top:10px;width:100%;pointer-events:auto!important;cursor:pointer!important;position:relative;z-index:30;">
+          🔍 修正後の資料をもう一度確認する
+        </button>
+      </div>
+      <details class="bo-help"><summary>？ この工程について</summary><div>最初に元資料の個人情報チェックを行います。個人情報が検出された場合だけ「匿名化作業を開始」へ進み、元資料とは別の新しい匿名化資料を作成します。作成後は必ずその新しい資料を画面で確認し、必要なら修正します。その後、新しい資料を再確認用資料として反映し、もう一度個人情報チェックを行います。再チェックを通過した資料だけをAIへ渡します。</div></details>
     </div>
   </div>
+
+  <div id="simpleGeneratedFullView" class="bo-fullview-overlay" style="display:none;" role="dialog" aria-modal="true" aria-label="匿名化済み資料の全体確認">
+    <div class="bo-fullview-panel">
+      <div class="bo-fullview-header">
+        <div>📄 匿名化済み資料・全体確認</div>
+        <button type="button" class="bo-fullview-close" onclick="simpleCloseGeneratedDocumentFullView()">✕ 閉じる</button>
+      </div>
+      <div class="bo-fullview-note">AIへ渡す前に、資料全体を上から下まで確認してください。個人情報が残っている場合は、この画面で修正できます。修正内容は閉じると元の確認画面にも反映されます。</div>
+      <div class="bo-generated-explain" style="margin-bottom:12px;"><strong>PDFはページごとに区切って表示します。</strong><br>罫線・チェック欄や、OCRで意味のない英字・記号列になった可能性が高い部分は見やすく整理しています。意味のある医療・介護情報はできる限り残します。文字が不自然な箇所や読み取れない箇所は、元資料もあわせて確認してください。</div>
+      <div id="simpleGeneratedFullViewFiles" class="bo-fullview-files"></div>
+      <div class="bo-fullview-footer">
+        <button type="button" class="bo-big-action" onclick="simpleCloseGeneratedDocumentFullView()">✓ 全体確認を終えて戻る</button>
+      </div>
+    </div>
+  </div>
+
 
   <div class="bo-simple-step" id="simpleStep3">
     <div class="bo-simple-num">3</div>
     <div class="bo-simple-body">
       <div class="bo-simple-title">AIで事前整理する</div>
-      <div class="bo-simple-one"><strong>もう一度ファイルを選ぶ必要はありません。</strong><br>使うAIを押すと「事前整理の指示＋チェック済み資料」が自動で1つにまとまり、コピーされます。</div>
+      <div class="bo-simple-one">再チェックを通過した資料だけをAIへ渡します。<br>かんたんに使う場合は「事前整理の指示＋チェック済み資料」をまとめてコピーできます。AIへ渡す前に、匿名化後の内容を必ずご自身で確認してください。</div>
       <div class="bo-ai-three">
         <a href="https://chatgpt.com/" target="_blank" rel="noopener" class="bo-ai-btn bo-chat" onclick="return simplePreorganizeLink(event,'chatgpt')" aria-disabled="true" style="pointer-events:none;text-decoration:none;display:block;text-align:center;box-sizing:border-box">🤖 ChatGPTで整理</a>
         <a href="https://gemini.google.com/" target="_blank" rel="noopener" class="bo-ai-btn bo-gem" onclick="return simplePreorganizeLink(event,'gemini')" aria-disabled="true" style="pointer-events:none;text-decoration:none;display:block;text-align:center;box-sizing:border-box">✨ Geminiで整理</a>
@@ -2606,7 +2651,9 @@ h1.bo-white-title {
 <div class="setting-box">
 <div class="setting-label">① まずはじめに、こちらに「分析する資料」を添付してください</div>
 <p class="description">パソコンに保存しているPDF、Excel、Word、TXT、CSVなどを選択してください。複数の資料をまとめて確認できます。</p>
-<input id="preventiveFileInput" type="file" multiple accept=".pdf,.xlsx,.xls,.docx,.doc,.txt,.csv,.jpg,.jpeg,.png" style="display:none;">
+<input id="preventiveFileInput" type="file" accept=".pdf,.xlsx,.xls,.docx,.doc,.txt,.csv,.jpg,.jpeg,.png" style="display:none;">
+<input id="preventiveFileInput2" type="file" accept=".pdf,.xlsx,.xls,.docx,.doc,.txt,.csv,.jpg,.jpeg,.png" style="display:none;">
+<input id="preventiveFileInput3" type="file" accept=".pdf,.xlsx,.xls,.docx,.doc,.txt,.csv,.jpg,.jpeg,.png" style="display:none;">
 <div id="preventiveDropZone" class="file-drop-zone" tabindex="0">
 <strong>📂 資料を選択</strong>
 <span>ここをクリックして、パソコン内の資料を選択してください。</span>
@@ -2624,14 +2671,39 @@ h1.bo-white-title {
 <button type="button" class="privacy-help-toggle" id="privacyHelpToggle" aria-expanded="false">ℹ️ この工程についての説明はこちら</button>
 <div class="privacy-help-panel" id="privacyHelpPanel">
 <strong>この工程では「AIに資料を渡してよい状態か」を確認します。</strong><br>
-①「🔎 読み込んだ資料に個人情報が入っていないかチェックする」を押す → ② <strong>🔴 強い警告がなければ次へ進めます</strong> → ③ 強い警告があれば、該当箇所を削除・匿名化してからもう一度確認します。<br>
+①「🔎 読み込んだ資料に個人情報が入っていないかチェックする」を押す → ② <strong>🔴 強い警告がなければ次へ進めます</strong> → ③ 強い警告があれば、下に表示される「🔒 検出した個人情報を「〇〇」表記で匿名化する」を押して、匿名化後にもう一度確認します。<br>
 🟠「確認推奨」は内容を確認したうえで、そのまま次へ進めます。<br><br>
 選択した資料の文字情報をブラウザ内で確認し、<strong>本人を直接特定できる可能性が高い情報</strong>を中心に自動検出します。<br>
 氏名・生年月日・住所・電話番号・介護保険被保険者番号・各種保険証等の番号・マイナンバー・主治医/医師の氏名・病院名・家族/キーパーソンの氏名等は<strong>強い警告</strong>として次工程を停止します。妻・夫・兄・妹・長男・長女等の続柄だけの記載、病名、検査値、要介護度、ADL等は警告対象にしません。施設名・事業所名は<strong>確認推奨</strong>として区別します。<br>
 疾患名、発症年、年齢、要介護度、ADL・IADL、服薬、介助内容など、プラン作成に必要な情報そのものは、原則として個人情報検出の対象から除外します。<br>
-資料そのものを変更・保存・サーバー送信する処理は行いません。
+元の資料そのものは変更しません。個人情報が検出された場合は、AIに渡すための読み取り文字だけをこのブラウザ内で匿名化できます。元資料をAIや外部サーバーへ送信する処理は行いません。
 </div>
 <div id="preventivePrivacyResult" class="privacy-result">資料を選択すると、ここにチェック結果が表示されます。</div>
+<div id="preventiveLocalAnonymizeBox" style="display:none;margin-top:12px;padding:14px 16px;border:2px solid #8bd4ee;border-radius:12px;background:#f7fcff;line-height:1.75;">
+  <div style="font-weight:900;color:#0875c9;font-size:16px;margin-bottom:7px;">🔒 AIに渡す内容を、このパソコン内で匿名化できます</div>
+  <div style="font-size:13px;color:#425b63;">
+    検出された氏名・住所・電話番号・保険番号・医療機関名などを、<strong>このブラウザ内の読み取り文字から匿名化</strong>します。
+    元のPDF・Word・Excel・画像ファイルそのものは変更しません。匿名化後はもう一度自動チェックを行い、AIには匿名化後の文字情報だけを渡します。
+    <br><strong>※この処理で元資料をAIや外部サーバーへ送信することはありません。</strong>
+  </div>
+  <button type="button" id="preventiveLocalAnonymizeButton" class="preventive-launch-button" onclick="anonymizePreventivePrivacy()" style="width:100%;margin-top:10px;">🔒 検出した個人情報を「〇〇」表記で匿名化する</button>
+  <div id="preventiveLocalAnonymizeStatus" class="status" style="display:none;margin-top:9px;"></div>
+</div>
+<div id="preventiveAnonymizedReviewBox" style="display:none;margin-top:12px;padding:16px;border:2px solid #138ee0;border-radius:14px;background:#f8fcff;line-height:1.75;">
+  <div style="font-weight:900;color:#0875c9;font-size:17px;margin-bottom:7px;">🔍 AIに渡す匿名化済み資料を確認する</div>
+  <div style="font-size:13px;color:#425b63;margin-bottom:10px;">
+    AIへ渡す前に、<strong>実際に渡される文字情報を資料ごとに全文確認</strong>できます。必要な場合はこの画面で修正し、もう一度個人情報チェックを行ってください。
+    <br><strong>※元のPDF・Word・Excel・画像ファイルは変更されません。</strong>
+  </div>
+  <button type="button" class="preventive-launch-button" onclick="togglePreventiveAnonymizedReview()" style="width:100%;">🔍 匿名化後の資料を開いて確認する</button>
+  <div id="preventiveAnonymizedReviewPanel" style="display:none;margin-top:12px;">
+    <div id="preventiveAnonymizedReviewFiles"></div>
+    <div style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px;">
+      <button type="button" class="preventive-launch-button" onclick="applyPreventiveAnonymizedReview()">✓ 修正内容を反映して再チェック</button>
+    </div>
+    <div id="preventiveAnonymizedReviewStatus" class="status" style="display:none;margin-top:9px;"></div>
+  </div>
+</div>
 <div class="preventive-actions">
 <button type="button" id="preventivePrivacyCheckButton" class="preventive-launch-button privacy-check-button" onclick="checkPreventivePrivacy()">🔎 読み込んだ資料に個人情報が入っていないかチェックする</button>
 <div id="preventiveNextNote" class="privacy-next-note">✓ <strong>次の工程へ進めます。</strong><br>下の「③ AIに資料を事前整理してもらう」が表示されていれば、個人情報チェックは通過しています。</div>
@@ -2642,16 +2714,16 @@ h1.bo-white-title {
 <button type="button" class="ai-preorganize-help-toggle" id="aiPreorganizeHelpToggle" aria-expanded="false">ℹ️ AIに資料を事前整理してもらうの説明はこちらから</button>
 <div class="ai-preorganize-help-panel" id="aiPreorganizeHelpPanel">
 <p>個人情報の確認が終わったら、下のボタンで「事前整理用プロンプト」をコピーしてください。</p>
-<p>その後、<strong>コピーした指示書と、個人情報チェックを通過した資料の両方を、同じAIの画面に入れます。</strong><br>AIには、ケアプランを作成させるのではなく、まず資料の情報だけを整理させます。</p>
+<p>その後、<strong>コピーした内容には、指示書と個人情報チェック済み・匿名化済みの読み取り文字が一緒に入っています。そのまま同じAIの画面へ貼り付けます。</strong><br>AIには、ケアプランを作成させるのではなく、まず資料の情報だけを整理させます。</p>
 <div class="ai-paste-title">📌 コピーした後にすること</div>
 <div class="ai-paste-flow">
   <div class="ai-paste-item"><span class="ai-paste-num">①</span><strong>下のボタンを押す</strong><br>AIへの「指示書（プロンプト）」をコピーします。</div>
   <div class="ai-paste-arrow">↓</div>
   <div class="ai-paste-item"><span class="ai-paste-num">②</span><strong>お使いのAIを開く</strong><br>ChatGPT・Gemini・Claudeなど、普段お使いのAIを開きます。</div>
   <div class="ai-paste-arrow">↓</div>
-  <div class="ai-paste-item"><span class="ai-paste-num">③</span><strong>2つをAIに入れる</strong><br><span class="ai-paste-emphasis">📋 コピーした指示書（プロンプト）<br>＋<br>📄 個人情報チェックを通過した資料</span><br>この<strong>両方</strong>を同じAIの画面に貼り付け・添付して送信してください。</div>
+  <div class="ai-paste-item"><span class="ai-paste-num">③</span><strong>2つをAIに入れる</strong><br><span class="ai-paste-emphasis">📋 コピーした指示書（プロンプト）<br>＋<br>📄 個人情報チェック済み・匿名化済みの読み取り文字</span><br>この<strong>両方をまとめた内容</strong>がコピーされています。そのままAIの画面に貼り付けて送信してください。</div>
 </div>
-<div class="ai-paste-note">⚠️ <strong>重要：</strong>資料だけをAIに送るのではありません。<strong>「資料」＋「こちらでコピーした指示書（プロンプト）」</strong>の2つをAIに渡してください。</div>
+<div class="ai-paste-note">⚠️ <strong>重要：</strong>元のPDF・Word・Excel・画像をAIへ添付する必要はありません。<strong>このアプリでコピーした「指示書＋個人情報チェック済みの読み取り文字」</strong>をAIに貼り付けてください。</div>
 </div>
 <button type="button" id="preventivePrePromptCopyButton" class="preventive-launch-button" onclick="copyPreventivePrePrompt()">📋 事前整理の指示＋資料をまとめてコピー</button>
 <button type="button" id="aiFirstStageToggle" class="ai-first-stage-toggle" onclick="toggleFirstStageGuide()">【第一段階】あなたのAIに「指示書」と「資料」を渡します。※ここが一番重要　説明を見るにはここをクリック！</button>
@@ -2659,11 +2731,11 @@ h1.bo-white-title {
   <div class="ai-flow-stage">
     <div class="ai-flow-action"><strong>①あなたの AIに今コピーできている指示書（プロンプト）をそのまま貼り付けます。</strong><br>今、コピーできています。このまま、あなたがお使いのAI（ChatGPT・Gemini・Claudeなど）を開いて、貼り付けてください。</div>
     <div class="ai-flow-arrow">↓</div>
-    <div class="ai-flow-action"><strong>② 先ほど個人情報チェックで通過した下に表示してあるファイルを、もう一度今度はあなたのAIに貼り付けてください。</strong><br><br><strong>📋 指示書 ＋ 📄 資料</strong> の両方をAIに渡します。</div>
+    <div class="ai-flow-action"><strong>② コピーした内容には、個人情報チェック済み・必要に応じて匿名化した資料の読み取り文字も含まれています。</strong><br><br><strong>📋 指示書 ＋ 🔒 匿名化済み文字情報</strong> を、そのままAIに貼り付けます。</div>
   </div>
   <div class="ai-flow-arrow">↓</div>
-  <div class="ai-flow-return"><div class="ai-flow-return-title">AIに①の指示書と②の資料を添付して検索すると、AIが自動で情報を分析し整理してくれますので、そのできあがった情報をコピーしたら、もう一度このアプリの画面に戻ります。</div>
-  AIに①の指示書と②の資料を渡したら、AIから整理結果が返ってくるまで、そのままAIの画面で作業を進めてください。<br>整理結果が返ってきたら、もう一度このアプリの画面に戻ります。</div>
+  <div class="ai-flow-return"><div class="ai-flow-return-title">AIにコピーした「指示書＋匿名化済み文字情報」を貼り付けて送信すると、AIが自動で情報を分析し整理してくれますので、そのできあがった情報をコピーしたら、もう一度このアプリの画面に戻ります。</div>
+  AIにコピーした内容を渡したら、AIから整理結果が返ってくるまで、そのままAIの画面で作業を進めてください。<br>整理結果が返ってきたら、もう一度このアプリの画面に戻ります。</div>
   <div class="ai-flow-arrow">↓</div>
 </div>
 <div class="ai-launch-box" id="preAiLaunchBox" style="display:none;">
@@ -2975,36 +3047,338 @@ h1.bo-white-title {
     async function extractPdf(file,progress){
       requireLibrary('pdfjsLib','PDF読み込み機能が利用できません。ページを再読み込みしてください。');
       const pdf=await window.pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
-      let output='',textPages=0;
-      for(let pageNo=1;pageNo<=pdf.numPages;pageNo++){
-        progress('PDF文字情報を解析中… '+pageNo+'/'+pdf.numPages+'ページ');
-        const page=await pdf.getPage(pageNo);
-        const content=await page.getTextContent();
-        const text=(content.items||[]).map(item=>item.str||'').join(' ').trim();
-        if(text){output+='\n【PDF '+pageNo+'ページ】\n'+text;textPages++;}
-        await new Promise(r=>setTimeout(r,0));
-      }
-      if(output.trim())return {text:output.trim(),detail:'PDF '+pdf.numPages+'ページ中 '+textPages+'ページから文字情報を取得'};
+      const totalPages=Number(pdf.numPages||0);
+      if(!totalPages)throw new Error('PDFのページ数を取得できませんでした。');
 
-      requireLibrary('Tesseract','スキャンPDFのOCR機能が利用できません。インターネット接続を確認してページを再読み込みしてください。');
-      let ocr='';
-      for(let pageNo=1;pageNo<=pdf.numPages;pageNo++){
-        progress('スキャンPDFをOCR処理中… '+pageNo+'/'+pdf.numPages+'ページ');
-        const page=await pdf.getPage(pageNo);
-        const viewport=page.getViewport({scale:1.8});
-        const canvas=document.createElement('canvas');
-        const ctx=canvas.getContext('2d',{willReadFrequently:true});
-        canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);
-        await page.render({canvasContext:ctx,viewport}).promise;
-        const result=await window.Tesseract.recognize(canvas,'jpn+eng',{
-          logger:m=>{if(m?.status==='recognizing text')progress('スキャンPDFをOCR処理中… '+pageNo+'/'+pdf.numPages+'ページ（'+Math.round((m.progress||0)*100)+'%）');}
-        });
-        const text=String(result?.data?.text||'').trim();
-        if(text)ocr+='\n【PDF '+pageNo+'ページ OCR】\n'+text;
-        canvas.width=1;canvas.height=1;
+      progress('PDF '+totalPages+'ページを確認しました。読み取りを開始します…');
+
+      const pageResults=[];
+      let textPages=0,ocrPages=0,failedPages=0;
+      let ocrWorker=null;
+      let currentOcrPage=0;
+
+      function cleanOcrText(value,ocrData){
+        const raw=String(value||'')
+          .replace(/\r\n/g,'\n')
+          .replace(/\r/g,'\n')
+          .replace(/\u3000/g,' ')
+          .replace(/[ \t]+$/gm,'');
+
+        const symbolOnly=/^[\s|｜¦‖_＿=＝~〜～^＾`｀'"“”‘’・･:：;；,.，．。!！?？\-‐‑‒–—―ー─━/\\()（）\[\]［］{}｛｝<>＜＞【】「」『』〔〕〈〉《》○〇●◎△▲▽▼□■◇◆☆★✓✔☑→←↑↓※＊*＋+]+$/;
+
+        function countMatches(text,re){
+          const m=String(text||'').match(re);
+          return m?m.length:0;
+        }
+
+        function looksLikeOcrNoise(text,confidence){
+          const line=String(text||'').trim();
+          if(!line)return true;
+          const compact=line.replace(/\s/g,'');
+          if(!compact)return true;
+
+          const jp=countMatches(compact,/[ぁ-んァ-ヶ一-龯々]/g);
+          const latin=countMatches(compact,/[A-Za-z]/g);
+          const digits=countMatches(compact,/[0-9]/g);
+          const noisySymbols=countMatches(compact,/[|｜¦‖\[\]{}<>_=~^`$#@\\/]/g);
+          const shortLatinTokens=(line.match(/\b[A-Za-z]{1,3}\b/g)||[]).length;
+          const len=compact.length;
+
+          // まず医療・介護で使う代表的な略語は保持する。
+          if(/\b(?:ADL|IADL|MMSE|HDS-?R|SpO2|HbA1c|BMI|BPSD|JCS|GCS|ROM|PT|OT|ST|BP)\b/i.test(line))return false;
+
+          // 数値・単位として意味がある行は保持する。
+          if(digits>0 && /(?:%|％|mg|g|kg|cm|mm|mL|ml|回|日|月|年|分|秒|点|度|mmHg|mg\/dL)/i.test(line)
+             && noisySymbols < Math.max(4,len*0.4))return false;
+
+          // 長い罫線、同じ記号・文字の異常な連続。
+          if(/([ー―─━＿_=＝\-])\1{5,}/.test(line))return true;
+          if(/([ぁ-んァ-ヶA-Za-z])\1{7,}/.test(line))return true;
+          if(/(?:[ー―─━＿_=＝\-]{3,}){2,}/.test(line))return true;
+
+          // 表の罫線を文字と誤認した「aw | ow | mm | ...」型。
+          if(jp===0 && shortLatinTokens>=3 && noisySymbols>=1)return true;
+          if(jp===0 && /(?:\b[A-Za-z]{1,4}\b\s*[\[\]|｜/\\+\-]*){3,}/.test(line))return true;
+
+          // 「HAR 6 JiE COTE」「ST7 — E」「3 EEAEER」等のランダム英数字。
+          if(jp===0 && latin>=2 && digits>=1 && /^[A-Za-z0-9\s|｜_\-—–=~^`'"“”‘’.,:;・･/\\()[\]{}<>＜＞+*#@!?！？…]+$/.test(line))return true;
+          if(jp===0 && latin>=4 && len<=24 && !/^[A-Za-z]{2,}(?:\s+[A-Za-z]{2,}){0,3}$/.test(line))return true;
+
+          // 日本語が少量しかなく、英字・数字・記号が主体の混在ノイズ。
+          if(jp<=2 && latin>=4 && (latin+digits+noisySymbols)>len*0.55)return true;
+          if(jp<=3 && latin>=6 && noisySymbols>=1)return true;
+
+          // カタカナと英字が不自然に混ざるOCR崩れ。
+          const kata=countMatches(compact,/[ァ-ヶー]/g);
+          if(kata>0 && latin>=2 && jp<=5 && noisySymbols>=1)return true;
+
+          // 低信頼度の英数字主体の行。
+          if(Number.isFinite(confidence) && confidence<35 && jp<=1 && latin>=3)return true;
+
+          // 日本語が全くなく、短い英字断片だけの行は原則除外。
+          if(jp===0 && latin>=2 && len<18 && !/\b(?:ADL|IADL|MMSE|HDS-?R|SpO2|HbA1c|BMI|BPSD|JCS|GCS|ROM|PT|OT|ST|BP)\b/i.test(line))return true;
+
+          return false;
+        }
+
+        const lineObjects=Array.isArray(ocrData?.lines)&&ocrData.lines.length
+          ? ocrData.lines.map(x=>({text:String(x?.text||''),confidence:Number(x?.confidence)}))
+          : raw.split('\n').map(text=>({text,confidence:NaN}));
+
+        const lines=[];
+        for(const obj of lineObjects){
+          let line=String(obj.text||'').replace(/[ \t]{2,}/g,' ').trim();
+          if(!line)continue;
+
+          if(symbolOnly.test(line) && line.length<=40)continue;
+          if(line.length===1 && !/[0-9A-Za-zぁ-んァ-ヶ一-龯]/.test(line))continue;
+
+          // 行頭・行末の罫線記号を除去。
+          line=line
+            .replace(/^[|｜¦‖_＿=＝~〜～^＾`｀・･:：;；,.，．\-‐‑‒–—―─━]+\s*/,'')
+            .replace(/\s*[|｜¦‖_＿=＝~〜～^＾`｀・･:：;；,.，．\-‐‑‒–—―─━]+$/,'')
+            .trim();
+          if(!line)continue;
+
+          // 連続する短い英字断片＋罫線記号を除去してから再判定。
+          line=line
+            .replace(/^(?:(?:[A-Za-z]{1,3}|[0-9]{1,2})\s*[\[\]|｜/\\]+\s*){3,}/,'')
+            .replace(/(?:(?:[A-Za-z]{1,3}|[0-9]{1,2})\s*[\[\]|｜/\\]+\s*){3,}$/,'')
+            .trim();
+          if(!line || looksLikeOcrNoise(line,obj.confidence))continue;
+
+          lines.push(line);
+        }
+        return lines.join('\n').replace(/\n{3,}/g,'\n\n').trim();
       }
-      if(!ocr.trim())throw new Error('PDFは開けましたが、文字情報を取得できませんでした。');
-      return {text:ocr.trim(),detail:'スキャンPDFをOCR処理して '+pdf.numPages+'ページを確認'};
+
+
+      function cropOcrCanvas(source,left,top,width,height){
+        const out=document.createElement('canvas');
+        out.width=Math.max(1,Math.round(width));
+        out.height=Math.max(1,Math.round(height));
+        const c=out.getContext('2d',{willReadFrequently:true,alpha:false});
+        c.fillStyle='#fff';
+        c.fillRect(0,0,out.width,out.height);
+        c.drawImage(
+          source,
+          Math.round(left),Math.round(top),Math.round(width),Math.round(height),
+          0,0,out.width,out.height
+        );
+        return out;
+      }
+
+      // OCR専用画像を作る。長い表罫線を除去し、文字と表線の混同を減らす。
+      function prepareOcrCanvas(source){
+        const out=document.createElement('canvas');
+        out.width=source.width;
+        out.height=source.height;
+        const ctx=out.getContext('2d',{willReadFrequently:true,alpha:false});
+        ctx.drawImage(source,0,0);
+        let img;
+        try{img=ctx.getImageData(0,0,out.width,out.height);}catch(e){return out;}
+        const d=img.data,w=out.width,h=out.height;
+
+        // グレースケール化＋軽い二値化。薄い文字を消し過ぎない閾値にする。
+        const dark=new Uint8Array(w*h);
+        for(let i=0,p=0;i<d.length;i+=4,p++){
+          const g=Math.round(d[i]*0.299+d[i+1]*0.587+d[i+2]*0.114);
+          const v=g<205?0:255;
+          d[i]=d[i+1]=d[i+2]=v;
+          d[i+3]=255;
+          dark[p]=v===0?1:0;
+        }
+
+        // 横罫線：行の70%以上が黒い場合のみ除去する。
+        const hLines=[];
+        for(let y=0;y<h;y++){
+          let n=0,base=y*w;
+          for(let x=0;x<w;x++)n+=dark[base+x];
+          if(n>w*0.70)hLines.push(y);
+        }
+        // 縦罫線：列の65%以上が黒い場合のみ除去する。
+        const vLines=[];
+        for(let x=0;x<w;x++){
+          let n=0;
+          for(let y=0;y<h;y++)n+=dark[y*w+x];
+          if(n>h*0.65)vLines.push(x);
+        }
+
+        const whitePixel=(x,y)=>{
+          if(x<0||x>=w||y<0||y>=h)return;
+          const i=(y*w+x)*4;
+          d[i]=d[i+1]=d[i+2]=255; d[i+3]=255;
+        };
+        hLines.forEach(y=>{
+          for(let yy=Math.max(0,y-1);yy<=Math.min(h-1,y+1);yy++){
+            for(let x=0;x<w;x++)whitePixel(x,yy);
+          }
+        });
+        vLines.forEach(x=>{
+          for(let xx=Math.max(0,x-1);xx<=Math.min(w-1,x+1);xx++){
+            for(let y=0;y<h;y++)whitePixel(xx,y);
+          }
+        });
+
+        ctx.putImageData(img,0,0);
+        return out;
+      }
+
+      async function recognizeOcrCanvas(canvas,pageNo,label){
+        const worker=await getOcrWorker();
+        progress('PDF '+pageNo+'/'+totalPages+'ページをOCR処理中'+(label?'（'+label+'）':'')+'…');
+        let result;
+        if(worker&&typeof worker.recognize==='function'){
+          try{
+            if(typeof worker.setParameters==='function'){
+              await worker.setParameters({
+                preserve_interword_spaces:'1',
+                tessedit_pageseg_mode:'6'
+              });
+            }
+          }catch(e){}
+          result=await worker.recognize(canvas);
+        }else{
+          result=await window.Tesseract.recognize(canvas,'jpn+eng',{
+            logger:m=>{
+              if(m?.status==='recognizing text'){
+                progress('PDF '+pageNo+'/'+totalPages+'ページをOCR処理中'+(label?'（'+label+'）':'')+'… '+Math.round((m.progress||0)*100)+'%');
+              }
+            }
+          });
+        }
+        return cleanOcrText(result?.data?.text||'',result?.data||null);
+      }
+
+      async function getOcrWorker(){
+        if(ocrWorker)return ocrWorker;
+        requireLibrary('Tesseract','スキャンPDFのOCR機能が利用できません。インターネット接続を確認してページを再読み込みしてください。');
+        progress('OCR機能を準備しています…');
+        if(typeof window.Tesseract.createWorker==='function'){
+          ocrWorker=await window.Tesseract.createWorker('jpn+eng',window.Tesseract.OEM?.LSTM_ONLY,{
+            logger:m=>{
+              if(m?.status==='recognizing text'&&currentOcrPage){
+                progress('PDF '+currentOcrPage+'/'+totalPages+'ページをOCR処理中… '+Math.round((m.progress||0)*100)+'%');
+              }
+            }
+          });
+          try{
+            if(typeof ocrWorker.setParameters==='function'){
+              await ocrWorker.setParameters({
+                preserve_interword_spaces:'1'
+              });
+            }
+          }catch(e){console.warn('OCR設定の一部を適用できませんでした。',e);}
+          return ocrWorker;
+        }
+        return null;
+      }
+
+      try{
+        for(let pageNo=1;pageNo<=totalPages;pageNo++){
+          progress('PDF '+pageNo+'/'+totalPages+'ページを確認中…');
+          let page;
+          try{
+            page=await pdf.getPage(pageNo);
+          }catch(error){
+            failedPages++;
+            pageResults.push('━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n（このページを開けませんでした。全体確認時に元資料で確認してください。）');
+            continue;
+          }
+
+          // 文字PDFなら埋め込み文字を優先する。
+          let pageText='';
+          try{
+            const content=await page.getTextContent();
+            const items=Array.isArray(content?.items)?content.items:[];
+            pageText=items.map(item=>String(item?.str||'')).join(' ').replace(/[ \t]{2,}/g,' ').trim();
+          }catch(e){pageText='';}
+
+          if(pageText){
+            pageResults.push('━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n'+pageText);
+            textPages++;
+            await new Promise(r=>setTimeout(r,0));
+            continue;
+          }
+
+          // スキャンPDFは同じOCRワーカーを全ページで再利用する。
+          currentOcrPage=pageNo;
+          progress('PDF '+pageNo+'/'+totalPages+'ページをOCR処理中…');
+          try{
+            const viewport=page.getViewport({scale:2.35});
+            const canvas=document.createElement('canvas');
+            const ctx=canvas.getContext('2d',{willReadFrequently:true,alpha:false});
+            canvas.width=Math.max(1,Math.ceil(viewport.width));
+            canvas.height=Math.max(1,Math.ceil(viewport.height));
+            if(ctx){
+              ctx.fillStyle='#fff';
+              ctx.fillRect(0,0,canvas.width,canvas.height);
+            }
+            await page.render({canvasContext:ctx,viewport,background:'white'}).promise;
+
+            let ocrText='';
+
+            if(pageNo===1){
+              // 1ページ目は「上部概要」「左欄」「右欄」を分割してOCRする。
+              // 認定情報の左右2列表を1枚として読むと、行が交差して文字化けしやすいため。
+              const W=canvas.width,H=canvas.height;
+              const splitY=Math.round(H*0.135);
+              const splitX=Math.round(W*0.515);
+
+              const header=prepareOcrCanvas(cropOcrCanvas(canvas,0,0,W,Math.min(H,splitY+Math.round(H*0.015))));
+              const left=prepareOcrCanvas(cropOcrCanvas(canvas,0,splitY,splitX,H-splitY));
+              const right=prepareOcrCanvas(cropOcrCanvas(canvas,splitX,splitY,W-splitX,H-splitY));
+
+              const headerText=await recognizeOcrCanvas(header,pageNo,'上部概要');
+              const leftText=await recognizeOcrCanvas(left,pageNo,'左側');
+              const rightText=await recognizeOcrCanvas(right,pageNo,'右側');
+
+              const parts=[];
+              if(headerText)parts.push('【上部概要】\n'+headerText);
+              if(leftText)parts.push('【左側】\n'+leftText);
+              if(rightText)parts.push('【右側】\n'+rightText);
+              ocrText=parts.join('\n\n').trim();
+
+              header.width=1;header.height=1;
+              left.width=1;left.height=1;
+              right.width=1;right.height=1;
+            }else{
+              // その他のページも長い表罫線を除去した画像をOCRする。
+              const prepared=prepareOcrCanvas(canvas);
+              ocrText=await recognizeOcrCanvas(prepared,pageNo,'');
+              prepared.width=1;prepared.height=1;
+            }
+            if(ocrText){
+              pageResults.push('━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n'+ocrText);
+              ocrPages++;
+            }else{
+              failedPages++;
+              pageResults.push('━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n（文字を読み取れませんでした。元資料でこのページを確認してください。）');
+            }
+            canvas.width=1;canvas.height=1;
+          }catch(error){
+            failedPages++;
+            console.warn('PDF '+pageNo+'ページのOCRに失敗しました。',error);
+            pageResults.push('━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n（OCR処理に失敗しました。元資料でこのページを確認してください。）');
+          }
+          await new Promise(r=>setTimeout(r,20));
+        }
+      }finally{
+        currentOcrPage=0;
+        if(ocrWorker&&typeof ocrWorker.terminate==='function'){
+          try{await ocrWorker.terminate();}catch(e){}
+        }
+      }
+
+      const output=pageResults.join('\n\n').trim();
+      if(!output)throw new Error('PDFは開けましたが、文字情報を取得できませんでした。');
+
+      const successPages=textPages+ocrPages;
+      progress('PDF '+totalPages+'ページの読み取り完了（'+successPages+'/'+totalPages+'ページ取得）');
+      return {
+        text:output,
+        detail:'PDF '+totalPages+'ページを確認・取得 '+successPages+'ページ'+(failedPages?'・要確認 '+failedPages+'ページ':'')
+      };
     }
 
     async function extractExcel(file,progress){
@@ -3080,6 +3454,7 @@ h1.bo-white-title {
 
     window.removePreventiveFile=function(index){
       if(index<0||index>=preventiveFiles.length)return;
+      hidePreventiveAnonymizedReview();
       preventiveFiles.splice(index,1);renderFileList();updateLoadButton();
       $('preventivePromptBox').style.display='none';
       const privacy=$('preventivePrivacyResult');if(privacy){privacy.className='privacy-result';privacy.textContent='資料を選択すると、ここにチェック結果が表示されます。';}
@@ -3088,17 +3463,47 @@ h1.bo-white-title {
     };
 
     window.addPreventiveFiles=function(fileList){
-      const files=Array.from(fileList||[]);if(!files.length)return;
-      files.forEach(file=>preventiveFiles.push({file,kind:kindOf(file),text:'',loaded:false,loading:false,error:null,progress:'',detail:'',charCount:0}));
+      let files=Array.from(fileList||[]);if(!files.length)return;
+      hidePreventiveAnonymizedReview();
+
+      // 資料は最大3件。各選択ボタンから1件ずつ追加する。
+      const remaining=Math.max(0,3-preventiveFiles.length);
+      if(remaining===0){
+        setStatus('⚠️ 資料は3つまで選択できます。','alert');
+        setFileStatus('📄 3件の資料を選択済みです。');
+        return;
+      }
+      files=files.slice(0,remaining);
+
+      // 複数資料を同時選択できる。まったく同じファイルを重ねて選んだ場合だけ重複登録を防ぐ。
+      const existingKeys=new Set(preventiveFiles.map(item=>[
+        String(item.file?.name||''),
+        Number(item.file?.size||0),
+        Number(item.file?.lastModified||0)
+      ].join('\u0001')));
+      let added=0,skipped=0;
+      files.forEach(file=>{
+        const key=[String(file?.name||''),Number(file?.size||0),Number(file?.lastModified||0)].join('\u0001');
+        if(existingKeys.has(key)){skipped++;return;}
+        existingKeys.add(key);
+        preventiveFiles.push({file,kind:kindOf(file),text:'',loaded:false,loading:false,error:null,progress:'',detail:'',charCount:0});
+        added++;
+      });
+      if(!added){
+        setStatus('⚠️ 選択した資料はすでに登録されています。','alert');
+        setFileStatus('📄 現在 '+preventiveFiles.length+'件の資料を選択しています。');
+        return;
+      }
       renderFileList();updateLoadButton();$('preventivePromptBox').style.display='none';
-      setStatus('📄 '+preventiveFiles.length+'件の資料を選択しました。\nまだ中身は解析していません。\n「📥 読み込み開始」を押してください。');
-      setFileStatus('📄 資料を選択済みです。読み込み開始ボタンを押すと、実際に中身を解析します。');
+      setStatus('📄 '+preventiveFiles.length+'件の資料を選択しました。\n資料は1件ずつ順番に読み取ります。\n「📥 読み込み開始」を押してください。'+(skipped?'\n※同じ資料 '+skipped+'件は重複登録しませんでした。':''));
+      setFileStatus('📄 '+preventiveFiles.length+'件の資料を選択済みです。読み込み開始ボタンを押すと、資料ごとに順番に中身を解析します。');
     };
 
     window.loadPreventiveFiles=async function(){
       if(!preventiveFiles.length){setStatus('⚠️ 先に資料を選択してください。','alert');return;}
+      hidePreventiveAnonymizedReview();
       updateSimpleLoadProgress(0,'資料を読み取っています…','読み込みを開始します。',true);
-      preventiveFiles.forEach(item=>{item.loaded=false;item.loading=false;item.error=null;item.text='';item.progress='';item.detail='';item.charCount=0;});
+      preventiveFiles.forEach(item=>{item.loaded=false;item.loading=false;item.error=null;item.text='';item.originalText='';item.progress='';item.detail='';item.charCount=0;});
       $('preventivePromptBox').style.display='none';
       const btn=$('preventiveLoadButton');if(btn){btn.dataset.busy='1';btn.style.opacity='.7';btn.style.cursor='wait';}updateLoadButton();renderFileList();
       let success=0,failed=0;const errors=[];
@@ -3110,7 +3515,7 @@ h1.bo-white-title {
           const result=await extractText(item.file,message=>updateProgress(i,preventiveFiles.length,item.file,message));
           const text=String(result?.text||'').trim();
           if(!text)throw new Error('資料から確認可能な文字情報を取得できませんでした。');
-          item.text=text;item.charCount=text.length;item.detail=result.detail||'';item.loaded=true;item.loading=false;item.error=null;item.progress='';success++;
+          item.text=text;item.originalText=text;item.charCount=text.length;item.detail=result.detail||'';item.loaded=true;item.loading=false;item.error=null;item.progress='';success++;
         }catch(error){
           item.text='';item.charCount=0;item.detail='';item.loaded=false;item.loading=false;item.error=error?.message||'資料を読み込めませんでした。';errors.push('・'+item.file.name+'：'+item.error);failed++;
         }
@@ -3129,6 +3534,24 @@ h1.bo-white-title {
       }
     };
 
+
+    window.resetPreventiveWorkflowFromStart=function(){
+      hidePreventiveAnonymizedReview();
+      preventiveFiles.splice(0,preventiveFiles.length);
+      window.preventiveLastStrongHits=[];
+      window.preventiveConfirmedNonPrivacy=[];
+      renderFileList();
+      updateLoadButton();
+      const input=$('preventiveFileInput');if(input)input.value='';
+      const promptBox=$('preventivePromptBox');if(promptBox)promptBox.style.display='none';
+      const privacy=$('preventivePrivacyResult');
+      if(privacy){privacy.className='privacy-result';privacy.textContent='資料を選択すると、ここにチェック結果が表示されます。';}
+      const nextNote=$('preventiveNextNote');if(nextNote)nextNote.classList.remove('show');
+      setFileStatus('まだ資料が選択されていません。');
+      setStatus('資料を選択してください。');
+      updateSimpleLoadProgress(0,'資料を選んでください','新しい資料を選ぶと、最初から読み取り直します。',false);
+      return true;
+    };
 
     window.arePreventiveFilesReady=function(){
       return preventiveFiles.length>0 && preventiveFiles.every(item=>item.loaded && String(item.text||'').trim());
@@ -3154,141 +3577,656 @@ h1.bo-white-title {
         return;
       }
 
-      // 🔴 強い警告・次工程停止
-      // 強い警告は「個人・関係者・保険情報等を直接特定できる情報」に限定する。
-      // 続柄（妻・夫・兄・妹・長女等）、病名、検査値、要介護度、ADL等は警告対象にしない。
-      const strongPatterns=[
-        ['本人の氏名らしき記載',/(?<![一-龥々ぁ-んァ-ヶー])(?:利用者氏名|利用者名|本人氏名|本人名|氏名|名前)\s*[:：]\s*(?!本人|なし|不明|未記載)[一-龥々ぁ-んァ-ヶー]{2,12}(?:[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12})?/g],
-        ['主治医・医師の氏名らしき記載',/(?:主治医氏名|主治医名|担当医氏名|担当医名|医師氏名|医師名)\s*[:：]\s*(?!なし|不明|未定|未記載)[一-龥々ぁ-んァ-ヶー]{2,12}(?:[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12})?/g],
-        ['主治医・医師の氏名らしき記載',/(?:主治医|担当医)\s*[:：]\s*(?!なし|不明|未定|未記載|往診|受診|診察|病院|医院|クリニック|診療所)[一-龥々ぁ-んァ-ヶー]{2,12}[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12}/g],
-        ['家族・キーパーソンの氏名らしき記載',/(?:キーパーソン氏名|キーパーソン名|家族氏名|家族名|妻氏名|夫氏名|配偶者氏名|長女氏名|次女氏名|三女氏名|長男氏名|次男氏名|三男氏名|娘氏名|息子氏名|兄氏名|弟氏名|姉氏名|妹氏名)\s*[:：]\s*(?!なし|不明|未定|未記載)[一-龥々ぁ-んァ-ヶー]{2,12}(?:[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12})?/g],
-        ['家族・キーパーソンの氏名らしき記載',/(?:妻|夫|配偶者|長女|次女|三女|長男|次男|三男|娘|息子|兄|弟|姉|妹|キーパーソン)\s*[:：]\s*[一-龥々ぁ-んァ-ヶー]{2,12}[ \u3000]+[一-龥々ぁ-んァ-ヶー]{1,12}/g],
-        ['住所らしき記載',/(?:住所|現住所|所在地|居住地)\s*[:：]\s*[^\n]{3,}/g],
-        ['電話番号らしき記載',/(?:0\d{1,4}[-ー－]\d{1,4}[-ー－]\d{3,4}|0\d{9,10})/g],
-        ['郵便番号らしき記載',/(?<![0-9０-９\-ー－])〒?\s*\d{3}[-ー－]\d{4}(?![0-9０-９\-ー－])/g],
-        ['メールアドレス',/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi],
-        ['介護保険被保険者番号等',/(?:介護保険被保険者番号|被保険者番号|保険者番号|認定番号)\s*[:：]?\s*[0-9０-９\-ー－]{5,}/g],
-        ['各種保険証・受給者証等の番号',/(?:健康保険証番号|健康保険被保険者番号|医療保険被保険者番号|後期高齢者医療被保険者番号|後期高齢者被保険者番号|受給者証番号|受給者番号|公費負担者番号|公費受給者番号|身体障害者手帳番号|障害者手帳番号|療育手帳番号|精神障害者保健福祉手帳番号)\s*[:：]?\s*[A-ZＡ-Ｚ0-9０-９\-ー－]{4,}/gi],
-        ['マイナンバー・個人番号',/(?:マイナンバー|個人番号)\s*[:：]?\s*[0-9０-９]{12}/g],
-        ['生年月日らしき記載',/(?:生年月日|誕生日|出生年月日)\s*[:：]\s*[^\n]{4,}/g],
-        ['医療機関名らしき記載',/[一-龥々ぁ-んァ-ヶーA-Za-z0-9０-９・\-ー－]{2,30}(?:病院|医院|クリニック|診療所|医療センター)/g]
-      ];
-
-      // 🟠 確認推奨
-      // 施設名・事業所名は現時点では確認推奨。続柄・病名・検査値等はここにも含めない。
-      const advisoryPatterns=[
-        ['施設・事業所名らしき記載',/(?:施設名|事業所名)\s*[:：]\s*[^\n]{2,60}/g]
-      ];
-
+      /*
+       * 誤検出を減らすための保守的な個人情報チェック。
+       * 「漢字＋空白＋漢字」を無条件に氏名とみなす処理は行わない。
+       * Excelでは「利用者名」「ケアマネ名」等の項目と隣接するセルを優先して判定する。
+       * 病名・ADL・服薬・介助内容等の支援に必要な情報は匿名化対象にしない。
+       */
       const strongHits=[];
-      const advisoryHits=[];
+      const nameExcludeWords=new Set([
+        '現在','状況','課題','背景','原因','訪問','場所','項目','参考','健康','状態','利用者','家族','本人','主治医','医師','先生','担当','介護','支援','看護','医療','認定','結果','サービス','同意','方向性','意向','自立','見守り','施設','病院','医院','通所','居宅','福祉','用具','氏名','名前','生年月日','住所','電話','番号','年齢','男性','女性','長女','次女','三女','長男','次男','三男','妻','夫','兄','弟','姉','妹','食事','排泄','入浴','移動','歩行','服薬','受診','治療','症状','認知','機能','介助','全介助','一部介助','要介護','要支援','疾患','既往','高血圧','糖尿病','認知症','骨折','脳梗塞','心不全','腎不全','疼痛','褥瘡','継続','実施','開始','終了','予定','確認','評価','目標','ケアプラン','アセスメント','退院前カンファレンス','司会','参加者','病院側','在宅側','職種','会議出席','情報提供','聞き取り日','他スタッフ','薬剤師','栄養士','リハビリ','看護の視点','リハビリの視点','禁忌事項','予後','予測','まとめ'
+      ]);
 
-      // 検出した「種類」だけでなく、実際の文字・行番号・前後の文章も保持する。
-      // ここで扱う情報は、すでにブラウザ内へ読み込まれた文字情報のみ。外部送信は行わない。
-      function getPrivacyLineInfo(text,index){
-        const before=String(text||'').slice(0,index);
-        const lineNumber=before.split('\n').length;
-        const lines=String(text||'').split('\n');
-        const currentIndex=Math.max(0,lineNumber-1);
-        const context=[];
-        if(currentIndex>0 && lines[currentIndex-1]?.trim()) context.push(lines[currentIndex-1].trim());
-        if(lines[currentIndex]?.trim()) context.push(lines[currentIndex].trim());
-        if(currentIndex+1<lines.length && lines[currentIndex+1]?.trim()) context.push(lines[currentIndex+1].trim());
-        let contextText=context.join(' ／ ').replace(/\s+/g,' ').trim();
-        if(contextText.length>180) contextText=contextText.slice(0,180)+'…';
-        return {lineNumber,contextText};
+      function privacyContext(text,index){
+        const source=String(text||'');
+        const before=source.slice(0,index);
+        const lineNo=before.split('\n').length;
+        const lines=source.split('\n');
+        const i=Math.max(0,lineNo-1);
+        const parts=[];
+        if(i>0&&lines[i-1]?.trim())parts.push(lines[i-1].trim());
+        if(lines[i]?.trim())parts.push(lines[i].trim());
+        if(i+1<lines.length&&lines[i+1]?.trim())parts.push(lines[i+1].trim());
+        let contextText=parts.join(' ／ ').replace(/\s+/g,' ').trim();
+        if(contextText.length>220)contextText=contextText.slice(0,220)+'…';
+        return {lineNumber:lineNo,contextText};
       }
 
-      function collectPrivacyHits(item,patterns,target){
-        const sourceText=String(item.text||'');
-        patterns.forEach(pattern=>{
-          const label=pattern[0];
-          const baseRegex=pattern[1];
-          const flags=baseRegex.flags.includes('g')?baseRegex.flags:baseRegex.flags+'g';
-          const regex=new RegExp(baseRegex.source,flags);
-          let match;
-          let safety=0;
-          while((match=regex.exec(sourceText))!==null && safety<100){
-            safety++;
-            const detected=String(match[0]||'').trim();
-            const info=getPrivacyLineInfo(sourceText,match.index);
-            target.push({
-              fileName:item.file.name,
-              label,
-              detected,
-              lineNumber:info.lineNumber,
-              contextText:info.contextText
-            });
-            if(match[0]==='') regex.lastIndex++;
-          }
+      function isPlaceholder(value){
+        return /〇〇|匿名化済み|担当CM|主治医|医療機関[A-ZＡ-Ｚ]?|施設[A-ZＡ-Ｚ]|事業所[A-ZＡ-Ｚ]/.test(String(value||''));
+      }
+
+      function cleanNameValue(value){
+        return String(value||'').trim().replace(/[\s　]+$/g,'');
+      }
+
+      function isPlausiblePersonName(value){
+        let v=cleanNameValue(value);
+        if(!v||isPlaceholder(v))return false;
+
+        // 様・氏・さん、氏名欄、職種名などテンプレート上の語だけでは個人名にしない。
+        if(/^(?:様|氏|さん|氏名|名前|職種|職種氏名|病院側|在宅側|司会|参加者|本人|家族|医師|主治医|MSW|NS|PT|OT|ST|CM|薬剤師|栄養士|他スタッフ)$/i.test(v.replace(/[\s　()（）]/g,'')))return false;
+
+        v=v.replace(/(?:様|さん|氏)$/,'').trim();
+        if(/[\t\n:：,，、。\/／→()（）\[\]【】]/.test(v))return false;
+        const compact=v.replace(/[\s　]/g,'');
+        if(compact.length<2||compact.length>12)return false;
+        if(!/^[一-龥々ぁ-んァ-ヶー]+$/.test(compact))return false;
+        if(!/[一-龥々]/.test(compact))return false;
+        if(nameExcludeWords.has(compact))return false;
+
+        // 帳票・OCR由来の見出しや結果欄を氏名と誤認しない。
+        // 例：「調査結果 前回結果」「員査結果 前回結果」など。
+        if(/(?:結果|前回|今回|調査|員査|判定|評価|項目|内容|所見|経過|状況|状態|点数|合計|時間|回数|年月日)/.test(compact))return false;
+
+        return true;
+      }
+
+      function addHit(item,label,kind,detected,index,groups=[]){
+        const value=String(detected||'').trim();
+        if(!value||isPlaceholder(value))return;
+        const info=privacyContext(item.text,index);
+        strongHits.push({fileName:item.file.name,label,kind,detected:value,lineNumber:info.lineNumber,contextText:info.contextText,groups});
+      }
+
+      function nextNonEmptyCell(cells,start){
+        for(let i=start;i<cells.length;i++)if(String(cells[i]||'').trim())return {value:String(cells[i]).trim(),index:i};
+        return null;
+      }
+
+      function detectStructuredRows(item){
+        const source=String(item.text||'');
+        let offset=0;
+        source.split('\n').forEach(line=>{
+          const content=line.replace(/^【[^】]+】\s*/,'');
+          const cells=content.split('\t').map(v=>String(v||'').trim());
+          cells.forEach((cell,idx)=>{
+            const label=cell.replace(/[\s　]/g,'');
+            const next=nextNonEmptyCell(cells,idx+1);
+            if(!next)return;
+            const nextValue=next.value;
+            const localPos=Math.max(0,line.indexOf(nextValue));
+            const absoluteIndex=offset+localPos;
+
+            if(/^(?:利用者名|利用者氏名|本人氏名|氏名|名前)$/.test(label)&&isPlausiblePersonName(nextValue)){
+              addHit(item,'本人の氏名', 'person', nextValue, absoluteIndex);
+            }else if(/^(?:ケアマネ名|ケアマネジャー名|介護支援専門員名|担当ケアマネ名|担当者名)$/.test(label)&&isPlausiblePersonName(nextValue)){
+              addHit(item,'担当者氏名', 'caremanager', nextValue, absoluteIndex);
+            }else if(/^(?:主治医|主治医名|担当医|担当医名|医師氏名)$/.test(label)&&isPlausiblePersonName(nextValue)){
+              addHit(item,'主治医・医師氏名', 'doctor', nextValue, absoluteIndex);
+            }else if(/^(?:妻|夫|配偶者|長女|次女|三女|長男|次男|三男|娘|息子|兄|弟|姉|妹|キーパーソン)$/.test(label)&&isPlausiblePersonName(nextValue)){
+              addHit(item,'家族・キーパーソン氏名', 'family', label+' '+nextValue, absoluteIndex,[label,nextValue]);
+            }else if(/^(?:生年月日|誕生日|出生年月日)$/.test(label)){
+              const m=nextValue.match(/(?:(?:明治|大正|昭和|平成|令和)\s*\d{1,2}\s*年\s*\d{1,2}\s*月\s*\d{1,2}\s*日|(?:19|20)\d{2}[\/\-.年]\s*\d{1,2}[\/\-.月]\s*\d{1,2}(?:日)?)/);
+              if(m)addHit(item,'生年月日', 'birth', m[0], absoluteIndex+Math.max(0,nextValue.indexOf(m[0])));
+            }else if(/^(?:住所|現住所|居住地|所在地)$/.test(label)&&nextValue&&!/^〇〇/.test(nextValue)){
+              addHit(item,'住所', 'address', nextValue, absoluteIndex);
+            }
+          });
+          offset+=line.length+1;
         });
+      }
+
+      function collectRegex(item,label,kind,regex,filter){
+        const source=String(item.text||'');
+        const flags=regex.flags.includes('g')?regex.flags:regex.flags+'g';
+        const re=new RegExp(regex.source,flags);
+        let m,safety=0;
+        while((m=re.exec(source))!==null&&safety<300){
+          safety++;
+          let detected=String(m[1]||m[0]||'').trim();
+          let idx=m.index+(m[0].indexOf(detected)>=0?m[0].indexOf(detected):0);
+          if((!filter||filter(detected,m,source))&&!isPlaceholder(detected))addHit(item,label,kind,detected,idx,m.slice(1));
+          if(m[0]==='')re.lastIndex++;
+        }
       }
 
       preventiveFiles.forEach(item=>{
-        collectPrivacyHits(item,strongPatterns,strongHits);
-        collectPrivacyHits(item,advisoryPatterns,advisoryHits);
+        detectStructuredRows(item);
+
+        // 単独で記載された「姓＋空白＋名」を保守的に氏名候補として検出する。
+        // 例：渕上 利嘉、上村 孝介
+        // 長い文章や業務用語は除外して、以前の大量誤検出を防ぐ。
+        {
+          const source=String(item.text||'');
+          let offset=0;
+          source.split('\n').forEach(line=>{
+            const original=String(line||'').trim();
+            const normalized=original
+              .replace(/^━━━━━━━━━━━━━━━━━━$/,'')
+              .replace(/^【\d+\s*\/\s*\d+ページ】$/,'')
+              .trim();
+
+            if(normalized && normalized.length<=20
+               && !/[：:,，、。\/／→()（）\[\]【】|｜]/.test(normalized)
+               && !/(?:現在|状況|課題|背景|原因|訪問|場所|項目|参考|健康|状態|利用者|家族|本人|主治医|医師|担当|介護|支援|看護|医療|認定|結果|サービス|方向性|意向|自立|見守り|施設|病院|医院|通所|居宅|福祉|用具|生年月日|住所|電話|番号|年齢|男性|女性|食事|排泄|入浴|移動|歩行|服薬|受診|治療|症状|認知|機能|介助|要介護|要支援|疾患|既往|目標|ケアプラン|アセスメント)/.test(normalized)){
+              const m=normalized.match(/^([一-龥々]{1,4})[ \t　]+([一-龥々ぁ-んァ-ヶー]{1,5})(?:\s*(様|氏))?$/);
+              if(m){
+                const candidate=(m[1]+' '+m[2]+(m[3]||'')).trim();
+                if(isPlausiblePersonName(candidate)){
+                  const pos=Math.max(0,source.indexOf(original,offset));
+                  addHit(item,'氏名','person',candidate,pos);
+                }
+              }
+            }
+            offset+=line.length+1;
+          });
+        }
+
+        // OCR/PDFで「氏名 : 渕上 利嘉」のように同じ行へ出た氏名を直接検出する。
+        collectRegex(item,'本人の氏名','person',
+          /(?:^|[\n\r])\s*(?:氏名|利用者名|利用者氏名|本人氏名|被保険者氏名|対象者氏名)\s*[:：]?\s*((?:[一-龥々]{1,4}[ \t　]+[一-龥々ぁ-んァ-ヶー]{1,5}|[一-龥々]{2,8})(?:様|氏)?)/gm,
+          (d)=>isPlausiblePersonName(d)
+        );
+
+        // OCRでラベル前後に余分な記号が入っても、氏名欄の近傍にある姓名を拾う。
+        collectRegex(item,'本人の氏名','person',
+          /(?:氏名|利用者名|本人氏名|被保険者氏名)[^\n]{0,12}?([一-龥々]{1,4}[ \t　]+[一-龥々ぁ-んァ-ヶー]{1,5})(?=\s|$|様|氏)/g,
+          (d)=>isPlausiblePersonName(d)
+        );
+
+        // 明確な敬称付き氏名。一般語（「利用者様」等）は除外する。
+        collectRegex(item,'氏名らしき記載（敬称付き）','person',/(?<![一-龥々ぁ-んァ-ヶー〇])((?:[一-龥々]{1,5}[ \t　]+[一-龥々ぁ-んァ-ヶー]{1,6}|[一-龥々]{2,8})(?:様|氏))(?![一-龥々ぁ-んァ-ヶー])/g,(d)=>{
+          const base=d.replace(/(?:様|氏)$/,'').replace(/[\s　]/g,'');
+          if(!base || base.length<2)return false;
+          if(/^(?:利用者|本人|患者|家族|皆|お客|対象者|被保険者|参加者|職種|病院側|在宅側)$/.test(base))return false;
+          return isPlausiblePersonName(d)&&!nameExcludeWords.has(base);
+        });
+
+        // 「長女 山田花子」等、続柄が明示された家族氏名。
+        collectRegex(item,'家族・キーパーソン氏名','family',/(?:^|[\s　、。:：])((?:妻|夫|配偶者|長女|次女|三女|長男|次男|三男|娘|息子|兄|弟|姉|妹|キーパーソン)[\s　:：]+(?:[一-龥々]{1,5}[\s　]+[一-龥々ぁ-んァ-ヶー]{1,6}|[一-龥々]{2,10}))/gm,(d)=>{
+          const name=d.replace(/^(?:妻|夫|配偶者|長女|次女|三女|長男|次男|三男|娘|息子|兄|弟|姉|妹|キーパーソン)[\s　:：]+/,'');
+          return isPlausiblePersonName(name);
+        });
+
+        // 「山田医師」「山田先生」など。一般語の「主治医」「担当医師」は除外。
+        collectRegex(item,'医師氏名','doctor',/(?<![一-龥々〇])([一-龥々]{2,8}[\s　]*(?:医師|先生))(?![一-龥々ぁ-んァ-ヶー])/g,(d)=>{
+          const base=d.replace(/[\s　]*(?:医師|先生)$/,'');
+          return isPlausiblePersonName(base)&&!/(?:主治|担当|訪問|看護|医療)$/.test(base);
+        });
+
+        // 「山田ケアマネジャー」等。
+        collectRegex(item,'担当者氏名','caremanager',/(?<![一-龥々〇])([一-龥々]{2,8}[\s　]*(?:ケアマネジャー|介護支援専門員|ケアマネ))(?![一-龥々ぁ-んァ-ヶー])/g,(d)=>{
+          const base=d.replace(/[\s　]*(?:ケアマネジャー|介護支援専門員|ケアマネ)$/,'');
+          return isPlausiblePersonName(base)&&!/^(?:担当|主任)$/.test(base);
+        });
+
+        // 電話・メール・郵便番号など形式が明確なもの。
+        collectRegex(item,'電話番号','phone',/(?<![0-9０-９])((?:0\d{1,4}[\-ー－]\d{1,4}[\-ー－]\d{3,4}|0\d{9,10}))(?![0-9０-９])/g);
+        collectRegex(item,'メールアドレス','email',/([A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,})/gi);
+        collectRegex(item,'郵便番号','postal',/(?<![0-9０-９\-ー－])(〒?\s*\d{3}[\-ー－]\d{4})(?![0-9０-９\-ー－])/g);
+
+        // 住所は「都道府県＋市区町村＋番地等」まで具体的な場合に限定する。
+        collectRegex(item,'住所','address',/((?:東京都|北海道|(?:京都|大阪)府|[一-龥々]{2,3}県)[^\n、。\t]{0,35}(?:市|区|町|村)[^\n、。\t]{0,35}(?:\d|[０-９]|丁目|番地|番|号|マンション|アパート)[^\n、。\t]{0,25})/g);
+
+        // 各種識別番号は、必ず明示ラベルとセットのときだけ検出する。
+        collectRegex(item,'介護保険被保険者番号等','careInsurance',/((?:介護保険被保険者番号|介護保険\s*被保険者番号|被保険者番号|保険者番号|認定番号)\s*[:：]?\s*[A-ZＡ-Ｚ0-9０-９\-ー－]{4,})/gi);
+        collectRegex(item,'医療保険関係番号','medicalInsurance',/((?:健康保険|医療保険|後期高齢者医療)[^\n\t]{0,16}(?:保険者番号|被保険者番号|記号|番号|枝番)\s*[:：]?\s*[A-ZＡ-Ｚ0-9０-９\-ー－]{1,})/gi);
+        collectRegex(item,'各種保険証・受給者証等の番号','medicalInsurance',/((?:受給者証番号|受給者番号|公費負担者番号|公費受給者番号|身体障害者手帳番号|障害者手帳番号|療育手帳番号|精神障害者保健福祉手帳番号)\s*[:：]?\s*[A-ZＡ-Ｚ0-9０-９\-ー－]{2,})/gi);
+        collectRegex(item,'マイナンバー・個人番号','myNumber',/((?:マイナンバー|個人番号)\s*[:：]?\s*[0-9０-９\s\-]{12,20})/g);
+
+        // 医療機関名。文章の助詞まで巻き込まないよう、名称部分を限定する。
+        collectRegex(item,'医療機関名','medicalFacility',/(?<![一-龥々ァ-ヶーA-Za-z0-9０-９・ー\-])([一-龥々ァ-ヶーA-Za-z0-9０-９・ー\-]{2,24}(?:病院|医院|クリニック|診療所|医療センター))/g,(d)=>{
+          return !/(?:近隣|地域|一般|医療機関)$/.test(d)&&!/^(?:病院|医院|クリニック|診療所|医療センター)$/.test(d);
+        });
+
+        // 施設・事業所名。名称らしい固有部分＋種別が連続している場合に限定する。
+        collectRegex(item,'施設・事業所名','facility',/(?<![一-龥々ァ-ヶーA-Za-z0-9０-９・ー\-])([一-龥々ァ-ヶーA-Za-z0-9０-９・ー\-]{2,24}(?:老人ホーム|特別養護老人ホーム|有料老人ホーム|グループホーム|デイサービス|デイケア|通所介護事業所|訪問介護事業所|訪問看護ステーション|居宅介護支援事業所|介護老人保健施設|介護医療院))/g,(d)=>{
+          return !/^(?:老人ホーム|特別養護老人ホーム|有料老人ホーム|グループホーム|デイサービス|デイケア|通所介護事業所|訪問介護事業所|訪問看護ステーション|居宅介護支援事業所|介護老人保健施設|介護医療院)$/.test(d);
+        });
       });
 
+      // 同じ箇所の重複表示を除く。
+      const seen=new Set();
+      let uniqueHits=strongHits.filter(hit=>{
+        const detected=String(hit&&hit.detected||'').trim();
+        const compactDetected=detected.replace(/[\s　()（）]/g,'');
+        if(!detected)return false;
+
+        // テンプレートのラベル・敬称・職種だけを個人情報として表示しない。
+        if(/^(?:様|氏|さん|氏名|名前|職種|職種氏名|司会|参加者|病院側|在宅側|本人|家族|医師|主治医|MSW|NS|PT|OT|ST|CM|薬剤師|栄養士|他スタッフ)$/i.test(compactDetected))return false;
+
+        // 人名カテゴリーだけは最終段階でも厳格に再確認する。
+        // 「車椅子 寝たきり氏名」「有 無氏名」「安定 不安定氏名」
+        // 「歯科医師医師氏名」のような帳票語・選択肢の連結を除外する。
+        if(/person|氏名|名前/i.test(String(hit.kind||'')+' '+String(hit.label||''))){
+          let candidate=detected
+            .replace(/(?:医師氏名|氏名|名前)$/,'')
+            .replace(/(?:様|さん|氏)$/,'')
+            .trim();
+          const c=candidate.replace(/[\s　]/g,'');
+
+          if(!candidate || c.length<2)return false;
+
+          // 帳票・選択肢・職種・状態を含むものは氏名ではない。
+          if(/(?:車椅子|寝たきり|自立|一部介助|全介助|介助|有|無|あり|なし|安定|不安定|良好|不良|歯科医師|医師|主治医|薬剤師|栄養士|看護師|MSW|NS|PT|OT|ST|CM|スタッフ|職種|病院|病棟|退院|入院|認定|調査|状態|状況|食事|排泄|入浴|移動|歩行|睡眠|皮膚|認知|精神|医療|看護|リハビリ|サービス|本人|家族|参加者|司会)/i.test(candidate))return false;
+
+          // 「姓 名」型は、両側が日本語の人名文字だけの場合に限定。
+          if(/[\s　]/.test(candidate)){
+            if(!/^[一-龥々]{1,4}[\s　]+[一-龥々ぁ-んァ-ヶー]{1,5}$/.test(candidate))return false;
+          }else{
+            // 空白なしの自動人名推定は誤検出しやすいので、
+            // 明示的な氏名ラベル由来以外は敬称付きまたは既存validator通過を要求。
+            const ctx=String(hit.contextText||'');
+            const explicitLabel=/(?:氏名|利用者名|利用者氏名|本人氏名|被保険者氏名|対象者氏名)\s*[:：]?/.test(ctx);
+            const honorific=/(?:様|さん|氏)$/.test(detected);
+            if(!explicitLabel && !honorific)return false;
+          }
+
+          if(!isPlausiblePersonName(candidate))return false;
+        }
+
+        const key=[hit.fileName,hit.kind,detected,hit.contextText].join('\u0001');
+        if(seen.has(key))return false;
+        seen.add(key);return true;
+      });
+      // 利用者が「個人情報ではない（誤認識）」と確認した候補は、その資料内では再警告しない。
+      const confirmedNonPrivacy=Array.isArray(window.preventiveConfirmedNonPrivacy)
+        ? window.preventiveConfirmedNonPrivacy
+        : [];
+      uniqueHits=uniqueHits.filter(hit=>{
+        const fileName=String(hit&&hit.fileName||'');
+        const value=String(hit&&hit.detected||'').trim();
+        return !confirmedNonPrivacy.some(x=>
+          String(x&&x.fileName||'')===fileName &&
+          String(x&&x.value||'').trim()===value
+        );
+      });
+
+      window.preventiveLastStrongHits=uniqueHits.slice();
+
+      function escapePrivacyHtml(value){
+        return String(value??'').replace(/[&<>"']/g,ch=>({
+          '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+        })[ch]);
+      }
+      function highlightPrivacyContext(contextText,detected){
+        const context=String(contextText||''),needle=String(detected||'');
+        if(!context)return '';
+        if(!needle)return escapePrivacyHtml(context);
+        const pos=context.indexOf(needle);
+        if(pos<0)return escapePrivacyHtml(context);
+        return escapePrivacyHtml(context.slice(0,pos))+'<mark>'+escapePrivacyHtml(needle)+'</mark>'+escapePrivacyHtml(context.slice(pos+needle.length));
+      }
       function formatPrivacyHits(hits){
-        const seen=new Set();
-        const unique=hits.filter(hit=>{
-          const key=[hit.fileName,hit.label,hit.detected,hit.lineNumber].join('\u0001');
-          if(seen.has(key)) return false;
-          seen.add(key);
-          return true;
-        });
         const grouped=new Map();
-        unique.forEach(hit=>{
-          if(!grouped.has(hit.fileName)) grouped.set(hit.fileName,[]);
+        hits.forEach(hit=>{
+          if(!grouped.has(hit.fileName))grouped.set(hit.fileName,[]);
           grouped.get(hit.fileName).push(hit);
         });
         const blocks=[];
         grouped.forEach((fileHits,fileName)=>{
-          const rows=['📄 '+fileName+'（'+fileHits.length+'件）'];
-          fileHits.forEach((hit,index)=>{
-            rows.push('  '+(index+1)+'. '+hit.label);
-            rows.push('     検出文字：'+hit.detected);
-            rows.push('     場所：読み取り文字の '+hit.lineNumber+'行目付近');
-            if(hit.contextText) rows.push('     前後：'+hit.contextText);
+          const unique=[];
+          const seenDetected=new Set();
+          fileHits.forEach(hit=>{
+            const key=String(hit.detected||'').trim();
+            if(!key||seenDetected.has(key))return;
+            seenDetected.add(key);
+            unique.push(hit);
           });
-          blocks.push(rows.join('\n'));
+          const items=unique.map(hit=>
+            '<div class="privacy-simple-item">'
+            +'<span class="privacy-simple-detected">'+escapePrivacyHtml(hit.detected)+'</span>'
+            +'<span class="privacy-simple-label">'+escapePrivacyHtml(hit.label)+'</span>'
+            +'</div>'
+          ).join('');
+          blocks.push('<div class="privacy-hit-file"><div class="privacy-hit-file-title">📄 '+escapePrivacyHtml(fileName)+'：'+unique.length+'件見つかりました</div><div class="privacy-simple-list">'+items+'</div></div>');
         });
-        return blocks.join('\n\n');
+        return blocks.join('');
       }
 
-      if(strongHits.length){
+      if(uniqueHits.length){
+        const anonymizeBox=$('preventiveLocalAnonymizeBox');
+        const anonymizeStatus=$('preventiveLocalAnonymizeStatus');
+        if(anonymizeBox)anonymizeBox.style.display='block';
+        if(anonymizeStatus)anonymizeStatus.style.display='none';
         result.className='privacy-result alert';
-        result.textContent='🔴 個人情報の可能性が高い記載を検出しました。次の工程には進めません。\n\n'
-        +'【修正する場所】\n'+formatPrivacyHits(strongHits)
-        +(advisoryHits.length?'\n\n🟠 あわせて確認推奨：\n'+formatPrivacyHits(advisoryHits):'')
-        +'\n\n※「行目付近」は、資料からブラウザ内で読み取った文字情報を基準にした目安です。PDF・Word・Excel・OCR資料では、元資料のページやセル位置と完全には一致しない場合があります。'
-        +'\n\n氏名・生年月日・住所・電話番号・介護保険番号・各種保険証等の番号・マイナンバー・主治医/医師の氏名・病院名・家族/キーパーソンの氏名は強い警告の対象です。妻・夫・兄・妹・長男・長女等の続柄だけの記載、病名、検査値、要介護度、ADL等は警告対象ではありません。表示された箇所を元資料で削除・匿名化してから再確認してください。';
+        result.innerHTML='<div style="font-weight:900;margin-bottom:10px;">🔴 次の情報が見つかりました。匿名化してから次へ進んでください。</div>'
+          +formatPrivacyHits(uniqueHits)
+          +'<div class="privacy-hit-help">※自動検出は100％ではありません。匿名化後は必ず資料全体をご自身で確認してください。</div>';
         if(promptBox)promptBox.style.display='none';
         if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button';checkBtn.textContent='🔴 強い警告あり → 修正して再確認';}
         return;
       }
 
-      if(advisoryHits.length){
-        result.className='privacy-result warn';
-        result.textContent='🟠 確認推奨の記載があります。\n\n'
-        +formatPrivacyHits(advisoryHits)
-        +'\n\n※「行目付近」は、資料からブラウザ内で読み取った文字情報を基準にした目安です。'
-        +'\n\n施設名・事業所名は「確認推奨」としています。病院名・医院名・クリニック名・診療所名等の医療機関名は強い警告の対象です。内容を確認したうえでAIへ渡してください。'
-        +'\n\n「家族」「妻」「夫」「兄」「弟」「姉」「妹」「長女」「次女」「長男」「次男」など、続柄だけの記載は強い警告の対象ではありません。病名、検査値、要介護度、ADL等も警告対象ではありません。';
-        if(promptBox){promptBox.style.display='block';promptBox.classList.add('ready-next');}
-        if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button review';checkBtn.textContent='✓ 強い警告なし';}
-        if(nextNote){nextNote.innerHTML='✓ <strong>強い警告はありません。次の工程へ進めます。</strong><br>🟠 確認推奨の内容だけ、表示された内容を確認してから進んでください。';nextNote.classList.add('show');}
+      {const anonymizeBox=$('preventiveLocalAnonymizeBox');if(anonymizeBox)anonymizeBox.style.display='none';}
+      result.className='privacy-result ok';
+      result.textContent='✓ 自動チェックでは、今回設定した確度の高いパターンに該当する個人特定情報は検出されませんでした。\n\n病名・既往歴・症状・要介護度・ADL・IADL・服薬・医療処置・介助内容・家族構成や続柄・サービス利用状況等は、ケアプランやアセスメント等に必要な情報として原則保持しています。\n\nただし、この処理は完全な匿名化を保証するものではありません。AIへ渡す前に、必ず利用者自身で資料全体を確認してください。';
+      if(promptBox){promptBox.style.display='block';promptBox.classList.add('ready-next');}
+      if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button ready';checkBtn.textContent='✓ 個人情報チェック完了 → 次の工程へ';}
+      if(nextNote){nextNote.innerHTML='✓ <strong>自動チェックが完了しました。</strong><br>AIへ渡す前に、匿名化後の資料全文を必ずご自身で確認してください。';nextNote.classList.add('show');}
+      showPreventiveAnonymizedReview();
+    };
+
+    window.anonymizePreventivePrivacy=function(){
+      const hits=Array.isArray(window.preventiveLastStrongHits)?window.preventiveLastStrongHits:[];
+      const status=$('preventiveLocalAnonymizeStatus');
+
+      // 匿名化前に検出した値を保持し、最終チェック時に「元の個人情報が残っていないか」を再確認する。
+      window.preventiveOriginalPrivacyValues=Array.from(new Set(
+        hits.map(h=>String(h&&h.detected||'').trim()).filter(Boolean)
+      ));
+      window.preventiveConfirmedNonPrivacy=[];
+      if(!hits.length){
+        if(status){status.style.display='block';status.className='status alert';status.textContent='⚠️ 匿名化する検出箇所がありません。先に個人情報チェックを行ってください。';}
         return;
       }
 
-      result.className='privacy-result ok';
-      result.textContent='✓ 自動チェックでは、直接本人や関係者を特定できる可能性が高い情報は検出されませんでした。\n\n'
-      +'「家族」「長女」「次女」「長男」などの続柄だけの記載、疾患名、発症年、年齢、要介護度、HDS-R、ADL・IADL、服薬、サービス利用回数、介助内容などは、通常のケアプラン作成情報として検出対象にしていません。'
-      +'\n\nただし、自動チェックは100％確実ではありません。AIへ渡す前に、必ずケアマネジャー自身で資料全体を確認してください。';
-      if(promptBox){promptBox.style.display='block';promptBox.classList.add('ready-next');}
-      if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button ready';checkBtn.textContent='✓ 個人情報チェック完了 → 次の工程へ';}
-      if(nextNote){nextNote.innerHTML='✓ <strong>個人情報チェックを通過しました。次の工程へ進めます。</strong><br>③「AIに資料を事前整理してもらう」へ進み、📋 事前整理の指示＋資料をまとめてコピー を押してください。';nextNote.classList.add('show');}
+      const stableMap=new Map();
+      const relationCounters=new Map();
+      const facilityCounters=new Map();
+      const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      function nextLetter(counterMap,key){
+        const n=counterMap.get(key)||0;counterMap.set(key,n+1);return alphabet[Math.min(n,alphabet.length-1)]||String(n+1);
+      }
+      function normalizeKey(value){return String(value||'').replace(/[\s　:：\-]/g,'').toLowerCase();}
+      function relationOf(source){return (String(source||'').match(/(?:妻|夫|配偶者|長女|次女|三女|長男|次男|三男|娘|息子|兄|弟|姉|妹|キーパーソン|家族)/)||[])[0]||'家族';}
+
+      function replacementFor(hit){
+        const label=String(hit.label||''),kind=String(hit.kind||''),source=String(hit.detected||'');
+        const key=kind+'|'+normalizeKey(source);
+        if(stableMap.has(key)) return stableMap.get(key);
+        let replacement='〇〇';
+
+        if(kind==='doctor') replacement='主治医';
+        else if(kind==='caremanager') replacement='担当CM';
+        else if(kind==='family'){
+          const groupRelation=Array.isArray(hit.groups)&&/^(?:妻|夫|配偶者|長女|次女|三女|長男|次男|三男|娘|息子|兄|弟|姉|妹|キーパーソン)$/.test(String(hit.groups[0]||''))?String(hit.groups[0]):'';
+          const rel=groupRelation||relationOf(source);
+          replacement=rel+nextLetter(relationCounters,rel);
+        }
+        else if(kind==='person'||kind==='spacedName'||kind==='personAlias') replacement='〇〇氏';
+        else if(kind==='address') replacement='〇〇市在住';
+        else if(kind==='postal') replacement='郵便番号：〇〇';
+        else if(kind==='phone') replacement='電話番号：〇〇';
+        else if(kind==='email') replacement='メールアドレス：〇〇';
+        else if(kind==='birth'){
+          const era=(source.match(/明治|大正|昭和|平成|令和/)||[])[0];
+          replacement=era ? era+'〇〇年〇〇月〇〇日' : '〇〇年〇〇月〇〇日';
+        }
+        else if(kind==='myNumber') replacement='';
+        else if(kind==='careInsurance') replacement='被保険者番号：〇〇';
+        else if(kind==='medicalInsurance') replacement='保険情報番号：〇〇';
+        else if(kind==='medicalFacility'){
+          if(/クリニック/.test(source))replacement='〇〇クリニック';
+          else if(/診療所/.test(source))replacement='〇〇診療所';
+          else if(/医院/.test(source))replacement='〇〇医院';
+          else if(/医療センター/.test(source))replacement='医療機関A';
+          else replacement='〇〇病院';
+        }
+        else if(kind==='facility'||kind==='facilityLabel'){
+          let type='施設';
+          if(/デイサービス|通所介護/.test(source))type='通所事業所';
+          else if(/デイケア/.test(source))type='通所リハ事業所';
+          else if(/訪問介護/.test(source))type='訪問介護事業所';
+          else if(/訪問看護/.test(source))type='訪問看護事業所';
+          else if(/居宅介護支援/.test(source))type='居宅介護支援事業所';
+          else if(/グループホーム/.test(source))type='グループホーム';
+          else if(/老人ホーム|特別養護老人ホーム|有料老人ホーム|介護老人保健施設|介護医療院/.test(source))type='施設';
+          replacement=type+nextLetter(facilityCounters,type);
+        }
+        stableMap.set(key,replacement);
+        return replacement;
+      }
+
+      // 長い検出文字から先に置換し、氏名全体を置換した後に姓だけが残る等を減らす。
+      const ordered=[...hits].sort((a,b)=>String(b.detected||'').length-String(a.detected||'').length);
+      let replacedCount=0;
+      ordered.forEach(hit=>{
+        preventiveFiles.forEach(item=>{
+          if(!item.loaded||item.file.name!==hit.fileName)return;
+          const detected=String(hit.detected||'');if(!detected)return;
+          const before=String(item.text||'');if(!before.includes(detected))return;
+          const pieces=before.split(detected);const count=pieces.length-1;
+          item.text=pieces.join(replacementFor(hit));
+          replacedCount+=count;
+          item.charCount=String(item.text||'').length;
+          if(!String(item.detail||'').includes('個人情報匿名化支援済み')) item.detail=(item.detail||'')+(item.detail?' / ':'')+'個人情報匿名化支援済み';
+        });
+      });
+
+      renderFileList();
+      window.preventiveLastStrongHits=[];
+      if(status){
+        status.style.display='block';status.className='status success';
+        status.textContent='✓ 個人情報に該当する可能性のある情報を'+replacedCount+'か所、端末内で置換・削除しました。\n元資料そのものは変更していません。この処理は完全な匿名化を保証するものではありません。AIへ渡す前に、匿名化後の資料全文を必ずご自身で確認してください。';
+      }
+      checkPreventivePrivacy();
     };
+
+    function hidePreventiveAnonymizedReview(){
+      const box=$('preventiveAnonymizedReviewBox');
+      const panel=$('preventiveAnonymizedReviewPanel');
+      const files=$('preventiveAnonymizedReviewFiles');
+      const st=$('preventiveAnonymizedReviewStatus');
+      if(box)box.style.display='none';
+      if(panel)panel.style.display='none';
+      if(files)files.innerHTML='';
+      if(st){st.style.display='none';st.textContent='';}
+    }
+
+    function renderPreventiveAnonymizedReview(){
+      const wrap=$('preventiveAnonymizedReviewFiles');
+      if(!wrap)return;
+      wrap.innerHTML='';
+      preventiveFiles.forEach((item,index)=>{
+        if(!item.loaded)return;
+        const card=document.createElement('div');
+        card.style.cssText='margin:10px 0;padding:12px;border:1px solid #b9d9f5;border-radius:10px;background:#fff;';
+        const title=document.createElement('div');
+        title.style.cssText='font-weight:900;color:#173b49;margin-bottom:7px;word-break:break-all;';
+        title.textContent='📄 '+item.file.name;
+        const ta=document.createElement('textarea');
+        ta.className='bo-anonymized-review-text';
+        ta.dataset.index=String(index);
+        ta.value=String(item.text||'');
+        ta.style.cssText='width:100%;min-height:260px;box-sizing:border-box;border:2px solid #9fc7eb;border-radius:10px;padding:12px;font-size:14px;line-height:1.7;background:#fff;color:#173b49;';
+        card.appendChild(title);card.appendChild(ta);wrap.appendChild(card);
+      });
+    }
+
+    window.showPreventiveAnonymizedReview=function(){
+      const box=$('preventiveAnonymizedReviewBox');
+      if(box)box.style.display='block';
+    };
+
+    window.togglePreventiveAnonymizedReview=function(){
+      const panel=$('preventiveAnonymizedReviewPanel');
+      if(!panel)return;
+      if(panel.style.display==='none'||!panel.style.display){
+        renderPreventiveAnonymizedReview();
+        panel.style.display='block';
+        panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+      }else{
+        panel.style.display='none';
+      }
+    };
+
+    window.applyPreventiveAnonymizedReview=function(){
+      const areas=document.querySelectorAll('#preventiveAnonymizedReviewFiles textarea[data-index]');
+      if(!areas.length)return;
+      areas.forEach(ta=>{
+        const index=Number(ta.dataset.index);
+        const item=preventiveFiles[index];
+        if(!item)return;
+        item.text=String(ta.value||'').trim();
+        item.charCount=item.text.length;
+        item.detail=(item.detail||'').replace(/\s*\/\s*確認画面で修正済み/g,'')+(item.detail?' / ':'')+'確認画面で修正済み';
+      });
+      renderFileList();
+      const st=$('preventiveAnonymizedReviewStatus');
+      if(st){st.style.display='block';st.className='status success';st.textContent='✓ 確認画面の内容を反映しました。個人情報をもう一度チェックします。';}
+      checkPreventivePrivacy();
+      renderPreventiveAnonymizedReview();
+    };
+
+    function combinedPreventiveAnonymizedText(){
+      return preventiveFiles.filter(item=>item.loaded&&String(item.text||'').trim()).map((item,index)=>
+        '===== 資料 '+(index+1)+'：'+item.file.name+' =====\n'+String(item.text||'').trim()
+      ).join('\n\n');
+    }
+
+    window.executePreventiveAnonymizedSave=async function(){
+      const text=combinedPreventiveAnonymizedText();
+      const st=$('preventiveAnonymizedReviewStatus');
+      if(!text){
+        if(st){st.style.display='block';st.className='status alert';st.textContent='⚠️ 保存できる資料がありません。';}
+        return false;
+      }
+      const d=new Date();
+      const pad=n=>String(n).padStart(2,'0');
+      const fileName='BlueOcean_AI用匿名化資料_'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'_'+pad(d.getHours())+pad(d.getMinutes())+'.txt';
+      const content='\ufeff'+text;
+
+      // Chrome / Edge 等で利用できる場合は「名前を付けて保存」を開き、
+      // デスクトップ等を利用者自身で選べるようにする。
+      if(typeof window.showSaveFilePicker==='function'){
+        try{
+          const handle=await window.showSaveFilePicker({
+            suggestedName:fileName,
+            types:[{description:'テキスト資料',accept:{'text/plain':['.txt']}}]
+          });
+          const writable=await handle.createWritable();
+          await writable.write(new Blob([content],{type:'text/plain;charset=utf-8'}));
+          await writable.close();
+          if(st){st.style.display='block';st.className='status success';st.textContent='✓ 選択した場所に匿名化資料を保存しました。保存した資料を開いて全体を確認できます。';}
+          return true;
+        }catch(err){
+          if(err && err.name==='AbortError'){
+            if(st){st.style.display='block';st.className='status alert';st.textContent='保存をキャンセルしました。';}
+            return false;
+          }
+          console.warn('保存先選択に失敗したため通常ダウンロードへ切り替えます。',err);
+        }
+      }
+
+      // 保存先選択APIが使えないブラウザでは通常のダウンロードに切り替える。
+      const blob=new Blob([content],{type:'text/plain;charset=utf-8'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;
+      a.download=fileName;
+      document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),1000);
+      if(st){st.style.display='block';st.className='status success';st.textContent='✓ 匿名化資料をダウンロードしました。保存先を選ぶ画面が出ない場合は、ブラウザのダウンロード設定で「保存場所を確認する」を有効にしてください。';}
+      return true;
+    };
+
+    window.downloadPreventiveAnonymizedText=async function(){
+      const text=combinedPreventiveAnonymizedText();
+      const modal=$('simpleSaveScreen');
+      const preview=$('simpleSavePreview');
+      const nameBox=$('simpleSaveFileName');
+      const note=$('simpleSaveStatus');
+      if(!text){
+        const st=$('preventiveAnonymizedReviewStatus');
+        if(st){st.style.display='block';st.className='status alert';st.textContent='⚠️ 保存できる資料がありません。';}
+        return false;
+      }
+      const d=new Date();
+      const pad=n=>String(n).padStart(2,'0');
+      const fileName='BlueOcean_AI用匿名化資料_'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'_'+pad(d.getHours())+pad(d.getMinutes())+'.txt';
+      if(nameBox) nameBox.textContent=fileName;
+      if(preview) preview.value=text;
+      const directLink=$('simpleConfirmSaveLink');
+      if(directLink){
+        try{ if(window.__blueOceanSaveUrl) URL.revokeObjectURL(window.__blueOceanSaveUrl); }catch(e){}
+        window.__blueOceanSaveUrl=URL.createObjectURL(new Blob(['\ufeff'+text],{type:'text/plain;charset=utf-8'}));
+        directLink.href=window.__blueOceanSaveUrl;
+        directLink.download=fileName;
+      }
+      if(note){note.style.display='block';note.className='status';note.textContent='保存する前に、匿名化済み資料の全文をもう一度確認してください。「保存する」を押すとブラウザの通常ダウンロードとして保存します。';}
+      if(modal) modal.style.display='flex';
+      return true;
+    };
+
+    window.closePreventiveSaveScreen=function(){
+      const modal=$('simpleSaveScreen');
+      if(modal) modal.style.display='none';
+    };
+
+    window.confirmPreventiveAnonymizedSave=function(event){
+      try{
+        if(event && typeof event.preventDefault==='function')event.preventDefault();
+        const note=$('simpleSaveStatus');
+        const preview=$('simpleSavePreview');
+        const nameBox=$('simpleSaveFileName');
+        const text=preview ? String(preview.value||'').trim() : combinedPreventiveAnonymizedText();
+        if(!text){
+          if(note){note.style.display='block';note.className='status alert';note.textContent='⚠️ 保存できる資料がありません。';}
+          return false;
+        }
+        let fileName=nameBox ? String(nameBox.textContent||'').trim() : '';
+        if(!fileName){
+          const d=new Date();const pad=n=>String(n).padStart(2,'0');
+          fileName='BlueOcean_AI用匿名化資料_'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'_'+pad(d.getHours())+pad(d.getMinutes())+'.txt';
+        }
+        const blob=new Blob(['\ufeff'+text],{type:'text/plain;charset=utf-8'});
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a');
+        a.href=url;a.download=fileName;a.style.display='none';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(()=>URL.revokeObjectURL(url),2000);
+        if(note){
+          note.style.display='block';
+          note.className='status success';
+          note.textContent='✓ 保存を開始しました。通常はブラウザの「ダウンロード」フォルダに保存されます。Chrome / Edgeで「ダウンロード前に各ファイルの保存場所を確認する」を有効にしている場合は、デスクトップなど保存先を選べます。';
+        }
+        return true;
+      }catch(err){
+        console.error('匿名化資料の保存に失敗しました',err);
+        const note=$('simpleSaveStatus');
+        if(note){note.style.display='block';note.className='status alert';note.textContent='⚠️ 保存を開始できませんでした。ブラウザでダウンロードがブロックされていないか確認してください。';}
+        alert('保存を開始できませんでした。ブラウザのダウンロード設定をご確認ください。');
+        return false;
+      }
+    };
+
+    window.getPreventiveSourceDocuments=function(){
+      return preventiveFiles.filter(item=>item.loaded).map((item,index)=>({
+        index,
+        name:item.file.name,
+        text:String(item.originalText||item.text||'')
+      }));
+    };
+
+    window.getPreventiveCurrentDocuments=function(){
+      return preventiveFiles.filter(item=>item.loaded).map((item,index)=>({
+        index,
+        name:item.file.name,
+        text:String(item.text||'')
+      }));
+    };
+
+    window.setPreventiveCurrentDocumentText=function(index,text){
+      const item=preventiveFiles[index];
+      if(!item)return false;
+      item.text=String(text||'').trim();
+      item.charCount=item.text.length;
+      return true;
+    };
+
+    window.getPreventiveLastStrongHitCount=function(){
+      return Array.isArray(window.preventiveLastStrongHits)?window.preventiveLastStrongHits.length:0;
+    };
+
+    window.getPreventiveSelectedFileCount=function(){
+      return preventiveFiles.length;
+    };
+
     const PREVENTIVE_PRE_PROMPT_BASE = `あなたは優秀なケアマネジャーです。 以下の条件を踏まえたケアプラン作成に必要なアセスメントをします。アセスメントの前に、情報をまとめますが、下記の各項目に沿って情報を細かく分析して 作成しコードブロックで出力させてください。
 
 作成の為のルール
@@ -4111,7 +5049,7 @@ IADL全般においての生活上の状況と課題を整理してください�
         if(btn){btn.classList.add('prompt-copy-button','copied');btn.textContent=copiedMessage;}
         const preLaunchBox=document.getElementById('preAiLaunchBox');
         if(preLaunchBox) preLaunchBox.style.display='block';
-        if(status){status.className='status success';status.style.display='block';status.textContent='✓ もう一度ファイルを選ぶ必要はありません。AIを開いて Ctrl＋V で貼り付けてください。';}
+        if(status){status.className='status success';status.style.display='block';status.textContent='✓ 元の資料をAIへ添付する必要はありません。個人情報チェック済み・匿名化済みの読み取り文字を含めてコピーしています。AIを開いて Ctrl＋V で貼り付けてください。';}
       };
       const copied=await copyTextToClipboard(combinedText);
       if(copied){setCopiedState();return true;}
@@ -6003,6 +6941,10 @@ ${finalPrompt}${displayInstruction ? `\n\n${displayInstruction}` : ''}`;
     document.addEventListener('DOMContentLoaded',function(){
       const input=$('preventiveFileInput'),zone=$('preventiveDropZone');if(!input||!zone)return;
       input.addEventListener('change',function(){addPreventiveFiles(this.files);this.value='';});
+      ['preventiveFileInput2','preventiveFileInput3'].forEach(function(id){
+        const extra=document.getElementById(id);
+        if(extra)extra.addEventListener('change',function(){addPreventiveFiles(this.files);this.value='';});
+      });
       zone.addEventListener('click',()=>input.click());
       zone.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();input.click();}});
       zone.addEventListener('dragover',event=>{event.preventDefault();zone.classList.add('dragover');});
@@ -6296,6 +7238,49 @@ document.addEventListener('DOMContentLoaded', function(){
   background: #fff!important;
 }
 
+
+.bo-secondary-action {
+  width:100%;
+  margin:8px 0;
+  padding:13px 16px;
+  border:2px solid #8bd4ee!important;
+  border-radius:12px;
+  background:#f8fcff!important;
+  color:#0875c9!important;
+  font-weight:900;
+  font-size:15px;
+}
+.bo-document-preview,.bo-generated-document {
+  margin:12px 0;
+  padding:14px;
+  border:2px solid #8bd4ee;
+  border-radius:14px;
+  background:#f8fcff;
+}
+.bo-preview-card {
+  margin:10px 0;
+  padding:12px;
+  border:1px solid #b9d9f5;
+  border-radius:10px;
+  background:#fff;
+}
+.bo-preview-title {font-weight:900;color:#173b49;margin-bottom:7px;word-break:break-all;}
+.bo-preview-text {width:100%;min-height:220px;box-sizing:border-box;border:2px solid #9fc7eb;border-radius:10px;padding:12px;font-size:14px;line-height:1.7;background:#fff;color:#173b49;}
+.bo-anonymize-area {margin:12px 0;padding:15px;border:3px solid #e39a7d;border-radius:14px;background:#fff7f3;}
+.bo-anonymize-title {font-size:18px;font-weight:900;color:#b14a25;margin-bottom:7px;}
+.bo-anonymize-explain,.bo-generated-explain {font-size:14px;line-height:1.8;color:#425b63;margin-bottom:10px;}
+.bo-generated-document {border:3px solid #138ee0;background:#f7fbff;}
+.bo-generated-title {font-size:19px;font-weight:900;color:#0875c9;margin-bottom:7px;}
+.bo-generated-actions {display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.bo-generated-actions .bo-big-action {grid-column:1/-1;}
+.bo-fullview-overlay{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.62);padding:18px;box-sizing:border-box;overflow:auto;}
+.bo-fullview-panel{max-width:1100px;margin:0 auto;background:#fff;border-radius:16px;padding:18px;box-shadow:0 18px 60px rgba(0,0,0,.28);min-height:calc(100vh - 36px);box-sizing:border-box;}
+.bo-fullview-header{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:22px;font-weight:900;color:#0875c9;border-bottom:2px solid #d9edf9;padding-bottom:12px;position:sticky;top:0;background:#fff;z-index:2;}
+.bo-fullview-close{border:1px solid #a9bfd0;background:#fff;border-radius:9px;padding:9px 13px;font-weight:800;cursor:pointer;}
+.bo-fullview-note,.bo-save-note{margin:12px 0;padding:11px 13px;border-radius:10px;background:#fffdf3;line-height:1.7;color:#425b63;}
+.bo-fullview-files .bo-preview-text{min-height:55vh;font-size:16px;line-height:1.8;}
+.bo-fullview-footer{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.bo-save-note{font-size:13px;background:#f5f9fc;}
 @media(max-width:620px) {
   .bo-simple-step {
     grid-template-columns: 38px 1fr;
@@ -6310,17 +7295,99 @@ document.addEventListener('DOMContentLoaded', function(){
   .bo-simple-title {
     font-size: 18px;
   }
-  .bo-ai-three,.bo-doc-three {
+  .bo-ai-three,.bo-doc-three,.bo-generated-actions {
     grid-template-columns: 1fr;
   }
+  .bo-generated-actions .bo-big-action {grid-column:auto;}
   .bo-simple-head h2 {
     font-size: 23px!important;
   }
 }
+  .bo-three-file-select{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:10px;
+    width:100%;
+  }
+  .bo-three-file-select .bo-big-action{
+    width:100%;
+    margin:0;
+  }
+  @media (max-width:640px){
+    .bo-three-file-select{grid-template-columns:1fr;}
+  }
+
+  .bo-direct-edit-guide{
+    margin:8px 0 10px;
+    padding:10px 12px;
+    border-radius:10px;
+    background:#eef8ff;
+    border:1px solid #b9def7;
+    line-height:1.65;
+    font-size:13px;
+  }
+  .bo-privacy-highlight-panel{
+    margin:8px 0 10px;
+    padding:12px;
+    border:2px solid #e53935;
+    border-radius:10px;
+    background:#fff8f8;
+  }
+  .bo-privacy-highlight-title{
+    font-weight:900;
+    margin-bottom:8px;
+  }
+  .bo-privacy-highlight-text{
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+    max-height:320px;
+    overflow:auto;
+    padding:10px;
+    background:#fff;
+    border:1px solid #ead4d4;
+    border-radius:8px;
+    line-height:1.65;
+    font-family:inherit;
+  }
+  .bo-privacy-highlight-text mark{
+    background:#ffe3e3;
+    color:#c62828;
+    font-weight:900;
+    padding:1px 2px;
+    border-radius:3px;
+  }
+
+  .bo-color-review-panel{margin:8px 0 10px;padding:12px;border:1px solid #cbdde9;border-radius:10px;background:#ffffff !important;}
+  .bo-color-review-title{font-weight:900;margin-bottom:7px;}
+  .bo-color-review-text{white-space:pre-wrap;overflow-wrap:anywhere;max-height:340px;overflow:auto;padding:10px;background:#fff;border:1px solid #dce6ec;border-radius:8px;line-height:1.65;font-family:inherit;}
+  .bo-color-review-text mark.bo-anon-blue{background:#e7f4ff;color:#0875c9;font-weight:900;padding:1px 2px;border-radius:3px;}
+  .bo-color-review-text mark.bo-check-red{background:#ffe8e8;color:#c62828;font-weight:900;padding:1px 2px;border-radius:3px;}
+  .bo-color-legend{font-size:13px;line-height:1.7;margin-bottom:8px;background:#ffffff !important;padding:8px 10px;border-radius:7px;}
+
+  .bo-color-review-text[contenteditable="true"]{
+    min-height:260px;
+    cursor:text;
+    outline:none;
+    background:#ffffff !important;
+    border:2px solid #c9dce8;
+  }
+  .bo-color-review-text[contenteditable="true"]:focus{
+    border-color:#138ee0;
+    box-shadow:0 0 0 3px rgba(19,142,224,.12);
+  }
+  #simpleRetryPrivacyCheckButton,
+  .bo-confirm-nonprivacy-btn{
+    pointer-events:auto !important;
+    cursor:pointer !important;
+    position:relative;
+    z-index:30;
+  }
 </style>
 <script id="blueocean-super-simple-script">
 (function(){
   let simplePrivacyPassed=false;
+  let simpleAnonymizationRequired=false;
+  let simpleGeneratedDocumentConfirmed=false;
   const qs=id=>document.getElementById(id);
   const setStep=(n,state)=>{const el=qs('simpleStep'+n);if(!el)return;el.classList.remove('is-current','is-ready','is-done');if(state)el.classList.add(state);};
   const setStatus=(id,text,kind)=>{const el=qs(id);if(!el)return;el.textContent=text;el.className='bo-simple-status'+(kind?' '+kind:'');};
@@ -6328,14 +7395,20 @@ document.addEventListener('DOMContentLoaded', function(){
   const enableFinalAI=()=>document.querySelectorAll('#simpleStep5 .bo-final-ai .bo-ai-btn').forEach(b=>{b.disabled=false;b.removeAttribute('disabled');b.setAttribute('aria-disabled','false');b.style.pointerEvents='auto';});
 
   window.simpleChooseFiles=function(){const input=qs('preventiveFileInput');if(input)input.click();};
+  window.simpleChooseFileSlot=function(slot){
+    const id=slot===2?'preventiveFileInput2':slot===3?'preventiveFileInput3':'preventiveFileInput';
+    const input=qs(id);
+    if(input)input.click();
+  };
 
   document.addEventListener('DOMContentLoaded',function(){
     const originalAdd=window.addPreventiveFiles;
     if(typeof originalAdd==='function'){
       window.addPreventiveFiles=function(fileList){
         originalAdd(fileList);
-        simplePrivacyPassed=false;enablePreAI(false);enableFinalAI(false);
-        setStatus('simpleFileStatus','資料を読み取っています…','warn');
+        simplePrivacyPassed=false;simpleAnonymizationRequired=false;simpleGeneratedDocumentConfirmed=false;enablePreAI(false);enableFinalAI(false);
+        const aa=qs('simpleAnonymizeArea');if(aa)aa.style.display='none';const ga=qs('simpleGeneratedDocumentArea');if(ga)ga.style.display='none';const cb=qs('simpleGeneratedConfirmButton');if(cb)cb.style.display='none';const rb=qs('simpleResetPrivacyAfterAnonymizeButton');if(rb)rb.disabled=true;const sp=qs('simpleSourcePreviewPanel');if(sp)sp.style.display='none';
+        setStatus('simpleFileStatus','資料を順番に読み取っています…','warn');
         setStep(1,'is-current');setStep(2,null);setStep(3,null);
         setTimeout(async function(){
           try{
@@ -6344,7 +7417,9 @@ document.addEventListener('DOMContentLoaded', function(){
             ? window.arePreventiveFilesReady()
             : !!(qs('preventiveLoadStatus') && qs('preventiveLoadStatus').classList.contains('success'));
             if(ok){
-              setStatus('simpleFileStatus','✓ 資料の読み込みが終わりました。次へ進めます。','ok');
+              const loadedDocs=typeof window.getPreventiveCurrentDocuments==='function'?window.getPreventiveCurrentDocuments():[];
+              const loadedCount=loadedDocs.length;
+              setStatus('simpleFileStatus','✓ '+loadedCount+'件の資料の読み込みが終わりました。次へ進めます。','ok');
               const pbar=qs('simpleLoadProgressBar'), ppct=qs('simpleLoadProgressPercent'),
               plab=qs('simpleLoadProgressLabel'), pdet=qs('simpleLoadProgressDetail');
               if(pbar)pbar.style.width='100%';
@@ -6362,28 +7437,720 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   });
 
+  function renderSimpleDocumentCards(targetId,docs,editable){
+    const wrap=qs(targetId);if(!wrap)return;
+    wrap.innerHTML='';
+    docs.forEach(doc=>{
+      const card=document.createElement('div');
+      card.className='bo-preview-card';
+      card.dataset.index=String(doc.index);
+      card.dataset.fileName=String(doc.name||'');
+
+      const title=document.createElement('div');
+      title.className='bo-preview-title';
+      title.textContent='📄 '+doc.name;
+      card.appendChild(title);
+
+      if(editable){
+        const editGuide=document.createElement('div');
+        editGuide.className='bo-direct-edit-guide';
+        editGuide.innerHTML='<strong>✏️ 下の色付き資料本文を直接クリックして修正できます。</strong> 青字は匿名化済み、赤字は確認が必要な候補です。同じ文章を別の編集欄には重ねて表示しません。';
+        card.appendChild(editGuide);
+
+        const colorReview=document.createElement('div');
+        colorReview.className='bo-color-review-panel';
+        colorReview.dataset.colorReviewIndex=String(doc.index);
+        card.appendChild(colorReview);
+      }else{
+        const ta=document.createElement('textarea');
+        ta.className='bo-preview-text';
+        ta.value=String(doc.text||'');
+        ta.readOnly=true;
+        ta.dataset.index=String(doc.index);
+        card.appendChild(ta);
+      }
+
+      wrap.appendChild(card);
+    });
+
+    if(editable && typeof window.renderBlueOceanColorReview==='function'){
+      window.renderBlueOceanColorReview();
+    }
+  }
+
+  window.simpleToggleSourcePreview=function(){
+    const panel=qs('simpleSourcePreviewPanel');if(!panel)return;
+    if(panel.style.display==='none'||!panel.style.display){
+      const docs=typeof window.getPreventiveSourceDocuments==='function'?window.getPreventiveSourceDocuments():[];
+      renderSimpleDocumentCards('simpleSourcePreviewPanel',docs,false);
+      panel.style.display='block';
+      panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }else panel.style.display='none';
+  };
+
   window.simplePrivacyCheck=function(){
     window.checkPreventivePrivacy();
     const result=qs('preventivePrivacyResult');
     const promptBox=qs('preventivePromptBox');
     const detailText=result ? String(result.textContent||'').trim() : '';
+    const strong=!!(result && result.classList.contains('alert') && typeof window.getPreventiveLastStrongHitCount==='function' && window.getPreventiveLastStrongHitCount()>0);
+    const renderSimpleDetectedHits=()=>{
+      const status=qs('simplePrivacyStatus');
+      const hits=Array.isArray(window.preventiveLastStrongHits)?window.preventiveLastStrongHits:[];
+      if(!status||!hits.length)return false;
+      const esc=(v)=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+      const grouped=new Map();
+      hits.forEach(hit=>{
+        const fileName=String(hit&&hit.fileName||'資料').trim()||'資料';
+        if(!grouped.has(fileName))grouped.set(fileName,[]);
+        grouped.get(fileName).push(hit);
+      });
+      let total=0;
+      const blocks=[];
+      grouped.forEach((fileHits,fileName)=>{
+        const seen=new Set();
+        const unique=[];
+        fileHits.forEach(hit=>{
+          const detected=String(hit&&hit.detected||'').trim();
+          if(!detected||seen.has(detected))return;
+          seen.add(detected);unique.push(hit);
+        });
+        total+=unique.length;
+        const items=unique.map(hit=>'<div class="privacy-simple-item"><span class="privacy-simple-detected">'+esc(hit.detected)+'</span><span class="privacy-simple-label">'+esc(hit.label||'確認対象')+'</span></div>').join('');
+        blocks.push('<div class="privacy-hit-file"><div class="privacy-hit-file-title">📄 '+esc(fileName)+'：'+unique.length+'件</div><div class="privacy-simple-list">'+items+'</div></div>');
+      });
+      status.className='bo-simple-status bad';
+      status.innerHTML='<div style="font-weight:900;margin-bottom:10px;">🔴 全資料で'+total+'件見つかりました</div>'+blocks.join('')+'<div style="margin-top:10px;font-size:13px;">資料ごとに内容を確認して、下の匿名化作業へ進んでください。</div>';
+      return true;
+    };
     const passed=!!(promptBox && promptBox.style.display==='block' && result && !result.classList.contains('alert'));
-    simplePrivacyPassed=passed;
+    const anonArea=qs('simpleAnonymizeArea');
+    if(strong){
+      simplePrivacyPassed=false;simpleAnonymizationRequired=true;simpleGeneratedDocumentConfirmed=false;
+      if(anonArea)anonArea.style.display='block';
+
+      // 個人情報が見つかった時は、匿名化開始・最初からやり直すボタンを必ず表示する。
+      const anonymizeButton=anonArea ? anonArea.querySelector('button[onclick*="simpleCreateAnonymizedDocument"]') : null;
+      if(anonymizeButton){anonymizeButton.style.display='block';anonymizeButton.disabled=false;}
+      const resetButton=qs('simpleResetPrivacyAfterAnonymizeButton');
+      if(resetButton){resetButton.style.display='block';resetButton.disabled=false;}
+
+      const gen=qs('simpleGeneratedDocumentArea');if(gen)gen.style.display='none';
+      if(!renderSimpleDetectedHits())setStatus('simplePrivacyStatus',detailText+'\n\n下の「匿名化作業を開始して、新しい資料を作成する」へ進んでください。','bad');
+      enablePreAI(false);setStep(2,'is-current');qs('simpleStep2').scrollIntoView({behavior:'smooth',block:'center'});return;
+    }
+    if(anonArea)anonArea.style.display='none';
     if(passed){
+      if(simpleAnonymizationRequired && !simpleGeneratedDocumentConfirmed){
+        simplePrivacyPassed=false;enablePreAI(false);
+        setStatus('simplePrivacyStatus','✓ 自動再チェックでは強い警告はありません。\nただし匿名化が必要だった資料ですので、下に作成した「新しい匿名化済みAI用資料」を必ず確認してください。','warn');
+        return;
+      }
+      simplePrivacyPassed=true;
       const advisory=result.classList.contains('warn');
       setStatus('simplePrivacyStatus',detailText || (advisory?'✓ 強い警告はありません。確認推奨の内容を確認して次へ進んでください。':'✓ 個人情報チェックを通過しました。'),advisory?'warn':'ok');
       setStep(2,'is-done');setStep(3,'is-current');enablePreAI(true);
-      if(advisory){
-        qs('simpleStep2').scrollIntoView({behavior:'smooth',block:'center'});
-      }else{
-        qs('simpleStep3').scrollIntoView({behavior:'smooth',block:'center'});
-      }
+      if(advisory)qs('simpleStep2').scrollIntoView({behavior:'smooth',block:'center'});else qs('simpleStep3').scrollIntoView({behavior:'smooth',block:'center'});
     }else{
-      setStatus('simplePrivacyStatus',detailText || '🔴 個人情報の可能性が高い記載があります。元資料を匿名化して、資料を選び直してください。','bad');
-      enablePreAI(false);
+      simplePrivacyPassed=false;enablePreAI(false);
+      setStatus('simplePrivacyStatus',detailText || '🔴 個人情報の可能性が高い記載があります。','bad');
       qs('simpleStep2').scrollIntoView({behavior:'smooth',block:'center'});
     }
   };
+
+  window.simpleResetPrivacyAfterAnonymize=function(event){
+    try{
+      if(event && typeof event.preventDefault==='function')event.preventDefault();
+      simplePrivacyPassed=false;
+      simpleAnonymizationRequired=false;
+      simpleGeneratedDocumentConfirmed=false;
+      enablePreAI(false);
+      enableFinalAI(false);
+      if(typeof window.resetPreventiveWorkflowFromStart==='function')window.resetPreventiveWorkflowFromStart();
+      const aa=qs('simpleAnonymizeArea');if(aa)aa.style.display='none';
+      const ga=qs('simpleGeneratedDocumentArea');if(ga)ga.style.display='none';
+      const cb=qs('simpleGeneratedConfirmButton');if(cb)cb.style.display='none';
+      const rb=qs('simpleResetPrivacyAfterAnonymizeButton');if(rb)rb.disabled=true;
+      const pb=qs('simplePrivacyButton');if(pb)pb.disabled=true;
+      const full=qs('simpleGeneratedFullView');if(full)full.style.display='none';
+      const save=qs('simpleSaveScreen');if(save)save.style.display='none';
+      document.body.style.overflow='';
+      setStatus('simpleFileStatus','最初からやり直します。匿名化した新しい資料を「📂 資料を選ぶ」から選び直してください。','warn');
+      setStatus('simplePrivacyStatus','資料の読み込みが終わると押せます。','');
+      setStatus('simpleGeneratedDocumentStatus','','');
+      setStep(1,'is-current');setStep(2,null);setStep(3,null);setStep(4,null);setStep(5,null);
+      const choose=qs('simpleStep1');if(choose)choose.scrollIntoView({behavior:'smooth',block:'center'});
+      // ここでは完全に初期状態へ戻すだけにする。
+      // ブラウザの安全制限で自動ファイル選択が止められることがあるため、
+      // 利用者が画面上の「📂 資料を選ぶ」を改めて押して再スタートする。
+      const input=qs('preventiveFileInput');
+      if(input)input.value='';
+      const mainChoose=document.querySelector('#simpleStep1 .bo-big-action');
+      if(mainChoose){mainChoose.disabled=false;mainChoose.focus({preventScroll:true});}
+      setStatus('simpleFileStatus','✓ 最初の状態に戻しました。上の「📂 資料を選ぶ」から、匿名化して保存した新しい資料を選んでください。','ok');
+      return true;
+    }catch(err){
+      console.error('最初からやり直す処理に失敗しました',err);
+      alert('資料選択画面を開けませんでした。上の「📂 資料を選ぶ」を押してください。');
+      return false;
+    }
+  };
+
+  window.syncBlueOceanEditableDocuments=function(scopeSelector){
+    const scope=scopeSelector ? document.querySelector(scopeSelector) : document;
+    if(!scope)return 0;
+    const editors=scope.querySelectorAll('.bo-color-review-text[contenteditable="true"][data-index]');
+    let count=0;
+    editors.forEach(editor=>{
+      const index=Number(editor.dataset.index);
+      const value=String(editor.innerText||editor.textContent||'').replace(/\u00a0/g,' ');
+      if(typeof window.setPreventiveCurrentDocumentText==='function'){
+        window.setPreventiveCurrentDocumentText(index,value);
+        count++;
+      }
+    });
+    return count;
+  };
+
+  window.simpleCreateAnonymizedDocument=function(){
+    if(typeof window.anonymizePreventivePrivacy!=='function')return;
+    window.anonymizePreventivePrivacy();
+    simpleAnonymizationRequired=true;simpleGeneratedDocumentConfirmed=false;simplePrivacyPassed=false;enablePreAI(false);
+    const docs=typeof window.getPreventiveCurrentDocuments==='function'?window.getPreventiveCurrentDocuments():[];
+    renderSimpleDocumentCards('simpleGeneratedDocumentFiles',docs,true);
+    const rb=qs('simpleResetPrivacyAfterAnonymizeButton');if(rb){rb.disabled=false;rb.removeAttribute('disabled');}
+    const cb=qs('simpleGeneratedConfirmButton');if(cb)cb.style.display='none';
+    const retry=qs('simpleRetryPrivacyCheckButton');if(retry)retry.style.display='none';
+    const finalReview=qs('simpleFinalUserReview');if(finalReview)finalReview.style.display='none';
+    const area=qs('simpleGeneratedDocumentArea');if(area){area.style.display='block';area.scrollIntoView({behavior:'smooth',block:'start'});}
+    setStatus('simpleGeneratedDocumentStatus','✓ 元資料とは別に、新しい匿名化資料を作成しました。まず全文を確認・必要に応じて修正してください。その後、②のボタンでこの新しい資料を再確認用に反映し、もう一度個人情報チェックを行います。','warn');
+  };
+
+  function syncGeneratedEditors(fromSelector,toSelector){
+    const fromWrap=document.querySelector(fromSelector);
+    const toWrap=document.querySelector(toSelector);
+    if(!fromWrap)return;
+
+    const editors=fromWrap.querySelectorAll('.bo-color-review-text[contenteditable="true"][data-index]');
+    editors.forEach(editor=>{
+      const index=Number(editor.dataset.index);
+      const value=String(editor.innerText||editor.textContent||'').replace(/\u00a0/g,' ');
+      if(typeof window.setPreventiveCurrentDocumentText==='function'){
+        window.setPreventiveCurrentDocumentText(index,value);
+      }
+      if(toWrap){
+        const target=toWrap.querySelector('.bo-color-review-text[contenteditable="true"][data-index="'+index+'"]');
+        if(target && target!==editor){
+          target.textContent=value;
+        }
+      }
+    });
+  }
+
+  window.simpleOpenGeneratedDocumentFullView=function(){
+    syncGeneratedEditors('#simpleGeneratedDocumentFiles','#simpleGeneratedDocumentFiles');
+    const docs=typeof window.getPreventiveCurrentDocuments==='function'?window.getPreventiveCurrentDocuments():[];
+    renderSimpleDocumentCards('simpleGeneratedFullViewFiles',docs,true);
+    const overlay=qs('simpleGeneratedFullView');
+    if(overlay){overlay.style.display='block';document.body.style.overflow='hidden';overlay.scrollTop=0;}
+  };
+
+  window.simpleCloseGeneratedDocumentFullView=function(){
+    syncGeneratedEditors('#simpleGeneratedFullViewFiles','#simpleGeneratedDocumentFiles');
+    const overlay=qs('simpleGeneratedFullView');if(overlay)overlay.style.display='none';
+    document.body.style.overflow='';
+    setStatus('simpleGeneratedDocumentStatus','✓ 匿名化済み資料の全体確認内容を反映しました。次に②のボタンで、この新しい資料をもう一度個人情報チェックしてください。','warn');
+  };
+
+  window.simpleDownloadGeneratedDocumentFromFullView=function(){
+    syncGeneratedEditors('#simpleGeneratedFullViewFiles','#simpleGeneratedDocumentFiles');
+    if(typeof window.downloadPreventiveAnonymizedText==='function')window.downloadPreventiveAnonymizedText();
+  };
+
+
+  window.runBlueOceanFinalPrivacyCheck=function(){
+    const docs=typeof window.getPreventiveCurrentDocuments==='function'
+      ? window.getPreventiveCurrentDocuments()
+      : [];
+    const hits=[];
+    const seen=new Set();
+
+    const templateWords=new Set([
+      '現在','状況','課題','背景','原因','訪問','場所','項目','参考','健康','状態',
+      '利用者','家族','本人','主治医','医師','先生','担当','介護','支援','看護','医療',
+      '認定','結果','サービス','同意','方向性','意向','自立','見守り','施設','病院','医院',
+      '通所','居宅','福祉','用具','氏名','名前','生年月日','住所','電話','番号','年齢',
+      '男性','女性','食事','排泄','入浴','移動','歩行','服薬','受診','治療','症状','認知',
+      '機能','介助','全介助','一部介助','要介護','要支援','疾患','既往','継続','実施',
+      '開始','終了','予定','確認','評価','目標','ケアプラン','アセスメント',
+      '退院前カンファレンス','司会','参加者','病院側','在宅側','職種','会議出席',
+      '情報提供','聞き取り日','他スタッフ','薬剤師','栄養士','リハビリ','看護の視点',
+      'リハビリの視点','禁忌事項','予後','予測','まとめ','車椅子','寝たきり',
+      '有','無','あり','なし','安定','不安定','良好','不良','歯科医師',
+      '調査結果','員査結果','前回結果','今回結果','判定結果','評価結果'
+    ]);
+
+    function add(fileName,type,value){
+      const v=String(value||'').trim();
+      if(!v)return;
+      const confirmedNonPrivacy=Array.isArray(window.preventiveConfirmedNonPrivacy)
+        ? window.preventiveConfirmedNonPrivacy
+        : [];
+      if(confirmedNonPrivacy.some(x=>
+        String(x&&x.fileName||'')===String(fileName||'') &&
+        String(x&&x.value||'').trim()===v
+      ))return;
+      const key=fileName+'\u0001'+type+'\u0001'+v;
+      if(seen.has(key))return;
+      seen.add(key);
+      hits.push({fileName,type,value:v});
+    }
+
+    function plausibleName(value){
+      let v=String(value||'').trim()
+        .replace(/(?:様|さん|氏)$/,'')
+        .trim();
+      if(!v || /〇〇|担当CM|主治医/.test(v))return false;
+      if(/[：:,，、。\/／→()（）\[\]【】|｜]/.test(v))return false;
+      const compact=v.replace(/[\s　]/g,'');
+      if(compact.length<2 || compact.length>10)return false;
+      if(!/^[一-龥々ぁ-んァ-ヶー]+$/.test(compact))return false;
+      if(!/[一-龥々]/.test(compact))return false;
+      if(templateWords.has(compact))return false;
+      if(/(?:車椅子|寝たきり|自立|介助|安定|不安定|医師|薬剤師|栄養士|看護師|職種|病院|病棟|退院|入院|認定|調査|員査|結果|前回|今回|判定|評価|項目|内容|所見|経過|状態|状況|食事|排泄|入浴|移動|歩行|睡眠|皮膚|認知|精神|医療|看護|リハビリ|サービス|本人|家族|参加者|司会)/.test(v))return false;
+      return true;
+    }
+
+    const originals=Array.isArray(window.preventiveOriginalPrivacyValues)
+      ? window.preventiveOriginalPrivacyValues
+      : [];
+
+    docs.forEach((doc,index)=>{
+      const fileName=String(doc&&doc.name||doc&&doc.fileName||('資料'+(index+1)));
+      const source=String(doc&&doc.text||'');
+
+      // 1. 匿名化前に実際に検出した個人情報が残っていないか。
+      originals.forEach(v=>{
+        if(v && source.includes(v))add(fileName,'匿名化前に検出した情報が残っています',v);
+      });
+
+      // 2. 明示された氏名欄の後ろに実名らしい文字列が残っていないか。
+      let m;
+      const labeledName=/(?:氏名|利用者名|利用者氏名|本人氏名|被保険者氏名|対象者氏名)\s*[:：]?\s*([一-龥々]{1,4}[ \t　]+[一-龥々ぁ-んァ-ヶー]{1,5}|[一-龥々]{2,8})(?:様|氏)?/g;
+      while((m=labeledName.exec(source))){
+        if(plausibleName(m[1]))add(fileName,'氏名の可能性',m[1]);
+        if(m[0]==='')labeledName.lastIndex++;
+      }
+
+      // 3. 「姓 名」が単独で残るケース。短い1行だけを対象にして誤検出を抑える。
+      source.split(/\r?\n/).forEach(line=>{
+        const s=String(line||'').trim();
+        if(!s || s.length>18)return;
+        if(/[：:,，、。\/／→()（）\[\]【】|｜]/.test(s))return;
+        const nm=s.match(/^([一-龥々]{1,4})[ \t　]+([一-龥々ぁ-んァ-ヶー]{1,5})(?:\s*(?:様|氏))?$/);
+        if(nm && plausibleName(nm[1]+' '+nm[2]))add(fileName,'氏名の可能性',nm[1]+' '+nm[2]);
+      });
+
+      // 4. 直接識別性の高い情報。
+      [
+        ['メールアドレス',/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi],
+        ['電話番号',/(?<!\d)(?:0\d{1,4}[-‐‑–—ー－]?\d{1,4}[-‐‑–—ー－]?\d{3,4})(?!\d)/g],
+        ['郵便番号',/〒?\s*\d{3}[-‐‑–—ー－]\d{4}/g],
+        ['マイナンバー・個人番号',/(?:マイナンバー|個人番号)\s*[:：]?\s*[0-9０-９\s\-]{12,20}/g],
+        ['被保険者番号等',/(?:被保険者番号|保険者番号|受給者証番号|受給者番号|公費負担者番号|公費受給者番号)\s*[:：]?\s*[A-ZＡ-Ｚ0-9０-９\-ー－]{4,}/gi]
+      ].forEach(([type,re])=>{
+        let x;
+        while((x=re.exec(source))){
+          const v=String(x[0]||'').trim();
+          if(!/〇〇/.test(v))add(fileName,type,v);
+          if(x[0]==='')re.lastIndex++;
+        }
+      });
+
+      // 5. 医療機関・施設の固有名らしい表記。
+      const medical=/(?<![一-龥々ァ-ヶーA-Za-z0-9０-９・ー\-])([一-龥々ァ-ヶーA-Za-z0-9０-９・ー\-]{2,24}(?:病院|医院|クリニック|診療所|医療センター))/g;
+      while((m=medical.exec(source))){
+        const v=m[1];
+        if(!/^(?:〇〇病院|〇〇医院|〇〇クリニック|〇〇診療所|医療機関[A-ZＡ-Ｚ]?)$/.test(v)
+           && !/^(?:病院|医院|クリニック|診療所|医療センター)$/.test(v)){
+          add(fileName,'医療機関名の可能性',v);
+        }
+        if(m[0]==='')medical.lastIndex++;
+      }
+
+      const facility=/(?<![一-龥々ァ-ヶーA-Za-z0-9０-９・ー\-])([一-龥々ァ-ヶーA-Za-z0-9０-９・ー\-]{2,24}(?:老人ホーム|特別養護老人ホーム|有料老人ホーム|グループホーム|デイサービス|デイケア|訪問看護ステーション|居宅介護支援事業所|介護老人保健施設|介護医療院))/g;
+      while((m=facility.exec(source))){
+        const v=m[1];
+        if(!/^(?:施設[A-ZＡ-Ｚ]?|通所事業所[A-ZＡ-Ｚ]?|通所リハ事業所[A-ZＡ-Ｚ]?|訪問看護事業所[A-ZＡ-Ｚ]?|居宅介護支援事業所[A-ZＡ-Ｚ]?)$/.test(v)
+           && !/^(?:老人ホーム|特別養護老人ホーム|有料老人ホーム|グループホーム|デイサービス|デイケア|訪問看護ステーション|居宅介護支援事業所|介護老人保健施設|介護医療院)$/.test(v)){
+          add(fileName,'施設・事業所名の可能性',v);
+        }
+        if(m[0]==='')facility.lastIndex++;
+      }
+    });
+
+    window.preventiveFinalPrivacyHits=hits.slice();
+    return {passed:hits.length===0,hits};
+  };
+
+
+  window.renderBlueOceanColorReview=function(){
+    const normalHits=(Array.isArray(window.preventiveLastStrongHits)?window.preventiveLastStrongHits:[]).map(h=>({
+      fileName:String(h&&h.fileName||''), value:String(h&&h.detected||'').trim()
+    }));
+    const finalHits=(Array.isArray(window.preventiveFinalPrivacyHits)?window.preventiveFinalPrivacyHits:[]).map(h=>({
+      fileName:String(h&&h.fileName||''), value:String(h&&h.value||'').trim()
+    }));
+    const redHits=[...normalHits,...finalHits].filter(h=>h.value);
+    const docs=typeof window.getPreventiveCurrentDocuments==='function'?window.getPreventiveCurrentDocuments():[];
+    const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+
+    function colorize(source,redValues){
+      const ranges=[];
+      const blueRe=/(?:〇〇(?:氏|様|市在住|病院|医院|クリニック|診療所)?|担当CM|電話番号：〇〇|被保険者番号：〇〇|メールアドレス：〇〇)/g;
+      let m;
+      while((m=blueRe.exec(source))){
+        ranges.push([m.index,m.index+m[0].length,'blue']);
+        if(!m[0])blueRe.lastIndex++;
+      }
+      Array.from(new Set(redValues)).sort((a,b)=>b.length-a.length).forEach(v=>{
+        let p=0;
+        while(v){
+          const i=source.indexOf(v,p);
+          if(i<0)break;
+          ranges.push([i,i+v.length,'red']);
+          p=i+Math.max(1,v.length);
+        }
+      });
+      if(!ranges.length)return esc(source);
+
+      ranges.sort((a,b)=>a[0]-b[0] || (a[2]==='red'?-1:1));
+      let out='',pos=0;
+      ranges.forEach(([s,e,type])=>{
+        if(e<=pos)return;
+        if(s<pos)s=pos;
+        out+=esc(source.slice(pos,s));
+        const cls=type==='red'?'bo-check-red':'bo-anon-blue';
+        out+='<mark class="'+cls+'">'+esc(source.slice(s,e))+'</mark>';
+        pos=e;
+      });
+      out+=esc(source.slice(pos));
+      return out;
+    }
+
+    document.querySelectorAll('.bo-color-review-panel').forEach(panel=>{
+      const card=panel.closest('.bo-preview-card');
+      const index=card?Number(card.dataset.index):-1;
+      const doc=docs.find(d=>Number(d.index)===index);
+      if(!doc){panel.style.display='none';return;}
+
+      const fileName=String(doc.name||'');
+      const reds=Array.from(new Set(redHits.filter(h=>h.fileName===fileName).map(h=>h.value)));
+
+      panel.innerHTML=
+        '<div class="bo-color-review-title">🔍 匿名化・個人情報チェック表示 <span style="font-weight:700;font-size:13px;">（どこを修正したのかが分かります）</span></div>'+
+
+        '<div class="bo-color-review-text" contenteditable="true" spellcheck="false" data-index="'+index+'" aria-label="匿名化済み資料の編集欄">'+colorize(String(doc.text||''),reds)+'</div>';
+
+      if(reds.length){
+        const actions=document.createElement('div');
+        actions.className='bo-nonprivacy-actions';
+        actions.style.cssText='margin-top:10px;padding:10px;border:1px solid #f0c3c3;border-radius:8px;background:#fff;';
+
+        const head=document.createElement('div');
+        head.style.cssText='font-weight:900;margin-bottom:6px;';
+        head.textContent='赤字が誤認識の場合';
+        actions.appendChild(head);
+
+        reds.forEach(v=>{
+          const b=document.createElement('button');
+          b.type='button';
+          b.className='bo-secondary-action bo-confirm-nonprivacy-btn';
+          b.style.cssText='margin:4px 0;width:100%;background:#fff!important;color:#333!important;';
+          b.dataset.fileName=fileName;
+          b.dataset.value=v;
+          b.textContent='✓ 「'+v+'」は修正・削除した、または個人情報ではないと確認した';
+          b.addEventListener('click',function(ev){
+            ev.preventDefault();
+            ev.stopPropagation();
+            if(typeof window.confirmBlueOceanNonPrivacy==='function'){
+              window.confirmBlueOceanNonPrivacy(ev,this.dataset.fileName,this.dataset.value);
+            }
+          });
+          actions.appendChild(b);
+        });
+        panel.appendChild(actions);
+      }
+
+      panel.style.display='block';
+    });
+  };
+
+
+  window.confirmBlueOceanNonPrivacy=function(event,fileName,value){
+    if(event){
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const f=String(fileName||'');
+    const v=String(value||'').trim();
+    if(!v)return false;
+
+    if(!Array.isArray(window.preventiveConfirmedNonPrivacy)){
+      window.preventiveConfirmedNonPrivacy=[];
+    }
+    if(!window.preventiveConfirmedNonPrivacy.some(x=>
+      String(x&&x.fileName||'')===f &&
+      String(x&&x.value||'').trim()===v
+    )){
+      window.preventiveConfirmedNonPrivacy.push({fileName:f,value:v});
+    }
+
+    // 現在の赤字候補からも即座に外す。
+    if(Array.isArray(window.preventiveLastStrongHits)){
+      window.preventiveLastStrongHits=window.preventiveLastStrongHits.filter(h=>
+        !(String(h&&h.fileName||'')===f && String(h&&h.detected||'').trim()===v)
+      );
+    }
+    if(Array.isArray(window.preventiveFinalPrivacyHits)){
+      window.preventiveFinalPrivacyHits=window.preventiveFinalPrivacyHits.filter(h=>
+        !(String(h&&h.fileName||'')===f && String(h&&h.value||'').trim()===v)
+      );
+    }
+
+    setStatus(
+      'simpleGeneratedDocumentStatus',
+      '✓ 「'+v+'」は、利用者確認により個人情報ではない候補として除外しました。残りの候補を再チェックします。',
+      'ok'
+    );
+
+    if(typeof window.renderBlueOceanColorReview==='function'){
+      window.renderBlueOceanColorReview();
+    }
+
+    // 最新の編集内容も含めて、通常チェック＋最終チェックをやり直す。
+    window.setTimeout(()=>{
+      if(typeof window.simpleRetryGeneratedPrivacyCheck==='function'){
+        window.simpleRetryGeneratedPrivacyCheck(null);
+      }else if(typeof window.simpleApplyGeneratedDocument==='function'){
+        window.simpleApplyGeneratedDocument();
+      }
+    },0);
+    return false;
+  };
+
+  window.renderBlueOceanPrivacyHighlights=function(){
+    if(typeof window.renderBlueOceanColorReview==='function')window.renderBlueOceanColorReview();
+  };
+
+  window.showBlueOceanFinalPrivacyHits=function(check){
+    const result=qs('preventivePrivacyResult');
+    if(!result || !check || check.passed)return;
+    const esc=s=>String(s??'').replace(/[&<>"']/g,ch=>({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    })[ch]);
+    const grouped=new Map();
+    check.hits.forEach(h=>{
+      if(!grouped.has(h.fileName))grouped.set(h.fileName,[]);
+      grouped.get(h.fileName).push(h);
+    });
+    let html='<div style="font-weight:900;margin-bottom:10px;">🔴 最終チェックで、まだ確認が必要な情報が見つかりました。</div>';
+    grouped.forEach((items,fileName)=>{
+      html+='<div class="privacy-hit-file"><div class="privacy-hit-file-title">📄 '+esc(fileName)+'</div><div class="privacy-simple-list">';
+      items.forEach(h=>{
+        html+='<div class="privacy-simple-item"><span class="privacy-simple-detected">'+esc(h.value)+'</span><span class="privacy-simple-label">'+esc(h.type)+'</span></div>';
+      });
+      html+='</div></div>';
+    });
+    html+='<div class="privacy-hit-help">※「新しく作成した匿名化済みAI用資料」の中に赤字表示します。赤字を確認し、色付きの資料本文を直接修正してから、②でもう一度チェックしてください。新しいファイルを選び直す必要はありません。自動チェックは100％ではないため、最後に全文の目視確認も行ってください。</div>';
+    result.className='privacy-result alert';
+    result.innerHTML=html;
+    if(typeof window.renderBlueOceanPrivacyHighlights==='function')window.renderBlueOceanPrivacyHighlights();
+  };
+
+  window.simpleRetryGeneratedPrivacyCheck=function(event){
+    if(event){
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    const btn=qs('simpleRetryPrivacyCheckButton');
+    const status=qs('simpleGeneratedDocumentStatus');
+    if(btn){
+      btn.disabled=true;
+      btn.style.pointerEvents='none';
+      btn.textContent='🔎 修正後の資料を確認しています…';
+    }
+
+    // 1. 白い編集欄の「今の内容」を確実に資料へ反映する。
+    const synced=(typeof window.syncBlueOceanEditableDocuments==='function')
+      ? window.syncBlueOceanEditableDocuments('#simpleGeneratedDocumentFiles')
+      : 0;
+    if(!synced){
+      if(btn){
+        btn.disabled=false;
+        btn.style.pointerEvents='auto';
+        btn.textContent='🔍 修正後の資料をもう一度確認する';
+      }
+      setStatus('simpleGeneratedDocumentStatus','⚠️ 編集できる匿名化資料が見つかりません。匿名化資料を表示してからもう一度お試しください。','bad');
+      return false;
+    }
+
+    // 押したことが分かるよう、まず必ず画面に表示する。
+    setStatus('simpleGeneratedDocumentStatus','🔎 修正した内容を反映しました。個人情報をもう一度チェックしています…','warn');
+
+    // 2. 通常チェックを実行。
+    try{
+      window.checkPreventivePrivacy();
+    }catch(err){
+      console.error(err);
+      if(btn){
+        btn.disabled=false;
+        btn.style.pointerEvents='auto';
+        btn.textContent='🔍 修正後の資料をもう一度確認する';
+      }
+      setStatus('simpleGeneratedDocumentStatus','⚠️ 再チェック処理でエラーが発生しました。もう一度お試しください。','bad');
+      return false;
+    }
+
+    const result=qs('preventivePrivacyResult');
+    let passed=!!(result && !result.classList.contains('alert'));
+
+    // 3. 通常チェックを通過した場合だけ、匿名化後の最終チェックも実行。
+    if(passed && typeof window.runBlueOceanFinalPrivacyCheck==='function'){
+      const finalCheck=window.runBlueOceanFinalPrivacyCheck();
+      if(!finalCheck.passed){
+        passed=false;
+        if(typeof window.showBlueOceanFinalPrivacyHits==='function'){
+          window.showBlueOceanFinalPrivacyHits(finalCheck);
+        }
+      }
+    }else if(!passed){
+      window.preventiveFinalPrivacyHits=[];
+    }
+
+    const review=qs('simpleFinalUserReview');
+    const confirm=qs('simpleGeneratedConfirmButton');
+
+    if(passed){
+      window.preventiveFinalPrivacyHits=[];
+      window.preventiveLastStrongHits=[];
+      if(typeof window.renderBlueOceanColorReview==='function'){
+        window.renderBlueOceanColorReview();
+      }
+      if(btn)btn.style.display='none';
+      if(review)review.style.display='block';
+      if(confirm){
+        confirm.style.display='block';
+        confirm.disabled=false;
+        confirm.style.pointerEvents='auto';
+      }
+      setStatus(
+        'simpleGeneratedDocumentStatus',
+        '✓ 修正後の資料を再チェックしました。確認が必要な個人情報候補は見つかりませんでした。最後にご自身で資料全体を確認し、「✓ 確認しました。次に進む」を押してください。',
+        'ok'
+      );
+    }else{
+      if(typeof window.renderBlueOceanColorReview==='function'){
+        window.renderBlueOceanColorReview();
+      }
+      if(review)review.style.display='none';
+      if(confirm)confirm.style.display='none';
+      if(btn){
+        btn.style.display='block';
+        btn.disabled=false;
+        btn.style.pointerEvents='auto';
+        btn.textContent='🔍 修正後の資料をもう一度確認する';
+      }
+      setStatus(
+        'simpleGeneratedDocumentStatus',
+        '🔴 修正後の資料を再チェックしましたが、まだ確認が必要な赤字箇所があります。本当の個人情報なら白い編集欄で修正してください。誤認識の場合は、赤字表示の下にある「個人情報ではないとして確認済みにする」を押してください。確認済みにした候補は再警告から除外し、もう一度チェックします。',
+        'bad'
+      );
+    }
+
+    if(btn && passed){
+      btn.disabled=false;
+      btn.style.pointerEvents='auto';
+      btn.textContent='🔍 修正後の資料をもう一度確認する';
+    }
+    return false;
+  };
+
+
+  window.simpleApplyGeneratedDocument=function(){
+    if(typeof window.syncBlueOceanEditableDocuments==='function')window.syncBlueOceanEditableDocuments('#simpleGeneratedDocumentFiles');
+    simpleGeneratedDocumentConfirmed=false;simplePrivacyPassed=false;enablePreAI(false);
+    const cb=qs('simpleGeneratedConfirmButton');if(cb)cb.style.display='none';
+    setStatus('simpleGeneratedDocumentStatus','🔎 新しく作成した匿名化資料を再確認用資料として反映し、個人情報をもう一度チェックしています…','warn');
+    window.checkPreventivePrivacy();
+    const result=qs('preventivePrivacyResult');
+    let normalPassed=!!(result && !result.classList.contains('alert'));
+    let finalCheck={passed:false,hits:[]};
+
+    if(normalPassed && typeof window.runBlueOceanFinalPrivacyCheck==='function'){
+      finalCheck=window.runBlueOceanFinalPrivacyCheck();
+      if(!finalCheck.passed){
+        normalPassed=false;
+        if(typeof window.showBlueOceanFinalPrivacyHits==='function')window.showBlueOceanFinalPrivacyHits(finalCheck);
+      }
+    }else if(!normalPassed){
+      // 通常チェックで止まった場合も、見つかった箇所を匿名化済み資料内へ赤字表示する。
+      window.preventiveFinalPrivacyHits=[];
+      if(typeof window.renderBlueOceanPrivacyHighlights==='function')window.renderBlueOceanPrivacyHighlights();
+    }
+
+    if(normalPassed){
+      window.preventiveFinalPrivacyHits=[];
+      window.preventiveLastStrongHits=[];
+      if(typeof window.renderBlueOceanColorReview==='function')window.renderBlueOceanColorReview();
+      const review=qs('simpleFinalUserReview');if(review)review.style.display='block';
+      const retry=qs('simpleRetryPrivacyCheckButton');if(retry)retry.style.display='none';
+      if(cb)cb.style.display='block';
+      setStatus('simpleGeneratedDocumentStatus','✓ 自動の再チェックを通過しました。最後に青字の匿名化箇所を含めて資料全体をご自身で確認し、「確認しました。次に進む」を押してください。','ok');
+    }else{
+      const review=qs('simpleFinalUserReview');if(review)review.style.display='none';
+      if(cb)cb.style.display='none';
+      if(typeof window.renderBlueOceanColorReview==='function')window.renderBlueOceanColorReview();
+      const retry=qs('simpleRetryPrivacyCheckButton');if(retry)retry.style.display='block';
+      setStatus('simpleGeneratedDocumentStatus','🔴 再チェックの結果、まだ確認が必要な記載が残っています。赤字はシステムが個人情報の可能性ありと認識した箇所です。実際には個人情報ではない誤認識の場合もあります。赤字部分を確認し、本当の個人情報なら色付きの資料本文を直接修正してください。修正後、すぐ下の「🔍 修正後の資料をもう一度確認する」を押してください。','bad');
+    }
+  };
+
+  window.simpleConfirmGeneratedDocument=function(){
+    if(typeof window.syncBlueOceanEditableDocuments==='function')window.syncBlueOceanEditableDocuments('#simpleGeneratedDocumentFiles');
+    window.checkPreventivePrivacy();
+    const result=qs('preventivePrivacyResult');
+    if(!result || result.classList.contains('alert')){
+      simpleGeneratedDocumentConfirmed=false;simplePrivacyPassed=false;enablePreAI(false);
+      window.preventiveFinalPrivacyHits=[];
+      if(typeof window.renderBlueOceanPrivacyHighlights==='function')window.renderBlueOceanPrivacyHighlights();
+      setStatus('simpleGeneratedDocumentStatus','🔴 個人情報の可能性がある記載が残っています。赤字部分を確認し、色付きの資料本文を直接修正してから②でもう一度再チェックしてください。','bad');
+      return;
+    }
+
+    if(typeof window.runBlueOceanFinalPrivacyCheck==='function'){
+      const finalCheck=window.runBlueOceanFinalPrivacyCheck();
+      if(!finalCheck.passed){
+        if(typeof window.showBlueOceanFinalPrivacyHits==='function')window.showBlueOceanFinalPrivacyHits(finalCheck);
+        simpleGeneratedDocumentConfirmed=false;simplePrivacyPassed=false;enablePreAI(false);
+        setStatus('simpleGeneratedDocumentStatus','🔴 最終チェックで確認が必要な情報が見つかりました。修正して②から再チェックしてください。','bad');
+        return;
+      }
+    }
+
+    simpleGeneratedDocumentConfirmed=true;simplePrivacyPassed=true;
+    setStatus('simpleGeneratedDocumentStatus','✓ ご自身による個人情報の最終確認が完了しました。この資料をAIへ渡す状態として使用します。','ok');
+    setStatus('simplePrivacyStatus','✓ 匿名化・自動再チェック・ご自身による最終確認まで完了しました。次へ進めます。','ok');
+    setStep(2,'is-done');setStep(3,'is-current');enablePreAI(true);qs('simpleStep3').scrollIntoView({behavior:'smooth',block:'center'});
+  };
+
+  window.simpleDownloadGeneratedDocument=function(){
+    if(typeof window.syncBlueOceanEditableDocuments==='function')window.syncBlueOceanEditableDocuments('#simpleGeneratedDocumentFiles');
+    if(typeof window.downloadPreventiveAnonymizedText==='function')window.downloadPreventiveAnonymizedText();
+    setStatus('simpleGeneratedDocumentStatus','保存画面が表示されたら、デスクトップなど希望する保存先を選んでください。保存後は、その資料を開いて全体を確認できます。','warn');
+  };
+
 
   window.simplePreorganizeWithAI=async function(ai){
     if(!simplePrivacyPassed){setStatus('simpleAIStatus','⚠️ 先に個人情報チェックを完了してください。','bad');return;}
@@ -6408,6 +8175,33 @@ document.addEventListener('DOMContentLoaded', function(){
     }else setStatus('simpleOrganizedStatus','⚠️ 内容を確認してください。','bad');
   };
 
+
+
+  // 重要操作は inline onclick に加えて明示的なイベントも設定し、反応しない環境を避ける。
+  function bindBlueOceanCriticalButtons(){
+    const resetBtn=qs('simpleResetPrivacyAfterAnonymizeButton');
+    if(resetBtn && !resetBtn.dataset.bound){
+      resetBtn.dataset.bound='1';
+      resetBtn.addEventListener('click',function(e){
+        e.preventDefault();
+        if(typeof window.simpleResetPrivacyAfterAnonymize==='function') window.simpleResetPrivacyAfterAnonymize(e);
+      });
+    }
+    const saveLink=qs('simpleConfirmSaveLink');
+    if(saveLink && !saveLink.dataset.bound){
+      saveLink.dataset.bound='1';
+      saveLink.addEventListener('click',function(){
+        const note=qs('simpleSaveStatus');
+        if(!saveLink.href || saveLink.getAttribute('href')==='#'){
+          if(note){note.style.display='block';note.className='status alert';note.textContent='⚠️ 保存データを準備できていません。いったん戻り、もう一度「匿名化済み資料を確認して保存」を押してください。';}
+          return false;
+        }
+        if(note){note.style.display='block';note.className='status success';note.textContent='✓ 保存を開始しました。通常はブラウザのダウンロード先に保存されます。';}
+      });
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bindBlueOceanCriticalButtons);
+  else bindBlueOceanCriticalButtons();
 
 
 
@@ -6523,7 +8317,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if(!step3 || document.getElementById('boDeliveryChoice')) return;
     const one=step3.querySelector('.bo-simple-one');
     if(!one) return;
-    one.innerHTML='<strong>資料の渡し方を選べます。</strong><br>迷ったら「かんたん（おすすめ）」のままで大丈夫です。';
+    one.innerHTML='<strong>資料の渡し方によって、AIが利用できる情報の精度が異なります。</strong>';
     const box=document.createElement('div');
     box.id='boDeliveryChoice';
     box.className='bo-delivery-choice';
@@ -6532,22 +8326,22 @@ document.addEventListener('DOMContentLoaded', function(){
       <div class="bo-delivery-grid">
         <label class="bo-delivery-option">
           <input type="radio" name="boDeliveryMode" value="text" checked>
-          <strong>かんたん（おすすめ）</strong>
-          <small>最初に読み取った文字＋事前整理プロンプトを1回でコピー。ファイルを選び直しません。そのままAIに貼り付けてください。</small>
+          <strong>⚡ かんたん（おすすめ）</strong>
+          <small>このアプリ内で資料から文字を読み取り、その内容を使ってAIに渡します。<br><br>操作が少なく、手軽に利用できますが、<strong>端末内で簡易的に文字を読み取るため、PDFや表などの内容によっては、一部の文字や情報を正確に読み取れない場合があります。</strong><br><br>「まず簡単に使いたい」という方におすすめですが、精度としては確実ではありません。</small>
         </label>
         <label class="bo-delivery-option">
           <input type="radio" name="boDeliveryMode" value="file">
-          <strong>表・画像を重視</strong>
-          <small>事前整理プロンプトだけをコピーし、AI側で元ファイルをもう一度添付します。</small>
+          <strong>📄 資料を確認して添付</strong>
+          <small><strong>書類作成の精度を重視する方におすすめです。</strong><br><br>ご自身で資料の内容と個人情報を確認し、このアプリの<strong>🔒 個人情報をチェックする</strong>機能にてチェックしながらご自身で個人情報の匿名化を行います。個人情報が残っていないことを確認したうえで、情報をAIへ添付します。<br><br>AIが確認済みの資料全体を直接読み取れるため、<strong>「かんたん」よりも資料の内容を正確に反映しやすく、書類作成の精度が向上します。</strong></small>
         </label>
       </div>
-      <div class="bo-delivery-warning">「表・画像を重視」は、複雑な表・帳票・画像・スキャン資料向けです。AIへ添付する元ファイルに個人情報が残っていないことを、必ずご自身でも確認してください。</div>`;
+      <div class="bo-delivery-warning">※元のPDFやWord等をそのままAIへ添付するのではなく、必ず個人情報を確認し、「AI検索用」に匿名化した上でご使用ください。</div>`;
     one.insertAdjacentElement('afterend',box);
     box.querySelectorAll('input[name="boDeliveryMode"]').forEach(r=>r.addEventListener('change',function(){
       window.boPreDeliveryMode=this.value;
       const st=document.getElementById('simpleAIStatus');
       if(st && !st.classList.contains('ok')){
-        st.textContent=this.value==='text' ? '個人情報チェックが終わると選べます。' : '個人情報チェック後、AI側で元ファイルをもう一度添付する方式です。';
+        st.textContent=this.value==='text' ? '個人情報チェックが終わると選べます。' : '個人情報チェック後、匿名化済み資料を確認・保存してAIへ添付する方式です。';
       }
     }));
   }
@@ -6563,7 +8357,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if(st){
       st.className='bo-simple-status '+(copied?'ok':'bad');
       st.innerHTML=copied
-      ? '✓ 事前整理プロンプトをコピーしました。<strong>別タブで開いたAIに、個人情報除去済みの元ファイルを添付 → Ctrl＋V → 送信</strong>してください。'
+      ? '✓ 事前整理プロンプトをコピーしました。<strong>上の確認欄から保存した「AI用匿名化資料.txt」をAIに添付 → Ctrl＋V → 送信</strong>してください。'
       : '⚠️ コピーできませんでした。';
     }
   }
@@ -6949,6 +8743,36 @@ if(document.readyState === "loading"){
 }else{
   setupGoogleKeepDownloadEntries();
 }
+</script>
+
+
+<style id="bo-anonymized-review-responsive">
+@media(max-width:650px){
+  #preventiveAnonymizedReviewPanel > div[style*="grid-template-columns"]{grid-template-columns:1fr!important;}
+  .bo-anonymized-review-text{min-height:220px!important;}
+}
+</style>
+
+
+
+
+
+
+
+<script id="blueocean-unified-review-actions">
+(function(){
+  document.addEventListener('click',function(e){
+    const retry=e.target && e.target.closest ? e.target.closest('#simpleRetryPrivacyCheckButton') : null;
+    if(retry){
+      e.preventDefault();
+      e.stopPropagation();
+      if(typeof window.simpleRetryGeneratedPrivacyCheck==='function'){
+        window.simpleRetryGeneratedPrivacyCheck(e);
+      }
+      return;
+    }
+  },true);
+})();
 </script>
 
 </body>
