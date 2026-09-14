@@ -2403,6 +2403,23 @@ h1.bo-white-title {
 }
 </style>
 
+
+<style id="bo-privacy-branch-prototype-style">
+#boDeliveryChoice{margin-top:16px;padding:17px;border:3px solid #8bd4ee;border-radius:16px;background:#f8fdff;}
+#boDeliveryChoice .bo-delivery-title{font-size:19px;font-weight:900;color:#075fa8;text-align:center;margin-bottom:6px;}
+.bo-delivery-intro{text-align:center;color:#4d6673;font-size:13px;line-height:1.7;margin-bottom:13px;}
+#boDeliveryChoice .bo-delivery-option{width:100%;margin:0!important;text-align:left;color:#173b49!important;background:#fff!important;border:2px solid #b9d9f5!important;padding:16px!important;border-radius:14px!important;box-shadow:0 2px 7px rgba(8,117,201,.07);}
+#boDeliveryChoice .bo-delivery-option:hover{background:#f2f9ff!important;border-color:#138ee0!important;transform:translateY(-1px);}
+#boDeliveryChoice .bo-delivery-option.selected{background:#eaf6ff!important;border:3px solid #138ee0!important;box-shadow:0 0 0 3px rgba(19,142,224,.10);}
+.bo-delivery-option-title{display:block;font-size:18px;font-weight:900;color:#075fa8;margin-bottom:8px;}
+#boDeliveryChoice .bo-delivery-option small{display:block;margin:0!important;color:#425b63;font-size:13px;line-height:1.7;font-weight:600;}
+.bo-precision-guide{margin-top:14px;padding:16px;border:2px solid #7fb7df;border-radius:13px;background:#fff;line-height:1.8;}
+.bo-precision-title{font-size:18px;font-weight:900;color:#075fa8;margin-bottom:9px;}
+.bo-precision-text{color:#344f5c;font-size:14px;line-height:1.85;}
+.bo-precision-caution{margin-top:12px;padding:11px 13px;border-left:5px solid #e6a21a;border-radius:8px;background:#fff8e8;color:#6f5100;font-size:13px;line-height:1.75;font-weight:700;}
+@media(max-width:650px){#boDeliveryChoice{padding:13px}.bo-delivery-option-title{font-size:17px}.bo-precision-text{font-size:13px}}
+</style>
+
 </head>
 
 <body>
@@ -2522,15 +2539,16 @@ h1.bo-white-title {
       </div>
 
       <div id="simpleGeneratedDocumentArea" class="bo-generated-document" style="display:none;">
-        <div class="bo-generated-title">📄 新しく作成した匿名化済みAI用資料</div>
-        <div class="bo-generated-explain"><strong>① まず、この新しい資料全体を確認してください。</strong><br>下に表示されている内容が、元資料とは別にこのブラウザ内で作成したAI用の匿名化資料です。<strong>同じ文章を下に重ねて表示せず、この「匿名化・個人情報チェック表示」1か所だけで確認・修正できます。色付きの資料本文を直接クリックして、その場で文字を修正してください。</strong><br><strong style="display:inline-block;color:#005a9c;background:#ffffff;border:1px solid #78b9e6;border-radius:7px;padding:5px 8px;font-weight:900;">🔵 青字は、システムが個人情報として匿名化し「〇〇」等へ置き換えた箇所です。</strong><br><strong style="color:#c62828;">赤字は、再チェックでシステムが「個人情報の可能性がある」と認識した確認箇所です。</strong>実際には個人情報ではない誤認識の場合もあります。赤字が本当の個人情報なら色付きの資料本文を直接修正し、誤認識なら「個人情報ではないとして確認済みにする」を押してください。</div>
+        <div class="bo-generated-title">📄 匿名化・整理済みAI用資料</div>
+        <div style="margin:8px 0 12px;padding:10px 12px;border-radius:9px;background:#f4f9ff;border:1px solid #b8d8f4;font-size:13px;line-height:1.7;color:#27465f;"><strong>表示方針：</strong>個人情報チェックは情報を多めに残したOCR結果で行い、このAI用資料では判読困難な文字化け・罫線・記号列を非表示にしています。読めない部分を推測して補完することはありません。</div>
+        <div class="bo-generated-explain"><strong>① まず、この新しい資料全体を確認してください。</strong><br>下に表示されている内容が、元資料とは別にこのブラウザ内で作成したAI用の匿名化・整理済み資料です。OCRで判読困難な罫線・記号・意味のない英数字断片はAI用表示から自動的に除外しています。除外した内容を推測して補完することはありません。<strong>同じ文章を下に重ねて表示せず、この「匿名化・個人情報チェック表示」1か所だけで確認・修正できます。色付きの資料本文を直接クリックして、その場で文字を修正してください。</strong><br><strong style="display:inline-block;color:#005a9c;background:#ffffff;border:1px solid #78b9e6;border-radius:7px;padding:5px 8px;font-weight:900;">🔵 青字は、システムが個人情報として匿名化し「〇〇」等へ置き換えた箇所です。</strong><br><strong style="color:#c62828;">赤字は、再チェックでシステムが「個人情報の可能性がある」と認識した確認箇所です。</strong>実際には個人情報ではない誤認識の場合もあります。赤字が本当の個人情報なら色付きの資料本文を直接修正し、誤認識なら「個人情報ではないとして確認済みにする」を押してください。</div>
         <div id="simpleGeneratedDocumentFiles"></div>
         <div class="bo-generated-actions">
           <button type="button" class="bo-secondary-action" onclick="simpleOpenGeneratedDocumentFullView()">🔍 匿名化資料を全体表示して確認する</button>
           <button type="button" class="bo-big-action" onclick="simpleApplyGeneratedDocument()">② この新しい資料を再確認用に反映して、もう一度個人情報チェックする</button>
           <div id="simpleFinalUserReview" style="display:none;margin-top:12px;padding:14px;border:2px solid #138ee0;border-radius:12px;background:#f8fcff;">
-            <div style="font-weight:900;font-size:16px;margin-bottom:6px;">✓ 最後にご自身で確認してください</div>
-            <div style="line-height:1.7;margin-bottom:10px;">個人情報の最終チェックをしましたか？<br>青字の匿名化箇所と赤字の確認箇所を含め、AIへ渡してよい資料になっていることをご自身で確認してください。</div>
+            <div style="font-weight:900;font-size:16px;margin-bottom:6px;color:#b71c1c;">✓ 最後にもう一度ご自身で資料を確認してください。個人情報の最終チェックをしましたか？</div>
+            <div style="line-height:1.7;margin-bottom:10px;">青字の匿名化箇所と赤字の確認箇所を含めもう一度全体を、AIへ渡してよい資料になっていることをご自身で確認してください。</div>
             <button type="button" class="bo-big-action" id="simpleGeneratedConfirmButton" onclick="simpleConfirmGeneratedDocument()" style="display:block;">✓ 確認しました。次に進む</button>
           </div>
         </div>
@@ -2551,7 +2569,7 @@ h1.bo-white-title {
         <button type="button" class="bo-fullview-close" onclick="simpleCloseGeneratedDocumentFullView()">✕ 閉じる</button>
       </div>
       <div class="bo-fullview-note">AIへ渡す前に、資料全体を上から下まで確認してください。個人情報が残っている場合は、この画面で修正できます。修正内容は閉じると元の確認画面にも反映されます。</div>
-      <div class="bo-generated-explain" style="margin-bottom:12px;"><strong>PDFはページごとに区切って表示します。</strong><br>罫線・チェック欄や、OCRで意味のない英字・記号列になった可能性が高い部分は見やすく整理しています。意味のある医療・介護情報はできる限り残します。文字が不自然な箇所や読み取れない箇所は、元資料もあわせて確認してください。</div>
+      <div class="bo-generated-explain" style="margin-bottom:12px;"><strong>PDFはページごとに区切って表示します。</strong><br>罫線・チェック欄、意味のない英数字・記号列など判読困難なOCR断片はAI用表示から除外しています。医療・介護上意味のある文章、数値、単位、略語はできる限り残します。読めない内容を推測して文章化することはありません。必要に応じて元資料もあわせて確認してください。</div>
       <div id="simpleGeneratedFullViewFiles" class="bo-fullview-files"></div>
       <div class="bo-fullview-footer">
         <button type="button" class="bo-big-action" onclick="simpleCloseGeneratedDocumentFullView()">✓ 全体確認を終えて戻る</button>
@@ -2564,7 +2582,7 @@ h1.bo-white-title {
     <div class="bo-simple-num">3</div>
     <div class="bo-simple-body">
       <div class="bo-simple-title">AIで事前整理する</div>
-      <div class="bo-simple-one">再チェックを通過した資料だけをAIへ渡します。<br>かんたんに使う場合は「事前整理の指示＋チェック済み資料」をまとめてコピーできます。AIへ渡す前に、匿名化後の内容を必ずご自身で確認してください。</div>
+      <div class="bo-simple-one">選択した方法に合わせてAIへ進みます。<br>⚡ かんたんでは「指示＋確認済み資料」をまとめてコピーし、📄 確認しながら確実に進める方法では「AIへの指示書」をコピーして、ご自身で確認済み資料をAIへ添付します。</div>
       <div class="bo-ai-three">
         <a href="https://chatgpt.com/" target="_blank" rel="noopener" class="bo-ai-btn bo-chat" onclick="return simplePreorganizeLink(event,'chatgpt')" aria-disabled="true" style="pointer-events:none;text-decoration:none;display:block;text-align:center;box-sizing:border-box">🤖 ChatGPTで整理</a>
         <a href="https://gemini.google.com/" target="_blank" rel="noopener" class="bo-ai-btn bo-gem" onclick="return simplePreorganizeLink(event,'gemini')" aria-disabled="true" style="pointer-events:none;text-decoration:none;display:block;text-align:center;box-sizing:border-box">✨ Geminiで整理</a>
@@ -2643,7 +2661,7 @@ h1.bo-white-title {
 <div style="margin-top:10px;">
   <button id="preventiveLoadButton" type="button" class="btn" onclick="loadPreventiveFiles()" disabled>📥 読み込み開始</button>
 </div>
-<div id="preventiveOcrNote" style="font-size:13px;color:#555;margin-top:8px;">※文字情報のないスキャンPDFは、ブラウザ内でOCR処理して個人情報チェックを行います。資料そのものを外部サーバーへ送信する処理ではありません。</div>
+<div id="preventiveOcrNote" style="font-size:13px;color:#555;margin-top:8px;">※文字情報のないスキャンPDFは、ブラウザ内で高精度OCRを行います。複数の読み取り方式から結果を比較し、個人情報チェックには情報を多めに残した結果、AI用資料にはノイズを整理した結果を使用します。資料そのものを外部サーバーへ送信する処理ではありません。</div>
 <div id="preventiveLoadStatus" class="status">資料を選択した後、「📥 読み込み開始」を押してください。</div>
 </div>
 <div class="setting-box privacy-check-box">
@@ -3024,6 +3042,162 @@ h1.bo-white-title {
       if(!window[globalName])throw new Error(message);
     }
 
+    // ============================================================
+    // AI用 最終整理層
+    // 個人情報チェックには privacyText（情報を多めに残したOCR）を使用し、
+    // AIへ渡す表示だけをここでさらに整理する。
+    // 読めない内容を推測補完せず、判読不能な断片は非表示にする。
+    // ============================================================
+    const BO_AI_KEEP_ABBR=/\b(?:ADL|IADL|FIM|MMSE|HDS-?R|SpO2|HbA1c|Hb|BMI|BPSD|JCS|GCS|ROM|NRS|PT|OT|ST|BP|HR|RR|BT|SPO2|WBC|RBC|CRP|BUN|Cr|eGFR|AST|ALT|LDH|CK|BNP|INR|PEG|HOT|CPAP)\b/ig;
+    const BO_AI_DOMAIN_TERMS=/(?:歩行|移動|移乗|立位|座位|起立|寝返り|起き上がり|車いす|車椅子|杖|歩行器|介助|見守り|自立|全介助|一部介助|食事|摂取|嚥下|排泄|排尿|排便|失禁|トイレ|ポータブル|入浴|更衣|整容|洗身|服薬|受診|往診|疼痛|痛み|NRS|骨折|荷重|免荷|関節|可動域|拘縮|麻痺|筋力|リハビリ|訓練|病棟|退院|入院|認知|記憶|注意|失行|失認|発語|視覚|聴覚|身長|体重|血圧|脈拍|体温|酸素|SpO2|HbA1c|FIM|ADL|IADL|JCS|GCS|ROM|PT|OT|ST|家族|妻|夫|長女|次女|長男|次男|娘|息子|要介護|要支援|サービス|福祉用具|褥瘡|創部|浮腫|食欲|睡眠|服薬|糖尿病|高血圧|脳梗塞|認知症|骨粗鬆症|診断|既往|現病|治療|手術|症状|医師|看護|療法士|栄養|コミュニケーション|社会的交流|問題解決|記憶)/;
+
+    function boAiCount(text,re){
+      const m=String(text||'').match(re);
+      return m?m.length:0;
+    }
+
+    function boAiProtectedFragments(line){
+      const src=String(line||'');
+      const fragments=[];
+      const seen=new Set();
+      const add=v=>{v=String(v||'').replace(/[ \t]{2,}/g,' ').trim();if(v&&!seen.has(v)){seen.add(v);fragments.push(v);}};
+
+      // 医療・介護略語＋近接する数値は保持する。
+      const abbrRe=/(?:ADL|IADL|FIM|MMSE|HDS-?R|SpO2|HbA1c|Hb|BMI|BPSD|JCS|GCS|ROM|NRS|PT|OT|ST|BP|HR|RR|BT|WBC|RBC|CRP|BUN|Cr|eGFR|AST|ALT|LDH|CK|BNP|INR|PEG|HOT|CPAP)(?:\s*[・\/：:\-～〜]?\s*\d+(?:\.\d+)?(?:\s*[～〜\-]\s*\d+(?:\.\d+)?)?)?/ig;
+      let m;
+      while((m=abbrRe.exec(src))!==null){add(m[0]);if(m[0]==='')abbrRe.lastIndex++;}
+
+      // 数値＋臨床単位は保持する。
+      const unitRe=/\d+(?:\.\d+)?\s*(?:kg|cm|mm|mL|ml|mg|g|mmHg|mg\/dL|%|％|回|日|月|年|週|分|秒|点|度|m|歩)/ig;
+      while((m=unitRe.exec(src))!==null){add(m[0]);if(m[0]==='')unitRe.lastIndex++;}
+
+      // ケア・医療上意味のある日本語句は、前後を短く含めて保持する。
+      const chunks=src.split(/[|｜¦‖\[\]［］{}｛｝<>＜＞=＝~〜^`$#@\\]/).map(x=>x.trim()).filter(Boolean);
+      for(const c of chunks){
+        if(BO_AI_DOMAIN_TERMS.test(c)){
+          const bad=boAiCount(c,/[®©€£¥$@#^`_=~\\]/g);
+          const latinTokens=(c.match(/\b[A-Za-z][A-Za-z0-9\-]{1,15}\b/g)||[]).length;
+          const singles=(c.match(/(?:^|\s)[ぁ-んァ-ヶ一-龯々A-Za-z0-9](?=\s|$)/g)||[]).length;
+          // 領域語が1つ含まれるだけの長い文字化け塊は救済しない。
+          // 略語・数値単位は上の専用処理ですでに個別救済される。
+          if(bad>1 || latinTokens>2 || singles>3 || c.length>90)continue;
+          let cleaned=c
+            .replace(/(?:^|\s)[A-Za-z]{2,}(?=\s|$)/g,' ')
+            .replace(/[®©€£¥$]+/g,' ')
+            .replace(/[ \t]{2,}/g,' ')
+            .trim();
+          if(cleaned.length>=2 && cleaned.length<=90)add(cleaned);
+        }
+      }
+      return fragments;
+    }
+
+    function boAiLineIsSeverelyGarbled(line){
+      const s=String(line||'').trim();
+      if(!s)return true;
+      if(/^━+$/.test(s)||/^【\d+\s*\/\s*\d+ページ】$/.test(s))return false;
+      if(/^（.*(?:確認|読み取れ|OCR).*）$/.test(s))return false;
+
+      const compact=s.replace(/\s/g,'');
+      const len=Math.max(1,compact.length);
+      const jp=boAiCount(compact,/[ぁ-んァ-ヶ一-龯々]/g);
+      const latin=boAiCount(compact,/[A-Za-z]/g);
+      const digits=boAiCount(compact,/[0-9]/g);
+      const badSymbols=boAiCount(compact,/[|｜¦‖\[\]{}<>_=~^`$#@\\®©€£¥]/g);
+      const punctuation=boAiCount(compact,/[、。，．:：;；!！?？()（）「」『』【】・\/\-]/g);
+      const singleTokens=(s.match(/(?:^|\s)[ぁ-んァ-ヶ一-龯々A-Za-z0-9](?=\s|$)/g)||[]).length;
+      const latinTokens=(s.match(/\b[A-Za-z][A-Za-z0-9\-]{1,15}\b/g)||[]).filter(t=>{
+        BO_AI_KEEP_ABBR.lastIndex=0;
+        const ok=BO_AI_KEEP_ABBR.test(t);
+        BO_AI_KEEP_ABBR.lastIndex=0;
+        return !ok;
+      }).length;
+      const hasDomain=BO_AI_DOMAIN_TERMS.test(s);
+      BO_AI_KEEP_ABBR.lastIndex=0;
+      const hasAbbr=BO_AI_KEEP_ABBR.test(s);
+      BO_AI_KEEP_ABBR.lastIndex=0;
+      const hasUnit=/\d+(?:\.\d+)?\s*(?:kg|cm|mm|mL|ml|mg|g|mmHg|mg\/dL|%|％|回|日|月|年|週|分|秒|点|度|m|歩)/i.test(s);
+
+      // 例: "€m にロロ | 悪功 ... ® ®" のような表崩れ。
+      if(badSymbols>=3 && singleTokens>=4)return true;
+      if(badSymbols/len>0.10 && latinTokens>=3 && jp<12)return true;
+      if(singleTokens>=6 && (badSymbols+latin)>=5)return true;
+      if(latinTokens>=5 && !hasDomain && !hasAbbr)return true;
+      if(jp<=2 && latin>=5 && !hasAbbr && !hasUnit)return true;
+      if(jp===0 && (latin+badSymbols)>Math.max(4,len*0.45) && !hasAbbr && !hasUnit)return true;
+      if((badSymbols+latin)>len*0.45 && !hasDomain && !hasAbbr && !hasUnit)return true;
+      if(len>25 && singleTokens>=Math.max(5,Math.floor(len*0.12)) && !hasDomain)return true;
+      if(/[®©€£]{2,}/.test(s))return true;
+      if(/(?:\b[A-Za-z]{1,3}\b\s*){5,}/.test(s) && !hasDomain)return true;
+      if(/(?:ロ|口|□|〇|○)(?:\s*(?:ロ|口|□|〇|○)){3,}/.test(s))return true;
+
+      // 日本語を含む普通の文章や、臨床的に意味のある数値行は残す。
+      if(hasDomain||hasAbbr||hasUnit)return false;
+      if(jp>=5 && badSymbols<=1 && latinTokens<=1)return false;
+      if(jp>=8 && (badSymbols+latin)<len*0.30)return false;
+      return false;
+    }
+
+    function finalizeAiReadableText(value){
+      const raw=String(value||'')
+        .replace(/\r\n/g,'\n').replace(/\r/g,'\n')
+        .replace(/\u3000/g,' ')
+        .replace(/[ \t]+$/gm,'');
+      const out=[];
+      let removed=0;
+
+      for(const rawLine of raw.split('\n')){
+        let line=String(rawLine||'').replace(/[ \t]{2,}/g,' ').trim();
+        if(!line){
+          if(out.length && out[out.length-1]!=='' )out.push('');
+          continue;
+        }
+        if(/^━+$/.test(line)||/^【\d+\s*\/\s*\d+ページ】$/.test(line)||/^（.*(?:確認|読み取れ|OCR).*）$/.test(line)){
+          out.push(line);continue;
+        }
+
+        // 明白な罫線・チェック欄残骸を先に整理。
+        line=line
+          .replace(/[®©€£]+/g,' ')
+          .replace(/(?:\s*[|｜¦‖]\s*){2,}/g,' ')
+          .replace(/[□■☐☑✓✔]{2,}/g,' ')
+          .replace(/[ \t]{2,}/g,' ')
+          .trim();
+        if(!line){removed++;continue;}
+
+        if(boAiLineIsSeverelyGarbled(line)){
+          // 全行を表示する代わりに、確実に意味が取れる臨床断片だけ救済する。
+          const salvage=boAiProtectedFragments(line);
+          if(salvage.length){
+            for(const part of salvage){
+              if(!out.includes(part))out.push(part);
+            }
+          }
+          removed++;
+          continue;
+        }
+
+        // 日本語文章に紛れた意味不明な英字トークンは最終表示から除去。
+        const jp=boAiCount(line,/[ぁ-んァ-ヶ一-龯々]/g);
+        if(jp>=3){
+          const keep=/^(?:ADL|IADL|FIM|MMSE|HDS-?R|SpO2|HbA1c|Hb|BMI|BPSD|JCS|GCS|ROM|NRS\d*(?:-\d+)?|PT|OT|ST|BP|HR|RR|BT|WBC|RBC|CRP|BUN|Cr|eGFR|AST|ALT|LDH|CK|BNP|INR|PEG|HOT|CPAP|kg|cm|mm|mL|ml|mg|g|mmHg)$/i;
+          line=line.replace(/\b[A-Za-z][A-Za-z0-9\-]{1,15}\b/g,t=>keep.test(t)?t:' ')
+                   .replace(/[ \t]{2,}/g,' ')
+                   .trim();
+        }
+        if(line)out.push(line);
+      }
+
+      // 連続重複・過剰空行を除去。
+      const dedup=[];
+      for(const line of out){
+        if(line==='' && (!dedup.length||dedup[dedup.length-1]===''))continue;
+        if(line!=='' && dedup.length && dedup[dedup.length-1]===line)continue;
+        dedup.push(line);
+      }
+      return {text:dedup.join('\n').replace(/\n{3,}/g,'\n\n').trim(),removed};
+    }
+
     async function extractPdf(file,progress){
       requireLibrary('pdfjsLib','PDF読み込み機能が利用できません。ページを再読み込みしてください。');
       const pdf=await window.pdfjsLib.getDocument({data:new Uint8Array(await file.arrayBuffer())}).promise;
@@ -3033,72 +3207,130 @@ h1.bo-white-title {
       progress('PDF '+totalPages+'ページを確認しました。読み取りを開始します…');
 
       const pageResults=[];
+      const privacyPageResults=[];
       let textPages=0,ocrPages=0,failedPages=0;
       let ocrWorker=null;
       let currentOcrPage=0;
 
-      function cleanOcrText(value,ocrData){
-        const raw=String(value||'')
+      // OCR結果は「個人情報確認用（情報をできるだけ残す）」と
+      // 「AI用（読みやすさを優先してノイズを強く除去）」に分けて扱う。
+      function normalizeOcrRawText(value){
+        return String(value||'')
           .replace(/\r\n/g,'\n')
           .replace(/\r/g,'\n')
           .replace(/\u3000/g,' ')
-          .replace(/[ \t]+$/gm,'');
+          .replace(/[ \t]+$/gm,'')
+          .replace(/\n{4,}/g,'\n\n\n')
+          .trim();
+      }
 
+      const OCR_MEDICAL_ABBR=/\b(?:ADL|IADL|FIM|MMSE|HDS-?R|SpO2|HbA1c|Hb|BMI|BPSD|JCS|GCS|ROM|NRS|PT|OT|ST|BP|HR|RR|BT|SPO2|WBC|RBC|CRP|BUN|Cr|eGFR|AST|ALT|LDH|CK|BNP|INR|PEG|HOT|CPAP)\b/ig;
+
+      function ocrCount(text,re){
+        const m=String(text||'').match(re);
+        return m?m.length:0;
+      }
+
+      function ocrQualityScore(value){
+        const text=normalizeOcrRawText(value);
+        if(!text)return -9999;
+        const jp=ocrCount(text,/[ぁ-んァ-ヶ一-龯々]/g);
+        const latin=ocrCount(text,/[A-Za-z]/g);
+        const digits=ocrCount(text,/[0-9]/g);
+        const med=(text.match(OCR_MEDICAL_ABBR)||[]).length;
+        const lines=text.split('\n').filter(x=>x.trim());
+        let meaningful=0,noise=0;
+        for(const raw of lines){
+          const line=raw.trim(), compact=line.replace(/\s/g,'');
+          if(!compact)continue;
+          const j=ocrCount(compact,/[ぁ-んァ-ヶ一-龯々]/g);
+          const l=ocrCount(compact,/[A-Za-z]/g);
+          const d=ocrCount(compact,/[0-9]/g);
+          const s=ocrCount(compact,/[|｜¦‖\[\]{}<>_=~^`$#@\\/]/g);
+          if(j>=3 || OCR_MEDICAL_ABBR.test(line) || (d>0 && /(?:kg|cm|mm|mL|ml|mg|%|％|回|日|月|年|点|度|NRS|FIM)/i.test(line))) meaningful++;
+          if(j<=1 && (l+s)>=Math.max(5,compact.length*0.65)) noise++;
+        }
+        OCR_MEDICAL_ABBR.lastIndex=0;
+        return jp*2.2 + digits*0.18 + med*9 + meaningful*5 - latin*0.08 - noise*12 - Math.max(0,lines.length-meaningful)*0.25;
+      }
+
+      function cleanOcrTextForAI(value,ocrData){
+        const raw=normalizeOcrRawText(value);
         const symbolOnly=/^[\s|｜¦‖_＿=＝~〜～^＾`｀'"“”‘’・･:：;；,.，．。!！?？\-‐‑‒–—―ー─━/\\()（）\[\]［］{}｛｝<>＜＞【】「」『』〔〕〈〉《》○〇●◎△▲▽▼□■◇◆☆★✓✔☑→←↑↓※＊*＋+]+$/;
 
-        function countMatches(text,re){
-          const m=String(text||'').match(re);
-          return m?m.length:0;
+        function isProtected(line){
+          if(OCR_MEDICAL_ABBR.test(line)){OCR_MEDICAL_ABBR.lastIndex=0;return true;}
+          OCR_MEDICAL_ABBR.lastIndex=0;
+          return /(?:\d+(?:\.\d+)?\s*(?:kg|cm|mm|mL|ml|mg|g|%|％|回|日|月|年|分|秒|点|度|mmHg|mg\/dL)|NRS\s*\d|FIM\s*\d|要介護\s*\d|要支援\s*[12])/i.test(line);
         }
 
-        function looksLikeOcrNoise(text,confidence){
+        function looksLikeNoise(text,confidence){
           const line=String(text||'').trim();
           if(!line)return true;
           const compact=line.replace(/\s/g,'');
           if(!compact)return true;
 
-          const jp=countMatches(compact,/[ぁ-んァ-ヶ一-龯々]/g);
-          const latin=countMatches(compact,/[A-Za-z]/g);
-          const digits=countMatches(compact,/[0-9]/g);
-          const noisySymbols=countMatches(compact,/[|｜¦‖\[\]{}<>_=~^`$#@\\/]/g);
-          const shortLatinTokens=(line.match(/\b[A-Za-z]{1,3}\b/g)||[]).length;
+          const jp=ocrCount(compact,/[ぁ-んァ-ヶ一-龯々]/g);
+          const latin=ocrCount(compact,/[A-Za-z]/g);
+          const digits=ocrCount(compact,/[0-9]/g);
+          const symbols=ocrCount(compact,/[|｜¦‖\[\]{}<>_=~^`$#@\\/]/g);
           const len=compact.length;
+          const shortLatinTokens=(line.match(/\b[A-Za-z]{1,3}\b/g)||[]).length;
+          const singleJpTokens=(line.match(/(?:^|\s)[ぁ-んァ-ヶ一-龯々](?=\s|$|[：:,.，．\]】])/g)||[]).length;
+          const tokenCount=line.split(/\s+/).filter(Boolean).length;
+          const oneCharTokens=line.split(/\s+/).filter(t=>/^[ぁ-んァ-ヶ一-龯々A-Za-z0-9０-９]$/.test(t)).length;
+          const dividerCount=ocrCount(line,/[|｜¦‖\[\]{}<>_=~^`$#@\\/]/g);
 
-          // まず医療・介護で使う代表的な略語は保持する。
-          if(/\b(?:ADL|IADL|MMSE|HDS-?R|SpO2|HbA1c|BMI|BPSD|JCS|GCS|ROM|PT|OT|ST|BP)\b/i.test(line))return false;
+          // 最優先：表罫線やチェック欄が文字に化けた「壊れた行」は、
+          // JCS/FIM/回数等が偶然混ざっていても行全体をAI用表示から除外する。
+          // 個人情報チェック側では生OCRを保持するため、ここで落としても検出用情報は失われない。
+          if(tokenCount>=12 && oneCharTokens>=6)return true;
+          if(tokenCount>=10 && dividerCount>=3 && jp<Math.max(8,compact.length*0.35))return true;
+          if(line.length>=45 && dividerCount>=4 && jp<14)return true;
+          if((line.match(/(?:\s[ぁ-んァ-ヶ一-龯々A-Za-z0-9０-９]){5,}/g)||[]).length)return true;
 
-          // 数値・単位として意味がある行は保持する。
-          if(digits>0 && /(?:%|％|mg|g|kg|cm|mm|mL|ml|回|日|月|年|分|秒|点|度|mmHg|mg\/dL)/i.test(line)
-             && noisySymbols < Math.max(4,len*0.4))return false;
-
-          // 長い罫線、同じ記号・文字の異常な連続。
-          if(/([ー―─━＿_=＝\-])\1{5,}/.test(line))return true;
-          if(/([ぁ-んァ-ヶA-Za-z])\1{7,}/.test(line))return true;
-          if(/(?:[ー―─━＿_=＝\-]{3,}){2,}/.test(line))return true;
-
-          // 表の罫線を文字と誤認した「aw | ow | mm | ...」型。
-          if(jp===0 && shortLatinTokens>=3 && noisySymbols>=1)return true;
-          if(jp===0 && /(?:\b[A-Za-z]{1,4}\b\s*[\[\]|｜/\\+\-]*){3,}/.test(line))return true;
-
-          // 「HAR 6 JiE COTE」「ST7 — E」「3 EEAEER」等のランダム英数字。
-          if(jp===0 && latin>=2 && digits>=1 && /^[A-Za-z0-9\s|｜_\-—–=~^`'"“”‘’.,:;・･/\\()[\]{}<>＜＞+*#@!?！？…]+$/.test(line))return true;
-          if(jp===0 && latin>=4 && len<=24 && !/^[A-Za-z]{2,}(?:\s+[A-Za-z]{2,}){0,3}$/.test(line))return true;
-
-          // 日本語が少量しかなく、英字・数字・記号が主体の混在ノイズ。
-          if(jp<=2 && latin>=4 && (latin+digits+noisySymbols)>len*0.55)return true;
-          if(jp<=3 && latin>=6 && noisySymbols>=1)return true;
-
-          // カタカナと英字が不自然に混ざるOCR崩れ。
-          const kata=countMatches(compact,/[ァ-ヶー]/g);
-          if(kata>0 && latin>=2 && jp<=5 && noisySymbols>=1)return true;
-
-          // 低信頼度の英数字主体の行。
-          if(Number.isFinite(confidence) && confidence<35 && jp<=1 && latin>=3)return true;
-
-          // 日本語が全くなく、短い英字断片だけの行は原則除外。
-          if(jp===0 && latin>=2 && len<18 && !/\b(?:ADL|IADL|MMSE|HDS-?R|SpO2|HbA1c|BMI|BPSD|JCS|GCS|ROM|PT|OT|ST|BP)\b/i.test(line))return true;
-
+          if(symbolOnly.test(line))return true;
+          if(isProtected(line))return false;
+          // 1文字ずつバラバラになった日本語＋記号は、表やチェック欄のOCR崩れの可能性が高い。
+          if(!isProtected(line) && singleJpTokens>=3 && /[：:,.，．\[\]【】|｜]/.test(line))return true;
+          const spacedJpPairs=(line.match(/[ぁ-んァ-ヶ一-龯々]\s+[ぁ-んァ-ヶ一-龯々]/g)||[]).length;
+          if(!isProtected(line) && spacedJpPairs>=2 && len<18)return true;
+          if(!isProtected(line) && jp<=6 && digits>=2 && symbols>=1 && singleJpTokens>=2)return true;
+          if(!isProtected(line) && /^(?:ロ|口|□|〇|○|日)(?:\s*(?:ロ|口|□|〇|○|日)){2,}/.test(line))return true;
+          if(/([ー―─━＿_=＝\-])\1{4,}/.test(line))return true;
+          if(/([A-Za-z])\1{6,}/.test(line))return true;
+          if(jp===0 && shortLatinTokens>=3 && symbols>=1)return true;
+          if(jp===0 && latin>=3 && /^[A-Za-z0-9\s|｜_\-—–=~^`'"“”‘’.,:;・･/\\()[\]{}<>＜＞+*#@!?！？…]+$/.test(line))return true;
+          if(jp===0 && latin>=2 && len<22)return true;
+          if(jp<=1 && latin>=4 && (latin+digits+symbols)>=len*0.55)return true;
+          if(jp<=2 && latin>=7)return true;
+          if(Number.isFinite(confidence) && confidence<42 && jp<=2 && latin>=2)return true;
+          if(len<=4 && jp===0 && (latin+symbols)>0)return true;
           return false;
+        }
+
+        function cleanMixedLine(line){
+          let s=String(line||'').replace(/[ \t]{2,}/g,' ').trim();
+          if(!s)return '';
+          s=s
+            .replace(/^[\[\]［］|｜¦‖_＿=＝~〜～^＾`｀・･:：;；,.，．\-‐‑‒–—―─━]+\s*/,'')
+            .replace(/\s*[\[\]［］|｜¦‖_＿=＝~〜～^＾`｀・･:：;；,.，．\-‐‑‒–—―─━]+$/,'')
+            .replace(/(?:\s*[|｜¦‖]\s*){2,}/g,' ')
+            .replace(/[□■☐☑✓✔]{2,}/g,' ')
+            .trim();
+
+          const jp=ocrCount(s,/[ぁ-んァ-ヶ一-龯々]/g);
+          if(jp>=3){
+            // 日本語の文章内に混ざったOCR由来の英数字断片を除去。
+            // 医療略語・単位は保持し、それ以外の FHER / EOE / Uz7 等はAI用表示から落とす。
+            const keepToken=/^(?:ADL|IADL|FIM|MMSE|HDS-?R|SpO2|HbA1c|Hb|BMI|BPSD|JCS|GCS|ROM|NRS(?:\d+(?:-\d+)?)?|PT|OT|ST|BP|HR|RR|BT|WBC|RBC|CRP|BUN|Cr|eGFR|AST|ALT|LDH|CK|BNP|INR|PEG|HOT|CPAP|kg|cm|mm|mL|ml|mg|g|mmHg)$/i;
+            s=s.replace(/\b[A-Za-z][A-Za-z0-9-]{1,12}\b/g,t=>keepToken.test(t)?t:' ')
+               .replace(/[ \t]{2,}/g,' ')
+               .replace(/^[\[\]［］|｜¦‖:：;；,.，．\-‐‑‒–—―─━]+\s*/,'')
+               .replace(/\s*[\[\]［］|｜¦‖:：;；,.，．\-‐‑‒–—―─━]+$/,'')
+               .trim();
+          }
+          return s;
         }
 
         const lineObjects=Array.isArray(ocrData?.lines)&&ocrData.lines.length
@@ -3107,29 +3339,27 @@ h1.bo-white-title {
 
         const lines=[];
         for(const obj of lineObjects){
-          let line=String(obj.text||'').replace(/[ \t]{2,}/g,' ').trim();
+          let line=cleanMixedLine(obj.text);
           if(!line)continue;
+          if(looksLikeNoise(line,obj.confidence))continue;
 
-          if(symbolOnly.test(line) && line.length<=40)continue;
-          if(line.length===1 && !/[0-9A-Za-zぁ-んァ-ヶ一-龯]/.test(line))continue;
-
-          // 行頭・行末の罫線記号を除去。
-          line=line
-            .replace(/^[|｜¦‖_＿=＝~〜～^＾`｀・･:：;；,.，．\-‐‑‒–—―─━]+\s*/,'')
-            .replace(/\s*[|｜¦‖_＿=＝~〜～^＾`｀・･:：;；,.，．\-‐‑‒–—―─━]+$/,'')
-            .trim();
-          if(!line)continue;
-
-          // 連続する短い英字断片＋罫線記号を除去してから再判定。
-          line=line
-            .replace(/^(?:(?:[A-Za-z]{1,3}|[0-9]{1,2})\s*[\[\]|｜/\\]+\s*){3,}/,'')
-            .replace(/(?:(?:[A-Za-z]{1,3}|[0-9]{1,2})\s*[\[\]|｜/\\]+\s*){3,}$/,'')
-            .trim();
-          if(!line || looksLikeOcrNoise(line,obj.confidence))continue;
+          // 「日本語がほぼ無い表の残骸」はAI用資料から除去する。
+          const compact=line.replace(/\s/g,'');
+          const jp=ocrCount(compact,/[ぁ-んァ-ヶ一-龯々]/g);
+          const latin=ocrCount(compact,/[A-Za-z]/g);
+          const symbols=ocrCount(compact,/[|｜¦‖\[\]{}<>_=~^`$#@\\/]/g);
+          if(!isProtected(line) && jp===0 && (latin+symbols)>=Math.max(3,compact.length*0.35))continue;
 
           lines.push(line);
         }
-        return lines.join('\n').replace(/\n{3,}/g,'\n\n').trim();
+
+        // 重複行を連続して表示しない。
+        const dedup=[];
+        for(const line of lines){
+          if(dedup.length && dedup[dedup.length-1]===line)continue;
+          dedup.push(line);
+        }
+        return dedup.join('\n').replace(/\n{3,}/g,'\n\n').trim();
       }
 
 
@@ -3158,77 +3388,95 @@ h1.bo-white-title {
         let img;
         try{img=ctx.getImageData(0,0,out.width,out.height);}catch(e){return out;}
         const d=img.data,w=out.width,h=out.height;
-
-        // グレースケール化＋軽い二値化。薄い文字を消し過ぎない閾値にする。
-        const dark=new Uint8Array(w*h);
+        const gray=new Uint8Array(w*h);
+        let sum=0;
         for(let i=0,p=0;i<d.length;i+=4,p++){
           const g=Math.round(d[i]*0.299+d[i+1]*0.587+d[i+2]*0.114);
-          const v=g<205?0:255;
-          d[i]=d[i+1]=d[i+2]=v;
+          gray[p]=g;sum+=g;
+        }
+        const mean=sum/Math.max(1,gray.length);
+        // 原稿の濃さに応じて閾値を自動調整。固定二値化より薄い文字を残しやすい。
+        const threshold=Math.max(165,Math.min(220,Math.round(mean-28)));
+        const dark=new Uint8Array(w*h);
+        for(let i=0,p=0;i<d.length;i+=4,p++){
+          let g=gray[p];
+          // 軽いコントラスト強調。完全な二値化はせず、細い文字の欠落を抑える。
+          g=Math.max(0,Math.min(255,Math.round((g-128)*1.28+128)));
+          d[i]=d[i+1]=d[i+2]=g;
           d[i+3]=255;
-          dark[p]=v===0?1:0;
+          dark[p]=g<threshold?1:0;
         }
 
-        // 横罫線：行の70%以上が黒い場合のみ除去する。
+        // 長い罫線だけを除去。文字の横棒・縦棒は極力残す。
         const hLines=[];
         for(let y=0;y<h;y++){
           let n=0,base=y*w;
           for(let x=0;x<w;x++)n+=dark[base+x];
-          if(n>w*0.70)hLines.push(y);
+          if(n>w*0.76)hLines.push(y);
         }
-        // 縦罫線：列の65%以上が黒い場合のみ除去する。
         const vLines=[];
         for(let x=0;x<w;x++){
           let n=0;
           for(let y=0;y<h;y++)n+=dark[y*w+x];
-          if(n>h*0.65)vLines.push(x);
+          if(n>h*0.72)vLines.push(x);
         }
-
         const whitePixel=(x,y)=>{
           if(x<0||x>=w||y<0||y>=h)return;
           const i=(y*w+x)*4;
-          d[i]=d[i+1]=d[i+2]=255; d[i+3]=255;
+          d[i]=d[i+1]=d[i+2]=255;d[i+3]=255;
         };
-        hLines.forEach(y=>{
-          for(let yy=Math.max(0,y-1);yy<=Math.min(h-1,y+1);yy++){
-            for(let x=0;x<w;x++)whitePixel(x,yy);
-          }
-        });
-        vLines.forEach(x=>{
-          for(let xx=Math.max(0,x-1);xx<=Math.min(w-1,x+1);xx++){
-            for(let y=0;y<h;y++)whitePixel(xx,y);
-          }
-        });
-
+        hLines.forEach(y=>{for(let yy=Math.max(0,y-1);yy<=Math.min(h-1,y+1);yy++)for(let x=0;x<w;x++)whitePixel(x,yy);});
+        vLines.forEach(x=>{for(let xx=Math.max(0,x-1);xx<=Math.min(w-1,x+1);xx++)for(let y=0;y<h;y++)whitePixel(xx,y);});
         ctx.putImageData(img,0,0);
         return out;
       }
 
-      async function recognizeOcrCanvas(canvas,pageNo,label){
+
+      async function recognizeOcrCanvas(canvas,pageNo,label,options={}){
         const worker=await getOcrWorker();
-        progress('PDF '+pageNo+'/'+totalPages+'ページをOCR処理中'+(label?'（'+label+'）':'')+'…');
-        let result;
-        if(worker&&typeof worker.recognize==='function'){
-          try{
-            if(typeof worker.setParameters==='function'){
-              await worker.setParameters({
-                preserve_interword_spaces:'1',
-                tessedit_pageseg_mode:'6'
-              });
-            }
-          }catch(e){}
-          result=await worker.recognize(canvas);
-        }else{
-          result=await window.Tesseract.recognize(canvas,'jpn+eng',{
-            logger:m=>{
-              if(m?.status==='recognizing text'){
-                progress('PDF '+pageNo+'/'+totalPages+'ページをOCR処理中'+(label?'（'+label+'）':'')+'… '+Math.round((m.progress||0)*100)+'%');
+        const candidates=[];
+        const run=async(psm,tag)=>{
+          progress('PDF '+pageNo+'/'+totalPages+'ページをOCR処理中'+(label?'（'+label+'）':'')+(tag?' '+tag:'')+'…');
+          let result;
+          if(worker&&typeof worker.recognize==='function'){
+            try{
+              if(typeof worker.setParameters==='function'){
+                await worker.setParameters({
+                  preserve_interword_spaces:'1',
+                  tessedit_pageseg_mode:String(psm),
+                  user_defined_dpi:'300'
+                });
               }
-            }
-          });
+            }catch(e){}
+            result=await worker.recognize(canvas);
+          }else{
+            result=await window.Tesseract.recognize(canvas,'jpn+eng',{
+              logger:m=>{
+                if(m?.status==='recognizing text')progress('PDF '+pageNo+'/'+totalPages+'ページをOCR処理中'+(label?'（'+label+'）':'')+'… '+Math.round((m.progress||0)*100)+'%');
+              }
+            });
+          }
+          const raw=normalizeOcrRawText(result?.data?.text||'');
+          candidates.push({raw,data:result?.data||null,score:ocrQualityScore(raw),psm});
+        };
+
+        // 通常帳票向け。まず「単一ブロック」として認識。
+        await run(6,'');
+        const first=candidates[0];
+        // 表・チェック欄・散在文字が多そうなページは sparse text でも再認識し、良い方を採用。
+        if(options.forceMulti || !first || first.score<70 || /[|｜□■☐☑]{3,}/.test(first.raw)){
+          await run(11,'再解析');
         }
-        return cleanOcrText(result?.data?.text||'',result?.data||null);
+        candidates.sort((a,b)=>b.score-a.score);
+        const best=candidates[0]||{raw:'',data:null,score:-9999};
+        return {
+          raw:best.raw,
+          clean:cleanOcrTextForAI(best.raw,best.data),
+          score:best.score,
+          psm:best.psm
+        };
       }
+
 
       async function getOcrWorker(){
         if(ocrWorker)return ocrWorker;
@@ -3245,7 +3493,9 @@ h1.bo-white-title {
           try{
             if(typeof ocrWorker.setParameters==='function'){
               await ocrWorker.setParameters({
-                preserve_interword_spaces:'1'
+                preserve_interword_spaces:'1',
+                user_defined_dpi:'300',
+                tessedit_pageseg_mode:'6'
               });
             }
           }catch(e){console.warn('OCR設定の一部を適用できませんでした。',e);}
@@ -3262,7 +3512,7 @@ h1.bo-white-title {
             page=await pdf.getPage(pageNo);
           }catch(error){
             failedPages++;
-            pageResults.push('━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n（このページを開けませんでした。全体確認時に元資料で確認してください。）');
+            {const msg='━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n（このページを開けませんでした。全体確認時に元資料で確認してください。）';pageResults.push(msg);privacyPageResults.push(msg);}
             continue;
           }
 
@@ -3275,7 +3525,7 @@ h1.bo-white-title {
           }catch(e){pageText='';}
 
           if(pageText){
-            pageResults.push('━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n'+pageText);
+            {const block='━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n'+pageText;pageResults.push(block);privacyPageResults.push(block);}
             textPages++;
             await new Promise(r=>setTimeout(r,0));
             continue;
@@ -3285,7 +3535,9 @@ h1.bo-white-title {
           currentOcrPage=pageNo;
           progress('PDF '+pageNo+'/'+totalPages+'ページをOCR処理中…');
           try{
-            const viewport=page.getViewport({scale:2.35});
+            const lowMemory=(navigator.deviceMemory&&navigator.deviceMemory<=4)||Math.min(screen.width||9999,screen.height||9999)<700;
+            const ocrScale=lowMemory?2.6:3.0;
+            const viewport=page.getViewport({scale:ocrScale});
             const canvas=document.createElement('canvas');
             const ctx=canvas.getContext('2d',{willReadFrequently:true,alpha:false});
             canvas.width=Math.max(1,Math.ceil(viewport.width));
@@ -3297,49 +3549,47 @@ h1.bo-white-title {
             await page.render({canvasContext:ctx,viewport,background:'white'}).promise;
 
             let ocrText='';
+            let privacyOcrText='';
 
-            if(pageNo===1){
-              // 1ページ目は「上部概要」「左欄」「右欄」を分割してOCRする。
-              // 認定情報の左右2列表を1枚として読むと、行が交差して文字化けしやすいため。
-              const W=canvas.width,H=canvas.height;
-              const splitY=Math.round(H*0.135);
-              const splitX=Math.round(W*0.515);
+            const W=canvas.width,H=canvas.height;
+            // 表形式帳票は、全体OCRだけで品質が低い場合に左右分割を追加で試す。
+            const prepared=prepareOcrCanvas(canvas);
+            let best=await recognizeOcrCanvas(prepared,pageNo,'全体',{forceMulti:pageNo===1});
+            ocrText=best.clean||'';
+            privacyOcrText=best.raw||'';
 
-              const header=prepareOcrCanvas(cropOcrCanvas(canvas,0,0,W,Math.min(H,splitY+Math.round(H*0.015))));
-              const left=prepareOcrCanvas(cropOcrCanvas(canvas,0,splitY,splitX,H-splitY));
-              const right=prepareOcrCanvas(cropOcrCanvas(canvas,splitX,splitY,W-splitX,H-splitY));
-
-              const headerText=await recognizeOcrCanvas(header,pageNo,'上部概要');
-              const leftText=await recognizeOcrCanvas(left,pageNo,'左側');
-              const rightText=await recognizeOcrCanvas(right,pageNo,'右側');
-
-              const parts=[];
-              if(headerText)parts.push('【上部概要】\n'+headerText);
-              if(leftText)parts.push('【左側】\n'+leftText);
-              if(rightText)parts.push('【右側】\n'+rightText);
-              ocrText=parts.join('\n\n').trim();
-
-              header.width=1;header.height=1;
-              left.width=1;left.height=1;
-              right.width=1;right.height=1;
-            }else{
-              // その他のページも長い表罫線を除去した画像をOCRする。
-              const prepared=prepareOcrCanvas(canvas);
-              ocrText=await recognizeOcrCanvas(prepared,pageNo,'');
-              prepared.width=1;prepared.height=1;
+            const needsColumns=(W/H>0.55) && (best.score<115 || pageNo===1);
+            if(needsColumns){
+              const overlap=Math.round(W*0.015);
+              const splitX=Math.round(W*0.5);
+              const left=prepareOcrCanvas(cropOcrCanvas(canvas,0,0,Math.min(W,splitX+overlap),H));
+              const right=prepareOcrCanvas(cropOcrCanvas(canvas,Math.max(0,splitX-overlap),0,W-Math.max(0,splitX-overlap),H));
+              const leftRes=await recognizeOcrCanvas(left,pageNo,'左側',{forceMulti:false});
+              const rightRes=await recognizeOcrCanvas(right,pageNo,'右側',{forceMulti:false});
+              const splitRaw=[leftRes.raw,rightRes.raw].filter(Boolean).join('\n');
+              const splitClean=[leftRes.clean,rightRes.clean].filter(Boolean).join('\n');
+              const splitScore=ocrQualityScore(splitRaw);
+              // 分割結果が明確に良い時だけ採用し、不要な重複を避ける。
+              if(splitClean && splitScore>best.score*1.08){
+                ocrText=splitClean;
+                privacyOcrText=splitRaw;
+                best={...best,score:splitScore};
+              }
+              left.width=1;left.height=1;right.width=1;right.height=1;
             }
+            prepared.width=1;prepared.height=1;
             if(ocrText){
-              pageResults.push('━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n'+ocrText);
+              {const head='━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n';pageResults.push(head+ocrText);privacyPageResults.push(head+(privacyOcrText||ocrText));}
               ocrPages++;
             }else{
               failedPages++;
-              pageResults.push('━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n（文字を読み取れませんでした。元資料でこのページを確認してください。）');
+              {const msg='━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n（文字を読み取れませんでした。元資料でこのページを確認してください。）';pageResults.push(msg);privacyPageResults.push(msg);}
             }
             canvas.width=1;canvas.height=1;
           }catch(error){
             failedPages++;
             console.warn('PDF '+pageNo+'ページのOCRに失敗しました。',error);
-            pageResults.push('━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n（OCR処理に失敗しました。元資料でこのページを確認してください。）');
+            {const msg='━━━━━━━━━━━━━━━━━━\n【'+pageNo+' / '+totalPages+'ページ】\n━━━━━━━━━━━━━━━━━━\n（OCR処理に失敗しました。元資料でこのページを確認してください。）';pageResults.push(msg);privacyPageResults.push(msg);}
           }
           await new Promise(r=>setTimeout(r,20));
         }
@@ -3351,13 +3601,15 @@ h1.bo-white-title {
       }
 
       const output=pageResults.join('\n\n').trim();
+      const privacyOutput=privacyPageResults.join('\n\n').trim()||output;
       if(!output)throw new Error('PDFは開けましたが、文字情報を取得できませんでした。');
 
       const successPages=textPages+ocrPages;
       progress('PDF '+totalPages+'ページの読み取り完了（'+successPages+'/'+totalPages+'ページ取得）');
       return {
         text:output,
-        detail:'PDF '+totalPages+'ページを確認・取得 '+successPages+'ページ'+(failedPages?'・要確認 '+failedPages+'ページ':'')
+        privacyText:privacyOutput,
+        detail:'PDF '+totalPages+'ページを高精度解析・取得 '+successPages+'ページ'+(failedPages?'・要確認 '+failedPages+'ページ':'')
       };
     }
 
@@ -3421,9 +3673,10 @@ h1.bo-white-title {
         requireLibrary('Tesseract','画像OCR機能が利用できません。インターネット接続を確認してページを再読み込みしてください。');
         progress('画像をOCR処理しています…');
         const result=await window.Tesseract.recognize(file,'jpn+eng',{logger:m=>{if(m?.status==='recognizing text')progress('画像をOCR処理中… '+Math.round((m.progress||0)*100)+'%');}});
-        const text=String(result?.data?.text||'').trim();
-        if(!text)throw new Error('画像から文字情報を取得できませんでした。');
-        return {text,detail:'画像をOCR処理して文字情報を取得'};
+        const privacyText=normalizeOcrRawText(result?.data?.text||'');
+        const text=cleanOcrTextForAI(privacyText,result?.data||null);
+        if(!privacyText)throw new Error('画像から文字情報を取得できませんでした。');
+        return {text:text||privacyText,privacyText,detail:'画像を高精度OCR処理して文字情報を取得'};
       }
       default:throw new Error('このファイル形式は自動読み込みに対応していません。');
       }
@@ -3466,7 +3719,7 @@ h1.bo-white-title {
         const key=[String(file?.name||''),Number(file?.size||0),Number(file?.lastModified||0)].join('\u0001');
         if(existingKeys.has(key)){skipped++;return;}
         existingKeys.add(key);
-        preventiveFiles.push({file,kind:kindOf(file),text:'',loaded:false,loading:false,error:null,progress:'',detail:'',charCount:0});
+        preventiveFiles.push({file,kind:kindOf(file),text:'',privacyText:'',loaded:false,loading:false,error:null,progress:'',detail:'',charCount:0});
         added++;
       });
       if(!added){
@@ -3483,7 +3736,7 @@ h1.bo-white-title {
       if(!preventiveFiles.length){setStatus('⚠️ 先に資料を選択してください。','alert');return;}
       hidePreventiveAnonymizedReview();
       updateSimpleLoadProgress(0,'資料を読み取っています…','読み込みを開始します。',true);
-      preventiveFiles.forEach(item=>{item.loaded=false;item.loading=false;item.error=null;item.text='';item.originalText='';item.progress='';item.detail='';item.charCount=0;});
+      preventiveFiles.forEach(item=>{item.loaded=false;item.loading=false;item.error=null;item.text='';item.privacyText='';item.originalText='';item.progress='';item.detail='';item.charCount=0;item.noiseRemovedCount=0;});
       $('preventivePromptBox').style.display='none';
       const btn=$('preventiveLoadButton');if(btn){btn.dataset.busy='1';btn.style.opacity='.7';btn.style.cursor='wait';}updateLoadButton();renderFileList();
       let success=0,failed=0;const errors=[];
@@ -3495,9 +3748,18 @@ h1.bo-white-title {
           const result=await extractText(item.file,message=>updateProgress(i,preventiveFiles.length,item.file,message));
           const text=String(result?.text||'').trim();
           if(!text)throw new Error('資料から確認可能な文字情報を取得できませんでした。');
-          item.text=text;item.originalText=text;item.charCount=text.length;item.detail=result.detail||'';item.loaded=true;item.loading=false;item.error=null;item.progress='';success++;
+          const isOcrLike=/^(?:PDF|画像)$/.test(String(item.kind||''));
+          const finalPack=isOcrLike?finalizeAiReadableText(text):{text,removed:0};
+          const finalText=String(finalPack.text||text).trim();
+          item.text=finalText;
+          item.privacyText=String(result?.privacyText||text).trim();
+          item.originalText=item.privacyText;
+          item.charCount=finalText.length;
+          item.noiseRemovedCount=Number(finalPack.removed||0);
+          item.detail=(result.detail||'')+(item.noiseRemovedCount?' / AI用表示で判読困難な断片 '+item.noiseRemovedCount+'行を整理':'');
+          item.loaded=true;item.loading=false;item.error=null;item.progress='';success++;
         }catch(error){
-          item.text='';item.charCount=0;item.detail='';item.loaded=false;item.loading=false;item.error=error?.message||'資料を読み込めませんでした。';errors.push('・'+item.file.name+'：'+item.error);failed++;
+          item.text='';item.privacyText='';item.charCount=0;item.detail='';item.loaded=false;item.loading=false;item.error=error?.message||'資料を読み込めませんでした。';errors.push('・'+item.file.name+'：'+item.error);failed++;
         }
         renderFileList();await new Promise(r=>setTimeout(r,20));
       }
@@ -3672,7 +3934,78 @@ h1.bo-white-title {
         }
       }
 
-      preventiveFiles.forEach(item=>{
+
+      // 販売版向け：文脈優先の個人情報検出。
+      // 「名前として自然か」だけに頼らず、氏名欄・住所欄・生年月日欄・職種/役職の担当者欄を強い根拠にする。
+      // OCR崩れ（理学療法士→理学療法土、余分な引用符等）があっても候補を拾う。
+      function detectContextualPrivacy(item){
+        const source=String(item.text||'');
+        if(!source)return;
+
+        function addMatch(label,kind,re,group=1,filter){
+          const flags=re.flags.includes('g')?re.flags:re.flags+'g';
+          const rx=new RegExp(re.source,flags);
+          let m,guard=0;
+          while((m=rx.exec(source))!==null && guard++<400){
+            const value=String(m[group]||'').trim();
+            if(value && (!filter || filter(value,m))){
+              const rel=Math.max(0,m[0].indexOf(value));
+              addHit(item,label,kind,value,m.index+rel,m.slice(1));
+            }
+            if(m[0]==='')rx.lastIndex++;
+          }
+        }
+
+        // 氏名欄はOCR崩れがあっても「欄」であることを優先する。
+        // カナ氏名、姓名間の空白、OCR由来の先頭1文字ノイズにも対応。
+        addMatch('氏名欄の記載','person',
+          /(?:氏\s*名|利用者\s*名|患者\s*氏?名|本人\s*氏?名|被保険者\s*氏?名|対象者\s*氏?名)\s*[:：|｜]?\s*([^\n\t]{2,24}?)(?=\s*(?:住\s*所|現\s*住所|生\s*年\s*月\s*日|年齢|性別|電話|TEL|〒|郵\s*便\s*番\s*号|担当|リハビリ|$))/gi,1,(v)=>{
+            const x=v.replace(/^[0-9０-９A-Za-z記号\s"'’”′・.．-]+/,'').trim();
+            return x.length>=2 && !/^(?:生年月日|住所|電話|年齢|性別)/.test(x);
+          });
+
+        // 生年月日。和暦・西暦・「生」「才/歳」が続く形式を広く拾う。
+        addMatch('生年月日','birth',
+          /(?:生\s*年\s*月\s*日|誕\s*生\s*日|出生\s*年月日)\s*[:：|｜]?\s*((?:(?:明治|大正|昭和|平成|令和)\s*[元0-9０-９]{1,3}\s*年\s*[0-9０-９]{1,2}\s*月\s*[0-9０-９]{1,2}\s*日(?:\s*生)?|(?:19|20)[0-9０-９]{2}\s*[年\/\-.]\s*[0-9０-９]{1,2}\s*[月\/\-.]\s*[0-9０-９]{1,2}\s*日?))/g);
+
+        // 「昭和2年1月10日生」のようにラベルと離れた場合も検出。
+        addMatch('生年月日','birth',
+          /((?:明治|大正|昭和|平成|令和)\s*[元0-9０-９]{1,3}\s*年\s*[0-9０-９]{1,2}\s*月\s*[0-9０-９]{1,2}\s*日\s*生?)/g);
+
+        // 住所欄。都道府県がOCRで欠けても、市区町村＋番地等があれば対象にする。
+        addMatch('住所欄の記載','address',
+          /(?:住\s*所|現\s*住所|居\s*住\s*地|所\s*在\s*地)\s*[:：|｜]?\s*([^\n\t]{3,55})/g,1,(v)=>{
+            return /(?:都|道|府|県|市|区|町|村|丁目|番|号|[0-9０-９]{1,4}\s*[-ー－]\s*[0-9０-９]{1,4})/.test(v);
+          });
+        // ラベル欠落時も「○○市○○区...番地」型を拾う。
+        addMatch('住所','address',
+          /((?:(?:東京都|北海道|(?:京都|大阪)府|[一-龥々]{2,4}県)\s*)?[一-龥々ぁ-んァ-ヶー]{1,12}市\s*[一-龥々ぁ-んァ-ヶー]{0,12}(?:区|町|村)?\s*[一-龥々ぁ-んァ-ヶー0-9０-９\-ー－丁目番地号 ]{2,35})/g,1,(v)=>/[0-9０-９]|丁目|番地|番|号/.test(v));
+
+        // 電話/FAX。ハイフンだけでなく 096 (345) 8111 のような括弧形式も拾う。
+        addMatch('電話番号','phone',
+          /((?:0[0-9０-９]{1,4}\s*(?:[-ー－]|\()\s*[0-9０-９]{1,4}\)?\s*[-ー－ ]?\s*[0-9０-９]{3,4}))/g);
+        addMatch('FAX番号','phone',
+          /(?:FAX|ＦＡＸ|ファクス)\s*[:：]?\s*((?:0[0-9０-９]{1,4}\s*(?:[-ー－]|\()\s*[0-9０-９]{1,4}\)?\s*[-ー－ ]?\s*[0-9０-９]{3,4}))/gi);
+
+        // 郵便番号。ラベル付きならOCRでハイフンが欠けても7桁を拾う。
+        addMatch('郵便番号','postal',
+          /(?:郵\s*便\s*番\s*号|〒)\s*[:：]?\s*([0-9０-９]{3}\s*[-ー－ ]?\s*[0-9０-９]{4})/g);
+
+        // 医療・介護・福祉の職種/役職＋担当者名。
+        // 特定職種だけではなく、販売利用を想定して広い職種を対象にする。
+        const role='(?:医師|歯科医師|看護師|准看護師|保健師|助産師|薬剤師|理学療法(?:士|土)|作業療法(?:士|土)|言語聴覚士|管理栄養士|栄養士|歯科衛生士|社会福祉士|精神保健福祉士|介護福祉士|介護職員|訪問介護員|介護支援専門員|主任介護支援専門員|ケアマネ(?:ジャー)?|MSW|PSW|医療ソーシャルワーカー|相談員|生活相談員|支援相談員|サービス提供責任者|福祉用具専門相談員|管理者|施設長|課主任|主任|担当者)';
+        const roleRx=new RegExp('(?:担当\\s*)?'+role+'\\s*[:：|｜.．・′’”"\\-]?\\s*([一-龥々ぁ-んァ-ヶー]{1,6}(?:[\\s　′’”"・.．]*[一-龥々ぁ-んァ-ヶー]{1,6}){0,1})','gi');
+        addMatch('職種・役職に紐づく氏名','staffPerson',roleRx,1,(v)=>{
+          const c=v.replace(/[\s　′’”"・.．]/g,'');
+          if(c.length<2 || c.length>12)return false;
+          if(/^(?:担当|主任|病棟|外来|リハビリ|医療|介護|看護|相談|管理|施設|課|部)$/.test(c))return false;
+          return /[一-龥々ぁ-んァ-ヶー]/.test(c);
+        });
+      }
+
+      preventiveFiles.forEach(originalItem=>{
+        const item={...originalItem,text:String(originalItem.privacyText||originalItem.text||'')};
+        detectContextualPrivacy(item);
         detectStructuredRows(item);
 
         // 単独で記載された「姓＋空白＋名」を保守的に氏名候補として検出する。
@@ -3743,7 +4076,7 @@ h1.bo-white-title {
         });
 
         // 電話・メール・郵便番号など形式が明確なもの。
-        collectRegex(item,'電話番号','phone',/(?<![0-9０-９])((?:0\d{1,4}[\-ー－]\d{1,4}[\-ー－]\d{3,4}|0\d{9,10}))(?![0-9０-９])/g);
+        collectRegex(item,'電話番号','phone',/(?<![0-9０-９])((?:0[0-9０-９]{1,4}\s*(?:[\-ー－]|\()\s*[0-9０-９]{1,4}\)?\s*[\-ー－ ]?\s*[0-9０-９]{3,4}|0[0-9０-９]{9,10}))(?![0-9０-９])/g);
         collectRegex(item,'メールアドレス','email',/([A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,})/gi);
         collectRegex(item,'郵便番号','postal',/(?<![0-9０-９\-ー－])(〒?\s*\d{3}[\-ー－]\d{4})(?![0-9０-９\-ー－])/g);
 
@@ -3780,7 +4113,7 @@ h1.bo-white-title {
         // 人名カテゴリーだけは最終段階でも厳格に再確認する。
         // 「車椅子 寝たきり氏名」「有 無氏名」「安定 不安定氏名」
         // 「歯科医師医師氏名」のような帳票語・選択肢の連結を除外する。
-        if(/person|氏名|名前/i.test(String(hit.kind||'')+' '+String(hit.label||''))){
+        if(hit.kind!=='staffPerson' && /person|氏名|名前/i.test(String(hit.kind||'')+' '+String(hit.label||''))){
           let candidate=detected
             .replace(/(?:医師氏名|氏名|名前)$/,'')
             .replace(/(?:様|さん|氏)$/,'')
@@ -3873,7 +4206,7 @@ h1.bo-white-title {
 
       {const anonymizeBox=$('preventiveLocalAnonymizeBox');if(anonymizeBox)anonymizeBox.style.display='none';}
       result.className='privacy-result ok';
-      result.textContent='✓ 自動チェックでは、今回設定した確度の高いパターンに該当する個人特定情報は検出されませんでした。\n\n病名・既往歴・症状・要介護度・ADL・IADL・服薬・医療処置・介助内容・家族構成や続柄・サービス利用状況等は、ケアプランやアセスメント等に必要な情報として原則保持しています。\n\nただし、この処理は完全な匿名化を保証するものではありません。AIへ渡す前に、必ず利用者自身で資料全体を確認してください。';
+      result.textContent='✓ 自動チェックでは、現時点で強く疑われる個人特定情報は検出されませんでした。\n\n病名・既往歴・症状・要介護度・ADL・IADL・服薬・医療処置・介助内容・家族構成や続柄・サービス利用状況等は、ケアプランやアセスメント等に必要な情報として原則保持しています。\n\n※これは「個人情報が完全にない」ことを保証する判定ではありません。OCRの読み違い・表崩れ・未知の表記は自動検出できない場合があります。AIへ渡す前に、必ず資料全体をご自身で最終確認してください。';
       if(promptBox){promptBox.style.display='block';promptBox.classList.add('ready-next');}
       if(checkBtn){checkBtn.className='preventive-launch-button privacy-check-button ready';checkBtn.textContent='✓ 個人情報チェック完了 → 次の工程へ';}
       if(nextNote){nextNote.innerHTML='✓ <strong>自動チェックが完了しました。</strong><br>AIへ渡す前に、匿名化後の資料全文を必ずご自身で確認してください。';nextNote.classList.add('show');}
@@ -3917,7 +4250,7 @@ h1.bo-white-title {
           const rel=groupRelation||relationOf(source);
           replacement=rel+nextLetter(relationCounters,rel);
         }
-        else if(kind==='person'||kind==='spacedName'||kind==='personAlias') replacement='〇〇氏';
+        else if(kind==='person'||kind==='spacedName'||kind==='personAlias'||kind==='staffPerson') replacement='〇〇氏';
         else if(kind==='address') replacement='〇〇市在住';
         else if(kind==='postal') replacement='郵便番号：〇〇';
         else if(kind==='phone') replacement='電話番号：〇〇';
@@ -3958,10 +4291,16 @@ h1.bo-white-title {
         preventiveFiles.forEach(item=>{
           if(!item.loaded||item.file.name!==hit.fileName)return;
           const detected=String(hit.detected||'');if(!detected)return;
-          const before=String(item.text||'');if(!before.includes(detected))return;
-          const pieces=before.split(detected);const count=pieces.length-1;
-          item.text=pieces.join(replacementFor(hit));
-          replacedCount+=count;
+          const repl=replacementFor(hit);
+          const before=String(item.text||'');
+          const privacyBefore=String(item.privacyText||'');
+          let count=0;
+          if(before.includes(detected)){
+            const pieces=before.split(detected);count+=pieces.length-1;item.text=pieces.join(repl);
+          }
+          if(privacyBefore.includes(detected)) item.privacyText=privacyBefore.split(detected).join(repl);
+          if(!count && !privacyBefore.includes(detected))return;
+          replacedCount+=Math.max(1,count);
           item.charCount=String(item.text||'').length;
           if(!String(item.detail||'').includes('個人情報匿名化支援済み')) item.detail=(item.detail||'')+(item.detail?' / ':'')+'個人情報匿名化支援済み';
         });
@@ -4187,6 +4526,8 @@ h1.bo-white-title {
       const item=preventiveFiles[index];
       if(!item)return false;
       item.text=String(text||'').trim();
+      item.privacyText=item.text;
+      item.originalText=item.text;
       item.charCount=item.text.length;
       return true;
     };
@@ -7465,6 +7806,8 @@ document.addEventListener('DOMContentLoaded', function(){
     const promptBox=qs('preventivePromptBox');
     const detailText=result ? String(result.textContent||'').trim() : '';
     const strong=!!(result && result.classList.contains('alert') && typeof window.getPreventiveLastStrongHitCount==='function' && window.getPreventiveLastStrongHitCount()>0);
+    const passed=!!(promptBox && promptBox.style.display==='block' && result && !result.classList.contains('alert'));
+
     const renderSimpleDetectedHits=()=>{
       const status=qs('simplePrivacyStatus');
       const hits=Array.isArray(window.preventiveLastStrongHits)?window.preventiveLastStrongHits:[];
@@ -7491,42 +7834,46 @@ document.addEventListener('DOMContentLoaded', function(){
         blocks.push('<div class="privacy-hit-file"><div class="privacy-hit-file-title">📄 '+esc(fileName)+'：'+unique.length+'件</div><div class="privacy-simple-list">'+items+'</div></div>');
       });
       status.className='bo-simple-status bad';
-      status.innerHTML='<div style="font-weight:900;margin-bottom:10px;">🔴 全資料で'+total+'件見つかりました</div>'+blocks.join('')+'<div style="margin-top:10px;font-size:13px;">資料ごとに内容を確認して、下の匿名化作業へ進んでください。</div>';
+      status.innerHTML='<div style="font-weight:900;margin-bottom:10px;">🔴 全資料で'+total+'件見つかりました</div>'+blocks.join('')+'<div style="margin-top:10px;font-size:13px;">下の2つから、これからの進め方を選んでください。</div>';
       return true;
     };
-    const passed=!!(promptBox && promptBox.style.display==='block' && result && !result.classList.contains('alert'));
+
+    // チェック直後は、まず進め方を選んでもらう。
     const anonArea=qs('simpleAnonymizeArea');
-    if(strong){
-      simplePrivacyPassed=false;simpleAnonymizationRequired=true;simpleGeneratedDocumentConfirmed=false;
-      if(anonArea)anonArea.style.display='block';
-
-      // 個人情報が見つかった時は、匿名化開始・最初からやり直すボタンを必ず表示する。
-      const anonymizeButton=anonArea ? anonArea.querySelector('button[onclick*="simpleCreateAnonymizedDocument"]') : null;
-      if(anonymizeButton){anonymizeButton.style.display='block';anonymizeButton.disabled=false;}
-      const resetButton=qs('simpleResetPrivacyAfterAnonymizeButton');
-      if(resetButton){resetButton.style.display='block';resetButton.disabled=false;}
-
-      const gen=qs('simpleGeneratedDocumentArea');if(gen)gen.style.display='none';
-      if(!renderSimpleDetectedHits())setStatus('simplePrivacyStatus',detailText+'\n\n下の「匿名化作業を開始して、新しい資料を作成する」へ進んでください。','bad');
-      enablePreAI(false);setStep(2,'is-current');qs('simpleStep2').scrollIntoView({behavior:'smooth',block:'center'});return;
-    }
     if(anonArea)anonArea.style.display='none';
-    if(passed){
-      if(simpleAnonymizationRequired && !simpleGeneratedDocumentConfirmed){
-        simplePrivacyPassed=false;enablePreAI(false);
-        setStatus('simplePrivacyStatus','✓ 自動再チェックでは強い警告はありません。\nただし匿名化が必要だった資料ですので、下に作成した「新しい匿名化済みAI用資料」を必ず確認してください。','warn');
-        return;
+    const gen=qs('simpleGeneratedDocumentArea');
+    if(strong && gen)gen.style.display='none';
+    const choice=document.getElementById('boDeliveryChoice');
+    if(choice){
+      choice.style.display='block';
+      choice.dataset.privacyStrong=strong?'1':'0';
+      choice.dataset.privacyPassed=passed?'1':'0';
+    }
+    const precisionGuide=document.getElementById('boPrecisionGuide');
+    if(precisionGuide)precisionGuide.style.display='none';
+    document.querySelectorAll('.bo-delivery-select-btn').forEach(btn=>btn.classList.remove('selected'));
+    window.boPreDeliveryMode='';
+
+    if(strong){
+      simplePrivacyPassed=false;
+      simpleAnonymizationRequired=true;
+      simpleGeneratedDocumentConfirmed=false;
+      if(!renderSimpleDetectedHits()){
+        setStatus('simplePrivacyStatus',detailText+'\n\n下の2つから、これからの進め方を選んでください。','bad');
       }
+    }else if(passed){
       simplePrivacyPassed=true;
       const advisory=result.classList.contains('warn');
-      setStatus('simplePrivacyStatus',detailText || (advisory?'✓ 強い警告はありません。確認推奨の内容を確認して次へ進んでください。':'✓ 個人情報チェックを通過しました。'),advisory?'warn':'ok');
-      setStep(2,'is-done');setStep(3,'is-current');enablePreAI(true);
-      if(advisory)qs('simpleStep2').scrollIntoView({behavior:'smooth',block:'center'});else qs('simpleStep3').scrollIntoView({behavior:'smooth',block:'center'});
+      setStatus('simplePrivacyStatus',(detailText || (advisory?'✓ 強い警告はありません。':'✓ 個人情報チェックを通過しました。'))+'\n\n次に、下の2つから進め方を選んでください。',advisory?'warn':'ok');
     }else{
-      simplePrivacyPassed=false;enablePreAI(false);
-      setStatus('simplePrivacyStatus',detailText || '🔴 個人情報の可能性が高い記載があります。','bad');
-      qs('simpleStep2').scrollIntoView({behavior:'smooth',block:'center'});
+      simplePrivacyPassed=false;
+      setStatus('simplePrivacyStatus',(detailText || '🔴 個人情報の可能性が高い記載があります。')+'\n\n下の2つから、これからの進め方を選んでください。','bad');
     }
+
+    enablePreAI(false);
+    setStep(2,'is-current');
+    setStep(3,null);
+    if(choice)choice.scrollIntoView({behavior:'smooth',block:'center'});
   };
 
   window.simpleResetPrivacyAfterAnonymize=function(event){
@@ -7820,6 +8167,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
       panel.innerHTML=
         '<div class="bo-color-review-title">🔍 匿名化・個人情報チェック表示 <span style="font-weight:700;font-size:13px;">（どこを修正したのかが分かります）</span></div>'+
+        '<div style="margin:8px 0 10px;color:#c62828;font-weight:900;line-height:1.7;">機械では読み取れない文字もありますので、青字、赤字関係なく、必ずご自身の目で全体を確認し、個人情報はご自身の責任で全て削除してください。</div>'+
 
         '<div class="bo-color-review-text" contenteditable="true" spellcheck="false" data-index="'+index+'" aria-label="匿名化済み資料の編集欄">'+colorize(String(doc.text||''),reds)+'</div>';
 
@@ -8284,38 +8632,108 @@ document.addEventListener('DOMContentLoaded', function(){
   window.boPreDeliveryMode = 'text';
 
   function insertDeliveryChoice(){
-    const step3=document.getElementById('simpleStep3');
-    if(!step3 || document.getElementById('boDeliveryChoice')) return;
-    const one=step3.querySelector('.bo-simple-one');
-    if(!one) return;
-    one.innerHTML='<strong>資料の渡し方によって、AIが利用できる情報の精度が異なります。</strong>';
+    const step2=document.getElementById('simpleStep2');
+    if(!step2 || document.getElementById('boDeliveryChoice')) return;
+    const status=document.getElementById('simplePrivacyStatus');
+    if(!status) return;
     const box=document.createElement('div');
     box.id='boDeliveryChoice';
     box.className='bo-delivery-choice';
+    box.style.display='none';
     box.innerHTML=`
-      <div class="bo-delivery-title">資料をAIへどう渡しますか？</div>
+      <div class="bo-delivery-title">次の作業方法を選んでください</div>
+      <div class="bo-delivery-intro">用途や作業方法に合わせて、2つの方法から選択できます。</div>
       <div class="bo-delivery-grid">
-        <label class="bo-delivery-option">
-          <input type="radio" name="boDeliveryMode" value="text" checked>
-          <strong>⚡ かんたん（おすすめ）</strong>
-          <small>このアプリ内で資料から文字を読み取り、その内容を使ってAIに渡します。<br><br>操作が少なく、手軽に利用できますが、<strong>端末内で簡易的に文字を読み取るため、PDFや表などの内容によっては、一部の文字や情報を正確に読み取れない場合があります。</strong><br><br>「まず簡単に使いたい」という方におすすめですが、精度としては確実ではありません。</small>
-        </label>
-        <label class="bo-delivery-option">
-          <input type="radio" name="boDeliveryMode" value="file">
-          <strong>📄 資料を確認して添付</strong>
-          <small><strong>書類作成の精度を重視する方におすすめです。</strong><br><br>ご自身で資料の内容と個人情報を確認し、このアプリの<strong>🔒 個人情報をチェックする</strong>機能にてチェックしながらご自身で個人情報の匿名化を行います。個人情報が残っていないことを確認したうえで、情報をAIへ添付します。<br><br>AIが確認済みの資料全体を直接読み取れるため、<strong>「かんたん」よりも資料の内容を正確に反映しやすく、書類作成の精度が向上します。</strong></small>
-        </label>
+        <button type="button" class="bo-delivery-option bo-delivery-select-btn" data-mode="text" onclick="boSelectDeliveryMode('text', this)">
+          <span class="bo-delivery-option-title">⚡ かんたんに進める</span>
+          <small>アプリ内で匿名化し、OCRの判読困難な断片を整理したAI用資料を作成して進みます。医療・介護上意味のある情報はできる限り残し、読めない内容を推測補完しません。</small>
+        </button>
+        <button type="button" class="bo-delivery-option bo-delivery-select-btn" data-mode="file" onclick="boSelectDeliveryMode('file', this)">
+          <span class="bo-delivery-option-title">📄 確認しながら確実に進める</span>
+          <small><strong>書類作成の精度を重視する方におすすめです。</strong><br>元資料を自分で確認・修正し、個人情報チェックを繰り返しながら、AIへ渡す資料を確実に確認して進めます。</small>
+        </button>
       </div>
-      <div class="bo-delivery-warning">※元のPDFやWord等をそのままAIへ添付するのではなく、必ず個人情報を確認し、「AI検索用」に匿名化した上でご使用ください。</div>`;
-    one.insertAdjacentElement('afterend',box);
-    box.querySelectorAll('input[name="boDeliveryMode"]').forEach(r=>r.addEventListener('change',function(){
-      window.boPreDeliveryMode=this.value;
-      const st=document.getElementById('simpleAIStatus');
-      if(st && !st.classList.contains('ok')){
-        st.textContent=this.value==='text' ? '個人情報チェックが終わると選べます。' : '個人情報チェック後、匿名化済み資料を確認・保存してAIへ添付する方式です。';
-      }
-    }));
+      <div id="boPrecisionGuide" class="bo-precision-guide" style="display:none;"></div>
+      <div class="bo-delivery-warning">※どちらの方法でも、自動チェックだけで完全な匿名化を保証するものではありません。AIへ渡す前に、必ずご自身で資料全体を最終確認してください。</div>`;
+    status.insertAdjacentElement('afterend',box);
   }
+
+  window.boSelectDeliveryMode=function(mode,button){
+    const box=document.getElementById('boDeliveryChoice');
+    const anonArea=document.getElementById('simpleAnonymizeArea');
+    const guide=document.getElementById('boPrecisionGuide');
+    const strong=!!(box && box.dataset.privacyStrong==='1');
+    const passed=!!(box && box.dataset.privacyPassed==='1');
+    window.boPreDeliveryMode=mode;
+    document.querySelectorAll('.bo-delivery-select-btn').forEach(btn=>btn.classList.toggle('selected',btn===button));
+
+    if(mode==='text'){
+      if(guide)guide.style.display='none';
+      if(anonArea){
+        anonArea.style.display='block';
+        const title=anonArea.querySelector('.bo-anonymize-title');
+        if(title)title.textContent='⚡ かんたんに進める：匿名化した新しい資料を作成します';
+        const btn=anonArea.querySelector('button[onclick*="simpleCreateAnonymizedDocument"]');
+        if(btn){btn.style.display='block';btn.disabled=false;}
+        const reset=document.getElementById('simpleResetPrivacyAfterAnonymizeButton');
+        if(reset){reset.style.display='block';reset.disabled=false;}
+        anonArea.scrollIntoView({behavior:'smooth',block:'center'});
+      }
+      return;
+    }
+
+    if(anonArea)anonArea.style.display='none';
+    if(!guide)return;
+    guide.style.display='block';
+
+    if(strong || !passed){
+      guide.innerHTML=`
+        <div class="bo-precision-title">📄 確認しながら確実に進める</div>
+        <div class="bo-precision-text">
+          <strong>この方法では、ご自身で元の資料を確認・修正して進めます。</strong><br><br>
+          ① 上の「🔒 個人情報をチェックする」で見つかった内容を確認します。<br>
+          ② 元のPDF・Word等をご自身で修正し、個人情報を削除・匿名化します。<br>
+          ③ 修正した資料をこのアプリに読み込み直し、<strong>「🔒 個人情報をチェックする」を必要に応じて繰り返します。</strong><br>
+          ④ 最終的に、資料全体を確認して<strong>「個人情報が残っていない」とご自身で判断できた資料</strong>だけをAIへ使用してください。<br><br>
+          AIへ渡す際は、アプリが用意する<strong>AIへの指示書</strong>と、確認済みの資料を<strong>ご自身でAIへ添付</strong>して作業を進めます。
+        </div>
+        <div class="bo-precision-caution">⚠️ このアプリの自動チェックだけで「個人情報が完全にない」と判断せず、AIへ送る前に必ずご自身で最終確認してください。</div>
+        <button type="button" class="bo-big-action" style="margin-top:12px;width:100%;" onclick="simpleResetPrivacyAfterAnonymize(event)">↩ 修正した資料を読み込み直して、もう一度チェックする</button>`;
+    }else{
+      guide.innerHTML=`
+        <div class="bo-precision-title">📄 確認しながら確実に進める</div>
+        <div class="bo-precision-text">
+          自動チェックでは強い警告はありません。<strong>ここで資料全体をもう一度ご自身で確認してください。</strong><br><br>
+          個人情報が残っていないとご自身で判断できた場合は、次へ進みます。次の画面では、アプリが設定した<strong>AIへの指示書</strong>をコピーし、確認済みの資料は<strong>ご自身でAIへ添付</strong>してください。
+        </div>
+        <div class="bo-precision-caution">⚠️ 自動チェックは完全な匿名化を保証するものではありません。AIへ送る前の最終判断は、必ず資料を確認したうえで行ってください。</div>
+        <button type="button" class="bo-big-action" style="margin-top:12px;width:100%;" onclick="boContinuePrecisionMode()">✓ 個人情報がないことを確認しました。次へ進む</button>`;
+    }
+    guide.scrollIntoView({behavior:'smooth',block:'center'});
+  };
+
+  window.boContinuePrecisionMode=function(){
+    const promptBox=document.getElementById('preventivePromptBox');
+    const result=document.getElementById('preventivePrivacyResult');
+    if(!promptBox || promptBox.style.display==='none' || !result || result.classList.contains('alert')){
+      const guide=document.getElementById('boPrecisionGuide');
+      if(guide){
+        const caution=guide.querySelector('.bo-precision-caution');
+        if(caution)caution.textContent='⚠️ まだ確認が必要な記載があります。資料を修正して、もう一度「🔒 個人情報をチェックする」を実施してください。';
+      }
+      return false;
+    }
+    window.boPreDeliveryMode='file';
+    const s2=document.getElementById('simpleStep2'),s3=document.getElementById('simpleStep3');
+    if(s2){s2.classList.remove('is-current');s2.classList.add('is-done');}
+    if(s3){s3.classList.add('is-current');}
+    document.querySelectorAll('#simpleStep3 .bo-ai-btn').forEach(b=>{b.disabled=false;b.setAttribute('aria-disabled','false');b.style.pointerEvents='auto';b.style.opacity='';});
+    const st=document.getElementById('simpleAIStatus');
+    if(st){st.className='bo-simple-status';st.textContent='AIを選ぶと「AIへの指示書」だけをコピーします。確認済みの資料は、ご自身でAIへ添付してください。';}
+    if(s3)s3.scrollIntoView({behavior:'smooth',block:'center'});
+    return true;
+  };
+
 
   async function copyPromptOnly(){
     const promptBox=document.getElementById('preventivePromptBox');
