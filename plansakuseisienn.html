@@ -2773,7 +2773,7 @@ body.bo-pdf-editor-lock{overflow:hidden!important}
 <div class="bo-pdf-redaction-first" id="boPdfRedactionFirst">
   <div class="bo-pdf-redaction-first-title-row">
     <div class="bo-simple-num">1</div>
-    <div class="bo-pdf-redaction-first-title">🔒 まず、AIに渡す資料から個人情報を削除してください</div>
+    <div class="bo-pdf-redaction-first-title">🔒 まず、AIに渡す資料から個人情報を削除する作業からはじめます</div>
   </div>
   <div class="bo-pdf-redaction-first-lead">
     <strong>PDFの場合は、このアプリ上で資料を開き、画面を見ながらご自身で黒塗りできます。</strong><br>
@@ -2788,6 +2788,18 @@ body.bo-pdf-editor-lock{overflow:hidden!important}
     <strong>Word・Excelの場合：</strong>
     元ファイルのコピーを作って個人情報を削除するか、PDFとして保存してから上の「PDFの個人情報を黒塗りする」をご利用ください。<br>
     <strong>次の工程では、ここで作成した匿名化資料をもう一度このアプリに読み込み、個人情報チェックを受けます。</strong>
+
+    <div style="margin-top:14px;padding:14px 16px;border:2px solid #e0a800;border-radius:10px;background:#fff8e1;line-height:1.75;">
+      <strong style="font-size:17px;">💡 ここがポイント！</strong><br>
+      <strong>古い形式のExcelファイル（.xls）の場合</strong><br>
+      内容を正確に読み取ることができない可能性があります。Excelで元のファイルを開き、
+      <strong>「名前を付けて保存」→「Excel ブック（.xlsx）」</strong>を選んで保存し直してください。
+      その後、新しくできた <strong>.xlsx</strong> ファイルで作業をはじめてください。<br><br>
+      <strong>古い形式のWordファイル（.doc）の場合</strong><br>
+      同じように内容を正確に読み取ることができない可能性があります。Wordで元のファイルを開き、
+      <strong>「名前を付けて保存」→「Word 文書（.docx）」</strong>を選んで保存し直してください。
+      その後、新しくできた <strong>.docx</strong> ファイルで作業をはじめてください。
+    </div>
   </div>
 </div>
 
@@ -2851,9 +2863,20 @@ body.bo-pdf-editor-lock{overflow:hidden!important}
           <button type="button" class="bo-secondary-action" onclick="simpleOpenGeneratedDocumentFullView()">🔍 匿名化資料を全体表示して確認する</button>
           <button type="button" class="bo-big-action" onclick="simpleApplyGeneratedDocument()">② この新しい資料を再確認用に反映して、もう一度個人情報チェックする</button>
           <div id="simpleFinalUserReview" style="display:none;margin-top:12px;padding:14px;border:2px solid #138ee0;border-radius:12px;background:#f8fcff;">
-            <div style="font-weight:900;font-size:16px;margin-bottom:6px;color:#b71c1c;">✓ 最後にもう一度ご自身で資料を確認してください。個人情報の最終チェックをしましたか？</div>
-            <div style="line-height:1.7;margin-bottom:10px;">青字の匿名化箇所と赤字の確認箇所を含めもう一度全体を、AIへ渡してよい資料になっていることをご自身で確認してください。</div>
-            <button type="button" class="bo-big-action" id="simpleGeneratedConfirmButton" onclick="simpleConfirmGeneratedDocument()" style="display:block;">✓ 確認しました。次に進む</button>
+            <div style="font-weight:900;font-size:16px;margin-bottom:6px;color:#b71c1c;">✓ 自動チェックを通過しました。最後に資料全体をご自身で確認してください。</div>
+            <div style="line-height:1.7;margin-bottom:10px;">パソコンでの個人情報判定は１００％ではありません。次のボタンを押して、青字の匿名化箇所と赤字の確認箇所を含め、資料全体をもう一度ご自身の目で確認してください。</div>
+            <button type="button" class="bo-big-action" id="simpleGeneratedFinalReviewStartButton" onclick="simpleStartGeneratedFinalReview()" style="display:block;width:100%;">📄 最後に資料全体を確認する</button>
+            <div id="simpleGeneratedFinalReviewConfirmArea" style="display:none;margin-top:12px;padding:12px;border:2px solid #e6a21a;border-radius:10px;background:#fff8e8;">
+              <div style="font-weight:900;color:#b71c1c;line-height:1.7;margin-bottom:8px;">⚠️ 最終確認をお願いします。もう一度資料全体を確認し、個人情報が入っていないか確認してください。</div>
+              <div style="line-height:1.8;margin-bottom:10px;">次の工程では、<strong>この資料をご自身の操作でAIへ提示して作業を進めます。</strong><br>この資料をAIへ提示してよい内容であるとご自身で判断できた場合のみ、下の確認欄にチェックしてください。</div>
+              <label style="display:flex;align-items:flex-start;gap:9px;padding:11px 12px;margin:10px 0;border:1px solid #d6a63a;border-radius:9px;background:#fff;line-height:1.7;font-weight:700;cursor:pointer;">
+                <input type="checkbox" id="simpleGeneratedFinalConsentCheck" onchange="simpleUpdateGeneratedFinalConsent()" style="margin-top:5px;transform:scale(1.25);">
+                <span>私は、表示された資料全体を確認し、AIへ提示して差し支えない内容であると判断しました。この資料を使用して次の工程へ進むことに同意します。</span>
+              </label>
+              <button type="button" class="bo-big-action" id="simpleGeneratedConfirmButton" onclick="simpleConfirmGeneratedDocument()" disabled style="display:none;background:#198754;color:#fff;width:100%;opacity:.55;cursor:not-allowed;">✓ 同意して、この資料を使用して次に進む</button>
+              <button type="button" class="bo-secondary-action" onclick="simpleResetPrivacyAfterAnonymize(event)" style="margin-top:10px;width:100%;border:2px solid #b71c1c;color:#b71c1c;background:#fff;">↩ 個人情報があったので資料を作り直す</button>
+              <div style="margin-top:9px;font-size:12px;line-height:1.7;color:#666;">※この確認は、アプリの自動判定だけに頼らず、アプリ利用者ご自身の確認と判断でAIへ提示する資料を確定するためのものです。</div>
+            </div>
           </div>
         </div>
         <div id="simpleGeneratedDocumentStatus" class="bo-simple-status"></div>
@@ -2930,7 +2953,7 @@ body.bo-pdf-editor-lock{overflow:hidden!important}
     <div class="bo-simple-num">6</div>
     <div class="bo-simple-body">
       <div class="bo-simple-title">作りたい書類を選ぶ</div>
-      <div class="bo-simple-one">書類を選んで、使うAIを押すだけです。確認済み情報と正式なプロンプトをアプリが自動で1つにまとめます。</div>
+      <div class="bo-simple-one"><strong style="display:block;font-size:16px;line-height:1.8;color:#075fa8;">作成したい書類を選んで、使うAIを選んだら、もうすでにAIへの指示書はできていますので、そのままAIに貼り付けてください。確認済み情報と正式なプロンプトをアプリが自動で1つにまとめます。匿名化資料をもう一度添付する必要はありません。</strong></div>
       <div class="bo-doc-three bo-doc-four">
         <button type="button" class="bo-doc-btn" data-simple-doc="care" onclick="simpleSelectDocument('care')">ケアプラン（案）</button>
         <button type="button" class="bo-doc-btn" data-simple-doc="preventive" onclick="simpleSelectDocument('preventive')">介護予防プラン（案）</button>
@@ -4928,6 +4951,26 @@ AIへ事前整理を依頼するときは、アプリからコピーしたAIへ�
     };
 
     const PREVENTIVE_PRE_PROMPT_BASE = `あなたは優秀なケアマネジャーです。 以下の条件を踏まえたケアプラン作成に必要なアセスメントをします。アセスメントの前に、情報をまとめますが、下記の各項目に沿って情報を細かく分析して 作成しコードブロックで出力させてください。
+
+【添付資料・本文データを正常に読み取れない場合のルール】
+添付資料または本文データを正常に読み取れなかった場合や、一部の情報が欠落している可能性がある場合は、不完全な情報のまま作成処理を進めないでください。
+
+その場合は、必ず次のように利用者へ確認してください。
+
+「⚠️ 本文データを正常に抽出できませんでした。読み取れている範囲でそのまま処理を続けることもできますが、このまま進めますか？ 再度資料を添付・貼り付けする場合は、もう一度資料を送ってください。」
+
+また、読み取れなかった原因がファイル形式にあると判断できる場合は、専門用語だけで終わらせず、利用者が次に何をすればよいかを具体的に分かりやすく案内してください。
+
+特に、古い形式のExcel（.xls）やWord（.doc）などが原因で正常に読み取れない場合は、資料の内容を最初から作り直す必要があるような表現はしないでください。元のファイルを対応するアプリで開き、「名前を付けて保存」から新しい形式で保存し直し、その新しく保存したファイルをもう一度添付すればよいことを説明してください。
+
+・Excelの .xls の場合：「Excelで元のファイルを開き、『名前を付けて保存』から『Excel ブック（.xlsx）』で保存し直し、新しくできた .xlsx ファイルをもう一度添付してください。」と案内する。
+・Wordの .doc の場合：「Wordで元のファイルを開き、『名前を付けて保存』から『Word 文書（.docx）』で保存し直し、新しくできた .docx ファイルをもう一度添付してください。」と案内する。
+
+このようにファイルを保存し直す必要がある場合は、AIの読み取り結果・確認メッセージの中にも、「現在のファイルのままでは正確に分析できない可能性があるため、新しい形式で保存し直したファイルを再度添付することをおすすめします」と明確に表示してください。
+
+利用者が「このまま進める」旨を明確に回答した場合のみ、読み取れている情報の範囲内で処理を続けてください。
+
+その際、読み取れていない内容を推測・補完したり、資料に記載されていない事実を追加したりしないでください。
 
 作成の為のルール
 
@@ -8254,7 +8297,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }else if(passed){
       simplePrivacyPassed=true;
       const advisory=result.classList.contains('warn');
-      setStatus('simplePrivacyStatus',(detailText || (advisory?'✓ 強い警告はありません。':'✓ 個人情報チェックを通過しました。'))+'\n\n最後に資料全体をご自身で確認してください。',advisory?'warn':'ok');
+      setStatus('simplePrivacyStatus','✓ 自動チェックで、現時点で確認が必要な個人情報候補は検出されませんでしたが、パソコンでの個人情報判定は１００％ではありませんので、AIへ渡す前に、必ず資料全体をご自身で最終確認してください。\n\n最後に資料全体をご自身で確認してください。',advisory?'warn':'ok');
     }else{
       simplePrivacyPassed=false;
       setStatus('simplePrivacyStatus',(detailText || '🔴 個人情報の可能性が高い記載があります。')+'\n\n内容を確認し、必要な修正を行ってください。','bad');
@@ -8278,7 +8321,8 @@ document.addEventListener('DOMContentLoaded', function(){
       if(typeof window.resetPreventiveWorkflowFromStart==='function')window.resetPreventiveWorkflowFromStart();
       const aa=qs('simpleAnonymizeArea');if(aa)aa.style.display='none';
       const ga=qs('simpleGeneratedDocumentArea');if(ga)ga.style.display='none';
-      const cb=qs('simpleGeneratedConfirmButton');if(cb)cb.style.display='none';
+      const cb=qs('simpleGeneratedConfirmButton');if(cb){cb.style.display='none';cb.disabled=true;cb.style.pointerEvents='none';cb.style.opacity='.55';}
+      const consent=qs('simpleGeneratedFinalConsentCheck');if(consent)consent.checked=false;
       const rb=qs('simpleResetPrivacyAfterAnonymizeButton');if(rb)rb.disabled=true;
       const pb=qs('simplePrivacyButton');if(pb)pb.disabled=true;
       const full=qs('simpleGeneratedFullView');if(full)full.style.display='none';
@@ -8356,6 +8400,28 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 
+  window.simpleGeneratedMandatoryFinalReview=false;
+
+  window.simpleStartGeneratedFinalReview=function(){
+    window.simpleGeneratedMandatoryFinalReview=true;
+    const confirmArea=qs('simpleGeneratedFinalReviewConfirmArea');if(confirmArea)confirmArea.style.display='none';
+    const confirm=qs('simpleGeneratedConfirmButton');if(confirm)confirm.style.display='none';
+    window.simpleOpenGeneratedDocumentFullView();
+    return false;
+  };
+
+  window.simpleUpdateGeneratedFinalConsent=function(){
+    const consent=qs('simpleGeneratedFinalConsentCheck');
+    const confirm=qs('simpleGeneratedConfirmButton');
+    if(!confirm)return false;
+    const ok=!!(consent && consent.checked);
+    confirm.disabled=!ok;
+    confirm.style.pointerEvents=ok?'auto':'none';
+    confirm.style.opacity=ok?'1':'.55';
+    confirm.style.cursor=ok?'pointer':'not-allowed';
+    return ok;
+  };
+
   window.simpleOpenGeneratedDocumentFullView=function(){
     syncGeneratedEditors('#simpleGeneratedDocumentFiles','#simpleGeneratedDocumentFiles');
     const docs=typeof window.getPreventiveCurrentDocuments==='function'?window.getPreventiveCurrentDocuments():[];
@@ -8368,7 +8434,18 @@ document.addEventListener('DOMContentLoaded', function(){
     syncGeneratedEditors('#simpleGeneratedFullViewFiles','#simpleGeneratedDocumentFiles');
     const overlay=qs('simpleGeneratedFullView');if(overlay)overlay.style.display='none';
     document.body.style.overflow='';
-    setStatus('simpleGeneratedDocumentStatus','✓ 匿名化済み資料の全体確認内容を反映しました。次に②のボタンで、この新しい資料をもう一度個人情報チェックしてください。','warn');
+
+    if(window.simpleGeneratedMandatoryFinalReview){
+      window.simpleGeneratedMandatoryFinalReview=false;
+      const confirmArea=qs('simpleGeneratedFinalReviewConfirmArea');if(confirmArea)confirmArea.style.display='block';
+      const consent=qs('simpleGeneratedFinalConsentCheck');if(consent)consent.checked=false;
+      const confirm=qs('simpleGeneratedConfirmButton');
+      if(confirm){confirm.style.display='block';confirm.disabled=true;confirm.style.pointerEvents='none';confirm.style.opacity='.55';confirm.style.cursor='not-allowed';}
+      setStatus('simpleGeneratedDocumentStatus','✓ 資料全体の確認画面を開きました。個人情報が残っていないことをご自身で確認し、この資料をAIへ提示して次の工程へ進むことに同意できる場合のみ、確認欄にチェックしてください。','warn');
+      const review=qs('simpleFinalUserReview');if(review)review.scrollIntoView({behavior:'smooth',block:'center'});
+    }else{
+      setStatus('simpleGeneratedDocumentStatus','✓ 匿名化済み資料の全体確認内容を反映しました。次に②のボタンで、この新しい資料をもう一度個人情報チェックしてください。','warn');
+    }
   };
 
   window.simpleDownloadGeneratedDocumentFromFullView=function(){
@@ -8750,14 +8827,13 @@ document.addEventListener('DOMContentLoaded', function(){
       }
       if(btn)btn.style.display='none';
       if(review)review.style.display='block';
-      if(confirm){
-        confirm.style.display='block';
-        confirm.disabled=false;
-        confirm.style.pointerEvents='auto';
-      }
+      window.simpleGeneratedMandatoryFinalReview=false;
+      const reviewStart=qs('simpleGeneratedFinalReviewStartButton');if(reviewStart)reviewStart.style.display='block';
+      const confirmArea=qs('simpleGeneratedFinalReviewConfirmArea');if(confirmArea)confirmArea.style.display='none';
+      if(confirm)confirm.style.display='none';
       setStatus(
         'simpleGeneratedDocumentStatus',
-        '✓ 修正後の資料を再チェックしました。確認が必要な個人情報候補は見つかりませんでした。最後にご自身で資料全体を確認し、「✓ 確認しました。次に進む」を押してください。',
+        '✓ 自動チェックで、現時点で確認が必要な個人情報候補は検出されませんでしたが、パソコンでの個人情報判定は１００％ではありませんので、AIへ渡す前に、必ず資料全体をご自身で最終確認してください。最後に資料全体をご自身で確認してください。',
         'ok'
       );
     }else{
@@ -8816,8 +8892,11 @@ document.addEventListener('DOMContentLoaded', function(){
       if(typeof window.renderBlueOceanColorReview==='function')window.renderBlueOceanColorReview();
       const review=qs('simpleFinalUserReview');if(review)review.style.display='block';
       const retry=qs('simpleRetryPrivacyCheckButton');if(retry)retry.style.display='none';
-      if(cb)cb.style.display='block';
-      setStatus('simpleGeneratedDocumentStatus','✓ 自動の再チェックを通過しました。最後に青字の匿名化箇所を含めて資料全体をご自身で確認し、「確認しました。次に進む」を押してください。','ok');
+      window.simpleGeneratedMandatoryFinalReview=false;
+      const reviewStart=qs('simpleGeneratedFinalReviewStartButton');if(reviewStart)reviewStart.style.display='block';
+      const confirmArea=qs('simpleGeneratedFinalReviewConfirmArea');if(confirmArea)confirmArea.style.display='none';
+      if(cb)cb.style.display='none';
+      setStatus('simpleGeneratedDocumentStatus','✓ 自動チェックで、現時点で確認が必要な個人情報候補は検出されませんでしたが、パソコンでの個人情報判定は１００％ではありませんので、AIへ渡す前に、必ず資料全体をご自身で最終確認してください。最後に資料全体をご自身で確認してください。','ok');
     }else{
       const review=qs('simpleFinalUserReview');if(review)review.style.display='none';
       if(cb)cb.style.display='none';
@@ -8828,6 +8907,11 @@ document.addEventListener('DOMContentLoaded', function(){
   };
 
   window.simpleConfirmGeneratedDocument=function(){
+    const consent=qs('simpleGeneratedFinalConsentCheck');
+    if(!consent || !consent.checked){
+      setStatus('simpleGeneratedDocumentStatus','⚠️ この資料をAIへ提示して次の工程へ進むことに同意する場合は、確認欄にチェックしてください。','warn');
+      return false;
+    }
     if(typeof window.syncBlueOceanEditableDocuments==='function')window.syncBlueOceanEditableDocuments('#simpleGeneratedDocumentFiles');
     window.checkPreventivePrivacy();
     const result=qs('preventivePrivacyResult');
@@ -8850,8 +8934,8 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
     simpleGeneratedDocumentConfirmed=true;simplePrivacyPassed=true;
-    setStatus('simpleGeneratedDocumentStatus','✓ ご自身による個人情報の最終確認が完了しました。この資料をAIへ渡す状態として使用します。','ok');
-    setStatus('simplePrivacyStatus','✓ 匿名化・自動再チェック・ご自身による最終確認まで完了しました。次へ進めます。','ok');
+    setStatus('simpleGeneratedDocumentStatus','✓ ご自身による個人情報の最終確認と、この資料をAIへ提示して次の工程へ進むことへの同意を確認しました。','ok');
+    setStatus('simplePrivacyStatus','✓ 匿名化・自動再チェック・ご自身による最終確認・使用同意まで完了しました。次へ進めます。','ok');
     setStep(2,'is-done');setStep(3,'is-current');enablePreAI(true);qs('simpleStep3').scrollIntoView({behavior:'smooth',block:'center'});
   };
 
@@ -9055,13 +9139,14 @@ document.addEventListener('DOMContentLoaded', function(){
         <div class="bo-precision-caution">⚠️ このアプリの自動チェックだけで「個人情報が完全にない」と判断せず、AIへ送る前に必ずご自身で最終確認してください。</div>
         <button type="button" class="bo-big-action" style="margin-top:12px;width:100%;" onclick="simpleResetPrivacyAfterAnonymize(event)">↩ 修正した資料を読み込み直して、もう一度チェックする</button>`;
     }else{
+      window.boSourceFinalReviewPending=false;
       guide.innerHTML=`
         <div class="bo-precision-title">📄 AIへ渡す資料を最終確認する</div>
         <div class="bo-precision-text" style="margin-bottom:10px;">
-          <strong>✓ 最後にもう一度ご自身で資料を確認してください。個人情報の最終チェックをしましたか？</strong>
+          <strong>✓ 自動チェックで、現時点で確認が必要な個人情報候補は検出されませんでした。</strong><br>
+          パソコンでの個人情報判定は１００％ではありませんので、AIへ渡す前に、必ず資料全体をご自身で最終確認してください。
         </div>
-        <button type="button" class="bo-big-action" style="margin-top:12px;width:100%;" onclick="boOpenPreventiveSourceDocumentsForReview(event)">📄 貼り付けた資料をもう一度確認する</button>
-        <button type="button" class="bo-big-action" style="margin-top:10px;width:100%;background:#198754;color:#fff;" onclick="boConfirmPrecisionFinalReview()">✓ 確認しました。次に進む</button>`;
+        <button type="button" class="bo-big-action" style="margin-top:12px;width:100%;" onclick="boStartMandatorySourceFinalReview(event)">📄 最後に資料全体を確認する</button>`;
     }
     guide.scrollIntoView({behavior:'smooth',block:'center'});
   };
@@ -9082,17 +9167,86 @@ document.addEventListener('DOMContentLoaded', function(){
 
     if(!guide)return false;
 
+    window.boSourceFinalReviewPending=false;
     guide.innerHTML=`
-      <div class="bo-precision-title">✓ 最後にもう一度ご自身で資料を確認してください。個人情報の最終チェックをしましたか？</div>
-      <button type="button" class="bo-big-action" style="margin-top:12px;width:100%;" onclick="boOpenPreventiveSourceDocumentsForReview(event)">📄 貼り付けた資料をもう一度確認する</button>
-      <button type="button" class="bo-big-action" style="margin-top:10px;width:100%;background:#198754;color:#fff;" onclick="boConfirmPrecisionFinalReview()">✓ 確認しました。次に進む</button>`;
+      <div class="bo-precision-title">📄 AIへ渡す資料を最終確認する</div>
+      <div class="bo-precision-text" style="margin-bottom:10px;">
+        <strong>✓ 自動チェックで、現時点で確認が必要な個人情報候補は検出されませんでした。</strong><br>
+        パソコンでの個人情報判定は１００％ではありませんので、AIへ渡す前に、必ず資料全体をご自身で最終確認してください。
+      </div>
+      <button type="button" class="bo-big-action" style="margin-top:12px;width:100%;" onclick="boStartMandatorySourceFinalReview(event)">📄 最後に資料全体を確認する</button>`;
     guide.scrollIntoView({behavior:'smooth',block:'center'});
     return true;
   };
 
   
 
+  window.boSourceFinalReviewPending=false;
+
+  window.boStartMandatorySourceFinalReview=function(event){
+    if(event){event.preventDefault();event.stopPropagation();}
+    const guide=document.getElementById('boPrecisionGuide');
+    if(!guide)return false;
+
+    window.boSourceFinalReviewPending=true;
+    guide.innerHTML=`
+      <div class="bo-precision-title" style="color:#b71c1c;">⚠️ 最終確認をお願いします</div>
+      <div class="bo-precision-caution" style="font-weight:800;line-height:1.8;">
+        もう一度資料全体を最初から最後まで確認し、氏名・住所・電話番号・各種番号・医療機関名・医師名・家族氏名など、AIへ渡してはいけない個人情報が残っていないか、ご自身の目で確認してください。
+      </div>
+      <div class="bo-precision-text" style="margin-top:10px;">資料確認画面を閉じた後に、「✓ 確認しました。次に進む」ボタンが表示されます。</div>`;
+
+    if(typeof window.boOpenPreventiveSourceDocumentsForReview==='function'){
+      window.boOpenPreventiveSourceDocumentsForReview(event);
+    }
+    return false;
+  };
+
+  window.boRevealSourceFinalConfirmation=function(){
+    const guide=document.getElementById('boPrecisionGuide');
+    if(!guide)return false;
+    guide.innerHTML=`
+      <div class="bo-precision-title" style="color:#b71c1c;">⚠️ 最終確認をお願いします</div>
+      <div class="bo-precision-caution" style="font-weight:800;line-height:1.8;">
+        もう一度資料全体を確認し、個人情報が入っていないか確認してください。
+      </div>
+      <div class="bo-precision-text" style="margin-top:10px;margin-bottom:10px;">次の工程では、<strong>この資料をご自身の操作でAIへ提示して作業を進めます。</strong><br>AIへ提示して差し支えない資料であるとご自身で判断できた場合のみ、下の確認欄にチェックしてください。</div>
+      <label style="display:flex;align-items:flex-start;gap:9px;padding:11px 12px;margin:10px 0;border:1px solid #d6a63a;border-radius:9px;background:#fff;line-height:1.7;font-weight:700;cursor:pointer;">
+        <input type="checkbox" id="boSourceFinalConsentCheck" onchange="boUpdateSourceFinalConsent()" style="margin-top:5px;transform:scale(1.25);">
+        <span>私は、表示された資料全体を確認し、AIへ提示して差し支えない内容であると判断しました。この資料を使用して次の工程へ進むことに同意します。</span>
+      </label>
+      <button type="button" id="boSourceFinalConsentButton" class="bo-big-action" disabled style="margin-top:10px;width:100%;background:#198754;color:#fff;opacity:.55;cursor:not-allowed;pointer-events:none;" onclick="boConfirmPrecisionFinalReview()">✓ 同意して、この資料を使用して次に進む</button>
+      <button type="button" class="bo-secondary-action" style="margin-top:10px;width:100%;border:2px solid #b71c1c;color:#b71c1c;background:#fff;" onclick="simpleResetPrivacyAfterAnonymize(event)">↩ 個人情報があったので資料を作り直す</button>
+      <div style="margin-top:9px;font-size:12px;line-height:1.7;color:#666;">※この確認は、アプリの自動判定だけに頼らず、アプリ利用者ご自身の確認と判断でAIへ提示する資料を確定するためのものです。</div>`;
+    guide.scrollIntoView({behavior:'smooth',block:'center'});
+    return true;
+  };
+
+  window.boUpdateSourceFinalConsent=function(){
+    const consent=document.getElementById('boSourceFinalConsentCheck');
+    const btn=document.getElementById('boSourceFinalConsentButton');
+    if(!btn)return false;
+    const ok=!!(consent && consent.checked);
+    btn.disabled=!ok;
+    btn.style.pointerEvents=ok?'auto':'none';
+    btn.style.opacity=ok?'1':'.55';
+    btn.style.cursor=ok?'pointer':'not-allowed';
+    return ok;
+  };
+
   window.boConfirmPrecisionFinalReview=function(){
+    const consent=document.getElementById('boSourceFinalConsentCheck');
+    if(!consent || !consent.checked){
+      const guide=document.getElementById('boPrecisionGuide');
+      if(guide){
+        const warn=document.createElement('div');
+        warn.className='bo-precision-caution';
+        warn.style.marginTop='10px';
+        warn.textContent='⚠️ この資料をAIへ提示して次の工程へ進むことに同意する場合は、確認欄にチェックしてください。';
+        guide.appendChild(warn);
+      }
+      return false;
+    }
     window.boPreDeliveryMode='file';
     const s2=document.getElementById('simpleStep2'),s3=document.getElementById('simpleStep3');
     if(s2){s2.classList.remove('is-current');s2.classList.add('is-done');}
@@ -9106,7 +9260,7 @@ document.addEventListener('DOMContentLoaded', function(){
     const st=document.getElementById('simpleAIStatus');
     if(st){
       st.className='bo-simple-status ok';
-      st.textContent='✓ 資料全体の最終確認が完了しました。「① AIに貼り付ける指示書をコピーする」を押し、使用するAIに匿名化したファイルを添付してください。';
+      st.textContent='✓ 資料全体の最終確認と、この資料をAIへ提示して次の工程へ進むことへの同意を確認しました。「① AIに貼り付ける指示書をコピーする」を押し、使用するAIに匿名化したファイルを添付してください。';
     }
     if(s3)s3.scrollIntoView({behavior:'smooth',block:'center'});
     return true;
@@ -9124,14 +9278,18 @@ document.addEventListener('DOMContentLoaded', function(){
 
   window.boCopyPreorganizationPromptOnly=async function(){
     const st=document.getElementById('simpleAIStatus');
+    const btn=document.querySelector('.bo-ai-copy-guide-button');
     const copied=await copyPromptOnly();
-    if(st){
-      st.className='bo-simple-status '+(copied?'ok':'bad');
-      st.innerHTML=copied
-        ? '✓ AIへの指示書をコピーしました。<strong>次に使用するAIを開き、匿名化したファイルを添付してから、指示書を貼り付けて送信してください。</strong>'
-        : '⚠️ 指示書をコピーできませんでした。もう一度ボタンを押してください。';
+    if(copied){
+      if(btn){
+        btn.innerHTML='<strong>✓ コピーしました！</strong><br><strong>そのまま下記の指示に従って実施してください。</strong><br><strong>次に使用するAIを開き、匿名化したファイルを添付してから、指示書を貼り付けて送信してください。</strong>';
+        btn.classList.add('copied');
+      }
+      markPreorganizationCopied();
+    }else if(st){
+      st.className='bo-simple-status bad';
+      st.textContent='⚠️ 指示書をコピーできませんでした。もう一度ボタンを押してください。';
     }
-    if(copied)markPreorganizationCopied();
     return copied;
   };
 
@@ -10045,7 +10203,14 @@ if(document.readyState === "loading"){
     if(body)body.innerHTML='';
     if(modal)modal.style.display='none';
     document.body.style.overflow='';
-    // 元の画面位置を保ったまま閉じるだけなので、そのまま作業を再開できる
+
+    // 必須の最終確認として開いた場合だけ、閉じた後に初めて最終確認ボタンを表示する。
+    if(window.boSourceFinalReviewPending){
+      window.boSourceFinalReviewPending=false;
+      if(typeof window.boRevealSourceFinalConfirmation==='function'){
+        window.boRevealSourceFinalConfirmation();
+      }
+    }
     return false;
   };
 
